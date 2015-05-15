@@ -10,6 +10,7 @@ public abstract class AbstractSprite implements RenderObject {
 	private String behaviourName;
 	private boolean destroyed;
 	private ArrayList<Collider> colliders;
+	private RenderObject parent;
 	private String tag;
 	protected SpriteRenderer renderer;
 	public void translate(float dx, float dy) {
@@ -74,18 +75,6 @@ public abstract class AbstractSprite implements RenderObject {
 
 
 
-
-
-	public float getZ() {
-		return renderer.getZ();
-	}
-
-
-
-
-	
-	
-	
 	
 
 	public void start(){
@@ -166,10 +155,22 @@ public abstract class AbstractSprite implements RenderObject {
 
 	@Override
 	public void onCollision(RenderObject collider) {
+		if (parent != null){
+			parent.onChildCollision(collider);
+		}
 		if (behaviour != null){
 			behaviour.onCollision(collider);
 		}
 	}
+
+	@Override
+	public void onChildCollision(RenderObject collider) {
+		if (behaviour != null){
+			behaviour.onChildCollision(collider);
+		}
+		
+	}
+
 
 	@Override
 	public boolean compareTag(String string) {
@@ -179,6 +180,14 @@ public abstract class AbstractSprite implements RenderObject {
 	@Override
 	public void setTag(String tag) {
 		this.tag = tag;
+	}
+
+	public RenderObject getParent() {
+		return parent;
+	}
+
+	public void setParent(RenderObject parent) {
+		this.parent = parent;
 	}
 
 }

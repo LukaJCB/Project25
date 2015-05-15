@@ -22,7 +22,8 @@ public interface RenderObject {
 	void addCollider(Collider c);
 	Collider getCollider(int index);
 	ArrayList<Collider> getColliders();
-	void onCollision(RenderObject renderObject);
+	void onCollision(RenderObject collider);
+	void onChildCollision(RenderObject collider);
 	void setTag(String tag);
 	boolean compareTag(String string);
 	float getRotation();
