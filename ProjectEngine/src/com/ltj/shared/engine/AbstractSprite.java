@@ -10,6 +10,7 @@ public abstract class AbstractSprite implements RenderObject {
 	private String behaviourName;
 	private boolean destroyed;
 	private ArrayList<Collider> colliders;
+	private ArrayList<RenderObject> childList;
 	private RenderObject parent;
 	private String tag;
 	protected SpriteRenderer renderer;
@@ -188,6 +189,12 @@ public abstract class AbstractSprite implements RenderObject {
 
 	public void setParent(RenderObject parent) {
 		this.parent = parent;
+		parent.addChild(this);
+	}
+
+	@Override
+	public void addChild(RenderObject child) {
+		this.childList.add(child);
 	}
 
 }
