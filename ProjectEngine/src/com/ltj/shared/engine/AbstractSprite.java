@@ -14,8 +14,14 @@ public abstract class AbstractSprite implements RenderObject {
 	private RenderObject parent;
 	private String tag;
 	protected SpriteRenderer renderer;
+	
 	public void translate(float dx, float dy) {
 		renderer.translate(dx, dy);
+		if (childList != null){
+			for (RenderObject r : childList){
+				r.translate(dx, dy);
+			}
+		}
 	}
 
 
@@ -24,6 +30,11 @@ public abstract class AbstractSprite implements RenderObject {
 
 	public void rotate(float deg) {
 		renderer.rotate(deg);
+		if (childList != null){
+			for (RenderObject r : childList){
+				r.rotate(deg);
+			}
+		}
 	}
 
 
@@ -32,6 +43,11 @@ public abstract class AbstractSprite implements RenderObject {
 
 	public void scale(float sx, float sy) {
 		renderer.scale(sx, sy);
+		if (childList != null){
+			for (RenderObject r : childList){
+				r.scale(sx, sy);
+			}
+		}
 	}
 
 
@@ -182,7 +198,8 @@ public abstract class AbstractSprite implements RenderObject {
 	public void setTag(String tag) {
 		this.tag = tag;
 	}
-
+	
+	@Override
 	public RenderObject getParent() {
 		return parent;
 	}

@@ -28,5 +28,6 @@ public interface RenderObject {
 	boolean compareTag(String string);
 	float getRotation();
 	void addChild(RenderObject child);
+	RenderObject getParent();
 	
 }
