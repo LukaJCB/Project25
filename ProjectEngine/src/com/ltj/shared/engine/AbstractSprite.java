@@ -164,9 +164,9 @@ public abstract class AbstractSprite implements RenderObject {
 	}
 
 	@Override
-	public void onChildCollision(RenderObject collider) {
+	public void onChildCollision(RenderObject child,RenderObject collider) {
 		if (behaviour != null){
-			behaviour.onChildCollision(collider);
+			behaviour.onChildCollision(child,collider);
 		}
 		
 	}

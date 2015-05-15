@@ -27,7 +27,7 @@ public abstract class Behaviour<T extends RenderObject> {
 		
 	}
 	
-	public void onChildCollision(RenderObject collider){
+	public void onChildCollision(RenderObject child, RenderObject collider){
 		
 	}
 	
