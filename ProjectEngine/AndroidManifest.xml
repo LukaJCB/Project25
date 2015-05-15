@@ -14,7 +14,7 @@
         android:theme="@style/AppTheme"
         android:largeHeap="true" >
          <activity
-            android:name="com.ltj.engine.view.GlActivity"
+            android:name="com.ltj.android.view.GlActivity"
             android:label="@string/app_name"
             android:screenOrientation="landscape" >
             <intent-filter>

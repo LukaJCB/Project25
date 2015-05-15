@@ -2,11 +2,11 @@ package com.ltj.game;
 
 import android.view.MotionEvent;
 
-import com.ltj.engine.Behaviour;
-import com.ltj.engine.MotionInput;
-import com.ltj.engine.android.SheetSpriteModeSAndroid;
-import com.ltj.engine.primitives.Camera;
-import com.ltj.engine.primitives.RenderObject;
+import com.ltj.android.engine.MotionInput;
+import com.ltj.android.engine.SheetSpriteModeSAndroid;
+import com.ltj.shared.engine.Behaviour;
+import com.ltj.shared.engine.Camera;
+import com.ltj.shared.engine.RenderObject;
 
 public class PlayerController extends Behaviour<SheetSpriteModeSAndroid> {
 

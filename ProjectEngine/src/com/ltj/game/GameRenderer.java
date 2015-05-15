@@ -9,14 +9,14 @@ import javax.microedition.khronos.opengles.GL10;
 
 import android.content.Context;
 
-import com.ltj.engine.Behaviour;
-import com.ltj.engine.BoxCollider;
-import com.ltj.engine.android.AndroidRenderer;
-import com.ltj.engine.android.SheetSpriteModeSAndroid;
-import com.ltj.engine.android.SimpleSpriteAndroid;
-import com.ltj.engine.android.SimpleSpriteModeSAndroid;
-import com.ltj.engine.primitives.Updater;
+import com.ltj.android.engine.AndroidRenderer;
+import com.ltj.android.engine.SheetSpriteModeSAndroid;
+import com.ltj.android.engine.SimpleSpriteAndroid;
+import com.ltj.android.engine.SimpleSpriteModeSAndroid;
 import com.ltj.projectengine.R;
+import com.ltj.shared.engine.Behaviour;
+import com.ltj.shared.engine.Updater;
+import com.ltj.shared.engine.primitives.BoxCollider;
 
 public class GameRenderer extends AndroidRenderer {
 
