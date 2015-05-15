@@ -194,7 +194,11 @@ public abstract class AbstractSprite implements RenderObject {
 
 	@Override
 	public void addChild(RenderObject child) {
-		this.childList.add(child);
+		if (childList == null){
+			childList = new ArrayList<RenderObject>();	
+		} 
+		childList.add(child);
+		
 	}
 
 }
