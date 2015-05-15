@@ -2,38 +2,37 @@ package com.ltj.shared.engine;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 
 
 public abstract class Updater {
 
-	private static HashMap<String, RenderObject> ids = new HashMap<String, RenderObject>();
-	public static void addId(String id, RenderObject r) {
-		ids.put(id, r);
+	private static HashMap<String,RenderObject> tags = new HashMap<String,RenderObject>();
+
+
+
+	public static void addId(String tag, RenderObject r){
+		tags.put(tag, r);
+	}
+	
+	public static void removeId(String tag){
+		tags.remove(tag);
+	}
+	
+	public static RenderObject getObjectByID(String tag){
+		return tags.get(tag);
 	}
 
-	public static void removeId(String id){
-		ids.remove(id);
-	}
-
-	public static RenderObject getObjectByID(String id) {
-		return ids.get(id);
-	}
-
-
-
-	private LinkedList<RenderObject> allObjects;
+	private ArrayList<RenderObject> allObjects;
 	private ArrayList<ModeSevenObject> allMSObjects;
 
-
+	
+	
 	public Updater(){
 		//initialize Lists
-		allObjects = new LinkedList<RenderObject>();
+		allObjects = new ArrayList<RenderObject>();
 		allMSObjects = new ArrayList<ModeSevenObject>();
 	}
-
-
 
 	public List<RenderObject> getAllObjects() {
 		return allObjects;
@@ -41,6 +40,10 @@ public abstract class Updater {
 	
 	public void addRenderable(RenderObject r){
 		allObjects.add(r);
+	}
+	
+	public void addRenderableList(List<RenderObject> list){
+		allObjects.addAll(list);
 	}
 
 	public void addMSRenderable(ModeSevenObject r){
