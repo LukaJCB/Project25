@@ -19,12 +19,14 @@ public abstract class AbstractSprite implements RenderObject {
 		renderer.translate(dx, dy);
 		if (childList != null){
 			for (RenderObject r : childList){
-				r.translate(dx, dy);
+				r.translate(dx, dy,getWidth(),getHeight());
 			}
 		}
 	}
 
-
+	public void translate(float dx, float dy, float width, float height){
+		renderer.translate(dx, dy, width, height);
+	}
 
 
 

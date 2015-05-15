@@ -131,6 +131,13 @@ public class AndroidSpriteRenderer implements SpriteRenderer{
 
 	
 	
+	@Override
+	public void translate(float dx, float dy, float width, float height) {
+		x += dx*width;
+		y += dy*height;
+		calcMatrix();
+	}
+
 	public void rotate(float deg){
 		rotation += deg;
 		calcMatrix();

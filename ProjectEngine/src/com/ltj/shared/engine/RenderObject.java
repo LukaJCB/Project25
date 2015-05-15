@@ -10,6 +10,7 @@ public interface RenderObject {
 	void render();
 	void destroy();
 	void translate(float dx,float dy);
+	void translate(float dx, float dy, float width, float height);
 	void scale(float sx,float sy);
 	void rotate(float deg);
 	float getX();
