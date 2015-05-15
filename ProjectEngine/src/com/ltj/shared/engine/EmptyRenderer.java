@@ -6,6 +6,11 @@ public class EmptyRenderer implements SpriteRenderer {
 	private float rotation;
 	private float height,width;
 	
+	public EmptyRenderer(){
+		height = 1;
+		width = 1;
+	}
+	
 	public void translate(float dx, float dy){
 		x += dx*width;
 		y += dy*height;
