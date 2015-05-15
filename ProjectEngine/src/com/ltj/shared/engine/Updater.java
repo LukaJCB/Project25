@@ -7,20 +7,20 @@ import java.util.List;
 
 public abstract class Updater {
 
-	private static HashMap<String,RenderObject> tags = new HashMap<String,RenderObject>();
+	private static HashMap<String,RenderObject> ids = new HashMap<String,RenderObject>();
 
 
 
-	public static void addId(String tag, RenderObject r){
-		tags.put(tag, r);
+	public static void addId(String id, RenderObject r){
+		ids.put(id, r);
 	}
 	
-	public static void removeId(String tag){
-		tags.remove(tag);
+	public static void removeId(String id){
+		ids.remove(id);
 	}
 	
-	public static RenderObject getObjectByID(String tag){
-		return tags.get(tag);
+	public static RenderObject getObjectByID(String id){
+		return ids.get(id);
 	}
 
 	private ArrayList<RenderObject> allObjects;
