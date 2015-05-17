@@ -6,7 +6,7 @@ public abstract class AbstractSprite implements RenderObject {
 
 
 
-	private Behaviour<? extends RenderObject> behaviour;
+	private Behaviour<? extends GameObject> behaviour;
 	private String behaviourName;
 	private boolean destroyed;
 	private ArrayList<Collider> colliders;
@@ -126,10 +126,14 @@ public abstract class AbstractSprite implements RenderObject {
 	}
 
 	@Override
-	public void addBehaviour(Behaviour<? extends RenderObject> b){
+	public void addBehaviour(Behaviour<? extends GameObject> b){
 		behaviour = b;
 	}
-	
+	@Override
+	public Behaviour<? extends GameObject> getBehaviour() {
+		return behaviour;
+	}
+
 	@Override
 	public void addCollider(Collider c){
 		if (colliders == null){
@@ -173,7 +177,7 @@ public abstract class AbstractSprite implements RenderObject {
 	}
 
 	@Override
-	public void onCollision(RenderObject collider) {
+	public void onCollision(GameObject collider) {
 		if (parent != null){
 			parent.onChildCollision(this,collider);
 		}
@@ -183,7 +187,7 @@ public abstract class AbstractSprite implements RenderObject {
 	}
 
 	@Override
-	public void onChildCollision(RenderObject child,RenderObject collider) {
+	public void onChildCollision(GameObject child,GameObject collider) {
 		if (behaviour != null){
 			behaviour.onChildCollision(child,collider);
 		}
