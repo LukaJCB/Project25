@@ -27,7 +27,6 @@ public class JoglUpdater extends Updater implements KeyListener {
 		if (e.getKeyCode() == KeyEvent.VK_UP){
 			Camera.setModeSeven();
 		}
-		System.out.println("key");
 		
 	}
 

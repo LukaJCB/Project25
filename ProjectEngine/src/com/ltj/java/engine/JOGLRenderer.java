@@ -2,7 +2,6 @@ package com.ltj.java.engine;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.HashMap;
 
 import com.jogamp.opengl.GL4;
 import com.jogamp.opengl.GLAutoDrawable;
@@ -10,8 +9,10 @@ import com.jogamp.opengl.GLEventListener;
 import com.ltj.java.utils.JoglShaderHelper;
 import com.ltj.shared.engine.Behaviour;
 import com.ltj.shared.engine.Camera;
+import com.ltj.shared.engine.GameObject;
 import com.ltj.shared.engine.ModeSevenObject;
 import com.ltj.shared.engine.RenderObject;
+import com.ltj.shared.engine.primitives.BoxCollider;
 
 import static com.jogamp.opengl.GL.*;
 
@@ -21,16 +22,7 @@ public class JOGLRenderer implements GLEventListener, KeyListener {
 
 	public static int uMatrixLocation;
 
-	private static HashMap<String, RenderObject> tags = new HashMap<String, RenderObject>();
 
-	
-	public static void addID(String tag, RenderObject r) {
-		tags.put(tag, r);
-	}
-
-	public static RenderObject getObjectByID(String tag) {
-		return tags.get(tag);
-	}
 
 	private boolean modeSeven, changeMode;
 
@@ -98,25 +90,65 @@ public class JOGLRenderer implements GLEventListener, KeyListener {
 
 			@Override
 			public void start() {
+				gameObject.setTexture(2, 1);
+			}
+
+			@Override
+			public void update() {
+				gameObject.translate(0, 0.04f);
+				
+				
+				Camera.setLookAt(gameObject.getX(), gameObject.getY());
+			}
+			@Override
+			public void onChildCollision(GameObject c, GameObject r){
+				sendMessage(r, "test","what up",45,"yo mama");
+			}
+			public String toString(){
+				return "hero";
+			}
+			
+		};
+		hero.addCollider(new BoxCollider());
+		hero.addBehaviour(b);
+		b.allocateObject(hero);
+		hero.scale(0.5f, 0.5f);
+		
+		
+		SimpleSpriteJogl zone = new SimpleSpriteJogl(gl,"img/enemy.png");
+		zone.addCollider(new BoxCollider());
+		zone.translate(1f, 0);
+		zone.setParent(hero);
+		updater.addRenderable(zone);
+		updater.addRenderable(hero);
+		
+		SimpleSpriteJogl sp3 = new SimpleSpriteJogl(gl, "img/enemy.png");
+		sp3.translate(0, 2);
+		sp3.addCollider(new BoxCollider());
+		Behaviour<SimpleSpriteJogl> b2 = new Behaviour<SimpleSpriteJogl>(){
+
+			@Override
+			public void start() {
 				
 			}
 
 			@Override
 			public void update() {
-				gameObject.setTexture(2, 1);
 				
-				
-				Camera.setLookAt(gameObject.getX(), gameObject.getY());
+			}
+			
+			@SuppressWarnings("unused")
+			public void test(String f,Integer i, String f2){
+				System.out.println("Hello world" + f+i+ f2);
+			}
+			
+			public String toString(){
+				return "enemy";
 			}
 			
 		};
-		
-		hero.addBehaviour(b);
-		b.allocateObject(hero);
-		hero.scale(0.5f, 0.5f);
-		updater.addRenderable(hero);
-		SimpleSpriteJogl sp3 = new SimpleSpriteJogl(gl, "img/enemy.png");
-		sp3.translate(1, 1);
+		b2.allocateObject(sp3);
+		sp3.addBehaviour(b2);
 		updater.addRenderable(sp3);
 		
 		updater.start();

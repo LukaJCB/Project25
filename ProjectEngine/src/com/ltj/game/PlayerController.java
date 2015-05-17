@@ -41,6 +41,8 @@ public class PlayerController extends Behaviour<SheetSpriteModeSAndroid> {
 		Camera.setLookAt(gameObject.getX(), gameObject.getY());
 	}
 	
+
+
 	public void onCollision(RenderObject collider){
 		if (collider.compareTag("Enemy"));
 		gameObject.translate(-xMovement, -yMovement);
