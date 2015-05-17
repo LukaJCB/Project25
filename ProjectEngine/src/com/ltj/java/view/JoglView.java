@@ -1,4 +1,4 @@
-package com.ltj.java.engine;
+package com.ltj.java.view;
 
 import javax.swing.JFrame;
 
@@ -6,8 +6,9 @@ import com.jogamp.opengl.GLCapabilities;
 import com.jogamp.opengl.GLProfile;
 import com.jogamp.opengl.awt.GLCanvas;
 import com.jogamp.opengl.util.FPSAnimator;
+import com.ltj.java.engine.JOGLRenderer;
 
-public class Test{
+public class JoglView{
 	public static void main(String[] args){
 		GLProfile glp = GLProfile.getDefault();
 		GLCapabilities caps = new GLCapabilities(glp);
