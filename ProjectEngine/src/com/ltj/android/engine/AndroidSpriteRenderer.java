@@ -89,6 +89,49 @@ public class AndroidSpriteRenderer implements SpriteRenderer{
 		glVertexAttribPointer(aTexCoordsLocation , COMPONENT_COUNT, GL_FLOAT, false, 0, 0);
 	}
 	
+	public AndroidSpriteRenderer(String path){
+		this.texNumber = texCount;
+		texCount++;
+		
+		//set Matrix
+		MatrixHelper.setIdentityM(modelMatrix);
+
+		x = y = rotation = 0;
+		height = 1;
+		width = 1;
+		
+		//convert to buffers
+		positionVBO = AndroidBufferHelper.arrayToBufferId(vertices);
+		textureVBO = AndroidBufferHelper.arrayToBufferId(textureCoordinates);
+		
+		//get locations for shaders
+		uTextureLocation = glGetUniformLocation(AndroidRenderer.programId, U_TEX);
+		aPositionLocation = glGetAttribLocation(AndroidRenderer.programId, A_POSITION);
+		aTexCoordsLocation = glGetAttribLocation(AndroidRenderer.programId, A_TEX_COORDS);
+		
+	
+		//load texture
+		mTextureDataHandle = AndroidTextureHelper.loadTexture(AndroidRenderer.context, path);
+		
+		
+
+		//set active texturetype
+		glActiveTexture(GL_TEXTURE0 + texNumber);
+		 
+		
+	    // Bind the texture to this unit.
+	    glBindTexture(GL_TEXTURE_2D, mTextureDataHandle);
+	 
+	    // Tell the texture uniform sampler to use this texture in the shader by binding to texture unit 
+	    glUniform1i(uTextureLocation, texNumber);
+		
+		//enable vertex data
+		glEnableVertexAttribArray(aPositionLocation);
+		glEnableVertexAttribArray(aTexCoordsLocation);
+		glVertexAttribPointer(aPositionLocation, COMPONENT_COUNT, GL_FLOAT, false, 0, 0);
+		glVertexAttribPointer(aTexCoordsLocation , COMPONENT_COUNT, GL_FLOAT, false, 0, 0);
+	}
+	
 	public void render() {
 		
 		float[] mMVP = new float[16];

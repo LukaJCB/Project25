@@ -17,6 +17,7 @@ public class AndroidUpdater extends Updater implements SensorEventListener,OnTou
 	private boolean motionInput,tiltInput;
 	
 	public AndroidUpdater(Context c, boolean motion, boolean tilt){
+		super();
 		tiltInput = tilt;
 		motionInput = motion;
 		
@@ -51,6 +52,14 @@ public class AndroidUpdater extends Updater implements SensorEventListener,OnTou
 
 	@Override
 	public void onAccuracyChanged(Sensor sensor, int accuracy) {}
+
+
+
+	@Override
+	public void start() {
+		super.start();
+		
+	}
 
 
 }

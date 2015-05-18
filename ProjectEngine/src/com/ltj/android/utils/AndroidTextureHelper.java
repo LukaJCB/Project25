@@ -7,7 +7,13 @@ import static android.opengl.GLES20.GL_TEXTURE_MIN_FILTER;
 import static android.opengl.GLES20.glBindTexture;
 import static android.opengl.GLES20.glGenTextures;
 import static android.opengl.GLES20.glTexParameteri;
+
+import java.io.IOException;
+import java.io.InputStream;
+
+
 import android.content.Context;
+import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.opengl.GLUtils;
@@ -56,7 +62,7 @@ public class AndroidTextureHelper {
 		
 	}
 	
-	public static int loadTexture(String path){
+	public static int loadTexture(Context context,String path){
 		final int[] textureHandle = new int[1];
 		 
 	    glGenTextures(1, textureHandle, 0);
@@ -66,8 +72,9 @@ public class AndroidTextureHelper {
 	        final BitmapFactory.Options options = new BitmapFactory.Options();
 	        options.inScaled = false;   // No pre-scaling
 	 
+	       
 	        // Read in the resource
-	        Bitmap bitmap = BitmapFactory.decodeFile(path, options);
+	        Bitmap bitmap = getBitmapFromAsset(context, path);
 	        
 	        // Bind to the texture in OpenGL
 	        glBindTexture(GL_TEXTURE_2D, textureHandle[0]);
@@ -89,5 +96,19 @@ public class AndroidTextureHelper {
 	    }
 	 
 	    return textureHandle[0];
+	}
+	private static Bitmap getBitmapFromAsset(Context context, String filePath) {
+	    AssetManager assetManager = context.getAssets();
+
+	    InputStream istream;
+	    Bitmap bitmap = null;
+	    try {
+	        istream = assetManager.open(filePath);
+	        bitmap = BitmapFactory.decodeStream(istream);
+	    } catch (IOException e) {
+	        // handle exception
+	    }
+
+	    return bitmap;
 	}
 }
