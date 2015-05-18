@@ -1,17 +1,20 @@
-package com.ltj.java.engine;
+package com.ltj.shared.engine;
 
 import com.jogamp.opengl.GL4;
-import com.ltj.shared.engine.ModeSevenObject;
 
 
-public class SimpleSpriteModeSJogl extends SimpleSpriteJogl implements ModeSevenObject {
+public class SimpleSpriteModeS extends SimpleSprite implements ModeSevenObject {
 
 	
 	
-	public SimpleSpriteModeSJogl(GL4 gl, String path) {
+	public SimpleSpriteModeS(GL4 gl, String path) {
 		super(gl,path);
 	}
 
+	public SimpleSpriteModeS(String path){
+		super(path);
+	}
+	
 	public void setZ(float z) {
 		renderer.setZ(z);
 	}

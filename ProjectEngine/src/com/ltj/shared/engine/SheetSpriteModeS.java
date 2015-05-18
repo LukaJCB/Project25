@@ -1,15 +1,17 @@
-package com.ltj.java.engine;
+package com.ltj.shared.engine;
 
 import com.jogamp.opengl.GL4;
-import com.ltj.shared.engine.ModeSevenObject;
 
 
-public class SheetSpriteModeSJogl extends SheetSpriteJogl implements ModeSevenObject {
+public class SheetSpriteModeS extends SheetSprite implements ModeSevenObject {
 
 
 
-	public SheetSpriteModeSJogl(GL4 gl, String path, int numCols,int numRows) {
+	public SheetSpriteModeS(GL4 gl, String path, int numCols,int numRows) {
 		super(gl,path, numCols, numRows);
+	}
+	public SheetSpriteModeS( String path, int numCols,int numRows) {
+		super(path, numCols, numRows);
 	}
 
 	
