@@ -69,9 +69,9 @@ public class JoglSpriteRenderer implements SpriteRenderer{
 		textureVBO = JoglBufferHelper.arrayToBufferId(gl, textureCoordinates);
 		
 		//get locations for shaders
-		uTextureLocation = gl.glGetUniformLocation(JOGLRenderer.programId, U_TEX);
-		aPositionLocation = gl.glGetAttribLocation(JOGLRenderer.programId, A_POSITION);
-		aTexCoordsLocation = gl.glGetAttribLocation(JOGLRenderer.programId, A_TEX_COORDS);
+		uTextureLocation = gl.glGetUniformLocation(JoglRenderer.programId, U_TEX);
+		aPositionLocation = gl.glGetAttribLocation(JoglRenderer.programId, A_POSITION);
+		aTexCoordsLocation = gl.glGetAttribLocation(JoglRenderer.programId, A_TEX_COORDS);
 		
 	
 		//load texture
@@ -107,7 +107,7 @@ public class JoglSpriteRenderer implements SpriteRenderer{
 		MatrixHelper.multiplyMM(mMVP,Camera.getProjectionViewMatrix(), modelMatrix);
 		
 		//specify uniform matrix
-		gl.glUniformMatrix4fv(JOGLRenderer.uMatrixLocation, 1, false,mMVP, 0);
+		gl.glUniformMatrix4fv(JoglRenderer.uMatrixLocation, 1, false,mMVP, 0);
 		
 		//set active texturetype
 		gl.glActiveTexture(GL_TEXTURE0 + texNumber);
