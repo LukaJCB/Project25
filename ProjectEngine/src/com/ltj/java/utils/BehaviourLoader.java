@@ -1,4 +1,4 @@
-package com.ltj.shared.utils;
+package com.ltj.java.utils;
 
 import java.io.IOException;
 import java.lang.reflect.Constructor;
