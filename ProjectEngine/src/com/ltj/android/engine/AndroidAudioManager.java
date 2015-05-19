@@ -2,11 +2,15 @@ package com.ltj.android.engine;
 
 import java.io.IOException;
 
+import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.media.SoundPool;
 
 public class AndroidAudioManager implements MediaPlayer.OnPreparedListener {
 	private static MediaPlayer player;
 	private static boolean prepared;
+	@SuppressWarnings("deprecation")
+	private static SoundPool pool = new SoundPool(5, AudioManager.STREAM_MUSIC, 0);
 
 	@Override
 	public void onPrepared(MediaPlayer mp) {
@@ -42,5 +46,12 @@ public class AndroidAudioManager implements MediaPlayer.OnPreparedListener {
 	
 	public static void setLooping(boolean looping){
 		player.setLooping(looping);
+	}
+	
+	public static void addShortClip(String path){
+		pool.load(path, 1);
+	}
+	
+	public static void playShortClip(){
 	}
 }
