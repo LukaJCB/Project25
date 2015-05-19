@@ -11,6 +11,7 @@ public class JoglUpdater extends Updater implements KeyListener {
 	private boolean keyInput;
 
 	public JoglUpdater(boolean key){
+		super();
 		keyInput = key;
 	}
 	

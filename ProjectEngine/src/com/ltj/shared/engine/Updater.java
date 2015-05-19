@@ -80,6 +80,7 @@ public abstract class Updater {
 		for (RenderObject r : allObjects){
 			r.start();
 		}
+		
 	}
 
 
