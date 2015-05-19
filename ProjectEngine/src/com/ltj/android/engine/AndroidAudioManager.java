@@ -39,4 +39,8 @@ public class AndroidAudioManager implements MediaPlayer.OnPreparedListener {
 		if(prepared)
 		player.start();
 	}
+	
+	public static void setLooping(boolean looping){
+		player.setLooping(looping);
+	}
 }
