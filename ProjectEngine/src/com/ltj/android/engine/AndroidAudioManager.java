@@ -4,8 +4,15 @@ import java.io.IOException;
 
 import android.media.MediaPlayer;
 
-public abstract class AndroidAudioManager {
+public class AndroidAudioManager implements MediaPlayer.OnPreparedListener {
 	private static MediaPlayer player;
+	private static boolean prepared;
+
+	@Override
+	public void onPrepared(MediaPlayer mp) {
+		prepared = true;
+		
+	}
 
 	private AndroidAudioManager(){}
 	
@@ -25,9 +32,11 @@ public abstract class AndroidAudioManager {
 			e.printStackTrace();
 		}
 		player.prepareAsync();
+		player.setOnPreparedListener(new AndroidAudioManager());
 	}
 	
 	public static void playSoundClip(){
+		if(prepared)
 		player.start();
 	}
 }
