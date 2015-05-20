@@ -111,25 +111,29 @@ public abstract class AbstractSprite implements RenderObject {
 	}
 
 	public boolean checkCollision(RenderObject object) {
-		if (this.colliders != null && object.getColliders() != null && object != parent && object.getParent() != this){
-			for (Collider collider : colliders){
-				for (Collider objCollider : object.getColliders()){
-					if (collider.getBottom(getY(),getHeight()) < objCollider.getTop(object.getY(),object.getHeight()) &&
-							collider.getTop(getY(),getHeight()) > objCollider.getBottom( object.getY(),object.getHeight()) &&
-							collider.getRight(getX(),getWidth()) > objCollider.getLeft(object.getX(), object.getWidth()) &&
-							collider.getLeft(getX(),getWidth()) < objCollider.getRight(object.getX(), object.getWidth())){
-						if (!lastCollision){
-							onCollisionEnter(object);
-							object.onCollisionEnter(this);
-							lastCollision = true;
-						} else {
-							onCollision(object);
-							object.onCollision(this);
+		if (this.colliders != null && object.getColliders() != null){ 
+			if (object != parent && object.getParent() != this){
+				for (Collider collider : colliders){
+					for (Collider objCollider : object.getColliders()){
+						if (collider.getBottom(getY(),getHeight()) < objCollider.getTop(object.getY(),object.getHeight()) &&
+								collider.getTop(getY(),getHeight()) > objCollider.getBottom( object.getY(),object.getHeight()) &&
+								collider.getRight(getX(),getWidth()) > objCollider.getLeft(object.getX(), object.getWidth()) &&
+								collider.getLeft(getX(),getWidth()) < objCollider.getRight(object.getX(), object.getWidth())){
+							if (!lastCollision){
+								onCollisionEnter(object);
+								object.onCollisionEnter(this);
+								lastCollision = true;
+							} else {
+								onCollision(object);
+								object.onCollision(this);
+							}
+							return true;
 						}
-						return true;
 					}
 				}
 			}
+			//objects are related
+			return false;
 		} 
 		if (lastCollision){
 			onCollisionExit(object);
