@@ -1,21 +1,22 @@
 package com.ltj.android.engine;
 
-import java.io.FileDescriptor;
 import java.io.IOException;
 
-import javax.activation.FileDataSource;
 
 import com.ltj.shared.engine.AudioManagable;
 
+import android.content.res.AssetFileDescriptor;
+import android.content.res.AssetManager;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.SoundPool;
 
 public class AndroidAudioManager implements AudioManagable, MediaPlayer.OnPreparedListener  {
-	private static MediaPlayer player;
-	private static boolean prepared;
+	private MediaPlayer player;
+	private boolean prepared;
+	private AssetManager assets = AndroidRenderer.context.getAssets();
 	@SuppressWarnings("deprecation")
-	private static SoundPool pool = new SoundPool(5, AudioManager.STREAM_MUSIC, 0);
+	private SoundPool pool = new SoundPool(5, AudioManager.STREAM_MUSIC, 0);
 
 	@Override
 	public void onPrepared(MediaPlayer mp) {
@@ -29,9 +30,8 @@ public class AndroidAudioManager implements AudioManagable, MediaPlayer.OnPrepar
 			player = new MediaPlayer();
 		}
 		try {
-			//FIXME
-			FileDescriptor fd = new FileDescriptor();
-			player.setDataSource(fd);
+			AssetFileDescriptor fd = assets.openFd(path);
+			player.setDataSource(fd.getFileDescriptor(),fd.getStartOffset(),fd.getLength());
 		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
 		} catch (SecurityException e) {
@@ -56,7 +56,12 @@ public class AndroidAudioManager implements AudioManagable, MediaPlayer.OnPrepar
 	}
 	
 	public int addShortClip(String path){
-		return pool.load(path, 1);
+		try {
+			return pool.load(assets.openFd(path), 1);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return -1;
 	}
 	
 	public void playShortClip(int id){
