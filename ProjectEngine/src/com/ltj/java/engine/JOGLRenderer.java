@@ -7,13 +7,16 @@ import com.jogamp.opengl.GL4;
 import com.jogamp.opengl.GLAutoDrawable;
 import com.jogamp.opengl.GLEventListener;
 import com.ltj.java.utils.JoglShaderHelper;
+import com.ltj.java.utils.JoglTextResourceReader;
 import com.ltj.shared.engine.Behaviour;
 import com.ltj.shared.engine.Camera;
-import com.ltj.shared.engine.GameObject;
+import com.ltj.shared.engine.EmptyObject;
 import com.ltj.shared.engine.ModeSevenObject;
 import com.ltj.shared.engine.RenderObject;
 import com.ltj.shared.engine.SheetSpriteModeS;
 import com.ltj.shared.engine.SimpleSprite;
+import com.ltj.shared.engine.SimpleSpriteModeS;
+import com.ltj.shared.engine.SoundManager;
 import com.ltj.shared.engine.primitives.BoxCollider;
 
 import static com.jogamp.opengl.GL.*;
@@ -34,6 +37,8 @@ public class JoglRenderer implements GLEventListener, KeyListener {
 
 	private JoglUpdater updater;
 
+	private int alphaProgramId;
+
 	
 	
 	public void init(GLAutoDrawable drawable) {
@@ -50,30 +55,19 @@ public class JoglRenderer implements GLEventListener, KeyListener {
 		gl.glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
 
 		// get shader src
-		String vertexShaderSrc = "uniform mat4 uMatrix; "
-				+ "attribute vec4 aPosition;" +
-				"attribute vec2 aTexCoordinates;"+
-				"varying vec2 vTexCoordinate; "+
-				"void main(){ " +
-				"vTexCoordinate = aTexCoordinates;"+
-				"gl_Position =  " +
-				"uMatrix * " +
-				"aPosition;" + "}";
-		String fragmentShaderSrc = "precision mediump float;" +
-				"uniform sampler2D uTexture;"+
-				"varying vec2 vTexCoordinate;"+
-				"void main(){" + "gl_FragColor =" +
-				"texture2D(uTexture, vTexCoordinate);"+
-				"}";
+		String vertexShaderSrc = JoglTextResourceReader.readTextFileFromResource("res/raw/vertex_shader.glsl");
+				
+		String fragmentShaderSrc = JoglTextResourceReader.readTextFileFromResource("res/raw/fragment_shader.glsl");
+		String alphaFragmentShaderSrc = JoglTextResourceReader.readTextFileFromResource("res/raw/alpha_fragment_shader.glsl");
 		// compile shaders
-		int vertexShader = JoglShaderHelper.compileVertexShader(gl,
-				vertexShaderSrc);
-		int fragmentShader = JoglShaderHelper.compileFragmentShader(gl,
-				fragmentShaderSrc);
+		int vertexShader = JoglShaderHelper.compileVertexShader(gl,vertexShaderSrc);
+		int fragmentShader = JoglShaderHelper.compileFragmentShader(gl,fragmentShaderSrc);
+		int alphaFragmentShader = JoglShaderHelper.compileFragmentShader(gl,alphaFragmentShaderSrc);
 
 		// link
 		programId = JoglShaderHelper.linkProgram(gl, vertexShader,
 				fragmentShader);
+		alphaProgramId = JoglShaderHelper.linkProgram(gl, vertexShader, alphaFragmentShader);
 
 		// use program
 		gl.glUseProgram(programId);
@@ -83,30 +77,33 @@ public class JoglRenderer implements GLEventListener, KeyListener {
 		
 		Camera.setLookAt(0, 0);
 		
+		SoundManager.initSoundManager(false);
 
 		SimpleSprite sp = new SimpleSprite(gl, "assets/img/background.png");
 		sp.scale(10, 24);
 		updater.addRenderable(sp);
+
 		SheetSpriteModeS hero = new SheetSpriteModeS(gl, "assets/img/spritesheet_hero.png",3,4);
 		Behaviour<SheetSpriteModeS> b = new Behaviour<SheetSpriteModeS>(){
 
 			@Override
 			public void start() {
 				gameObject.setTexture(2, 1);
+				SoundManager.addShortClip("assets/test.wav");
 			}
 
 			@Override
 			public void update() {
 				gameObject.translate(0, 0.04f);
-				
+				if (KeyInput.getEvent() != null && KeyInput.getEvent().getKeyCode() == KeyEvent.VK_UP){
+					changeMode();
+				}
 				
 				Camera.setLookAt(gameObject.getX(), gameObject.getY());
 			}
 			
-			@Override
-			public void onChildCollision(GameObject c, GameObject r){
-				sendMessage(r, "test","what up",45,"yo mama");
-			}
+		
+			
 			
 			
 		};
@@ -114,20 +111,21 @@ public class JoglRenderer implements GLEventListener, KeyListener {
 		hero.addBehaviour(b);
 		b.allocateObject(hero);
 		hero.scale(0.5f, 0.5f);
+		hero.setTag("hero");
 		
-		
-		SimpleSprite zone = new SimpleSprite(gl,"assets/img/enemy.png");
+		EmptyObject zone = new EmptyObject();
 		zone.addCollider(new BoxCollider());
-		zone.translate(0.9f, 0);
 		zone.setParent(hero);
+		zone.setTag("zon");
 		updater.addRenderable(zone);
-		updater.addRenderable(hero);
+		updater.addMSRenderable(hero);
 		
-		SimpleSprite sp3 = new SimpleSprite(gl, "assets/img/enemy.png");
-		sp3.translate(0, 2);
+		SimpleSpriteModeS sp3 = new SimpleSpriteModeS(gl, "assets/img/ic_launcher.png");
+		sp3.scale(0.2f, 0.2f);
+		sp3.translate(0, 5);
 		sp3.addCollider(new BoxCollider());
 		Behaviour<SimpleSprite> b2 = new Behaviour<SimpleSprite>(){
-
+			
 		
 			@Override
 			public void start() {
@@ -139,20 +137,14 @@ public class JoglRenderer implements GLEventListener, KeyListener {
 				
 						
 			}
+
 			
-			@SuppressWarnings("unused")
-			public void test(String f,Integer i, String f2){
-				System.out.println("Hello world" + f+i+ f2);
-			}
-			
-			public String toString(){
-				return "enemy";
-			}
 			
 		};
 		b2.allocateObject(sp3);
 		sp3.addBehaviour(b2);
-		updater.addRenderable(sp3);
+		sp3.setTag("ene");
+		updater.addMSRenderable(sp3);
 		
 		updater.start();
 	}
@@ -171,7 +163,7 @@ public class JoglRenderer implements GLEventListener, KeyListener {
 
 	private void setNormal() {
 		gl.glDisable(GL_DEPTH_TEST);
-
+		gl.glUseProgram(programId);
 		Camera.setNormalMode();
 		for (ModeSevenObject s : updater.getAllMSObjects()) {
 			s.setNormalMode();
@@ -180,6 +172,7 @@ public class JoglRenderer implements GLEventListener, KeyListener {
 	}
 
 	private void setModeSeven() {
+		gl.glUseProgram(alphaProgramId);
 		gl.glEnable(GL_DEPTH_TEST);
 		gl.glDepthFunc(GL_LEQUAL);
 		gl.glDepthMask(true);
@@ -196,16 +189,7 @@ public class JoglRenderer implements GLEventListener, KeyListener {
 	}
 
 	public void display(GLAutoDrawable drawable) {
-		gl.glClear(GL_COLOR_BUFFER_BIT);
 	
-		
-
-		//clear framebuffer
-		if (modeSeven){
-			gl.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		} else {
-			gl.glClear(GL_COLOR_BUFFER_BIT);
-		}
 		if (changeMode){
 			if (modeSeven){
 				setNormal();
@@ -214,6 +198,14 @@ public class JoglRenderer implements GLEventListener, KeyListener {
 			}
 			changeMode = false;
 		}
+		
+		//clear framebuffer
+		if (modeSeven){
+			gl.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		} else {
+			gl.glClear(GL_COLOR_BUFFER_BIT);
+		}
+		
 
 		updater.update();
 

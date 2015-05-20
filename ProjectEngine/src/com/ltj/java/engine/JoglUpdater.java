@@ -29,7 +29,7 @@ public class JoglUpdater extends Updater implements KeyListener {
 	}
 
 	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
+		KeyInput.setEvent(null);
 		
 	}
 
