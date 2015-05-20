@@ -13,7 +13,7 @@ public interface GameObject {
 	void setTag(String tag);
 	boolean compareTag(String string);
 	float getRotation();
-	boolean collidesWith(RenderObject collider);
+	boolean checkCollision(RenderObject collider);
 	boolean isDestroyed();
 	GameObject getParent();
 	Behaviour<? extends GameObject> getBehaviour();

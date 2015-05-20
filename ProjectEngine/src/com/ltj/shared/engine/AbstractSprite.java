@@ -110,7 +110,7 @@ public abstract class AbstractSprite implements RenderObject {
 		}
 	}
 
-	public boolean collidesWith(RenderObject object) {
+	public boolean checkCollision(RenderObject object) {
 		if (this.colliders != null && object.getColliders() != null && object != parent && object.getParent() != this){
 			for (Collider collider : colliders){
 				for (Collider objCollider : object.getColliders()){
@@ -120,19 +120,23 @@ public abstract class AbstractSprite implements RenderObject {
 							collider.getLeft(getX(),getWidth()) < objCollider.getRight(object.getX(), object.getWidth())){
 						if (!lastCollision){
 							onCollisionEnter(object);
+							object.onCollisionEnter(this);
 							lastCollision = true;
+						} else {
+							onCollision(object);
+							object.onCollision(this);
 						}
-						
 						return true;
 					}
 				}
 			}
-		}
+		} 
 		if (lastCollision){
 			onCollisionExit(object);
+			object.onCollisionExit(this);
 			lastCollision = false;
 		}
-		
+
 		return false;
 	}
 
@@ -190,10 +194,10 @@ public abstract class AbstractSprite implements RenderObject {
 	@Override
 	public void onCollisionEnter(GameObject collider) {
 		if (parent != null){
-			parent.onChildCollision(this,collider);
+			parent.onChildCollisionEnter(this,collider);
 		}
 		if (behaviour != null){
-			behaviour.onCollision(collider);
+			behaviour.onCollisionEnter(collider);
 		}
 
 	}
@@ -202,10 +206,10 @@ public abstract class AbstractSprite implements RenderObject {
 	public void onCollision(GameObject collider) {
 
 		if (parent != null){
-			parent.onChildCollisionEnter(this,collider);
+			parent.onChildCollision(this,collider);
 		}
 		if (behaviour != null){
-			behaviour.onCollisionEnter(collider);
+			behaviour.onCollision(collider);
 		}
 
 	}

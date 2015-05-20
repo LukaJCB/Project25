@@ -111,7 +111,7 @@ public class QuadTree {
 		} else {
 			for (int i = 0;i < objects.size(); i++){
 				for (int j = i+1; j < objects.size(); j++){
-					if (objects.get(i).collidesWith(objects.get(j))){
+					if (objects.get(i).checkCollision(objects.get(j))){
 						objects.get(i).onCollision(objects.get(j));
 					}
 				}

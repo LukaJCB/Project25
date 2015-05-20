@@ -67,11 +67,8 @@ public abstract class Updater {
 //		qTree.collideAll();
 		for (int i = 0;i < allObjects.size(); i++){
 			for (int j = i+1; j < allObjects.size(); j++){
-				if (allObjects.get(i).getParent() != allObjects.get(j) &&
-						allObjects.get(j).getParent() != allObjects.get(i) && allObjects.get(i).collidesWith(allObjects.get(j))){
-					allObjects.get(i).onCollision(allObjects.get(j));
-					allObjects.get(j).onCollision(allObjects.get(i));
-				}
+				allObjects.get(i).checkCollision(allObjects.get(j));
+				
 			}
 		}
 	}
