@@ -3,7 +3,6 @@ package com.ltj.java.engine;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-import com.ltj.shared.engine.Camera;
 import com.ltj.shared.engine.Updater;
 
 public class JoglUpdater extends Updater implements KeyListener {
@@ -25,9 +24,7 @@ public class JoglUpdater extends Updater implements KeyListener {
 		if (keyInput){
 			KeyInput.setEvent(e);
 		}
-		if (e.getKeyCode() == KeyEvent.VK_UP){
-			Camera.setModeSeven();
-		}
+		
 		
 	}
 
