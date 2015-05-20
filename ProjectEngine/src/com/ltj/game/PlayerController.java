@@ -3,21 +3,24 @@ package com.ltj.game;
 import android.view.MotionEvent;
 
 import com.ltj.android.engine.MotionInput;
-import com.ltj.android.engine.SheetSpriteModeSAndroid;
 import com.ltj.shared.engine.Behaviour;
 import com.ltj.shared.engine.Camera;
-import com.ltj.shared.engine.RenderObject;
+import com.ltj.shared.engine.GameObject;
+import com.ltj.shared.engine.SheetSpriteModeS;
+import com.ltj.shared.engine.SoundManager;
 
-public class PlayerController extends Behaviour<SheetSpriteModeSAndroid> {
+public class PlayerController extends Behaviour<SheetSpriteModeS> {
 
 	
 	private float xMovement,yMovement;
 	private int direction;
 	private float lastX,lastY;
+	private int sound;
 	@Override
 	public void start() {
 		gameObject.setTexture(0, 0);
 		gameObject.scale(0.5f, 0.5f);
+		sound = SoundManager.addShortClip("test.wav");
 	}
 
 	@Override
@@ -43,9 +46,11 @@ public class PlayerController extends Behaviour<SheetSpriteModeSAndroid> {
 	
 
 
-	public void onCollision(RenderObject collider){
-		if (collider.compareTag("Enemy"));
-		gameObject.translate(-xMovement, -yMovement);
+	public void onCollision(GameObject collider){
+		if (collider.compareTag("enemy")){
+			gameObject.translate(-xMovement, -yMovement);
+			SoundManager.playShortClip(sound);
+		}
 	}
 	private void changeDirection() {
 

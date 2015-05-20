@@ -71,7 +71,7 @@ public abstract class AndroidRenderer implements Renderer{
 		
 		//get shader src
 		String vertexShaderSrc = AndroidTextResourceReader.readTextFileFromResource(context, R.raw.vertex_shader);
-		String fragmentShaderSrc = AndroidTextResourceReader.readTextFileFromResource(context, R.raw.fragment_shader);
+		String fragmentShaderSrc = AndroidTextResourceReader.readTextFileFromResource(context, R.raw.alpha_fragment_shader);
 		//compile shaders
 		int vertexShader = AndroidShaderHelper.compileVertexShader(vertexShaderSrc);
 		int fragmentShader = AndroidShaderHelper.compileFragmentShader(fragmentShaderSrc);

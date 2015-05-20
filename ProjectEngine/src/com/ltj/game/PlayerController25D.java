@@ -3,12 +3,11 @@ package com.ltj.game;
 import android.view.MotionEvent;
 
 import com.ltj.android.engine.MotionInput;
-import com.ltj.android.engine.SheetSpriteModeSAndroid;
 import com.ltj.shared.engine.Behaviour;
 import com.ltj.shared.engine.Camera;
-import com.ltj.shared.engine.RenderObject;
-
-public class PlayerController25D extends Behaviour<SheetSpriteModeSAndroid> {
+import com.ltj.shared.engine.GameObject;
+import com.ltj.shared.engine.SheetSpriteModeS;
+public class PlayerController25D extends Behaviour<SheetSpriteModeS> {
 
 	private float xMovement,yMovement;
 	private float lastX,lastY;
@@ -43,9 +42,9 @@ public class PlayerController25D extends Behaviour<SheetSpriteModeSAndroid> {
 		
 		Camera.setRotateAround(gameObject.getX(), gameObject.getY(),gameObject.getRotation());
 	}
-	
-	public void onCollision(RenderObject collider){
-		if (collider.compareTag("Enemy"));
+	@Override
+	public void onCollision(GameObject collider){
+		if (collider.compareTag("enemy"))
 		gameObject.translate(-xMovement, -yMovement);
 	}
 
