@@ -211,6 +211,16 @@ public abstract class AbstractSprite implements RenderObject {
 	}
 
 
+	public void onCollisionExit(GameObject collider) {
+		if (parent != null){
+			parent.onChildCollisionExit(this,collider);
+		}
+		if (behaviour != null){
+			behaviour.onCollisionExit(collider);
+		}
+	
+	}
+
 	@Override
 	public void onChildCollisionEnter(GameObject child,GameObject collider) {
 		if (behaviour != null){
@@ -229,19 +239,11 @@ public abstract class AbstractSprite implements RenderObject {
 	}
 
 
-	public void onCollisionExit(GameObject collider) {
-		if (parent != null){
-			parent.onChildCollisionExit(this,collider);
-		}
-		if (behaviour != null){
-			behaviour.onCollisionExit(collider);
-		}
-
-	}
-	
 	@Override 
 	public void onChildCollisionExit(GameObject child,GameObject collider){
-		
+		if (behaviour != null){
+			behaviour.onChildCollisionExit(child,collider);
+		}
 	}
 
 	@Override

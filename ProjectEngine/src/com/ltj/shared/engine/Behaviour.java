@@ -21,30 +21,6 @@ public abstract class Behaviour<T extends RenderObject> {
 	}
 	
 	
-	public abstract void start();
-	public abstract void update();
-
-
-	public void onCollisionEnter(GameObject collider) {
-		
-		
-	}
-
-
-	public void onCollision(GameObject collider) {
-		
-	}
-	
-	public void onChildCollisionEnter(GameObject collider) {
-		
-	}
-
-
-	public void onChildCollision(GameObject child, GameObject collider){
-		
-	}
-	
-	
 	public final void sendMessage(GameObject obj,String method, Object... params){
 		try {
 			Method m = obj.getClass().getMethod("getBehaviour");
@@ -75,14 +51,36 @@ public abstract class Behaviour<T extends RenderObject> {
 	}
 
 
+	public abstract void start();
+	public abstract void update();
+
+
+	public void onCollisionEnter(GameObject collider) {
+		
+		
+	}
+
+
+	public void onCollision(GameObject collider) {
+		
+	}
+	
+	public void onChildCollisionEnter(GameObject collider) {
+		
+	}
+
+
+	public void onChildCollision(GameObject child, GameObject collider){
+		
+	}
+	
+	
 	public void onChildCollisionExit(GameObject child, GameObject collider) {
-		// TODO Auto-generated method stub
 		
 	}
 
 
 	public void onCollisionExit(GameObject collider) {
-		// TODO Auto-generated method stub
 		
 	}
 
