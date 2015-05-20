@@ -235,7 +235,6 @@ public class AndroidSpriteRenderer implements SpriteRenderer{
 	public void setSheetDimensions(int cols, int rows){
 		columnSize = 1.0f / cols;
 		rowSize = 1.0f / rows;
-		System.out.println(columnSize + " " + rowSize);
 	}
 	public void setTexture(int column, int row){
 		textureCoordinates[0] = column * columnSize;
