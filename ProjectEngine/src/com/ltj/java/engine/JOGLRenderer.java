@@ -12,11 +12,13 @@ import com.ltj.shared.engine.Camera;
 import com.ltj.shared.engine.GameObject;
 import com.ltj.shared.engine.ModeSevenObject;
 import com.ltj.shared.engine.RenderObject;
+import com.ltj.shared.engine.SheetSpriteModeS;
+import com.ltj.shared.engine.SimpleSprite;
 import com.ltj.shared.engine.primitives.BoxCollider;
 
 import static com.jogamp.opengl.GL.*;
 
-public class JOGLRenderer implements GLEventListener, KeyListener {
+public class JoglRenderer implements GLEventListener, KeyListener {
 
 	public static int programId;
 
@@ -82,11 +84,11 @@ public class JOGLRenderer implements GLEventListener, KeyListener {
 		Camera.setLookAt(0, 0);
 		
 
-		SimpleSpriteJogl sp = new SimpleSpriteJogl(gl, "img/background.png");
+		SimpleSprite sp = new SimpleSprite(gl, "assets/img/background.png");
 		sp.scale(10, 24);
 		updater.addRenderable(sp);
-		SheetSpriteModeSJogl hero = new SheetSpriteModeSJogl(gl, "img/spritesheet_hero.png",3,4);
-		Behaviour<SheetSpriteModeSJogl> b = new Behaviour<SheetSpriteModeSJogl>(){
+		SheetSpriteModeS hero = new SheetSpriteModeS(gl, "assets/img/spritesheet_hero.png",3,4);
+		Behaviour<SheetSpriteModeS> b = new Behaviour<SheetSpriteModeS>(){
 
 			@Override
 			public void start() {
@@ -100,13 +102,12 @@ public class JOGLRenderer implements GLEventListener, KeyListener {
 				
 				Camera.setLookAt(gameObject.getX(), gameObject.getY());
 			}
+			
 			@Override
 			public void onChildCollision(GameObject c, GameObject r){
 				sendMessage(r, "test","what up",45,"yo mama");
 			}
-			public String toString(){
-				return "hero";
-			}
+			
 			
 		};
 		hero.addCollider(new BoxCollider());
@@ -115,18 +116,19 @@ public class JOGLRenderer implements GLEventListener, KeyListener {
 		hero.scale(0.5f, 0.5f);
 		
 		
-		SimpleSpriteJogl zone = new SimpleSpriteJogl(gl,"img/enemy.png");
+		SimpleSprite zone = new SimpleSprite(gl,"assets/img/enemy.png");
 		zone.addCollider(new BoxCollider());
-		zone.translate(1f, 0);
+		zone.translate(0.9f, 0);
 		zone.setParent(hero);
 		updater.addRenderable(zone);
 		updater.addRenderable(hero);
 		
-		SimpleSpriteJogl sp3 = new SimpleSpriteJogl(gl, "img/enemy.png");
+		SimpleSprite sp3 = new SimpleSprite(gl, "assets/img/enemy.png");
 		sp3.translate(0, 2);
 		sp3.addCollider(new BoxCollider());
-		Behaviour<SimpleSpriteJogl> b2 = new Behaviour<SimpleSpriteJogl>(){
+		Behaviour<SimpleSprite> b2 = new Behaviour<SimpleSprite>(){
 
+		
 			@Override
 			public void start() {
 				
@@ -135,6 +137,7 @@ public class JOGLRenderer implements GLEventListener, KeyListener {
 			@Override
 			public void update() {
 				
+						
 			}
 			
 			@SuppressWarnings("unused")

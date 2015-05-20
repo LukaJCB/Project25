@@ -48,10 +48,11 @@ public class AndroidAudioManager implements MediaPlayer.OnPreparedListener {
 		player.setLooping(looping);
 	}
 	
-	public static void addShortClip(String path){
-		pool.load(path, 1);
+	public static void addShortClip(String path,int id){
+		pool.load(path, id);
 	}
 	
-	public static void playShortClip(){
+	public static void playShortClip(int id){
+		pool.play(id,1,1,1,0,1);
 	}
 }
