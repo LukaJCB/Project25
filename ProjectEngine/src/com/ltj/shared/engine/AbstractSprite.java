@@ -13,6 +13,7 @@ public abstract class AbstractSprite implements RenderObject {
 	private ArrayList<RenderObject> childList;
 	private RenderObject parent;
 	private String tag;
+	private boolean lastCollision;
 	protected SpriteRenderer renderer;
 	
 	public void translate(float dx, float dy) {
@@ -110,18 +111,20 @@ public abstract class AbstractSprite implements RenderObject {
 	}
 
 	public boolean collidesWith(RenderObject object) {
-		if (this.colliders != null && object.getColliders() != null){
+		if (this.colliders != null && object.getColliders() != null && object != parent && object.getParent() != this){
 			for (Collider collider : colliders){
 				for (Collider objCollider : object.getColliders()){
 					if (collider.getBottom(getY(),getHeight()) < objCollider.getTop(object.getY(),object.getHeight()) &&
 							collider.getTop(getY(),getHeight()) > objCollider.getBottom( object.getY(),object.getHeight()) &&
 							collider.getRight(getX(),getWidth()) > objCollider.getLeft(object.getX(), object.getWidth()) &&
 							collider.getLeft(getX(),getWidth()) < objCollider.getRight(object.getX(), object.getWidth())){
+						lastCollision = true;
 						return true;
 					}
 				}
 			}
 		}
+		lastCollision = false;
 		return false;
 	}
 
