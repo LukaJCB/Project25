@@ -118,13 +118,21 @@ public abstract class AbstractSprite implements RenderObject {
 							collider.getTop(getY(),getHeight()) > objCollider.getBottom( object.getY(),object.getHeight()) &&
 							collider.getRight(getX(),getWidth()) > objCollider.getLeft(object.getX(), object.getWidth()) &&
 							collider.getLeft(getX(),getWidth()) < objCollider.getRight(object.getX(), object.getWidth())){
-						lastCollision = true;
+						if (!lastCollision){
+							onCollisionEnter(object);
+							lastCollision = true;
+						}
+						
 						return true;
 					}
 				}
 			}
 		}
-		lastCollision = false;
+		if (lastCollision){
+			onCollisionExit(object);
+			lastCollision = false;
+		}
+		
 		return false;
 	}
 
@@ -180,15 +188,38 @@ public abstract class AbstractSprite implements RenderObject {
 	}
 
 	@Override
-	public void onCollision(GameObject collider) {
+	public void onCollisionEnter(GameObject collider) {
 		if (parent != null){
 			parent.onChildCollision(this,collider);
 		}
 		if (behaviour != null){
 			behaviour.onCollision(collider);
 		}
+
 	}
 
+	@Override
+	public void onCollision(GameObject collider) {
+
+		if (parent != null){
+			parent.onChildCollisionEnter(this,collider);
+		}
+		if (behaviour != null){
+			behaviour.onCollisionEnter(collider);
+		}
+
+	}
+
+
+	@Override
+	public void onChildCollisionEnter(GameObject child,GameObject collider) {
+		if (behaviour != null){
+			behaviour.onChildCollisionEnter(collider);
+		}
+		
+	}
+
+	
 	@Override
 	public void onChildCollision(GameObject child,GameObject collider) {
 		if (behaviour != null){
@@ -197,6 +228,21 @@ public abstract class AbstractSprite implements RenderObject {
 		
 	}
 
+
+	public void onCollisionExit(GameObject collider) {
+		if (parent != null){
+			parent.onChildCollisionExit(this,collider);
+		}
+		if (behaviour != null){
+			behaviour.onCollisionExit(collider);
+		}
+
+	}
+	
+	@Override 
+	public void onChildCollisionExit(GameObject child,GameObject collider){
+		
+	}
 
 	@Override
 	public boolean compareTag(String string) {
