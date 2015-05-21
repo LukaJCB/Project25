@@ -43,6 +43,8 @@ public abstract class AndroidRenderer implements Renderer{
 
 	private AndroidUpdater updater;
 
+	private int alphaProgramId, normalProgramId;
+
 	
 
 	public boolean onTouch(View v, MotionEvent event) {
@@ -71,15 +73,19 @@ public abstract class AndroidRenderer implements Renderer{
 		
 		//get shader src
 		String vertexShaderSrc = AndroidTextResourceReader.readTextFileFromResource(context, R.raw.vertex_shader);
-		String fragmentShaderSrc = AndroidTextResourceReader.readTextFileFromResource(context, R.raw.alpha_fragment_shader);
-		//compile shaders
+		String fragmentShaderSrc = AndroidTextResourceReader.readTextFileFromResource(context, R.raw.fragment_shader);
+		String alphaFragmentShaderSrc = AndroidTextResourceReader.readTextFileFromResource(context,R.raw.alpha_fragment_shader);
+		
+		// compile shaders
 		int vertexShader = AndroidShaderHelper.compileVertexShader(vertexShaderSrc);
 		int fragmentShader = AndroidShaderHelper.compileFragmentShader(fragmentShaderSrc);
+		int alphaFragmentShader = AndroidShaderHelper.compileFragmentShader(alphaFragmentShaderSrc);
 		
 		//link
-		programId = AndroidShaderHelper.linkProgram(vertexShader, fragmentShader);
+		normalProgramId = AndroidShaderHelper.linkProgram(vertexShader, fragmentShader);
+		alphaProgramId =AndroidShaderHelper.linkProgram( vertexShader, alphaFragmentShader);
 		
-		
+		programId = normalProgramId;
 		//use program
 		glUseProgram(programId);
 		//get locations
@@ -154,6 +160,8 @@ public abstract class AndroidRenderer implements Renderer{
 
 
 	private void setNormal(){
+		programId = normalProgramId;
+		glUseProgram(programId);
 		glDisable(GL_DEPTH_TEST);
 		Log.w("depth: ", ""+glIsEnabled(GL_DEPTH_TEST));
 		Camera.setNormalMode();
@@ -167,6 +175,8 @@ public abstract class AndroidRenderer implements Renderer{
 	
 	
 	private void setModeSeven(){
+		programId = alphaProgramId;
+		glUseProgram(alphaProgramId);
 		glEnable(GL_DEPTH_TEST);
 		glDepthFunc(GL_LEQUAL);
 		glDepthMask(true);
