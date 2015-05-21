@@ -11,6 +11,7 @@ import com.ltj.java.utils.JoglTextResourceReader;
 import com.ltj.shared.engine.Behaviour;
 import com.ltj.shared.engine.Camera;
 import com.ltj.shared.engine.EmptyObject;
+import com.ltj.shared.engine.GameObject;
 import com.ltj.shared.engine.ModeSevenObject;
 import com.ltj.shared.engine.RenderObject;
 import com.ltj.shared.engine.SheetSpriteModeS;
@@ -39,6 +40,8 @@ public class JoglRenderer implements GLEventListener, KeyListener {
 
 	private int alphaProgramId;
 
+	private int normalProgramId;
+
 	
 	
 	public void init(GLAutoDrawable drawable) {
@@ -65,10 +68,11 @@ public class JoglRenderer implements GLEventListener, KeyListener {
 		int alphaFragmentShader = JoglShaderHelper.compileFragmentShader(gl,alphaFragmentShaderSrc);
 
 		// link
-		programId = JoglShaderHelper.linkProgram(gl, vertexShader,
+		normalProgramId = JoglShaderHelper.linkProgram(gl, vertexShader,
 				fragmentShader);
 		alphaProgramId = JoglShaderHelper.linkProgram(gl, vertexShader, alphaFragmentShader);
 
+		programId = normalProgramId;
 		// use program
 		gl.glUseProgram(programId);
 
@@ -79,72 +83,6 @@ public class JoglRenderer implements GLEventListener, KeyListener {
 		
 		SoundManager.initSoundManager(false);
 
-		SimpleSprite sp = new SimpleSprite(gl, "assets/img/background.png");
-		sp.scale(10, 24);
-		updater.addRenderable(sp);
-
-		SheetSpriteModeS hero = new SheetSpriteModeS(gl, "assets/img/spritesheet_hero.png",3,4);
-		Behaviour<SheetSpriteModeS> b = new Behaviour<SheetSpriteModeS>(){
-
-			@Override
-			public void start() {
-				gameObject.setTexture(2, 1);
-				SoundManager.addShortClip("assets/test.wav");
-			}
-
-			@Override
-			public void update() {
-				gameObject.translate(0, 0.04f);
-				if (KeyInput.getEvent() != null && KeyInput.getEvent().getKeyCode() == KeyEvent.VK_UP){
-					changeMode();
-				}
-				
-				Camera.setLookAt(gameObject.getX(), gameObject.getY());
-			}
-			
-		
-			
-			
-			
-		};
-		hero.addCollider(new BoxCollider());
-		hero.addBehaviour(b);
-		b.allocateObject(hero);
-		hero.scale(0.5f, 0.5f);
-		hero.setTag("hero");
-		
-		EmptyObject zone = new EmptyObject();
-		zone.addCollider(new BoxCollider());
-		zone.setParent(hero);
-		zone.setTag("zon");
-		updater.addRenderable(zone);
-		updater.addMSRenderable(hero);
-		
-		SimpleSpriteModeS sp3 = new SimpleSpriteModeS(gl, "assets/img/ic_launcher.png");
-		sp3.scale(0.2f, 0.2f);
-		sp3.translate(0, 5);
-		sp3.addCollider(new BoxCollider());
-		Behaviour<SimpleSprite> b2 = new Behaviour<SimpleSprite>(){
-			
-		
-			@Override
-			public void start() {
-				
-			}
-
-			@Override
-			public void update() {
-				
-						
-			}
-
-			
-			
-		};
-		b2.allocateObject(sp3);
-		sp3.addBehaviour(b2);
-		sp3.setTag("ene");
-		updater.addMSRenderable(sp3);
 		
 		updater.start();
 	}
@@ -162,6 +100,8 @@ public class JoglRenderer implements GLEventListener, KeyListener {
 	}
 
 	private void setNormal() {
+		programId = normalProgramId;
+		gl.glUseProgram(normalProgramId);
 		gl.glDisable(GL_DEPTH_TEST);
 		gl.glUseProgram(programId);
 		Camera.setNormalMode();
@@ -172,6 +112,7 @@ public class JoglRenderer implements GLEventListener, KeyListener {
 	}
 
 	private void setModeSeven() {
+		programId = alphaProgramId;
 		gl.glUseProgram(alphaProgramId);
 		gl.glEnable(GL_DEPTH_TEST);
 		gl.glDepthFunc(GL_LEQUAL);
