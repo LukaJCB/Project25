@@ -23,8 +23,8 @@ public abstract class Updater {
 		return ids.get(id);
 	}
 
-	private ArrayList<RenderObject> allObjects;
-	private ArrayList<ModeSevenObject> allMSObjects;
+	private static ArrayList<RenderObject> allObjects;
+	private static ArrayList<ModeSevenObject> allMSObjects;
 
 	
 	
@@ -38,15 +38,15 @@ public abstract class Updater {
 		return allObjects;
 	}
 	
-	public void addRenderable(RenderObject r){
+	public static void addRenderable(RenderObject r){
 		allObjects.add(r);
 	}
 	
-	public void addRenderableList(List<RenderObject> list){
+	public static void addRenderableList(List<RenderObject> list){
 		allObjects.addAll(list);
 	}
 
-	public void addMSRenderable(ModeSevenObject r){
+	public static void addMSRenderable(ModeSevenObject r){
 		allObjects.add(r);
 		allMSObjects.add(r);
 	}

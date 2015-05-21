@@ -15,6 +15,7 @@ import com.ltj.projectengine.R;
 import com.ltj.shared.engine.Camera;
 import com.ltj.shared.engine.ModeSevenObject;
 import com.ltj.shared.engine.RenderObject;
+import com.ltj.shared.engine.Updater;
 
 
 import android.content.Context;
@@ -145,11 +146,11 @@ public abstract class AndroidRenderer implements Renderer{
 	
 	
 	public void addRenderable(RenderObject r) {
-		updater.addRenderable(r);
+		Updater.addRenderable(r);
 	}
 
 	public void addMSRenderable(ModeSevenObject r) {
-		updater.addMSRenderable(r);
+		Updater.addMSRenderable(r);
 	}
 
 	public void changeMode() {
