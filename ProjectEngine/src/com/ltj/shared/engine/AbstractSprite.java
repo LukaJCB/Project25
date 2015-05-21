@@ -16,6 +16,31 @@ public abstract class AbstractSprite implements RenderObject {
 	private boolean lastCollision;
 	protected SpriteRenderer renderer;
 	
+	@SuppressWarnings("unchecked")
+	protected void prepareClone(AbstractSprite o){
+		o.setTag(this.getTag());
+		if (this.getColliders() != null){
+			for (Collider c :this.getColliders()){
+				o.addCollider(c);
+			}
+		}
+		if(this.getBehaviourName()!= null){
+			o.addBehaviourName(this.getBehaviourName());
+			try {
+				Class<?> c = Class.forName(o.getBehaviourName());
+				o.addBehaviour((Behaviour<? extends GameObject>) c.newInstance());
+
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			} catch (InstantiationException e) {
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				e.printStackTrace();
+			}
+		}
+		o.start();
+	}
+	
 	public void translate(float dx, float dy) {
 		renderer.translate(dx, dy);
 		if (childList != null){
@@ -262,6 +287,14 @@ public abstract class AbstractSprite implements RenderObject {
 		this.tag = tag;
 	}
 	
+	@Override
+	public String getTag() {
+		return tag;
+	}
+
+
+
+
 	@Override
 	public RenderObject getParent() {
 		return parent;

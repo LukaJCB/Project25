@@ -9,4 +9,11 @@ public class EmptyObject extends AbstractSprite {
 		this.renderer = new EmptyRenderer();
 	}
 
+	@Override
+	public GameObject cloneObject() {
+		EmptyObject o = new EmptyObject();
+		prepareClone(o);
+		return o;
+	}
+
 }

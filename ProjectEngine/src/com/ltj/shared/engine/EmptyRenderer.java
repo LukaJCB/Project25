@@ -89,4 +89,16 @@ public class EmptyRenderer implements SpriteRenderer {
 		
 	}
 
+	@Override
+	public int getNumCols() {
+		// do nothing
+		return 0;
+	}
+
+	@Override
+	public int getNumRows() {
+		// do nothing
+		return 0;
+	}
+
 }

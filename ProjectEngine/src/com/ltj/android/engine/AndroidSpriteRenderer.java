@@ -255,4 +255,15 @@ public class AndroidSpriteRenderer implements SpriteRenderer{
 	private float[] getModelMatrix() {
 		return modelMatrix;
 	}
+
+	@Override
+	public int getNumCols() {
+		return (int) (1/columnSize);
+	}
+
+	@Override
+	public int getNumRows() {
+		return (int) (1/rowSize);
+	}
+
 }

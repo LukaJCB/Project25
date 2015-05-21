@@ -10,10 +10,12 @@ public interface GameObject {
 	float getHeight();
 	float getWidth();
 	void setTag(String tag);
+	String getTag();
 	boolean compareTag(String string);
 	float getRotation();
 	boolean checkCollision(RenderObject collider);
 	boolean isDestroyed();
 	GameObject getParent();
 	Behaviour<? extends GameObject> getBehaviour();
+	GameObject cloneObject();
 }

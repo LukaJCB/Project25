@@ -19,4 +19,16 @@ public class SheetSprite extends SimpleSprite {
 		renderer.setTexture(column, row);
 	}
 
+	@Override
+	public GameObject cloneObject() {
+		SheetSprite o;
+		if (gl != null){
+			o = new SheetSprite(gl,path,renderer.getNumCols(), renderer.getNumRows());
+		} else {
+			o = new SheetSprite(path,renderer.getNumCols(), renderer.getNumRows());
+		}
+		prepareClone(o);
+		return o;
+	}
+
 }

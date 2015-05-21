@@ -53,7 +53,13 @@ public abstract class Behaviour<T extends RenderObject> {
 		return Updater.getObjectByID(id);
 	}
 	
-	
+	public final GameObject createNewGameObject(GameObject obj, float x, float y, float rot){
+		GameObject o = obj.cloneObject();
+		o.translate(x, y);
+		o.rotate(rot);
+		Updater.addRenderable((RenderObject) o);
+		return o;
+	}
 
 
 	public abstract void start();
