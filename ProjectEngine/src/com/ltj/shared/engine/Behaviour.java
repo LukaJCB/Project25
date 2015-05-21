@@ -49,6 +49,11 @@ public abstract class Behaviour<T extends RenderObject> {
 			e.printStackTrace();
 		}
 	}
+	public final GameObject getObjectByID(String id){
+		return Updater.getObjectByID(id);
+	}
+	
+	
 
 
 	public abstract void start();
