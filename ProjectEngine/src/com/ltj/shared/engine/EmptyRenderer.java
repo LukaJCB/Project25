@@ -12,18 +12,12 @@ public class EmptyRenderer implements SpriteRenderer {
 	}
 	
 	public void translate(float dx, float dy){
-		x += dx*width;
-		y += dy*height;
+		x += dx;
+		y += dy;
 	}
 
 	
 	
-	@Override
-	public void translate(float dx, float dy, float width, float height) {
-		x += dx*width;
-		y += dy*height;
-	}
-
 	public void rotate(float deg){
 		rotation += deg;
 	}

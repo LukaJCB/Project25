@@ -3,7 +3,6 @@ package com.ltj.shared.engine;
 public interface SpriteRenderer {
 	void render();
 	void translate(float dx, float dy);
-	void translate (float dx, float dy, float width, float height);
 	void rotate(float deg);
 	void scale(float sx, float sy);
 	float getX();
