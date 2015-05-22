@@ -18,4 +18,5 @@ public interface SpriteRenderer {
 	void setTexture(int col, int row);
 	int getNumCols();
 	int getNumRows();
+	void clear();
 }

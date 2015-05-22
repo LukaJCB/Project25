@@ -8,14 +8,13 @@ public abstract class AbstractSprite implements RenderObject {
 
 	private Behaviour<? extends GameObject> behaviour;
 	private String behaviourName;
-	private boolean destroyed;
+	private boolean destroyed, renderingStopped;
 	private ArrayList<Collider> colliders;
 	private ArrayList<RenderObject> childList;
 	private RenderObject parent;
 	private String tag;
 	private boolean lastCollision;
 	protected SpriteRenderer renderer;
-	
 	@SuppressWarnings("unchecked")
 	protected void prepareClone(AbstractSprite o){
 		o.setTag(this.getTag());
@@ -186,16 +185,31 @@ public abstract class AbstractSprite implements RenderObject {
 
 	@Override
 	public void render() {
-		if (!destroyed){
+		if (!renderingStopped){
 			renderer.render();
 		}
 	}
 
+	@Override
+	public void stopRendering() {
+		renderingStopped = true;
+	}
+	
+	@Override
 	public void destroy() {
 		destroyed = true;
+		clear();
 	}
 
 	
+	@Override
+	public void clear() {
+		behaviour.allocateObject(null);
+		behaviour = null;
+		renderer.clear();
+	}
+
+	@Override
 	public boolean isDestroyed() {
 		return destroyed;
 	}

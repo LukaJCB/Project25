@@ -3,6 +3,7 @@ package com.ltj.shared.engine;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.ListIterator;
 
 
 public abstract class Updater {
@@ -28,6 +29,28 @@ public abstract class Updater {
 
 	
 	
+	public static void flush() {
+		for (RenderObject r: allObjects){
+			r.clear();
+		}
+		allObjects = new ArrayList<RenderObject>();
+		allMSObjects = new ArrayList<ModeSevenObject>();
+	}
+
+	
+	public static void addRenderable(RenderObject r){
+		allObjects.add(r);
+	}
+
+	public static void addRenderableList(List<RenderObject> list){
+		allObjects.addAll(list);
+	}
+
+	public static void addMSRenderable(ModeSevenObject r){
+		allObjects.add(r);
+		allMSObjects.add(r);
+	}
+
 	public Updater(){
 		//initialize Lists
 		allObjects = new ArrayList<RenderObject>();
@@ -38,23 +61,17 @@ public abstract class Updater {
 		return allObjects;
 	}
 	
-	public static void addRenderable(RenderObject r){
-		allObjects.add(r);
-	}
-	
-	public static void addRenderableList(List<RenderObject> list){
-		allObjects.addAll(list);
-	}
-
-	public static void addMSRenderable(ModeSevenObject r){
-		allObjects.add(r);
-		allMSObjects.add(r);
-	}
-	
 	public void update() {
-		for (RenderObject r :allObjects){
-			r.update();
+		ListIterator<RenderObject> i = allObjects.listIterator();
+		while (i.hasNext()){
+			RenderObject r = i.next();
+			if (r.isDestroyed()){
+				i.remove();
+			} else {
+				r.update();
+			}
 		}
+
 		
 		checkCollisions();
 		Camera.calcPVMatrix();
@@ -68,7 +85,6 @@ public abstract class Updater {
 		for (int i = 0;i < allObjects.size(); i++){
 			for (int j = i+1; j < allObjects.size(); j++){
 				allObjects.get(i).checkCollision(allObjects.get(j));
-				
 			}
 		}
 	}
