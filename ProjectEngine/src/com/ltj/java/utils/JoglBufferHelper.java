@@ -18,7 +18,7 @@ public class JoglBufferHelper {
 		return buffer;
 	}
 	
-	public static int arrayToBufferId(GL4 gl,float[] arr){
+	public static int[] arrayToBufferId(GL4 gl,float[] arr){
 		// allocate an array of one element
 		int[] idArray = new int[1];
 		// let's generate
@@ -33,12 +33,11 @@ public class JoglBufferHelper {
 		// let's generate
 		gl.glGenBuffers(1, bufferId, 0);
 
-		int vertexBufferId = bufferId[0];
 
 		// bind the buffer
-		gl.glBindBuffer(GL_ARRAY_BUFFER, vertexBufferId);
+		gl.glBindBuffer(GL_ARRAY_BUFFER,bufferId[0]);
 		gl.glBufferData(GL_ARRAY_BUFFER, arr.length * 4,arrayToBuffer(arr), GL_STATIC_DRAW);
 		gl.glBindBuffer(GL_ARRAY_BUFFER, 0);
-		return vertexBufferId;
+		return bufferId;
 	}
 }

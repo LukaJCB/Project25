@@ -16,19 +16,18 @@ public class AndroidBufferHelper {
 		return buffer;
 	}
 	
-	public static int arrayToBufferId(float[] arr){
+	public static int[] arrayToBufferId(float[] arr){
 
 		int[] bufferId = new int[1];
 		// let's generate
 		glGenBuffers(1, bufferId, 0);
 
-		int vertexBufferId = bufferId[0];
 
 		FloatBuffer fb = arrayToBuffer(arr);
 		// bind the two buffer
-		glBindBuffer(GL_ARRAY_BUFFER, vertexBufferId);
+		glBindBuffer(GL_ARRAY_BUFFER, bufferId[0]);
 		glBufferData(GL_ARRAY_BUFFER, fb.capacity()* 4,fb, GL_STATIC_DRAW);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
-		return vertexBufferId;
+		return bufferId;
 	}
 }

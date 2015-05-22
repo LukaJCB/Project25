@@ -62,7 +62,7 @@ public class AndroidTextureHelper {
 		
 	}
 	
-	public static int loadTexture(Context context,String path){
+	public static int[] loadTexture(Context context,String path){
 		final int[] textureHandle = new int[1];
 		 
 	    glGenTextures(1, textureHandle, 0);
@@ -95,7 +95,7 @@ public class AndroidTextureHelper {
 	        throw new RuntimeException("Error loading texture.");
 	    }
 	 
-	    return textureHandle[0];
+	    return textureHandle;
 	}
 	private static Bitmap getBitmapFromAsset(Context context, String filePath) {
 	    AssetManager assetManager = context.getAssets();
