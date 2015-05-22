@@ -8,7 +8,7 @@ public abstract class AbstractSprite implements RenderObject {
 
 	private Behaviour<? extends GameObject> behaviour;
 	private String behaviourName;
-	private boolean destroyed, renderingStopped;
+	private boolean destroyed, hidden;
 	private ArrayList<Collider> colliders;
 	private ArrayList<RenderObject> childList;
 	private RenderObject parent;
@@ -185,14 +185,14 @@ public abstract class AbstractSprite implements RenderObject {
 
 	@Override
 	public void render() {
-		if (!renderingStopped){
+		if (!hidden){
 			renderer.render();
 		}
 	}
 
 	@Override
-	public void stopRendering() {
-		renderingStopped = true;
+	public void hide() {
+		hidden = true;
 	}
 	
 	@Override

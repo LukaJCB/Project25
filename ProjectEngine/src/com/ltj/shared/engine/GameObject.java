@@ -2,7 +2,7 @@ package com.ltj.shared.engine;
 
 public interface GameObject {
 	void destroy();
-	void stopRendering();
+	void hide();
 	void translate(float dx,float dy);
 	void scale(float sx,float sy);
 	void rotate(float deg);
