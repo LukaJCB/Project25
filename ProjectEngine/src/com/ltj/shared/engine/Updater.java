@@ -29,12 +29,12 @@ public abstract class Updater {
 
 	
 	
-	public static void flush() {
+	public static void flush(ArrayList<RenderObject> objects,ArrayList<ModeSevenObject> mSObjects ) {
 		for (RenderObject r: allObjects){
 			r.clear();
 		}
-		allObjects = new ArrayList<RenderObject>();
-		allMSObjects = new ArrayList<ModeSevenObject>();
+		allObjects = objects;
+		allMSObjects = mSObjects;
 	}
 
 	
