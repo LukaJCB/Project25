@@ -10,6 +10,7 @@ import java.io.IOException;
 
 
 import com.jogamp.opengl.GL4;
+import com.jogamp.opengl.util.texture.Texture;
 import com.ltj.java.utils.JoglBufferHelper;
 import com.ltj.java.utils.JoglTextureHelper;
 import com.ltj.shared.engine.Camera;
@@ -41,7 +42,8 @@ public class JoglSpriteRenderer implements SpriteRenderer{
 	
 	private int aPositionLocation, aTexCoordsLocation;
 
-	private int positionVBO, textureVBO;
+	private int[] textureVBO,positionVBO;
+	private Texture texture;
 	private int uTextureLocation;
 	private int mTextureDataHandle;
 	
@@ -76,7 +78,8 @@ public class JoglSpriteRenderer implements SpriteRenderer{
 	
 		//load texture
 		try {
-			mTextureDataHandle = JoglTextureHelper.loadTexture(gl, path).getTextureObject();
+			texture = JoglTextureHelper.loadTexture(gl, path);
+			mTextureDataHandle = texture.getTextureObject();
 		}  catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -118,11 +121,11 @@ public class JoglSpriteRenderer implements SpriteRenderer{
 	    // Tell the texture uniform sampler to use this texture in the shader.
 	    gl.glUniform1i(uTextureLocation, texNumber);
 
-	    gl.glBindBuffer(GL_ARRAY_BUFFER, positionVBO);
+	    gl.glBindBuffer(GL_ARRAY_BUFFER, positionVBO[0]);
 		gl.glEnableVertexAttribArray(aPositionLocation);
 		gl.glVertexAttribPointer(aPositionLocation, 2, GL_FLOAT, false, 0,0);
 		
-		gl.glBindBuffer(GL_ARRAY_BUFFER, textureVBO);
+		gl.glBindBuffer(GL_ARRAY_BUFFER, textureVBO[0]);
 		gl.glEnableVertexAttribArray(aTexCoordsLocation);
 		gl.glVertexAttribPointer(aTexCoordsLocation, 2, GL_FLOAT, false, 0,0);
 		
@@ -236,5 +239,12 @@ public class JoglSpriteRenderer implements SpriteRenderer{
 	@Override
 	public int getNumRows() {
 		return (int) (1/rowSize);
+	}
+
+	@Override
+	public void clear() {
+		texture.destroy(gl);
+		gl.glDeleteBuffers(1, positionVBO, 0);
+		gl.glDeleteBuffers(1, textureVBO, 0);
 	}
 }

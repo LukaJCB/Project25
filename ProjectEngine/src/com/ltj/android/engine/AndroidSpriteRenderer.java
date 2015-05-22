@@ -36,9 +36,9 @@ public class AndroidSpriteRenderer implements SpriteRenderer{
 	
 	private int aPositionLocation, aTexCoordsLocation;
 
-	private int positionVBO, textureVBO;
+	private int[] positionVBO, textureVBO;
 	private int uTextureLocation;
-	private int mTextureDataHandle;
+	private int[] mTextureDataHandle;
 	
 	private float x,y;
 	private float rotation;
@@ -46,48 +46,7 @@ public class AndroidSpriteRenderer implements SpriteRenderer{
 	private float rotationX;
 	private float z;
 	private float rowSize, columnSize;
-	public AndroidSpriteRenderer(int resId){
-		this.texNumber = texCount;
-		texCount++;
-		
-		//set Matrix
-		MatrixHelper.setIdentityM(modelMatrix);
-
-		x = y = rotation = 0;
-		height = 1;
-		width = 1;
-		
-		//convert to buffers
-		positionVBO = AndroidBufferHelper.arrayToBufferId(vertices);
-		textureVBO = AndroidBufferHelper.arrayToBufferId(textureCoordinates);
-		
-		//get locations for shaders
-		uTextureLocation = glGetUniformLocation(AndroidRenderer.programId, U_TEX);
-		aPositionLocation = glGetAttribLocation(AndroidRenderer.programId, A_POSITION);
-		aTexCoordsLocation = glGetAttribLocation(AndroidRenderer.programId, A_TEX_COORDS);
-		
 	
-		//load texture
-		mTextureDataHandle = AndroidTextureHelper.loadTexture(AndroidRenderer.context, resId);
-		
-		
-
-		//set active texturetype
-		glActiveTexture(GL_TEXTURE0 + texNumber);
-		 
-		
-	    // Bind the texture to this unit.
-	    glBindTexture(GL_TEXTURE_2D, mTextureDataHandle);
-	 
-	    // Tell the texture uniform sampler to use this texture in the shader by binding to texture unit 
-	    glUniform1i(uTextureLocation, texNumber);
-		
-		//enable vertex data
-		glEnableVertexAttribArray(aPositionLocation);
-		glEnableVertexAttribArray(aTexCoordsLocation);
-		glVertexAttribPointer(aPositionLocation, COMPONENT_COUNT, GL_FLOAT, false, 0, 0);
-		glVertexAttribPointer(aTexCoordsLocation , COMPONENT_COUNT, GL_FLOAT, false, 0, 0);
-	}
 	
 	public AndroidSpriteRenderer(String path){
 		this.texNumber = texCount;
@@ -120,7 +79,7 @@ public class AndroidSpriteRenderer implements SpriteRenderer{
 		 
 		
 	    // Bind the texture to this unit.
-	    glBindTexture(GL_TEXTURE_2D, mTextureDataHandle);
+	    glBindTexture(GL_TEXTURE_2D, mTextureDataHandle[0]);
 	 
 	    // Tell the texture uniform sampler to use this texture in the shader by binding to texture unit 
 	    glUniform1i(uTextureLocation, texNumber);
@@ -146,16 +105,16 @@ public class AndroidSpriteRenderer implements SpriteRenderer{
 		glActiveTexture(GL_TEXTURE0 + texNumber);
 		
 		 // Bind the texture to this unit.
-	    glBindTexture(GL_TEXTURE_2D, mTextureDataHandle);
+	    glBindTexture(GL_TEXTURE_2D, mTextureDataHandle[0]);
 	    
 	    // Tell the texture uniform sampler to use this texture in the shader by binding to texture unit 0.
 	    glUniform1i(uTextureLocation, texNumber);
 
-	    glBindBuffer(GL_ARRAY_BUFFER, positionVBO);
+	    glBindBuffer(GL_ARRAY_BUFFER, positionVBO[0]);
 		glEnableVertexAttribArray(aPositionLocation);
 		glVertexAttribPointer(aPositionLocation, 2, GL_FLOAT, false, 0,0);
 		
-		glBindBuffer(GL_ARRAY_BUFFER, textureVBO);
+		glBindBuffer(GL_ARRAY_BUFFER, textureVBO[0]);
 		glEnableVertexAttribArray(aTexCoordsLocation);
 		glVertexAttribPointer(aTexCoordsLocation, 2, GL_FLOAT, false, 0,0);
 		
@@ -264,6 +223,13 @@ public class AndroidSpriteRenderer implements SpriteRenderer{
 	@Override
 	public int getNumRows() {
 		return (int) (1/rowSize);
+	}
+
+	@Override
+	public void clear() {
+		glDeleteTextures(1, mTextureDataHandle, 0);
+		glDeleteBuffers(1, textureVBO, 0);
+		glDeleteBuffers(1, positionVBO, 0);
 	}
 
 }

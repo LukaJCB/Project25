@@ -101,4 +101,9 @@ public class EmptyRenderer implements SpriteRenderer {
 		return 0;
 	}
 
+	@Override
+	public void clear() {
+		//do nothing at all
+	}
+
 }
