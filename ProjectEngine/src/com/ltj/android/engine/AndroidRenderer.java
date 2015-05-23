@@ -1,6 +1,8 @@
 package com.ltj.android.engine;
 
 import static android.opengl.GLES20.*;
+import static com.jogamp.opengl.GL.GL_COLOR_BUFFER_BIT;
+import static com.jogamp.opengl.GL.GL_DEPTH_BUFFER_BIT;
 
 
 
@@ -111,12 +113,6 @@ public abstract class AndroidRenderer implements Renderer{
 	public void onDrawFrame(GL10 gl) {
 		long beginTime = System.currentTimeMillis();
 		
-		//clear framebuffer
-		if (modeSeven){
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		} else {
-			glClear(GL_COLOR_BUFFER_BIT);
-		}
 		if (changeMode){
 			if (modeSeven){
 				setNormal();
@@ -128,10 +124,22 @@ public abstract class AndroidRenderer implements Renderer{
 
 		updater.update();
 		
+		//clear framebuffer
+		if (modeSeven){
+			gl.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			if (Camera.activeSkybox()){
+				Camera.renderSkybox();
+				gl.glClear(GL_DEPTH_BUFFER_BIT);
+			}
+		} else {
+			gl.glClear(GL_COLOR_BUFFER_BIT);
+		}
+		
 		for(RenderObject r : updater.getAllObjects()){
 			r.render();
 		}
 		long timeDiff = System.currentTimeMillis() - beginTime;
+		System.out.println(timeDiff);
 		if (timeDiff < renderTime){
 			try {
 				Thread.sleep(renderTime - timeDiff);
