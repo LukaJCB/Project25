@@ -106,4 +106,16 @@ public class EmptyRenderer implements SpriteRenderer {
 		//do nothing at all
 	}
 
+	@Override
+	public void setPosition(float x, float y) {
+		this.x = x;
+		this.y = y;
+	}
+	
+
+	@Override
+	public void setRotation(float deg) {
+		this.rotation = deg;
+	}
+
 }
