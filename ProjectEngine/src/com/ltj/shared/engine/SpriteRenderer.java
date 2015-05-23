@@ -19,4 +19,6 @@ public interface SpriteRenderer {
 	int getNumCols();
 	int getNumRows();
 	void clear();
+	void setPosition(float x, float y);
+	void setRotation(float deg);
 }

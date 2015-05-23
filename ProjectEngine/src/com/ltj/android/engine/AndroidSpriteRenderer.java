@@ -167,6 +167,7 @@ public class AndroidSpriteRenderer implements SpriteRenderer{
 
 	public void setZ(float z) {
 		this.z = z;
+		calcMatrix();
 	}
 
 	public void setModeSeven() {
@@ -230,6 +231,20 @@ public class AndroidSpriteRenderer implements SpriteRenderer{
 		glDeleteTextures(1, mTextureDataHandle, 0);
 		glDeleteBuffers(1, textureVBO, 0);
 		glDeleteBuffers(1, positionVBO, 0);
+	}
+
+	@Override
+	public void setPosition(float x, float y) {
+		this.x = x;
+		this.y = y;
+		calcMatrix();
+	}
+	
+
+	@Override
+	public void setRotation(float deg) {
+		this.rotation = deg;
+		calcMatrix();
 	}
 
 }
