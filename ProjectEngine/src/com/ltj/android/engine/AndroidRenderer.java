@@ -106,7 +106,7 @@ public abstract class AndroidRenderer implements Renderer{
 		
 	}
 	public void start(){
-		updater.start();
+		Updater.start();
 	}
 	
 	@Override
@@ -122,7 +122,7 @@ public abstract class AndroidRenderer implements Renderer{
 			changeMode = false;
 		}
 
-		updater.update();
+		Updater.update();
 		
 		//clear framebuffer
 		if (modeSeven){
@@ -135,7 +135,7 @@ public abstract class AndroidRenderer implements Renderer{
 			gl.glClear(GL_COLOR_BUFFER_BIT);
 		}
 		
-		for(RenderObject r : updater.getAllObjects()){
+		for(RenderObject r : Updater.getAllObjects()){
 			r.render();
 		}
 		long timeDiff = System.currentTimeMillis() - beginTime;
@@ -174,7 +174,7 @@ public abstract class AndroidRenderer implements Renderer{
 		glDisable(GL_DEPTH_TEST);
 		Log.w("depth: ", ""+glIsEnabled(GL_DEPTH_TEST));
 		Camera.setNormalMode();
-		for (ModeSevenObject s : updater.getAllMSObjects()){
+		for (ModeSevenObject s : Updater.getAllMSObjects()){
 			s.setNormalMode();
 		}
 		modeSeven = false;
@@ -191,7 +191,7 @@ public abstract class AndroidRenderer implements Renderer{
 		glDepthMask(true);
 		Log.w("depth: ", ""+glIsEnabled(GL_DEPTH_TEST));
 		Camera.setModeSeven();
-		for (ModeSevenObject s : updater.getAllMSObjects()){
+		for (ModeSevenObject s : Updater.getAllMSObjects()){
 			s.setModeSeven();
 		}
 		modeSeven = true;

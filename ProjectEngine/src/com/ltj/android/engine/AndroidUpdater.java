@@ -55,6 +55,4 @@ public class AndroidUpdater extends Updater implements SensorEventListener,OnTou
 
 
 
-	
-
 }
