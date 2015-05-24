@@ -6,7 +6,6 @@ import com.jogamp.opengl.GLCapabilities;
 import com.jogamp.opengl.GLProfile;
 import com.jogamp.opengl.awt.GLCanvas;
 import com.jogamp.opengl.util.FPSAnimator;
-import com.ltj.game.JoglGameRenderer;
 import com.ltj.java.engine.JoglRenderer;
 
 public class JoglView{
@@ -19,12 +18,11 @@ public class JoglView{
 		frame.setSize(1280,720);
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		FPSAnimator animator = new FPSAnimator(canvas, 30,true);
-		JoglRenderer r = new JoglGameRenderer();
+		FPSAnimator animator = new FPSAnimator(canvas, 60);
+		JoglRenderer r = new JoglRenderer();
 		canvas.addGLEventListener(r);
 		frame.add(canvas);
 		frame.addKeyListener(r);
-		animator.setUpdateFPSFrames(200, System.out);
 		animator.start();
 		
 	}

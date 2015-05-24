@@ -57,11 +57,11 @@ public abstract class Updater {
 		allMSObjects = new ArrayList<ModeSevenObject>();
 	}
 
-	public static List<RenderObject> getAllObjects() {
+	public List<RenderObject> getAllObjects() {
 		return allObjects;
 	}
 	
-	public static void update() {
+	public void update() {
 		ListIterator<RenderObject> i = allObjects.listIterator();
 		while (i.hasNext()){
 			RenderObject r = i.next();
@@ -76,7 +76,7 @@ public abstract class Updater {
 		checkCollisions();
 		Camera.calcPVMatrix();
 	}
-	private static void checkCollisions() {
+	private void checkCollisions() {
 //		QuadTree qTree = new QuadTree(0,new Rectangle(-5, -5, 10, 10));
 //		for (RenderObject r: allObjects){
 //			qTree.insert(r);
@@ -89,7 +89,7 @@ public abstract class Updater {
 		}
 	}
 	
-	public static void start(){
+	public void start(){
 		for (RenderObject r : allObjects){
 			r.start();
 		}
@@ -98,7 +98,7 @@ public abstract class Updater {
 
 
 
-	public static List<ModeSevenObject> getAllMSObjects() {
+	public List<ModeSevenObject> getAllMSObjects() {
 		return allMSObjects;
 	}
 	
