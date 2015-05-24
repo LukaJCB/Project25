@@ -11,9 +11,11 @@ import android.content.Context;
 
 import com.ltj.android.engine.AndroidRenderer;
 import com.ltj.shared.engine.Behaviour;
+import com.ltj.shared.engine.Camera;
 import com.ltj.shared.engine.SheetSpriteModeS;
 import com.ltj.shared.engine.SimpleSprite;
 import com.ltj.shared.engine.SimpleSpriteModeS;
+import com.ltj.shared.engine.Skybox;
 import com.ltj.shared.engine.SoundManager;
 import com.ltj.shared.engine.primitives.BoxCollider;
 
@@ -35,9 +37,10 @@ public class GameRenderer extends AndroidRenderer {
 		map.scale(10, 24);
 		
 		addRenderable(map);
-		
+		Camera.addSkyBox(new Skybox("img/sky.png","img/sky.png","img/sky.png",
+				"img/sky.png","img/sky.png","img/sky.png"));
 		SheetSpriteModeS hero = new SheetSpriteModeS("img/spritesheet_hero.png", 3,4);
-		hero.addBehaviourName("PlayerController");
+		hero.addBehaviourName("PlayerController25D");
 		String className = hero.getBehaviourName();
 		Behaviour b = null;
 		try {

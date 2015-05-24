@@ -49,6 +49,7 @@ public class PlayerController extends Behaviour<SheetSpriteModeS> {
 	public void onCollision(GameObject collider){
 		if (collider.compareTag("enemy")){
 			gameObject.translate(-xMovement, -yMovement);
+			gameObject.hide();
 			SoundManager.playShortClip(sound);
 		}
 	}
