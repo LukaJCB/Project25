@@ -87,6 +87,16 @@ public abstract class Camera {
 		skybox.render(eyePos[0], eyePos[1]);
 		
 	}
+
+	public static void flush() {
+		if (activeSkybox){
+			skybox.clear();
+			skybox = null;
+			activeSkybox = false;
+		}
+		
+		
+	}
 	
 	
 }

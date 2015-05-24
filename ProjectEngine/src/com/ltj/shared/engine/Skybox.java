@@ -57,5 +57,11 @@ public class Skybox {
 		skybox[5].setRotation(270);
 		skybox[5].translate(-0.5f,0);
 	}
+	public void clear() {
+		for (BackgroundSprite bs : skybox){
+			bs.clear();
+		}
+		
+	}
 	
 }

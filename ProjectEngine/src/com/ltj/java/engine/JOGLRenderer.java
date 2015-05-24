@@ -215,7 +215,6 @@ public class JoglRenderer implements GLEventListener, KeyListener {
 	}
 
 	public void display(GLAutoDrawable drawable) {
-	
 		if (changeMode){
 			if (modeSeven){
 				setNormal();
@@ -241,7 +240,6 @@ public class JoglRenderer implements GLEventListener, KeyListener {
 		for(RenderObject r : updater.getAllObjects()){
 			r.render();
 		}
-	
 
 	}
 

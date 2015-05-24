@@ -54,6 +54,10 @@ public class BackgroundSprite {
 		return f;
 	}
 
+	public void clear() {
+		renderer.clear();
+	}
+
 	
 	
 }
