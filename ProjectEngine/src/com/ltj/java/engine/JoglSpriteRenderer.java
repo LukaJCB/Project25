@@ -20,7 +20,7 @@ import com.ltj.shared.utils.MatrixHelper;
 public class JoglSpriteRenderer implements SpriteRenderer{
 	private static int texCount;
 	private int texNumber;
-	private float[] vertices = {
+	private static float[] vertices = {
 			0.5f, 0.5f,
 	        0.5f, -0.5f,
 	        -0.5f, 0.5f,
@@ -40,9 +40,11 @@ public class JoglSpriteRenderer implements SpriteRenderer{
 	private static final String A_TEX_COORDS = "aTexCoordinates";
 	private static final String U_TEX = "uTexture";
 	
-	private int aPositionLocation, aTexCoordsLocation;
+	private static int aPositionLocation;
+	private static int[] positionVBO;
+	private int aTexCoordsLocation;
 
-	private int[] textureVBO,positionVBO;
+	private int[] textureVBO;
 	private Texture texture;
 	private int uTextureLocation;
 	private int mTextureDataHandle;

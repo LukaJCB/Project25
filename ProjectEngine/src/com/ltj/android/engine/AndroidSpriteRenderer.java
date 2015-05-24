@@ -13,13 +13,19 @@ import static android.opengl.GLES20.*;
 
 public class AndroidSpriteRenderer implements SpriteRenderer{
 	private static int texCount;
-	private int texNumber;
-	private float[] vertices = {
+	private static float[] vertices = {
 			0.5f, 0.5f,
 	        0.5f, -0.5f,
 	        -0.5f, 0.5f,
 	        -0.5f, -0.5f 
 	};
+	private static final int COMPONENT_COUNT = 2;
+	private static final String A_POSITION = "aPosition";
+	private static final String A_TEX_COORDS = "aTexCoordinates";
+	private static final String U_TEX = "uTexture";
+	private static int aPositionLocation;
+	private static int[] positionVBO;
+	private int texNumber;
 	private float[] textureCoordinates =
 		{
 	        0.0f, 0.0f,
@@ -29,14 +35,9 @@ public class AndroidSpriteRenderer implements SpriteRenderer{
 		};
 	private float[] modelMatrix = new float[16];
 
-	private static final int COMPONENT_COUNT = 2;
-	private static final String A_POSITION = "aPosition";
-	private static final String A_TEX_COORDS = "aTexCoordinates";
-	private static final String U_TEX = "uTexture";
-	
-	private int aPositionLocation, aTexCoordsLocation;
+	private int aTexCoordsLocation;
 
-	private int[] positionVBO, textureVBO;
+	private int[] textureVBO;
 	private int uTextureLocation;
 	private int[] mTextureDataHandle;
 	
