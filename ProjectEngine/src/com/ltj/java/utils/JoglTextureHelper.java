@@ -27,8 +27,13 @@ public class JoglTextureHelper {
 	    InputStream fis = new ByteArrayInputStream(os.toByteArray());
 	    Texture tex = TextureIO.newTexture(fis, true, TextureIO.PNG);
 	    tex.bind(gl);
-	    tex.setTexParameteri(gl, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	    tex.setTexParameteri(gl, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	    gl.glGenerateMipmap(GL_TEXTURE_2D);
+	    
+	    float[] aniso = new float[1];
+	    gl.glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, aniso, 0);
+	    gl.glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, aniso[0]);
+	    tex.setTexParameteri(gl, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	    tex.setTexParameteri(gl, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	    return tex;
 	}
 }
