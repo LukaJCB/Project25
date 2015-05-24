@@ -8,8 +8,7 @@ import com.ltj.java.engine.KeyInput;
 import com.ltj.shared.engine.Behaviour;
 import com.ltj.shared.engine.Camera;
 import com.ltj.shared.engine.EmptyObject;
-import com.ltj.shared.engine.GameObject;
-import com.ltj.shared.engine.SheetSpriteModeS;
+import com.ltj.shared.engine.RenderObject;
 import com.ltj.shared.engine.SimpleSprite;
 import com.ltj.shared.engine.SimpleSpriteModeS;
 import com.ltj.shared.engine.Skybox;
@@ -26,45 +25,70 @@ public class JoglGameRenderer extends JoglRenderer {
 
 		Camera.addSkyBox(new Skybox(gl, "assets/img/sky.png","assets/img/sky.png","assets/img/sky.png","assets/img/sky.png","assets/img/sky.png","assets/img/sky.png"));
 		
-		SimpleSprite sp = new SimpleSprite(gl, "assets/img/background.png");
-		sp.scale(10, 24);
-		Updater.addRenderable(sp);
+//		ArrayList<RenderObject> ar = new ArrayList<RenderObject>(25);
+//		for (int i = 0; i < 25;i++){
+//			if (i == 17 || i == 7){
+//				ar.add(new SimpleSprite(gl,"assets/img/18_texture.png"));
+//				ar.get(i).rotate(90);
+//			} else if (i == 11 || i == 13){
+//				ar.add(new SimpleSprite(gl,"assets/img/5_texture.png"));
+//			} else if (i == 6){
+//				ar.add(new SimpleSprite(gl,"assets/img/4_texture.png"));
+//				ar.get(i).rotate(90);
+//			} else if (i == 8){
+//				ar.add(new SimpleSprite(gl,"assets/img/3_texture.png"));
+//				ar.get(i).rotate(180);
+//			} else if (i == 16){
+//				ar.add(new SimpleSprite(gl,"assets/img/3_texture.png"));
+//				ar.get(i).rotate(90);
+//			} else if (i == 18){
+//				ar.add(new SimpleSprite(gl,"assets/img/3_texture.png"));
+//				ar.get(i).rotate(0);
+//			} else {
+//				ar.add(new SimpleSprite(gl,"assets/img/1_texture.png"));
+//			}
+//			ar.get(i).scale(5, 5);
+//			ar.get(i).translate((i % 5)*5, i );
+//		}
+//		
+//		Updater.addRenderableList(ar);
+		RenderObject r = new SimpleSprite(gl,"assets/img/racer_background.png");
+		r.scale(20, 20);
+		Updater.addRenderable(r);
+	
 
-		SheetSpriteModeS hero = new SheetSpriteModeS(gl, "assets/img/spritesheet_hero.png",3,4);
-		Behaviour<SheetSpriteModeS> b = new Behaviour<SheetSpriteModeS>(){
+		SimpleSpriteModeS hero = new SimpleSpriteModeS(gl, "assets/img/car.png");
+		Behaviour<SimpleSpriteModeS> b = new Behaviour<SimpleSpriteModeS>(){
+
+			private float speed;
 
 			@Override
 			public void start() {
-				gameObject.setTexture(2, 1);
-				gameObject.translate(0, 0.01f);
-				SoundManager.addShortClip("assets/test.wav");
+				
 			}
 
 			@Override
 			public void update() {
 				if (KeyInput.getEvent() != null && KeyInput.getEvent().getKeyCode() == KeyEvent.VK_UP){
-					gameObject.translate(0, 0.04f);
+					speed = 0.08f;
 				} else if (KeyInput.getEvent() != null && KeyInput.getEvent().getKeyCode() == KeyEvent.VK_DOWN){
-					gameObject.translate(0, -0.04f);
+					speed = 0;
 				}  else if (KeyInput.getEvent() != null && KeyInput.getEvent().getKeyCode() == KeyEvent.VK_RIGHT){
 					gameObject.rotate(-1f);
 				}  else if (KeyInput.getEvent() != null && KeyInput.getEvent().getKeyCode() == KeyEvent.VK_LEFT){
 					gameObject.rotate(1f);
 				}
+				setMovement(speed *(float)-Math.sin(Math.toRadians(gameObject.getRotation())), 
+						speed *(float)Math.cos(Math.toRadians(gameObject.getRotation())));
 				
 				Camera.setRotateAround(gameObject.getX(), gameObject.getY(),gameObject.getRotation());
 			}
 
-			@Override
-			public void onChildCollisionEnter(GameObject collider) {
-				System.out.println("child");
+			private void setMovement(float f, float cos) {
+				gameObject.translate(f, cos);
+				
 			}
 
-			@Override
-			public void onCollisionEnter(GameObject collider) {
-				System.out.println("me");
-			}
-			
 		
 			
 			

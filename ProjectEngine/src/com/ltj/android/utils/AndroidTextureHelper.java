@@ -1,12 +1,6 @@
 package com.ltj.android.utils;
 
-import static android.opengl.GLES20.GL_NEAREST;
-import static android.opengl.GLES20.GL_TEXTURE_2D;
-import static android.opengl.GLES20.GL_TEXTURE_MAG_FILTER;
-import static android.opengl.GLES20.GL_TEXTURE_MIN_FILTER;
-import static android.opengl.GLES20.glBindTexture;
-import static android.opengl.GLES20.glGenTextures;
-import static android.opengl.GLES20.glTexParameteri;
+import static android.opengl.GLES20.*;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -79,9 +73,11 @@ public class AndroidTextureHelper {
 	        // Bind to the texture in OpenGL
 	        glBindTexture(GL_TEXTURE_2D, textureHandle[0]);
 	 
+	        //glGenerateMipmap(GL_TEXTURE_2D);
+	        //glTexParameteri(GL_TEXTURE_2D, GLES11Ext.GL_TEXTURE_MAX_ANISOTROPY_EXT, 16);
 	        // Set filtering
-	        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	 
 	        // Load the bitmap into the bound texture.
 	        GLUtils.texImage2D(GL_TEXTURE_2D, 0, bitmap, 0);
