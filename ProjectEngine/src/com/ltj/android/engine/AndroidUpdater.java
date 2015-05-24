@@ -55,11 +55,4 @@ public class AndroidUpdater extends Updater implements SensorEventListener,OnTou
 
 
 
-	@Override
-	public void start() {
-		super.start();
-		
-	}
-
-
 }
