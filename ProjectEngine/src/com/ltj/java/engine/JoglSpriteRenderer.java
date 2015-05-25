@@ -9,7 +9,7 @@ import static com.jogamp.opengl.GL.GL_TRIANGLE_STRIP;
 import java.io.IOException;
 
 
-import com.jogamp.opengl.GL4;
+import com.jogamp.opengl.GL3;
 import com.jogamp.opengl.util.texture.Texture;
 import com.ltj.java.utils.JoglBufferHelper;
 import com.ltj.java.utils.JoglTextureHelper;
@@ -34,8 +34,8 @@ public class JoglSpriteRenderer extends AbstractSpriteRenderer{
 	private int uTextureLocation;
 	private int mTextureDataHandle;
 	
-	private GL4 gl;
-	public JoglSpriteRenderer(GL4 gl, String path){
+	private GL3 gl;
+	public JoglSpriteRenderer(GL3 gl, String path){
 		super(path);
 		this.gl = gl;
 

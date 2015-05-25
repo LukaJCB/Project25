@@ -1,16 +1,16 @@
 package com.ltj.shared.engine;
 
-import com.jogamp.opengl.GL4;
+import com.jogamp.opengl.GL3;
 
 public class Skybox {
 	private BackgroundSprite[] skybox = new BackgroundSprite[6];
-	public Skybox(GL4 gl, String top, String bottom, String front, String back, String right, String left){
+	public Skybox(GL3 gl, String top, String bottom, String front, String back, String right, String left){
 		addImages(gl, top, bottom, front, back, right, left);
 	}
 	public Skybox(String top, String bottom, String front, String back, String right, String left){
 		addImages(top, bottom, front, back, right, left);
 	}
-	public void addImages(GL4 gl, String top, String bottom, String front, String back, String right, String left){
+	public void addImages(GL3 gl, String top, String bottom, String front, String back, String right, String left){
 		skybox[0] = new BackgroundSprite(gl, top);
 		skybox[1] = new BackgroundSprite(gl, bottom);
 		skybox[2] = new BackgroundSprite(gl, front);

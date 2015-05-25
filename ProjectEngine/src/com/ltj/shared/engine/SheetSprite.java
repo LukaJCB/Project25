@@ -1,12 +1,12 @@
 package com.ltj.shared.engine;
 
-import com.jogamp.opengl.GL4;
+import com.jogamp.opengl.GL3;
 
 
 public class SheetSprite extends SimpleSprite {
 
 
-	public SheetSprite(GL4 gl,String path, int numCols, int numRows) {
+	public SheetSprite(GL3 gl,String path, int numCols, int numRows) {
 		super(gl,path);
 		renderer.setSheetDimensions(numCols, numRows);
 	}

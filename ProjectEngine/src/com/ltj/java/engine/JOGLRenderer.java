@@ -3,7 +3,7 @@ package com.ltj.java.engine;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-import com.jogamp.opengl.GL4;
+import com.jogamp.opengl.GL3;
 import com.jogamp.opengl.GLAutoDrawable;
 import com.jogamp.opengl.GLEventListener;
 import com.ltj.java.utils.JoglShaderHelper;
@@ -27,7 +27,7 @@ public abstract class JoglRenderer implements GLEventListener, KeyListener {
 
 
 
-	protected GL4 gl;
+	protected GL3 gl;
 
 	private JoglUpdater updater;
 
@@ -38,7 +38,7 @@ public abstract class JoglRenderer implements GLEventListener, KeyListener {
 	
 	
 	public void init(GLAutoDrawable drawable) {
-		gl = drawable.getGL().getGL4();
+		gl = drawable.getGL().getGL3();
 
 
 

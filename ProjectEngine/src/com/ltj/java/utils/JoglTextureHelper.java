@@ -8,11 +8,11 @@ import java.io.InputStream;
 
 import javax.imageio.ImageIO;
 
-import com.jogamp.opengl.GL4;
+import com.jogamp.opengl.GL3;
 import com.jogamp.opengl.util.texture.Texture;
 import com.jogamp.opengl.util.texture.TextureIO;
 
-import static com.jogamp.opengl.GL4.*;
+import static com.jogamp.opengl.GL3.*;
 
 
 public class JoglTextureHelper {
@@ -20,7 +20,7 @@ public class JoglTextureHelper {
 		
 	}
 	
-	public static Texture loadTexture(GL4 gl,String file) throws IOException {
+	public static Texture loadTexture(GL3 gl,String file) throws IOException {
 		
 		ByteArrayOutputStream os = new ByteArrayOutputStream();
 	    ImageIO.write(ImageIO.read(new File(file)), "png", os);

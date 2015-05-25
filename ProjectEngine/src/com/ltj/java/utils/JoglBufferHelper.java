@@ -7,7 +7,7 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 
-import com.jogamp.opengl.GL4;
+import com.jogamp.opengl.GL3;
 
 public class JoglBufferHelper {
 	private JoglBufferHelper(){}
@@ -18,7 +18,7 @@ public class JoglBufferHelper {
 		return buffer;
 	}
 	
-	public static int[] arrayToBufferId(GL4 gl,float[] arr){
+	public static int[] arrayToBufferId(GL3 gl,float[] arr){
 		// allocate an array of one element
 		int[] idArray = new int[1];
 		// let's generate

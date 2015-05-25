@@ -1,9 +1,9 @@
 package com.ltj.java.utils;
 
-import static com.jogamp.opengl.GL4.*;
+import static com.jogamp.opengl.GL3.*;
 
 
-import com.jogamp.opengl.GL4;
+import com.jogamp.opengl.GL3;
 
 
 public class JoglShaderHelper {
@@ -12,7 +12,7 @@ public class JoglShaderHelper {
 	
 	private JoglShaderHelper(){}
 	
-	private static int compileShader(GL4 gl,int type, String shaderCode){
+	private static int compileShader(GL3 gl,int type, String shaderCode){
 		
 		//create shader
 		final int shaderObjectId = gl.glCreateShader(type);
@@ -55,15 +55,15 @@ public class JoglShaderHelper {
 		
 	}
 	
-	public static int compileVertexShader(GL4 gl,String shaderCode){
+	public static int compileVertexShader(GL3 gl,String shaderCode){
 		return compileShader(gl,GL_VERTEX_SHADER, shaderCode);
 	}
 	
-	public static int compileFragmentShader(GL4 gl, String shaderCode){
+	public static int compileFragmentShader(GL3 gl, String shaderCode){
 		return compileShader(gl,GL_FRAGMENT_SHADER, shaderCode);
 	}
 	
-	public static int linkProgram(GL4 gl,int vertexId, int fragmentId){
+	public static int linkProgram(GL3 gl,int vertexId, int fragmentId){
 		int programObjectId = gl.glCreateProgram();
 		
 		if (programObjectId != 0){
@@ -96,7 +96,7 @@ public class JoglShaderHelper {
 		}
 	}
 	
-	public static boolean programValidated(GL4 gl, int programId){
+	public static boolean programValidated(GL3 gl, int programId){
 		gl.glValidateProgram(programId);
 		
 		final int[] status = new int[1];

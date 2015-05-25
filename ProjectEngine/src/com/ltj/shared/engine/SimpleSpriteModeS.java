@@ -1,13 +1,13 @@
 package com.ltj.shared.engine;
 
-import com.jogamp.opengl.GL4;
+import com.jogamp.opengl.GL3;
 
 
 public class SimpleSpriteModeS extends SimpleSprite implements ModeSevenObject {
 
 	
 	
-	public SimpleSpriteModeS(GL4 gl, String path) {
+	public SimpleSpriteModeS(GL3 gl, String path) {
 		super(gl,path);
 	}
 
