@@ -33,7 +33,7 @@ public abstract class Camera {
 	}
 	public static void createOrthographic(int height, int width){
 		eyePos[2] = 2;
-		MatrixHelper.orthoM(projectionMatrix, 0, width, 0,height, 0.1f, 100f);
+		MatrixHelper.orthoM(projectionMatrix, 0, width, 0,height, -1f, 1f);
 	}
 	public static float[] getProjectionViewMatrix() {
 		return projectionViewMatrix;
