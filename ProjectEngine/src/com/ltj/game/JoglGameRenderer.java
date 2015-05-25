@@ -24,7 +24,7 @@ public class JoglGameRenderer extends JoglRenderer {
 		super.init(drawable);
 		SoundManager.initSoundManager(false);
 
-		//Camera.addSkyBox(new Skybox(gl, "assets/img/sky.png","assets/img/sky.png","assets/img/sky.png","assets/img/sky.png","assets/img/sky.png","assets/img/sky.png"));
+		Camera.addSkyBox(new Skybox(gl, "assets/img/sky.png","assets/img/sky.png","assets/img/sky.png","assets/img/sky.png","assets/img/sky.png","assets/img/sky.png"));
 		
 //		ArrayList<RenderObject> ar = new ArrayList<RenderObject>(25);
 //		for (int i = 0; i < 25;i++){
@@ -53,9 +53,9 @@ public class JoglGameRenderer extends JoglRenderer {
 //		}
 //		
 //		Updater.addRenderableList(ar);
-		//RenderObject r = new SimpleSprite(gl,"assets/img/racer_background.png");
-		//r.scale(20, 20);
-		//Updater.addRenderable(r);
+		RenderObject r = new SimpleSprite(gl,"assets/img/racer_background.png");
+		r.scale(20, 20);
+		Updater.addRenderable(r);
 	
 
 		SimpleSpriteModeS hero = new SimpleSpriteModeS(gl, "assets/img/car.png");
