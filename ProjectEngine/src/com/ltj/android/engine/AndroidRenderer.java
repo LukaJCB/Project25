@@ -100,7 +100,7 @@ public abstract class AndroidRenderer implements Renderer{
 		glViewport(0,0,width,height);
 		
 		// Projection matrix : 60° Field of View, ratio, display range : 0.1 unit <-> 100 units
-		Camera.surfaceChanged(height, width);
+		Camera.createPerspective(height, width);
 		
 	}
 	public void start(){

@@ -156,7 +156,7 @@ public abstract class JoglRenderer implements GLEventListener, KeyListener {
 		gl.glViewport(x, y, width, height);
 
 		
-		Camera.surfaceChanged(height, width);
+		Camera.createPerspective(height, width);
 	}
 
 	public void keyTyped(KeyEvent e) {

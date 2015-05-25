@@ -110,7 +110,7 @@ public class MatrixHelper {
 
 	}
 
-	public static void orthoM(float[] m, int mOffset,
+	public static void orthoM(float[] m, 
 			float left, float right, float bottom, float top,
 			float near, float far) {
 
