@@ -7,7 +7,8 @@ public abstract class Camera {
 
 	private Camera() {}
 	private static float[] viewMatrix = new float[16];
-	private static float[] projectionMatrix = new float[16];
+	private static float[] perspectiveProjectionMatrix = new float[16];
+	private static float[] orthoProjectionMatrix = new float[16];
 	private static float[] projectionViewMatrix = new float[16];
 	private static float sevenY,sevenZ;
 	private static float[] eyePos = new float[4];
@@ -29,18 +30,21 @@ public abstract class Camera {
 	}
 	public static void createPerspective(int height, int width){
 		eyePos[2] = 2;
-		MatrixHelper.perspectiveM(projectionMatrix, 60, (float) width / (float) height, 0.1f, 100f);
+		MatrixHelper.perspectiveM(perspectiveProjectionMatrix, 60, (float) width / (float) height, 0.1f, 100f);
 	}
 	public static void createOrthographic(int height, int width){
-		eyePos[2] = 2;
-		MatrixHelper.orthoM(projectionMatrix, 0, width, 0,height, -1f, 1f);
+		MatrixHelper.orthoM(orthoProjectionMatrix, 0, width, 0,height, -1f, 1f);
+	}
+	
+	public static float[] getOrthoProjectionMatrix(){
+		return orthoProjectionMatrix;
 	}
 	public static float[] getProjectionViewMatrix() {
 		return projectionViewMatrix;
 	}
 	public static void calcPVMatrix(){
 		// Our ViewProjection : multiplication of our 2 matrices
-		MatrixHelper.multiplyMM(projectionViewMatrix,projectionMatrix,viewMatrix);
+		MatrixHelper.multiplyMM(projectionViewMatrix,perspectiveProjectionMatrix,viewMatrix);
 	}
 	
 	public static void setLookAt(float x, float y){
