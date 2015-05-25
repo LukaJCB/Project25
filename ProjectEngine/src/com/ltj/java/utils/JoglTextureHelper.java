@@ -25,7 +25,7 @@ public class JoglTextureHelper {
 		ByteArrayOutputStream os = new ByteArrayOutputStream();
 	    ImageIO.write(ImageIO.read(new File(file)), "png", os);
 	    InputStream fis = new ByteArrayInputStream(os.toByteArray());
-	    Texture tex = TextureIO.newTexture(fis, true, TextureIO.PNG);
+	    Texture tex = TextureIO.newTexture(fis, false, TextureIO.PNG);
 	    tex.bind(gl);
 	    gl.glGenerateMipmap(GL_TEXTURE_2D);
 	    
