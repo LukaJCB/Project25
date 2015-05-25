@@ -15,6 +15,7 @@ import com.ltj.shared.engine.Skybox;
 import com.ltj.shared.engine.SoundManager;
 import com.ltj.shared.engine.Updater;
 import com.ltj.shared.engine.primitives.BoxCollider;
+import com.ltj.shared.engine.primitives.Globals;
 
 public class JoglGameRenderer extends JoglRenderer {
 
@@ -78,6 +79,7 @@ public class JoglGameRenderer extends JoglRenderer {
 				}  else if (KeyInput.getEvent() != null && KeyInput.getEvent().getKeyCode() == KeyEvent.VK_LEFT){
 					gameObject.rotate(1f);
 				}
+				Globals.add("rotation", gameObject.getRotation());
 				setMovement(speed *(float)-Math.sin(Math.toRadians(gameObject.getRotation())), 
 						speed *(float)Math.cos(Math.toRadians(gameObject.getRotation())));
 				
@@ -121,7 +123,7 @@ public class JoglGameRenderer extends JoglRenderer {
 			@Override
 			public void update() {
 				
-						
+						gameObject.setRotation(Globals.getFloat("rotation"));
 			}
 
 			

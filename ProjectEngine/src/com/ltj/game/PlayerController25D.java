@@ -7,13 +7,14 @@ import com.ltj.shared.engine.Behaviour;
 import com.ltj.shared.engine.Camera;
 import com.ltj.shared.engine.GameObject;
 import com.ltj.shared.engine.SheetSpriteModeS;
-public class PlayerController25D extends Behaviour<SheetSpriteModeS> {
+import com.ltj.shared.engine.SimpleSpriteModeS;
+import com.ltj.shared.engine.primitives.Globals;
+public class PlayerController25D extends Behaviour<SimpleSpriteModeS> {
 
 	private float xMovement,yMovement;
 	private float lastX,lastY;
 	@Override
 	public void start() {
-		gameObject.setTexture(0, 0);
 		gameObject.scale(0.5f, 0.5f);
 	}
 
@@ -23,6 +24,7 @@ public class PlayerController25D extends Behaviour<SheetSpriteModeS> {
 		if (MotionInput.isActive()){
 			if (Math.abs(lastX - MotionInput.getX()) > Math.abs(lastY - MotionInput.getY())){
 				gameObject.rotate((lastX - MotionInput.getX())*0.01f);
+				Globals.add("rotation", gameObject.getRotation());
 			} else {
 				float speed = lastY - MotionInput.getY();
 				setMovement(speed * (float)-Math.sin(Math.toRadians(gameObject.getRotation())), 

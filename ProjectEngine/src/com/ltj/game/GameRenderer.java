@@ -12,12 +12,16 @@ import android.content.Context;
 import com.ltj.android.engine.AndroidRenderer;
 import com.ltj.shared.engine.Behaviour;
 import com.ltj.shared.engine.Camera;
+import com.ltj.shared.engine.GameObject;
+import com.ltj.shared.engine.RenderObject;
 import com.ltj.shared.engine.SheetSpriteModeS;
 import com.ltj.shared.engine.SimpleSprite;
 import com.ltj.shared.engine.SimpleSpriteModeS;
 import com.ltj.shared.engine.Skybox;
 import com.ltj.shared.engine.SoundManager;
+import com.ltj.shared.engine.Updater;
 import com.ltj.shared.engine.primitives.BoxCollider;
+import com.ltj.shared.engine.primitives.Globals;
 
 public class GameRenderer extends AndroidRenderer {
 
@@ -33,13 +37,14 @@ public class GameRenderer extends AndroidRenderer {
 		super.onSurfaceCreated(gl, config);
 		SoundManager.initSoundManager(true);
 		
-		SimpleSprite map = new SimpleSprite("img/background.png");
-		map.scale(10, 24);
-		
-		addRenderable(map);
-		//Camera.addSkyBox(new Skybox("img/sky.png","img/sky.png","img/sky.png","img/sky.png","img/sky.png","img/sky.png"));
-		SheetSpriteModeS hero = new SheetSpriteModeS("img/spritesheet_hero.png", 3,4);
-		hero.addBehaviourName("PlayerController");
+		RenderObject r = new SimpleSprite("img/racer_background.png");
+		r.scale(20, 20);
+		Updater.addRenderable(r);
+	
+
+		SimpleSpriteModeS hero = new SimpleSpriteModeS( "img/car.png");
+		Camera.addSkyBox(new Skybox("img/sky.png","img/sky.png","img/sky.png","img/sky.png","img/sky.png","img/sky.png"));
+		hero.addBehaviourName("PlayerController25D");
 		String className = hero.getBehaviourName();
 		Behaviour b = null;
 		try {
@@ -67,7 +72,26 @@ public class GameRenderer extends AndroidRenderer {
 		addMSRenderable(hero);
 		
 		
-		SimpleSpriteModeS enemy = new SimpleSpriteModeS("img/enemy.png");
+		SimpleSpriteModeS enemy = new SimpleSpriteModeS("img/car.png");
+		
+		
+		Behaviour b2 = new Behaviour<RenderObject>() {
+
+			@Override
+			public void start() {
+				
+				
+			}
+
+			@Override
+			public void update() {
+				
+				gameObject.rotate(Globals.getFloat("rotation"));
+				
+			}
+		};
+		b2.allocateObject(enemy);
+		enemy.addBehaviour(b2);
 		enemy.translate(0, 1.5f);
 		enemy.addCollider(new BoxCollider());
 		enemy.setTag("enemy");
