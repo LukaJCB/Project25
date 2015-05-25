@@ -37,10 +37,9 @@ public class GameRenderer extends AndroidRenderer {
 		map.scale(10, 24);
 		
 		addRenderable(map);
-		Camera.addSkyBox(new Skybox("img/sky.png","img/sky.png","img/sky.png",
-				"img/sky.png","img/sky.png","img/sky.png"));
+		//Camera.addSkyBox(new Skybox("img/sky.png","img/sky.png","img/sky.png","img/sky.png","img/sky.png","img/sky.png"));
 		SheetSpriteModeS hero = new SheetSpriteModeS("img/spritesheet_hero.png", 3,4);
-		hero.addBehaviourName("PlayerController25D");
+		hero.addBehaviourName("PlayerController");
 		String className = hero.getBehaviourName();
 		Behaviour b = null;
 		try {

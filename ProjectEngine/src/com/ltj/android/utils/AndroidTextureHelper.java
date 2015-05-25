@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.opengl.GLES11Ext;
 import android.opengl.GLUtils;
 
 public class AndroidTextureHelper {
@@ -73,14 +74,15 @@ public class AndroidTextureHelper {
 	        // Bind to the texture in OpenGL
 	        glBindTexture(GL_TEXTURE_2D, textureHandle[0]);
 	 
-	        //glGenerateMipmap(GL_TEXTURE_2D);
-	        //glTexParameteri(GL_TEXTURE_2D, GLES11Ext.GL_TEXTURE_MAX_ANISOTROPY_EXT, 16);
-	        // Set filtering
-	        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-	        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	 
 	        // Load the bitmap into the bound texture.
 	        GLUtils.texImage2D(GL_TEXTURE_2D, 0, bitmap, 0);
+	        
+	        //Generate mipmaps
+	        glGenerateMipmap(GL_TEXTURE_2D);
+	        // Set filtering
+	        glTexParameteri(GL_TEXTURE_2D, GLES11Ext.GL_TEXTURE_MAX_ANISOTROPY_EXT, 16);
+	        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	 
 	        // Recycle the bitmap, since its data has been loaded into OpenGL.
 	        bitmap.recycle();

@@ -136,7 +136,6 @@ public abstract class AndroidRenderer implements Renderer{
 		for(RenderObject r : Updater.getAllObjects()){
 			r.render();
 		}
-		System.out.println(glGetError());
 		long timeDiff = System.currentTimeMillis() - beginTime;
 		if (timeDiff < renderTime){
 			try {
