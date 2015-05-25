@@ -6,6 +6,8 @@ public interface GameObject {
 	void translate(float dx,float dy);
 	void scale(float sx,float sy);
 	void rotate(float deg);
+	void setRotation(float deg);
+	void setPosition(float dx, float dy);
 	float getX();
 	float getY();
 	float getHeight();

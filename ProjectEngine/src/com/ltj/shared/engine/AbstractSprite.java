@@ -5,7 +5,6 @@ import java.util.ArrayList;
 public abstract class AbstractSprite implements RenderObject {
 
 
-
 	private Behaviour<? extends GameObject> behaviour;
 	private String behaviourName;
 	private boolean destroyed, hidden;
@@ -62,8 +61,13 @@ public abstract class AbstractSprite implements RenderObject {
 	}
 
 
+	public void setPosition(float x, float y) {
+		renderer.setPosition(x, y);
+	}
 
-
+	public void setRotation(float deg) {
+		renderer.setRotation(deg);
+	}
 
 	public void scale(float sx, float sy) {
 		renderer.scale(sx, sy);

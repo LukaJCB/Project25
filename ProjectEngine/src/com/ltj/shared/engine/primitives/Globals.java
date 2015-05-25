@@ -22,7 +22,10 @@ public class Globals {
 		return boolMap.get(key);
 	}
 	public static float getFloat(String key){
-		return floatMap.get(key);
+		if (floatMap.get(key) != null){
+			return floatMap.get(key);
+		}
+		return 0;
 	}
 	public static float getInt(String key){
 		return intMap.get(key);
