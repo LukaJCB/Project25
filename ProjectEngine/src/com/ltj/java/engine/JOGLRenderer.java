@@ -6,6 +6,7 @@ import java.awt.event.KeyListener;
 import com.jogamp.opengl.GL3;
 import com.jogamp.opengl.GLAutoDrawable;
 import com.jogamp.opengl.GLEventListener;
+import com.ltj.java.utils.JoglBufferHelper;
 import com.ltj.java.utils.JoglShaderHelper;
 import com.ltj.java.utils.JoglTextResourceReader;
 import com.ltj.shared.engine.Camera;
@@ -148,6 +149,32 @@ public abstract class JoglRenderer implements GLEventListener, KeyListener {
 		for(RenderObject r : Updater.getAllObjects()){
 			r.render();
 		}
+		
+		gl.glClear(GL_DEPTH_BUFFER_BIT);
+		gl.glUniformMatrix4fv(JoglRenderer.uMatrixLocation, 1, false,Camera.getOrthoProjectionMatrix(), 0);
+
+
+
+		// Tell the texture uniform sampler to use this texture in the shader.
+		float[] vertices = {
+				0.5f,0.5f,
+				0.3f,0.6f,
+				0.7f,0.2f
+		};
+		int[] positionVBO = JoglBufferHelper.arrayToBufferId(gl, vertices);
+		int aPositionLocation = gl.glGetAttribLocation(JoglRenderer.programId, "aPosition");
+		gl.glBindBuffer(GL_ARRAY_BUFFER, positionVBO[0]);
+		gl.glEnableVertexAttribArray(aPositionLocation);
+		gl.glVertexAttribPointer(aPositionLocation, 2, GL_FLOAT, false, 0,0);
+
+
+		//draw
+		gl.glDrawArrays(GL_TRIANGLES, 0, 3);  
+		
+
+
+		gl.glBindBuffer(GL_ARRAY_BUFFER, 0);
+		
 
 	}
 
@@ -155,8 +182,8 @@ public abstract class JoglRenderer implements GLEventListener, KeyListener {
 			int height) {
 		gl.glViewport(x, y, width, height);
 
-		
 		Camera.createPerspective(height, width);
+		Camera.createOrthographic(height, width);
 	}
 
 	public void keyTyped(KeyEvent e) {
