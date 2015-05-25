@@ -38,8 +38,11 @@ public abstract class JoglRenderer implements GLEventListener, KeyListener {
 	
 	
 	public void init(GLAutoDrawable drawable) {
-		gl = drawable.getGL().getGL3();
-
+		if (drawable.getGLProfile().isGL4()){
+			gl = drawable.getGL().getGL4();
+		} else {
+			gl = drawable.getGL().getGL3();
+		}
 
 
 		updater = new JoglUpdater(true);
