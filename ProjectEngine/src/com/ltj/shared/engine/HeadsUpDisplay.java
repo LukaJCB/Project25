@@ -1,30 +1,32 @@
 package com.ltj.shared.engine;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 
 public class HeadsUpDisplay {
 
-	private ArrayList<HudElement> hudElements = new ArrayList<HudElement>();
+	private static HashMap<String,HudElement> hudElements = new HashMap<String,HudElement>();
 
 	public void setDimensions(int width, int height) {
-		for (HudElement r : hudElements){
+		
+		for (HudElement r : hudElements.values()){
 			r.setScreenDimensions(width, height);
 		}
 	}
 	
 	public void render(){
-		for (HudElement r : hudElements){
+		for (HudElement r : hudElements.values()){
 			r.render();
 		}
 	}
 	
-	public void addHudElement(HudElement element){
-		hudElements.add(element);
+	public void addHudElement(String key, HudElement element){
+		hudElements.put(key,element);
 	}
 
 	public void flush(){
-		for (HudElement r : hudElements){
+		for (HudElement r : hudElements.values()){
 			r.clear();
 		}
 	}

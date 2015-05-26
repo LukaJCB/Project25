@@ -99,8 +99,8 @@ public abstract class AndroidRenderer implements Renderer{
 		hud = new HeadsUpDisplay();
 	}
 
-	public void addHudElement(HudElement element) {
-		hud.addHudElement(element);
+	public void addHudElement(String key,HudElement element) {
+		hud.addHudElement(key,element);
 	}
 
 	@Override

@@ -6,13 +6,15 @@ import com.ltj.android.engine.MotionInput;
 import com.ltj.shared.engine.Behaviour;
 import com.ltj.shared.engine.Camera;
 import com.ltj.shared.engine.GameObject;
+import com.ltj.shared.engine.HudElement;
 import com.ltj.shared.engine.SheetSpriteModeS;
 import com.ltj.shared.engine.SimpleSpriteModeS;
 import com.ltj.shared.engine.SoundManager;
 
 public class PlayerController extends Behaviour<SimpleSpriteModeS> {
 
-	
+
+	private HudElement e;
 	private float xMovement,yMovement;
 	private int direction;
 	private float lastX,lastY;

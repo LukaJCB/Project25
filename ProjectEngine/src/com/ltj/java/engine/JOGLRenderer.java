@@ -91,8 +91,8 @@ public abstract class JoglRenderer implements GLEventListener, KeyListener {
 		Updater.addRenderable(r);
 	}
 	
-	public void addHudElement(HudElement e){
-		hud.addHudElement(e);
+	public void addHudElement(String key,HudElement e){
+		hud.addHudElement(key,e);
 	}
 
 	public void addMSRenderable(ModeSevenObject r) {
