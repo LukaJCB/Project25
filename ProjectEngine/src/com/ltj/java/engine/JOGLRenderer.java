@@ -6,10 +6,11 @@ import java.awt.event.KeyListener;
 import com.jogamp.opengl.GL3;
 import com.jogamp.opengl.GLAutoDrawable;
 import com.jogamp.opengl.GLEventListener;
-import com.ltj.java.utils.JoglBufferHelper;
 import com.ltj.java.utils.JoglShaderHelper;
 import com.ltj.java.utils.JoglTextResourceReader;
 import com.ltj.shared.engine.Camera;
+import com.ltj.shared.engine.HeadsUpDisplay;
+import com.ltj.shared.engine.HudElement;
 import com.ltj.shared.engine.ModeSevenObject;
 import com.ltj.shared.engine.RenderObject;
 import com.ltj.shared.engine.Updater;
@@ -35,6 +36,8 @@ public abstract class JoglRenderer implements GLEventListener, KeyListener {
 	private int alphaProgramId;
 
 	private int normalProgramId;
+
+	private HeadsUpDisplay hud;
 
 
 	
@@ -80,11 +83,16 @@ public abstract class JoglRenderer implements GLEventListener, KeyListener {
 		
 		Camera.setLookAt(0, 0);
 		
-		
+		hud = new HeadsUpDisplay();
+	
 	}
 
 	public void addRenderable(RenderObject r) {
 		Updater.addRenderable(r);
+	}
+	
+	public void addHudElement(HudElement e){
+		hud.addHudElement(e);
 	}
 
 	public void addMSRenderable(ModeSevenObject r) {
@@ -154,9 +162,7 @@ public abstract class JoglRenderer implements GLEventListener, KeyListener {
 		
 		gl.glClear(GL_DEPTH_BUFFER_BIT);
 
-		
-
-	
+		hud.render();
 		
 
 	}
@@ -165,6 +171,8 @@ public abstract class JoglRenderer implements GLEventListener, KeyListener {
 			int height) {
 		gl.glViewport(x, y, width, height);
 
+		hud.setDimensions(width,height);
+		
 		Camera.createPerspective(height, width);
 		Camera.createOrthographic(height, width);
 	}

@@ -12,13 +12,29 @@ public class HudElement {
 		this.renderer = new JoglHudRenderer(gl,path);
 	}
 
-	public void render(float width, float height) {
-		this.renderer.render(width,height);
+	public void render() {
+		this.renderer.render();
 		
 	}
 
 	public void translate(float dx, float dy) {
 		renderer.translate(dx, dy);
+	}
+
+	public void setPosition(float x, float y) {
+		renderer.setPosition(x, y);
+	}
+
+	public void setRotation(float deg) {
+		renderer.setRotation(deg);
+	}
+
+	public void setScaling(float sx, float sy) {
+		renderer.setScaling(sx, sy);
+	}
+
+	public void setScreenDimensions(float width, float height) {
+		renderer.setScreenDimensions(width, height);
 	}
 
 	public void scale(float sx, float sy) {
@@ -28,5 +44,9 @@ public class HudElement {
 	public void clear() {
 		renderer.clear();
 	}
+	
+	
+	
+	
 
 }

@@ -65,10 +65,10 @@ public class JoglHudRenderer extends AbstractHudRenderer {
 		gl.glDeleteBuffers(1, textureVBO, 0);
 	}
 
+	
 	@Override
-	public void render(float width, float height) {
+	public void render() {
 		
-		//this.scale(width, height);
 		
 		float[] projectionModelMatrix = new float[16];
 		

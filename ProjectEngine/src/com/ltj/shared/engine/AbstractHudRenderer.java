@@ -3,10 +3,11 @@ package com.ltj.shared.engine;
 import com.ltj.shared.utils.MatrixHelper;
 
 public abstract class AbstractHudRenderer implements HudRenderer {
+	private static float screenHeight, screenWidth;
 	protected static final float[] vertices = {
-		0f, 0f,
-        0f, 1,
-        1, 0f,
+		0, 0,
+        0, 1,
+        1, 0,
         1, 1 
 	};
 	protected static final float[] textureCoordinates =
@@ -33,7 +34,6 @@ public abstract class AbstractHudRenderer implements HudRenderer {
 	private float x,y;
 	private float rotation;
 	private float height,width;
-	
 	public AbstractHudRenderer(){
 
 		//set Matrix
@@ -43,6 +43,14 @@ public abstract class AbstractHudRenderer implements HudRenderer {
 		height = 1;
 		width = 1;
 
+	}
+
+
+	@Override
+	public void setPosition(float x, float y) {
+		this.x = x;
+		this.y = y;
+		calcMatrix();
 	}
 
 
@@ -56,14 +64,31 @@ public abstract class AbstractHudRenderer implements HudRenderer {
 
 
 
-	public void rotate(float deg){
-		rotation += deg;
+	@Override
+	public void setScaling(float sx, float sy) {
+		width = sx;
+		height = sy;
 		calcMatrix();
 	}
+
+
 
 	public void scale(float sx,float sy){
 		width *= sx;
 		height *= sy;
+		calcMatrix();
+	}
+
+
+	@Override
+	public void setRotation(float deg) {
+		this.rotation = deg;
+		calcMatrix();
+	}
+
+
+	public void rotate(float deg){
+		rotation += deg;
 		calcMatrix();
 	}
 
@@ -92,15 +117,22 @@ public abstract class AbstractHudRenderer implements HudRenderer {
 
 	private void calcMatrix(){
 		MatrixHelper.setIdentityM(getModelMatrix());
-		MatrixHelper.translateM(getModelMatrix(),  getX(), getY(), 0);
+		MatrixHelper.translateM(getModelMatrix(),  getX()*screenWidth, getY()*screenHeight, 0);
 		MatrixHelper.rotateM(getModelMatrix(), getRotation(), 0, 0, 1);
-		MatrixHelper.scaleM(getModelMatrix(),  getWidth(), getHeight(), 1);
+		MatrixHelper.scaleM(getModelMatrix(),  getWidth()*screenWidth, getHeight()*screenWidth, 1);
+		
 	}
 
 	protected float[] getModelMatrix() {
 		return modelMatrix;
 	}
-
+	
+	@Override
+	public void setScreenDimensions(float width, float height){
+		screenWidth = width;
+		screenHeight = height;
+		calcMatrix();
+	}
 
 
 

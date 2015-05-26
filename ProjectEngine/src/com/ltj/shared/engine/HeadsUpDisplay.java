@@ -5,17 +5,17 @@ import java.util.ArrayList;
 
 public class HeadsUpDisplay {
 
-	private float width,height;
 	private ArrayList<HudElement> hudElements = new ArrayList<HudElement>();
 
 	public void setDimensions(int width, int height) {
-		this.width = width;
-		this.height = height;
+		for (HudElement r : hudElements){
+			r.setScreenDimensions(width, height);
+		}
 	}
 	
 	public void render(){
 		for (HudElement r : hudElements){
-			r.render(width, height);
+			r.render();
 		}
 	}
 	
@@ -24,7 +24,9 @@ public class HeadsUpDisplay {
 	}
 
 	public void flush(){
-		
+		for (HudElement r : hudElements){
+			r.clear();
+		}
 	}
 	
 }
