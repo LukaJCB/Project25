@@ -42,6 +42,7 @@ public class AndroidSpriteRenderer extends AbstractSpriteRenderer{
 	
 		//load texture
 		mTextureDataHandle = AndroidTextureHelper.loadTexture(AndroidRenderer.context, path);
+		texNumber = mTextureDataHandle[1];
 		
 		
 

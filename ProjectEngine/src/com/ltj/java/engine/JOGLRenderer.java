@@ -36,6 +36,7 @@ public abstract class JoglRenderer implements GLEventListener, KeyListener {
 
 	private int normalProgramId;
 
+
 	
 	
 	public void init(GLAutoDrawable drawable) {
@@ -75,6 +76,7 @@ public abstract class JoglRenderer implements GLEventListener, KeyListener {
 
 		// get locations
 		uMatrixLocation = gl.glGetUniformLocation(programId, "uMatrix");
+		
 		
 		Camera.setLookAt(0, 0);
 		
@@ -151,29 +153,10 @@ public abstract class JoglRenderer implements GLEventListener, KeyListener {
 		}
 		
 		gl.glClear(GL_DEPTH_BUFFER_BIT);
-		gl.glUniformMatrix4fv(JoglRenderer.uMatrixLocation, 1, false,Camera.getOrthoProjectionMatrix(), 0);
 
-
-
-		// Tell the texture uniform sampler to use this texture in the shader.
-		float[] vertices = {
-				0.5f,0.5f,
-				0.3f,0.6f,
-				0.7f,0.2f
-		};
-		int[] positionVBO = JoglBufferHelper.arrayToBufferId(gl, vertices);
-		int aPositionLocation = gl.glGetAttribLocation(JoglRenderer.programId, "aPosition");
-		gl.glBindBuffer(GL_ARRAY_BUFFER, positionVBO[0]);
-		gl.glEnableVertexAttribArray(aPositionLocation);
-		gl.glVertexAttribPointer(aPositionLocation, 2, GL_FLOAT, false, 0,0);
-
-
-		//draw
-		gl.glDrawArrays(GL_TRIANGLES, 0, 3);  
 		
 
-
-		gl.glBindBuffer(GL_ARRAY_BUFFER, 0);
+	
 		
 
 	}

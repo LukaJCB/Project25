@@ -10,7 +10,6 @@ import java.io.IOException;
 
 
 import com.jogamp.opengl.GL3;
-import com.jogamp.opengl.util.texture.Texture;
 import com.ltj.java.utils.JoglBufferHelper;
 import com.ltj.java.utils.JoglTextureHelper;
 import com.ltj.shared.engine.AbstractSpriteRenderer;
@@ -30,17 +29,14 @@ public class JoglSpriteRenderer extends AbstractSpriteRenderer{
 	private int aTexCoordsLocation;
 
 	private int[] textureVBO;
-	private Texture texture;
 	private int uTextureLocation;
-	private int mTextureDataHandle;
+	private int[] mTextureDataHandle;
 	
 	private GL3 gl;
 	public JoglSpriteRenderer(GL3 gl, String path){
 		super(path);
 		this.gl = gl;
 
-		
-		
 		//convert to buffers
 		positionVBO = JoglBufferHelper.arrayToBufferId(gl, vertices);
 		textureVBO = JoglBufferHelper.arrayToBufferId(gl, textureCoordinates);
@@ -53,8 +49,8 @@ public class JoglSpriteRenderer extends AbstractSpriteRenderer{
 	
 		//load texture
 		try {
-			texture = JoglTextureHelper.loadTexture(gl, path);
-			mTextureDataHandle = texture.getTextureObject();
+			mTextureDataHandle = JoglTextureHelper.loadTexture(gl, path);
+			texNumber = mTextureDataHandle[1];
 		}  catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -65,7 +61,7 @@ public class JoglSpriteRenderer extends AbstractSpriteRenderer{
 		 
 		
 	    // Bind the texture to this unit.
-	    gl.glBindTexture(GL_TEXTURE_2D, mTextureDataHandle);
+	    gl.glBindTexture(GL_TEXTURE_2D, mTextureDataHandle[0]);
 	 
 	    // Tell the texture uniform sampler to use this texture in the shader by binding to texture unit 
 	    gl.glUniform1i(uTextureLocation, texNumber);
@@ -91,7 +87,7 @@ public class JoglSpriteRenderer extends AbstractSpriteRenderer{
 		gl.glActiveTexture(GL_TEXTURE0 + texNumber);
 		
 		 // Bind the texture to this unit.
-	    gl.glBindTexture(GL_TEXTURE_2D, mTextureDataHandle);
+	    gl.glBindTexture(GL_TEXTURE_2D, mTextureDataHandle[0]);
 	    
 	    // Tell the texture uniform sampler to use this texture in the shader.
 	    gl.glUniform1i(uTextureLocation, texNumber);
@@ -128,7 +124,7 @@ public class JoglSpriteRenderer extends AbstractSpriteRenderer{
 		textureCoordinates[6] = column * columnSize;
 		textureCoordinates[5] = (row+1) * rowSize;
 		
-		textureVBO = JoglBufferHelper.arrayToBufferId(gl, textureCoordinates);;
+		textureVBO = JoglBufferHelper.arrayToBufferId(gl, textureCoordinates);
 		
 	}
 
@@ -136,7 +132,7 @@ public class JoglSpriteRenderer extends AbstractSpriteRenderer{
 
 	@Override
 	public void clear() {
-		texture.destroy(gl);
+		gl.glDeleteTextures(1, mTextureDataHandle, 0);
 		gl.glDeleteBuffers(1, positionVBO, 0);
 		gl.glDeleteBuffers(1, textureVBO, 0);
 	}

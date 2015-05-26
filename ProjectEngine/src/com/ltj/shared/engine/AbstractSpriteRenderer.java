@@ -1,14 +1,11 @@
 package com.ltj.shared.engine;
 
-import java.util.HashMap;
-
 
 import com.ltj.shared.engine.SpriteRenderer;
 import com.ltj.shared.utils.MatrixHelper;
 
 public abstract class AbstractSpriteRenderer implements SpriteRenderer{
-	private static int texCount;
-	private static HashMap<String, Integer> textureMap = new HashMap<String,Integer>();
+	
 	protected final static float[] vertices = {
 			0.5f, 0.5f,
 	        0.5f, -0.5f,
@@ -32,13 +29,7 @@ public abstract class AbstractSpriteRenderer implements SpriteRenderer{
 	private float z;
 	protected float rowSize, columnSize;
 	public AbstractSpriteRenderer(String path){
-		if (textureMap.containsKey(path)){
-			texNumber = textureMap.get(path);
-		} else {
-			texNumber = texCount;
-			textureMap.put(path, texNumber);
-			texCount++;
-		}
+		
 		//set Matrix
 		MatrixHelper.setIdentityM(modelMatrix);
 

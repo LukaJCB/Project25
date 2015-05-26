@@ -4,6 +4,7 @@ import static android.opengl.GLES20.*;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
 
 
 import android.content.Context;
@@ -14,6 +15,8 @@ import android.opengl.GLES11Ext;
 import android.opengl.GLUtils;
 
 public class AndroidTextureHelper {
+	private static int texCount;
+	private static HashMap<String, Integer> textureMap = new HashMap<String,Integer>();
 	private AndroidTextureHelper(){
 		
 	}
@@ -58,8 +61,14 @@ public class AndroidTextureHelper {
 	}
 	
 	public static int[] loadTexture(Context context,String path){
-		final int[] textureHandle = new int[1];
-		 
+		final int[] textureHandle = new int[2];
+		if (textureMap.containsKey(path)){
+			textureHandle[1]= textureMap.get(path);
+		} else {
+			textureHandle[1] = texCount;
+			textureMap.put(path, textureHandle[1]);
+			texCount++;
+		} 
 	    glGenTextures(1, textureHandle, 0);
 	 
 	    if (textureHandle[0] != 0)
