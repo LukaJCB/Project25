@@ -7,9 +7,10 @@ import com.ltj.shared.engine.Behaviour;
 import com.ltj.shared.engine.Camera;
 import com.ltj.shared.engine.GameObject;
 import com.ltj.shared.engine.SheetSpriteModeS;
+import com.ltj.shared.engine.SimpleSpriteModeS;
 import com.ltj.shared.engine.SoundManager;
 
-public class PlayerController extends Behaviour<SheetSpriteModeS> {
+public class PlayerController extends Behaviour<SimpleSpriteModeS> {
 
 	
 	private float xMovement,yMovement;
@@ -18,7 +19,6 @@ public class PlayerController extends Behaviour<SheetSpriteModeS> {
 	private int sound;
 	@Override
 	public void start() {
-		gameObject.setTexture(0, 0);
 		gameObject.scale(0.5f, 0.5f);
 		sound = SoundManager.addShortClip("test.wav");
 	}
@@ -76,7 +76,6 @@ public class PlayerController extends Behaviour<SheetSpriteModeS> {
 	}
 	public void setDirection(int direction) {
 		this.direction = direction;
-		gameObject.setTexture(0, direction);
 	}
 	public int getDirection() {
 		return direction;

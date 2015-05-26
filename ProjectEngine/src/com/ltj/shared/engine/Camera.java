@@ -33,7 +33,8 @@ public abstract class Camera {
 		MatrixHelper.perspectiveM(perspectiveProjectionMatrix, 60, (float) width / (float) height, 0.1f, 100f);
 	}
 	public static void createOrthographic(int height, int width){
-		MatrixHelper.orthoM(orthoProjectionMatrix, 0, width, 0,height, -1f, 1f);
+		MatrixHelper.orthoM(orthoProjectionMatrix, 0, width, 0,height, -1f, 100f);
+		//MatrixHelper.setIdentityM(orthoProjectionMatrix);
 	}
 	
 	public static float[] getOrthoProjectionMatrix(){

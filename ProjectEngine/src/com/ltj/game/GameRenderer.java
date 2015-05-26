@@ -44,7 +44,7 @@ public class GameRenderer extends AndroidRenderer {
 
 		SimpleSpriteModeS hero = new SimpleSpriteModeS( "img/car.png");
 		Camera.addSkyBox(new Skybox("img/sky.png","img/sky.png","img/sky.png","img/sky.png","img/sky.png","img/sky.png"));
-		hero.addBehaviourName("PlayerController25D");
+		hero.addBehaviourName("PlayerController");
 		String className = hero.getBehaviourName();
 		Behaviour b = null;
 		try {
