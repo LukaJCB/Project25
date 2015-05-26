@@ -8,6 +8,7 @@ import com.ltj.java.engine.KeyInput;
 import com.ltj.shared.engine.Behaviour;
 import com.ltj.shared.engine.Camera;
 import com.ltj.shared.engine.EmptyObject;
+import com.ltj.shared.engine.HudElement;
 import com.ltj.shared.engine.RenderObject;
 import com.ltj.shared.engine.SimpleSprite;
 import com.ltj.shared.engine.SimpleSpriteModeS;
@@ -133,7 +134,14 @@ public class JoglGameRenderer extends JoglRenderer {
 		sp3.addBehaviour(b2);
 		sp3.setTag("ene");
 		Updater.addMSRenderable(sp3);
+		HudElement e = new HudElement(gl, "assets/img/ic_launcher.png");
+		
+		e.scale(0.1f, 0.1f);
+		e.setPosition(0.9f, 0);
+		addHudElement(e);
 		changeMode();
+		
+		
 		Updater.start();
 	}
 	
