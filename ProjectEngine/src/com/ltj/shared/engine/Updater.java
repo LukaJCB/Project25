@@ -33,6 +33,7 @@ public abstract class Updater {
 		for (RenderObject r: allObjects){
 			r.clear();
 		}
+		Camera.flush();
 		allObjects = objects;
 		allMSObjects = mSObjects;
 	}
