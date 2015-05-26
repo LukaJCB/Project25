@@ -16,12 +16,14 @@ import android.opengl.GLUtils;
 
 public class AndroidTextureHelper {
 	private static int texCount;
-	private static HashMap<String, Integer> textureMap = new HashMap<String,Integer>();
+	private static HashMap<String, int[]> textureMap = new HashMap<String,int[]>();
 	private AndroidTextureHelper(){
 		
 	}
 	
 	public static int loadTexture(Context context, int resId){
+		
+		
 		
 		final int[] textureHandle = new int[1];
 		 
@@ -61,28 +63,30 @@ public class AndroidTextureHelper {
 	}
 	
 	public static int[] loadTexture(Context context,String path){
-		final int[] textureHandle = new int[2];
 		if (textureMap.containsKey(path)){
-			textureHandle[1]= textureMap.get(path);
-		} else {
-			textureHandle[1] = texCount;
-			textureMap.put(path, textureHandle[1]);
-			texCount++;
-		} 
-	    glGenTextures(1, textureHandle, 0);
-	 
-	    if (textureHandle[0] != 0)
-	    {
-	        final BitmapFactory.Options options = new BitmapFactory.Options();
-	        options.inScaled = false;   // No pre-scaling
-	 
-	       
-	        // Read in the resource
-	        Bitmap bitmap = getBitmapFromAsset(context, path);
-	        
-	        // Bind to the texture in OpenGL
-	        glBindTexture(GL_TEXTURE_2D, textureHandle[0]);
-	 
+			return textureMap.get(path);
+		}
+
+		final int[] textureHandle = new int[2];
+
+		textureHandle[1] = texCount;
+
+		texCount++;
+
+		glGenTextures(1, textureHandle, 0);
+
+		if (textureHandle[0] != 0)
+		{
+			final BitmapFactory.Options options = new BitmapFactory.Options();
+			options.inScaled = false;   // No pre-scaling
+
+
+			// Read in the resource
+			Bitmap bitmap = getBitmapFromAsset(context, path);
+
+			// Bind to the texture in OpenGL
+			glBindTexture(GL_TEXTURE_2D, textureHandle[0]);
+
 	        // Load the bitmap into the bound texture.
 	        GLUtils.texImage2D(GL_TEXTURE_2D, 0, bitmap, 0);
 	        
@@ -102,6 +106,8 @@ public class AndroidTextureHelper {
 	        throw new RuntimeException("Error loading texture.");
 	    }
 	 
+	    textureMap.put(path, textureHandle);
+	    
 	    return textureHandle;
 	}
 	private static Bitmap getBitmapFromAsset(Context context, String filePath) {

@@ -19,21 +19,19 @@ import static com.jogamp.opengl.GL3.*;
 public class JoglTextureHelper {
 	
 	private static int texCount;
-	private static HashMap<String, Integer> textureMap = new HashMap<String,Integer>();
+	private static HashMap<String, int[]> textureMap = new HashMap<String,int[]>();
 	private JoglTextureHelper(){
 		
 	}
 	
 	public static int[] loadTexture(GL3 gl,String file) throws IOException {
-		final int[] textureHandle = new int[2];
-		if (textureMap.containsKey(file)){
-			textureHandle[1]= textureMap.get(file);
-		} else {
-			textureHandle[1] = texCount;
-			textureMap.put(file, textureHandle[1]);
-			texCount++;
-		}
 		
+		if (textureMap.containsKey(file)){
+			return textureMap.get(file);
+		} 
+		int[] textureHandle = new int[2];
+		textureHandle[1] = texCount;
+		texCount++;
 		
 		ByteArrayOutputStream os = new ByteArrayOutputStream();
 	    ImageIO.write(ImageIO.read(new File(file)), "png", os);
@@ -48,6 +46,10 @@ public class JoglTextureHelper {
 	    tex.setTexParameteri(gl, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	    tex.setTexParameteri(gl, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	    textureHandle[0] = tex.getTextureObject();
+	    
+
+		textureMap.put(file, textureHandle);
+	    
 	    return textureHandle;
 	}
 }
