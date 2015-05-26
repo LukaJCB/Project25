@@ -34,7 +34,7 @@ public class JoglSpriteRenderer extends AbstractSpriteRenderer{
 	
 	private GL3 gl;
 	public JoglSpriteRenderer(GL3 gl, String path){
-		super(path);
+		super();
 		this.gl = gl;
 
 		//convert to buffers

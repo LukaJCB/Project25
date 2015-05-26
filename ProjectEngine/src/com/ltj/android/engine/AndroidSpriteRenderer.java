@@ -27,7 +27,7 @@ public class AndroidSpriteRenderer extends AbstractSpriteRenderer{
 	private int[] mTextureDataHandle;
 	
 	public AndroidSpriteRenderer(String path){
-		super(path);
+		super();
 		
 		
 		//convert to buffers

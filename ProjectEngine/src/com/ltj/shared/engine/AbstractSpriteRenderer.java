@@ -28,7 +28,7 @@ public abstract class AbstractSpriteRenderer implements SpriteRenderer{
 	private float rotationX;
 	private float z;
 	protected float rowSize, columnSize;
-	public AbstractSpriteRenderer(String path){
+	public AbstractSpriteRenderer(){
 		
 		//set Matrix
 		MatrixHelper.setIdentityM(modelMatrix);
