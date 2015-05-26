@@ -13,7 +13,12 @@ import com.ltj.shared.utils.MatrixHelper;
 
 public class JoglHudRenderer extends AbstractHudRenderer {
 
-	
+	protected static final float[] textureCoordinates = {
+	    1.0f, 1.0f,
+	    1.0f, 0.0f,
+	    0.0f, 1.0f,
+	    0.0f, 0.0f 
+	};
 	private int[] mTextureDataHandle;
 	
 	private GL3 gl;

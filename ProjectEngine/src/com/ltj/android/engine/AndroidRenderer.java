@@ -13,6 +13,8 @@ import com.ltj.android.utils.AndroidShaderHelper;
 import com.ltj.android.utils.AndroidTextResourceReader;
 import com.ltj.projectengine.R;
 import com.ltj.shared.engine.Camera;
+import com.ltj.shared.engine.HeadsUpDisplay;
+import com.ltj.shared.engine.HudElement;
 import com.ltj.shared.engine.ModeSevenObject;
 import com.ltj.shared.engine.RenderObject;
 import com.ltj.shared.engine.Updater;
@@ -45,6 +47,8 @@ public abstract class AndroidRenderer implements Renderer{
 	private AndroidUpdater updater;
 
 	private int alphaProgramId, normalProgramId;
+
+	private HeadsUpDisplay hud;
 
 	
 
@@ -92,15 +96,21 @@ public abstract class AndroidRenderer implements Renderer{
 		//get locations
 		uMatrixLocation = glGetUniformLocation(programId, "uMatrix");
 		
-		
+		hud = new HeadsUpDisplay();
+	}
+
+	public void addHudElement(HudElement element) {
+		hud.addHudElement(element);
 	}
 
 	@Override
 	public void onSurfaceChanged(GL10 gl, int width, int height) {
 		glViewport(0,0,width,height);
 		
-		// Projection matrix : 60° Field of View, ratio, display range : 0.1 unit <-> 100 units
+		hud.setDimensions(width,height);
+		
 		Camera.createPerspective(height, width);
+		Camera.createOrthographic(height, width);
 		
 	}
 	public void start(){
@@ -136,6 +146,11 @@ public abstract class AndroidRenderer implements Renderer{
 		for(RenderObject r : Updater.getAllObjects()){
 			r.render();
 		}
+		
+		glClear(GL_DEPTH_BUFFER_BIT);
+		
+		hud.render();
+		
 		long timeDiff = System.currentTimeMillis() - beginTime;
 		if (timeDiff < renderTime){
 			try {

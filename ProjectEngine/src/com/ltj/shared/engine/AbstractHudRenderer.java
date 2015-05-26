@@ -10,13 +10,7 @@ public abstract class AbstractHudRenderer implements HudRenderer {
         1, 0,
         1, 1 
 	};
-	protected static final float[] textureCoordinates =
-	{
-	    1.0f, 1.0f,
-	    1.0f, 0.0f,
-	    0.0f, 1.0f,
-	    0.0f, 0.0f 
-	};
+	
 	protected static final int COMPONENT_COUNT = 2;
 	protected static final String A_POSITION = "aPosition";
 	protected static final String A_TEX_COORDS = "aTexCoordinates";

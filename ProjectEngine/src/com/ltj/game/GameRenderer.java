@@ -13,6 +13,7 @@ import com.ltj.android.engine.AndroidRenderer;
 import com.ltj.shared.engine.Behaviour;
 import com.ltj.shared.engine.Camera;
 import com.ltj.shared.engine.GameObject;
+import com.ltj.shared.engine.HudElement;
 import com.ltj.shared.engine.RenderObject;
 import com.ltj.shared.engine.SheetSpriteModeS;
 import com.ltj.shared.engine.SimpleSprite;
@@ -97,7 +98,13 @@ public class GameRenderer extends AndroidRenderer {
 		enemy.setTag("enemy");
 
 		addMSRenderable(enemy);
-
+		HudElement e = new HudElement( "img/ic_launcher.png");
+		
+		e.scale(0.1f, 0.1f);
+		e.setPosition(0.9f, 0);
+		addHudElement(e);
+		changeMode();
+		
 		start();
 	}
 

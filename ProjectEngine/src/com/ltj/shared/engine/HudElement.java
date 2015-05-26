@@ -1,6 +1,7 @@
 package com.ltj.shared.engine;
 
 import com.jogamp.opengl.GL3;
+import com.ltj.android.engine.AndroidHudRenderer;
 import com.ltj.java.engine.JoglHudRenderer;
 
 public class HudElement {
@@ -10,6 +11,10 @@ public class HudElement {
 	
 	public HudElement(GL3 gl, String path){
 		this.renderer = new JoglHudRenderer(gl,path);
+	}
+
+	public HudElement(String path) {
+		this.renderer = new AndroidHudRenderer(path);
 	}
 
 	public void render() {

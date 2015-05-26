@@ -26,6 +26,12 @@ import com.ltj.shared.utils.MatrixHelper;
 
 public class AndroidHudRenderer extends AbstractHudRenderer {
 
+	protected static final float[] textureCoordinates = {
+	    0, 0,
+	    0, 1,
+	    1, 0,
+	    1, 1 
+	};
 	
 	private int[] mTextureDataHandle;
 	
