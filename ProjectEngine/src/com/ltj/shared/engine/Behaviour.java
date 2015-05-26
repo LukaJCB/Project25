@@ -53,6 +53,10 @@ public abstract class Behaviour<T extends RenderObject> {
 		return Updater.getObjectByID(id);
 	}
 	
+	public final HudElement getHudElementByID(String id){
+		return HeadsUpDisplay.get(id);
+	}
+	
 	public final GameObject createNewGameObject(GameObject obj, float x, float y, float rot){
 		GameObject o = obj.cloneObject();
 		o.translate(x, y);
