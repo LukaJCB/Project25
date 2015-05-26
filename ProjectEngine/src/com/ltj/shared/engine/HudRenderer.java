@@ -9,4 +9,10 @@ public interface HudRenderer {
 	void scale(float sx, float sy);
 	void clear();
 	void setScreenDimensions(float width, float height);
+	void rotate(float deg);
+	float getX();
+	float getY();
+	float getHeight();
+	float getWidth();
+	float getRotation();
 }

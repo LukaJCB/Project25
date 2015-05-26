@@ -86,28 +86,28 @@ public abstract class AbstractHudRenderer implements HudRenderer {
 		calcMatrix();
 	}
 
-
+	@Override
 	public void rotate(float deg){
 		rotation += deg;
 		calcMatrix();
 	}
-
+	@Override
 	public float getX() {
-		return x;
+		return x*screenWidth;
 	}
-
+	@Override
 	public float getY() {
-		return y;
+		return y*screenHeight;
 	}
-
+	@Override
 	public float getHeight() {
-		return height;
+		return height*screenWidth;
 	}
-
+	@Override
 	public float getWidth() {
-		return width;
+		return width*screenWidth;
 	}
-
+	@Override
 	public float getRotation() {
 		return rotation;
 	}
@@ -117,9 +117,9 @@ public abstract class AbstractHudRenderer implements HudRenderer {
 
 	private void calcMatrix(){
 		MatrixHelper.setIdentityM(getModelMatrix());
-		MatrixHelper.translateM(getModelMatrix(),  getX()*screenWidth, getY()*screenHeight, 0);
+		MatrixHelper.translateM(getModelMatrix(),  getX(), getY(), 0);
 		MatrixHelper.rotateM(getModelMatrix(), getRotation(), 0, 0, 1);
-		MatrixHelper.scaleM(getModelMatrix(),  getWidth()*screenWidth, getHeight()*screenWidth, 1);
+		MatrixHelper.scaleM(getModelMatrix(),  getWidth(), getHeight(), 1);
 		
 	}
 
