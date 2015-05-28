@@ -128,6 +128,15 @@ public class JoglSpriteRenderer extends AbstractSpriteRenderer{
 		
 	}
 
+	public void setRepeatTexture(float horizontal, float vertical){
+		
+		textureCoordinates[0] = horizontal;
+		textureCoordinates[1] = vertical;
+		textureCoordinates[2] = horizontal;
+		textureCoordinates[5] = vertical;
+		
+		textureVBO = JoglBufferHelper.arrayToBufferId(gl, textureCoordinates);
+	}
 
 
 	@Override

@@ -24,6 +24,10 @@ public class SimpleSprite extends AbstractSprite {
 		this.path = path;
 		renderer = new AndroidSpriteRenderer(path);
 	}
+	
+	public void setRepeat(float horizontal, float vertical){
+		renderer.setRepeatTexture(horizontal, vertical);
+	}
 
 	@Override
 	public GameObject cloneObject() {

@@ -45,6 +45,8 @@ public class JoglTextureHelper {
 	    gl.glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, aniso[0]);
 	    tex.setTexParameteri(gl, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	    tex.setTexParameteri(gl, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	    tex.setTexParameteri(gl, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	    tex.setTexParameteri(gl, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	    textureHandle[0] = tex.getTextureObject();
 	    
 

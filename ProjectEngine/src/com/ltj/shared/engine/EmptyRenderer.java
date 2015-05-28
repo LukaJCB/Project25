@@ -118,4 +118,10 @@ public class EmptyRenderer implements SpriteRenderer {
 		this.rotation = deg;
 	}
 
+	@Override
+	public void setRepeatTexture(float xRepeat, float yRepeat) {
+		//do nothing
+		
+	}
+
 }

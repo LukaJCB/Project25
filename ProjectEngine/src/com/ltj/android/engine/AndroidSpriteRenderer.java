@@ -118,4 +118,16 @@ public class AndroidSpriteRenderer extends AbstractSpriteRenderer{
 		glDeleteBuffers(1, positionVBO, 0);
 	}
 
+	@Override
+	public void setRepeatTexture(float horizontal, float vertical) {
+
+		textureCoordinates[3] = vertical;
+		textureCoordinates[4] = horizontal;
+		textureCoordinates[6] = horizontal;
+		textureCoordinates[7] = vertical;
+		
+		textureVBO = AndroidBufferHelper.arrayToBufferId(textureCoordinates);
+		
+	}
+
 }

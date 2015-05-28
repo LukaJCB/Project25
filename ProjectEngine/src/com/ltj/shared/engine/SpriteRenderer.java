@@ -16,6 +16,7 @@ public interface SpriteRenderer {
 	void setZ(float z);
 	void setSheetDimensions(int cols, int rows);
 	void setTexture(int col, int row);
+	void setRepeatTexture(float xRepeat, float yRepeat);
 	int getNumCols();
 	int getNumRows();
 	void clear();
