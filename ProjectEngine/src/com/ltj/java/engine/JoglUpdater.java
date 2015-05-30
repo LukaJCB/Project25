@@ -15,22 +15,19 @@ public class JoglUpdater extends Updater implements KeyListener {
 	}
 	
 	public void keyTyped(KeyEvent e) {
-		
-		
 	}
 	
 
 	public void keyPressed(KeyEvent e) {
 		if (keyInput){
-			KeyInput.setEvent(e);
+			Updater.onKeyInput(e);
 		}
-		
-		
 	}
 
 	public void keyReleased(KeyEvent e) {
-		KeyInput.setEvent(null);
-		
+		if (keyInput){
+			Updater.onKeyReleased(e);
+		}
 	}
 
 }

@@ -1,6 +1,7 @@
 package com.ltj.shared.engine;
 
 
+import java.awt.event.KeyEvent;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -99,6 +100,13 @@ public abstract class Behaviour<T extends RenderObject> {
 		
 	}
 
+	public void onKeyInput(KeyEvent e){
+		
+	}
+	
+	public void onKeyRelease(KeyEvent e){
+		
+	}
 
 	
 }

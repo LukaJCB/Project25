@@ -1,5 +1,6 @@
 package com.ltj.shared.engine;
 
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -86,6 +87,22 @@ public abstract class Updater {
 		for (int i = 0;i < allObjects.size(); i++){
 			for (int j = i+1; j < allObjects.size(); j++){
 				allObjects.get(i).checkCollision(allObjects.get(j));
+			}
+		}
+	}
+	
+	public static void onKeyInput(KeyEvent e){
+		for (RenderObject r : allObjects){
+			if (r.getBehaviour() != null){
+				r.getBehaviour().onKeyInput(e);
+			}
+		}
+	}
+	
+	public static void onKeyReleased(KeyEvent e){
+		for (RenderObject r : allObjects){
+			if (r.getBehaviour() != null){
+				r.getBehaviour().onKeyRelease(e);
 			}
 		}
 	}
