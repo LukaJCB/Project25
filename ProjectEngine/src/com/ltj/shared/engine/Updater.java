@@ -6,11 +6,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.ListIterator;
 
+import com.jogamp.nativewindow.util.Rectangle;
+
 
 public abstract class Updater {
 
 	private static HashMap<String,RenderObject> ids = new HashMap<String,RenderObject>();
-
+	private static Rectangle collisionZone;
 
 
 	public static void addId(String id, RenderObject r){
@@ -118,6 +120,14 @@ public abstract class Updater {
 
 	public static List<ModeSevenObject> getAllMSObjects() {
 		return allMSObjects;
+	}
+
+	public static Rectangle getCollisionZone() {
+		return collisionZone;
+	}
+
+	public static void setCollisionZone(Rectangle collisionZone) {
+		Updater.collisionZone = collisionZone;
 	}
 	
 	

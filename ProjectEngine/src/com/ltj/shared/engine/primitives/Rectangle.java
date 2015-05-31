@@ -1,6 +1,5 @@
 package com.ltj.shared.engine.primitives;
 
-import com.ltj.shared.engine.RenderObject;
 
 public class Rectangle {
 
@@ -29,10 +28,6 @@ public class Rectangle {
 		return height;
 	}
 	
-	public boolean contains(RenderObject r){
-		return false;
-		
-	}
 	
 
 }
