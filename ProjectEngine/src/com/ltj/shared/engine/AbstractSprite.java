@@ -12,7 +12,6 @@ public abstract class AbstractSprite implements RenderObject {
 	private ArrayList<RenderObject> childList;
 	private RenderObject parent;
 	private String tag;
-	private boolean lastCollision;
 	protected SpriteRenderer renderer;
 	@SuppressWarnings("unchecked")
 	protected void prepareClone(AbstractSprite o){
@@ -140,6 +139,7 @@ public abstract class AbstractSprite implements RenderObject {
 			//objects are related
 			return;
 		}
+
 		if (this.colliders != null && object.getColliders() != null){ 
 			for (Collider collider : colliders){
 				for (Collider objCollider : object.getColliders()){
@@ -147,26 +147,15 @@ public abstract class AbstractSprite implements RenderObject {
 							collider.getTop(getY(),getHeight()) > objCollider.getBottom( object.getY(),object.getHeight()) &&
 							collider.getRight(getX(),getWidth()) > objCollider.getLeft(object.getX(), object.getWidth()) &&
 							collider.getLeft(getX(),getWidth()) < objCollider.getRight(object.getX(), object.getWidth())){
-						if (!lastCollision){
-							onCollisionEnter(object);
-							object.onCollisionEnter(this);
-							lastCollision = true;
-						} else {
-							onCollision(object);
-							object.onCollision(this);
-						}
+
+						onCollision(object);
+						object.onCollision(this);
 						return;
 					}
 				}
 			}
-			if (lastCollision){
-				onCollisionExit(object);
 
-				object.onCollisionExit(this);
-				lastCollision = false;
-			}
 		} 
-		
 
 	}
 
