@@ -6,7 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.ListIterator;
 
-import com.jogamp.nativewindow.util.Rectangle;
+import com.ltj.shared.engine.primitives.QuadTree;
+import com.ltj.shared.engine.primitives.Rectangle;
 
 
 public abstract class Updater {
@@ -81,16 +82,11 @@ public abstract class Updater {
 		Camera.calcPVMatrix();
 	}
 	private static void checkCollisions() {
-//		QuadTree qTree = new QuadTree(0,new Rectangle(-5, -5, 10, 10));
-//		for (RenderObject r: allObjects){
-//			qTree.insert(r);
-//		}
-//		qTree.collideAll();
-		for (int i = 0;i < allObjects.size(); i++){
-			for (int j = i+1; j < allObjects.size(); j++){
-				allObjects.get(i).checkCollision(allObjects.get(j));
-			}
+		QuadTree qTree = new QuadTree(0,new Rectangle(-5, -5, 10, 10));
+		for (RenderObject r: allObjects){
+			qTree.insert(r);
 		}
+		qTree.collideAll();
 	}
 	
 	public static void onKeyInput(KeyEvent e){

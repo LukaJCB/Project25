@@ -68,28 +68,32 @@ public class QuadTree {
 	}
 	
 	public void insert(RenderObject sprite){
-		if(nodes[0] != null){
+		if (nodes[0] != null) {
 			int index = getIndex(sprite);
-			
-			if (index != -1){
+
+			if (index != -1) {
 				nodes[index].insert(sprite);
+
 				return;
 			}
 		}
+
 		objects.add(sprite);
-		
-		if (objects.size() > MAX_OBJECTS && level < MAX_LEVELS){
-			if (nodes[0] == null){
-				split();
+
+		if (objects.size() > MAX_OBJECTS && level < MAX_LEVELS) {
+			if (nodes[0] == null) { 
+				split(); 
 			}
-		}
-		int i = 0;
-		while(i < objects.size()){
-			int index = getIndex(objects.get(i));
-			if (index != -1) {
-				nodes[index].insert(objects.remove(i));
-			} else {
-				i++;
+
+			int i = 0;
+			while (i < objects.size()) {
+				int index = getIndex(objects.get(i));
+				if (index != -1) {
+					nodes[index].insert(objects.remove(i));
+				}
+				else {
+					i++;
+				}
 			}
 		}
 	}
@@ -107,13 +111,14 @@ public class QuadTree {
 	
 	public void collideAll(){
 		if (nodes[0] != null){
-			
+			nodes[0].collideAll();
+			nodes[1].collideAll();
+			nodes[2].collideAll();
+			nodes[3].collideAll();
 		} else {
 			for (int i = 0;i < objects.size(); i++){
 				for (int j = i+1; j < objects.size(); j++){
-					if (objects.get(i).checkCollision(objects.get(j))){
-						objects.get(i).onCollision(objects.get(j));
-					}
+					objects.get(i).checkCollision(objects.get(j));
 				}
 			}
 		}

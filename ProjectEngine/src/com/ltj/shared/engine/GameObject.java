@@ -16,7 +16,7 @@ public interface GameObject {
 	String getTag();
 	boolean compareTag(String string);
 	float getRotation();
-	boolean checkCollision(RenderObject collider);
+	void checkCollision(RenderObject collider);
 	boolean isDestroyed();
 	GameObject getParent();
 	Behaviour<? extends GameObject> getBehaviour();

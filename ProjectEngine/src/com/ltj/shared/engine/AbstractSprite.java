@@ -135,10 +135,10 @@ public abstract class AbstractSprite implements RenderObject {
 		}
 	}
 
-	public boolean checkCollision(RenderObject object) {
+	public void checkCollision(RenderObject object) {
 		if (hidden || object == parent || object.getParent() == this){
 			//objects are related
-			return false;
+			return;
 		}
 		if (this.colliders != null && object.getColliders() != null){ 
 			for (Collider collider : colliders){
@@ -155,19 +155,19 @@ public abstract class AbstractSprite implements RenderObject {
 							onCollision(object);
 							object.onCollision(this);
 						}
-						return true;
+						return;
 					}
 				}
 			}
+			if (lastCollision){
+				onCollisionExit(object);
+
+				object.onCollisionExit(this);
+				lastCollision = false;
+			}
 		} 
-		if (lastCollision){
-			onCollisionExit(object);
+		
 
-			object.onCollisionExit(this);
-			lastCollision = false;
-		}
-
-		return false;
 	}
 
 	@Override
