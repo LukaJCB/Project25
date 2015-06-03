@@ -71,33 +71,64 @@ public class QuadTree {
 	
 	public void insert(RenderObject sprite){
 		if (nodes[0] != null) {
-			int index = getIndex(sprite);
-
-			if (index != -1) {
-				nodes[index].insert(sprite);
-
-				return;
+			float verticalMidpoint = bounds.getX();
+			float horizontalMidpoint = bounds.getY();
+			
+			boolean botQuadrant = (sprite.getY()+ sprite.getHeight()/2 < horizontalMidpoint);
+			boolean topQuadrant = (sprite.getY()-sprite.getHeight()/2 > horizontalMidpoint);
+			boolean topBot = (!botQuadrant && !topQuadrant);
+			
+			boolean leftQuadrant = (sprite.getX() +sprite.getWidth()/2 < verticalMidpoint);
+			boolean rightQuadrant = (sprite.getX()-sprite.getWidth()/2 > verticalMidpoint);
+			boolean rightLeft = (!rightQuadrant && !leftQuadrant);
+			
+			if (topBot){
+				if (rightLeft){
+					nodes[0].insert(sprite);
+					nodes[1].insert(sprite);
+					nodes[2].insert(sprite);
+					nodes[3].insert(sprite);
+				} else if (rightQuadrant){
+					nodes[0].insert(sprite);
+					nodes[3].insert(sprite);
+				} else if (leftQuadrant) {
+					nodes[1].insert(sprite);
+					nodes[2].insert(sprite);
+				}
+			} else if (topQuadrant){
+				if (rightLeft){
+					nodes[0].insert(sprite);
+					nodes[1].insert(sprite);
+				} else if (rightQuadrant){
+					nodes[0].insert(sprite);
+				} else if (leftQuadrant) {
+					nodes[1].insert(sprite);
+				}
+			} else if (botQuadrant) {
+				if (rightLeft){
+					nodes[2].insert(sprite);
+					nodes[3].insert(sprite);
+				} else if (rightQuadrant){
+					nodes[3].insert(sprite);
+				} else if (leftQuadrant){
+					nodes[2].insert(sprite);
+				}
 			}
-		}
+			
 
-		objects.add(sprite);
-
-		if (objects.size() > MAX_OBJECTS && level < MAX_LEVELS) {
-			if (nodes[0] == null) { 
+		} else {
+			objects.add(sprite);
+			if (objects.size() > MAX_OBJECTS && level < MAX_LEVELS) {
 				split(); 
-			}
-
-			int i = 0;
-			while (i < objects.size()) {
-				int index = getIndex(objects.get(i));
-				if (index != -1) {
-					nodes[index].insert(objects.remove(i));
-				}
-				else {
-					i++;
+				
+				for (int i = 0;i < objects.size();i++){
+					insert(objects.remove(i));
 				}
 			}
 		}
+
+		
+
 	}
 	
 	@Deprecated

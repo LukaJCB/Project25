@@ -83,11 +83,11 @@ public abstract class Updater {
 		Camera.calcPVMatrix();
 	}
 	private static void checkCollisions() {
-//		qTree.clear();
-//		for (RenderObject r: allObjects){
-//			qTree.insert(r);
-//		}
-//		qTree.collideAll();
+		qTree.clear();
+		for (RenderObject r: allObjects){
+			qTree.insert(r);
+		}
+		qTree.collideAll();
 		
 //		List<RenderObject> returnObjects = new ArrayList<RenderObject>();
 //		for (int i = 0; i < allObjects.size(); i++) {
@@ -100,12 +100,12 @@ public abstract class Updater {
 //		}
 		
 		
-		for (int i = 0;i < allObjects.size(); i++){
-			for (int j = i+1; j < allObjects.size(); j++){
-				
-				allObjects.get(i).checkCollision(allObjects.get(j));
-			}
-		}
+//		for (int i = 0;i < allObjects.size(); i++){
+//			for (int j = i+1; j < allObjects.size(); j++){
+//				
+//				allObjects.get(i).checkCollision(allObjects.get(j));
+//			}
+//		}
 		
 	}
 	
