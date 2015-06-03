@@ -35,33 +35,35 @@ public class QuadTree {
 	private void split(){
 		float subWidth = bounds.getWidth()/2;
 		float subHeight = bounds.getHeight()/2;
+		float fourthWidth = subWidth/2;
+		float fourthHeight = subHeight/2;
 		float x = bounds.getX();
 		float y = bounds.getY();
 		
-		nodes[0] = new QuadTree(level+1,new Rectangle(x+subWidth,y,subWidth,subHeight));
-		nodes[1] = new QuadTree(level+1, new Rectangle(x,y,subWidth,subHeight));
-		nodes[2] = new QuadTree(level+1, new Rectangle(x,y+subHeight,subWidth,subHeight));
-		nodes[3] = new QuadTree(level+1, new Rectangle(x+subWidth,y+subHeight,subWidth,subHeight));
+		nodes[0] = new QuadTree(level+1,new Rectangle(x+fourthWidth,y+fourthHeight,subWidth,subHeight));
+		nodes[1] = new QuadTree(level+1, new Rectangle(x-fourthWidth,y+fourthHeight,subWidth,subHeight));
+		nodes[2] = new QuadTree(level+1, new Rectangle(x-fourthWidth,y-fourthHeight,subWidth,subHeight));
+		nodes[3] = new QuadTree(level+1, new Rectangle(x+fourthWidth,y-fourthHeight,subWidth,subHeight));
 	}
 	
 	private int getIndex(RenderObject sprite){
-		float verticalMidpoint = bounds.getX() +bounds.getWidth()/2;
-		float horizontalMidpoint = bounds.getY() + bounds.getHeight()/2;
+		float verticalMidpoint = bounds.getX();
+		float horizontalMidpoint = bounds.getY();
 		
-		boolean topQuadrant = (sprite.getY() < horizontalMidpoint &&sprite.getY()+ sprite.getHeight() < horizontalMidpoint);
-		boolean bottomQuadrant = (sprite.getY() > horizontalMidpoint);
+		boolean botQuadrant = (sprite.getY()+ sprite.getHeight()/2 < horizontalMidpoint);
+		boolean topQuadrant = (sprite.getY()-sprite.getHeight()/2 > horizontalMidpoint);
 		
-		if (sprite.getX() < verticalMidpoint && sprite.getX() +sprite.getWidth() < verticalMidpoint){
-			if(topQuadrant){
-				return 1;
-			} else if (bottomQuadrant){
+		if (sprite.getX() +sprite.getWidth()/2 < verticalMidpoint){
+			if(botQuadrant){
 				return 2;
+			} else if (topQuadrant){
+				return 1;
 			}
-		} else if (sprite.getX() > verticalMidpoint){
-			if (topQuadrant){
-				return 0;
-			} else if (bottomQuadrant){
+		} else if (sprite.getX()-sprite.getWidth()/2 > verticalMidpoint){
+			if (botQuadrant){
 				return 3;
+			} else if (topQuadrant){
+				return 0;
 			}
 		}
 		return -1;
