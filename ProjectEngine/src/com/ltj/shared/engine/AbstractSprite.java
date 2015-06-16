@@ -135,7 +135,7 @@ public abstract class AbstractSprite implements RenderObject {
 	}
 
 	public void checkCollision(RenderObject object) {
-		if (hidden || object == parent || object.getParent() == this){
+		if (hidden || object == this || object == parent || object.getParent() == this){
 			//objects are related
 			return;
 		}

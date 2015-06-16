@@ -6,8 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.ListIterator;
 
-import com.ltj.shared.engine.primitives.QuadTree;
 import com.ltj.shared.engine.primitives.Rectangle;
+import com.ltj.shared.engine.primitives.SpatialHashMap;
 
 
 public abstract class Updater {
@@ -30,7 +30,7 @@ public abstract class Updater {
 
 	private static ArrayList<RenderObject> allObjects;
 	private static ArrayList<ModeSevenObject> allMSObjects;
-	private static QuadTree qTree;
+	private static SpatialHashMap shMap;
 
 	
 	
@@ -83,11 +83,18 @@ public abstract class Updater {
 		Camera.calcPVMatrix();
 	}
 	private static void checkCollisions() {
-		qTree.clear();
+		
+		shMap.clear();
 		for (RenderObject r: allObjects){
-			qTree.insert(r);
+			shMap.insert(r);
 		}
-		qTree.collideAll();
+		shMap.collideAll();
+//		qTree.clear();
+//		for (RenderObject r: allObjects){
+//			qTree.insert(r);
+//		}
+//		qTree.collideAll();
+		
 		
 //		List<RenderObject> returnObjects = new ArrayList<RenderObject>();
 //		for (int i = 0; i < allObjects.size(); i++) {
@@ -129,7 +136,7 @@ public abstract class Updater {
 		for (RenderObject r : allObjects){
 			r.start();
 		}
-		qTree = new QuadTree(0,collisionZone);
+		shMap = new SpatialHashMap(10, 10,collisionZone.getWidth(),collisionZone.getHeight(),collisionZone.getX(),collisionZone.getY());
 	}
 
 
