@@ -1,11 +1,8 @@
 package com.ltj.shared.engine.primitives;
 
 import java.util.ArrayList;
-import java.util.List;
-
 
 import com.ltj.shared.engine.Collider;
-import com.ltj.shared.engine.EmptyObject;
 import com.ltj.shared.engine.RenderObject;
 
 public class SpatialHashMap {
