@@ -61,13 +61,6 @@ public class SpatialHashMap {
 		}
 	}
 	
-	@Deprecated
-	public List<Integer> getId(RenderObject sprite){
-		
-		
-		return null;
-		
-	}
 	
 	private int getIdInMap(int x, int y){
 		return y * columns + x;
@@ -88,15 +81,5 @@ public class SpatialHashMap {
 			allObjects.clear();
 		}
 		
-	}
-	public static void main(String[] args){
-		SpatialHashMap s = new SpatialHashMap(5, 5, 30, 30,0,0);
-		EmptyObject sp = new EmptyObject();
-		sp.addCollider(new BoxCollider());
-		//s.insert(sp);
-		EmptyObject sp2 = new EmptyObject();
-		sp2.translate(1, 1);
-		sp2.addCollider(new BoxCollider());
-		s.insert(sp2);
 	}
 }
