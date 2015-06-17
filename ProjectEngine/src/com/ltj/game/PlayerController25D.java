@@ -6,7 +6,6 @@ import com.ltj.android.engine.MotionInput;
 import com.ltj.shared.engine.Behaviour;
 import com.ltj.shared.engine.Camera;
 import com.ltj.shared.engine.GameObject;
-import com.ltj.shared.engine.SheetSpriteModeS;
 import com.ltj.shared.engine.SimpleSpriteModeS;
 import com.ltj.shared.engine.primitives.Globals;
 public class PlayerController25D extends Behaviour<SimpleSpriteModeS> {
@@ -22,15 +21,15 @@ public class PlayerController25D extends Behaviour<SimpleSpriteModeS> {
 	public void update(){
 		
 		if (MotionInput.isActive()){
-			if (Math.abs(lastX - MotionInput.getX()) > Math.abs(lastY - MotionInput.getY())){
-				gameObject.rotate((lastX - MotionInput.getX())*0.01f);
-				Globals.add("rotation", gameObject.getRotation());
-			} else {
-				float speed = lastY - MotionInput.getY();
-				setMovement(speed * (float)-Math.sin(Math.toRadians(gameObject.getRotation())), 
-						speed * (float)Math.cos(Math.toRadians(gameObject.getRotation())));
-			}
 			
+			gameObject.rotate((lastX - MotionInput.getX())*0.01f);
+			Globals.add("rotation", gameObject.getRotation());
+
+			float speed = lastY - MotionInput.getY();
+			setMovement(speed * (float)-Math.sin(Math.toRadians(gameObject.getRotation())), 
+					speed * (float)Math.cos(Math.toRadians(gameObject.getRotation())));
+
+
 			if(MotionInput.getEvent().getAction() == MotionEvent.ACTION_DOWN){
 
 				lastX = MotionInput.getX();

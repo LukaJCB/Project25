@@ -12,10 +12,8 @@ import android.content.Context;
 import com.ltj.android.engine.AndroidRenderer;
 import com.ltj.shared.engine.Behaviour;
 import com.ltj.shared.engine.Camera;
-import com.ltj.shared.engine.GameObject;
 import com.ltj.shared.engine.HudElement;
-import com.ltj.shared.engine.RenderObject;
-import com.ltj.shared.engine.SheetSpriteModeS;
+import com.ltj.shared.engine.ModeSevenObject;
 import com.ltj.shared.engine.SimpleSprite;
 import com.ltj.shared.engine.SimpleSpriteModeS;
 import com.ltj.shared.engine.Skybox;
@@ -38,14 +36,22 @@ public class GameRenderer extends AndroidRenderer {
 		super.onSurfaceCreated(gl, config);
 		SoundManager.initSoundManager(true);
 		
-		RenderObject r = new SimpleSprite("img/racer_background.png");
+		SimpleSprite r = new SimpleSprite("img/racer_background.png");
 		r.scale(20, 20);
 		Updater.addRenderable(r);
 	
+		SimpleSprite[] s = new SimpleSprite[300];
+		for (int i = 0;i < s.length;i++){
+			s[i] = new SimpleSprite("img/car.png");
+			//s[i].addCollider(new BoxCollider());
+			Updater.addRenderable(s[i]);
+		}
+		
 
 		SimpleSpriteModeS hero = new SimpleSpriteModeS( "img/car.png");
-		Camera.addSkyBox(new Skybox("img/sky.png","img/sky.png","img/sky.png","img/sky.png","img/sky.png","img/sky.png"));
-		hero.addBehaviourName("PlayerController");
+		Camera.addSkyBox(new Skybox( "img/skyboxtop.png","img/skyboxbottom.png","img/skyboxfront.png",
+				"img/skyboxback.png","img/skyboxright.png","img/skyboxleft.png"));
+		hero.addBehaviourName("PlayerController25D");
 		String className = hero.getBehaviourName();
 		Behaviour b = null;
 		try {
@@ -67,43 +73,69 @@ public class GameRenderer extends AndroidRenderer {
 		b.allocateObject(hero);
 		hero.addBehaviour(b);
 		hero.addCollider(new BoxCollider());
+		hero.scale(0.4f, 0.3f);
 	
 		
 		
 		addMSRenderable(hero);
 		
 		
-		SimpleSpriteModeS enemy = new SimpleSpriteModeS("img/car.png");
+		SimpleSpriteModeS sp3 = new SimpleSpriteModeS("img/car.png");
+		sp3.translate(0, 5);
+		sp3.scale(0.4f, 0.3f);
+		sp3.addCollider(new BoxCollider());
+		Behaviour<SimpleSprite> b2 = new Behaviour<SimpleSprite>(){
+			
 		
-		
-		Behaviour b2 = new Behaviour<RenderObject>() {
-
 			@Override
 			public void start() {
-				
 				
 			}
 
 			@Override
 			public void update() {
-				
-				gameObject.rotate(Globals.getFloat("rotation"));
+				gameObject.setRotation(Globals.getFloat("rotation"));
+					
+			}
+
+			
+			
+		};
+		
+		b2.allocateObject(sp3);
+		sp3.addBehaviour(b2);
+		sp3.setTag("ene");
+		SimpleSpriteModeS sp4 = new SimpleSpriteModeS("img/car.png");
+		Behaviour<SimpleSprite> b3 = new Behaviour<SimpleSprite>(){
+			
+			
+			@Override
+			public void start() {
 				
 			}
-		};
-		b2.allocateObject(enemy);
-		enemy.addBehaviour(b2);
-		enemy.translate(0, 1.5f);
-		enemy.addCollider(new BoxCollider());
-		enemy.setTag("enemy");
 
-		addMSRenderable(enemy);
-		HudElement e = new HudElement( "img/ic_launcher.png");
+			@Override
+			public void update() {
+				gameObject.setRotation(Globals.getFloat("rotation"));
+					
+			}
+
+			
+			
+		};
+		b3.allocateObject(sp4);
+		sp4.addBehaviour(b3);
+		sp4.scale(0.4f, 0.3f);
+		sp4.translate(-6, 2);
+		Updater.addMSRenderable((ModeSevenObject) sp4);
+		Updater.addMSRenderable(sp3);
+		HudElement e = new HudElement("img/ic_launcher.png");
 		
 		e.scale(0.1f, 0.1f);
 		e.setPosition(0.9f, 0);
-		addHudElement(e);
+		addHudElement("gui",e);
 		changeMode();
+		
 		
 		start();
 	}

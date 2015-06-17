@@ -27,7 +27,7 @@ public class Rectangle {
 	public float getHeight() {
 		return height;
 	}
-	
+
 	
 
 }

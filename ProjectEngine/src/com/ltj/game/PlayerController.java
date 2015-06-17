@@ -7,7 +7,6 @@ import com.ltj.shared.engine.Behaviour;
 import com.ltj.shared.engine.Camera;
 import com.ltj.shared.engine.GameObject;
 import com.ltj.shared.engine.HudElement;
-import com.ltj.shared.engine.SheetSpriteModeS;
 import com.ltj.shared.engine.SimpleSpriteModeS;
 import com.ltj.shared.engine.SoundManager;
 
@@ -23,6 +22,7 @@ public class PlayerController extends Behaviour<SimpleSpriteModeS> {
 	public void start() {
 		gameObject.scale(0.5f, 0.5f);
 		sound = SoundManager.addShortClip("test.wav");
+		e = getHudElementByID("gui");
 	}
 
 	@Override
@@ -51,8 +51,9 @@ public class PlayerController extends Behaviour<SimpleSpriteModeS> {
 	public void onCollision(GameObject collider){
 		if (collider.compareTag("enemy")){
 			gameObject.translate(-xMovement, -yMovement);
-			gameObject.hide();
+			//gameObject.hide();
 			SoundManager.playShortClip(sound);
+			e.setRotation(90);
 		}
 	}
 	private void changeDirection() {
