@@ -40,13 +40,14 @@ public class JoglSpriteRenderer extends AbstractSpriteRenderer{
 		//convert to buffers
 		if (positionVBO == null){
 			positionVBO = JoglBufferHelper.arrayToBufferId(gl, vertices);
-			System.out.println("create");
+			aPositionLocation = gl.glGetAttribLocation(JoglRenderer.programId, A_POSITION);
+			gl.glEnableVertexAttribArray(aPositionLocation);
+			gl.glEnableVertexAttribArray(aTexCoordsLocation);
 		}
 		textureVBO = JoglBufferHelper.arrayToBufferId(gl, textureCoordinates);
 		
 		//get locations for shaders
 		uTextureLocation = gl.glGetUniformLocation(JoglRenderer.programId, U_TEX);
-		aPositionLocation = gl.glGetAttribLocation(JoglRenderer.programId, A_POSITION);
 		aTexCoordsLocation = gl.glGetAttribLocation(JoglRenderer.programId, A_TEX_COORDS);
 		
 	
@@ -58,22 +59,6 @@ public class JoglSpriteRenderer extends AbstractSpriteRenderer{
 			e.printStackTrace();
 		}
 		
-
-		//set active texturetype
-		gl.glActiveTexture(GL_TEXTURE0 + texNumber);
-		 
-		
-	    // Bind the texture to this unit.
-	    gl.glBindTexture(GL_TEXTURE_2D, mTextureDataHandle[0]);
-	 
-	    // Tell the texture uniform sampler to use this texture in the shader by binding to texture unit 
-	    gl.glUniform1i(uTextureLocation, texNumber);
-		
-		//enable vertex data
-		gl.glEnableVertexAttribArray(aPositionLocation);
-		gl.glEnableVertexAttribArray(aTexCoordsLocation);
-		gl.glVertexAttribPointer(aPositionLocation, COMPONENT_COUNT, GL_FLOAT, false, 0, 0);
-		gl.glVertexAttribPointer(aTexCoordsLocation , COMPONENT_COUNT, GL_FLOAT, false, 0, 0);
 	}
 	
 	public void render() {
@@ -96,11 +81,9 @@ public class JoglSpriteRenderer extends AbstractSpriteRenderer{
 	    gl.glUniform1i(uTextureLocation, texNumber);
 
 	    gl.glBindBuffer(GL_ARRAY_BUFFER, positionVBO[0]);
-		gl.glEnableVertexAttribArray(aPositionLocation);
 		gl.glVertexAttribPointer(aPositionLocation, 2, GL_FLOAT, false, 0,0);
 		
 		gl.glBindBuffer(GL_ARRAY_BUFFER, textureVBO[0]);
-		gl.glEnableVertexAttribArray(aTexCoordsLocation);
 		gl.glVertexAttribPointer(aTexCoordsLocation, 2, GL_FLOAT, false, 0,0);
 		
 		gl.glBindBuffer(GL_ARRAY_BUFFER, 0);
