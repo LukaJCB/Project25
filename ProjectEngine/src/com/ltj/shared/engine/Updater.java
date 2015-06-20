@@ -89,27 +89,8 @@ public abstract class Updater {
 			shMap.insert(r);
 		}
 		shMap.collideAll();
-//		qTree.clear();
-//		for (RenderObject r: allObjects){
-//			qTree.insert(r);
-//		}
-//		qTree.collideAll();
-		
-		
-//		List<RenderObject> returnObjects = new ArrayList<RenderObject>();
-//		for (int i = 0; i < allObjects.size(); i++) {
-//		  returnObjects.clear();
-//		  qTree.retrieve(returnObjects, allObjects.get(i));
-//		 
-//		  for (int x = 0; x < returnObjects.size(); x++) {
-//			  allObjects.get(i).checkCollision(allObjects.get(x));
-//		  }
-//		}
-		
-		
 //		for (int i = 0;i < allObjects.size(); i++){
 //			for (int j = i+1; j < allObjects.size(); j++){
-//				
 //				allObjects.get(i).checkCollision(allObjects.get(j));
 //			}
 //		}
