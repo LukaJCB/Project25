@@ -31,7 +31,9 @@ public class AndroidSpriteRenderer extends AbstractSpriteRenderer{
 		
 		
 		//convert to buffers
-		positionVBO = AndroidBufferHelper.arrayToBufferId(vertices);
+		if (positionVBO == null){
+			positionVBO = AndroidBufferHelper.arrayToBufferId(vertices);
+		}
 		textureVBO = AndroidBufferHelper.arrayToBufferId(textureCoordinates);
 		
 		//get locations for shaders

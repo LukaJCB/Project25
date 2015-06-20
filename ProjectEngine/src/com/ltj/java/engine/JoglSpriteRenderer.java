@@ -38,7 +38,10 @@ public class JoglSpriteRenderer extends AbstractSpriteRenderer{
 		this.gl = gl;
 
 		//convert to buffers
-		positionVBO = JoglBufferHelper.arrayToBufferId(gl, vertices);
+		if (positionVBO == null){
+			positionVBO = JoglBufferHelper.arrayToBufferId(gl, vertices);
+			System.out.println("create");
+		}
 		textureVBO = JoglBufferHelper.arrayToBufferId(gl, textureCoordinates);
 		
 		//get locations for shaders
