@@ -1,7 +1,7 @@
 uniform vec3 uColor;
 
-varying vTime;
+varying float vTime;
 
 void main(){
-	gl_FragColor = vec4(uColor / vTime,1.0);
+	gl_FragColor = vec4(uColor ,1.0);
 }

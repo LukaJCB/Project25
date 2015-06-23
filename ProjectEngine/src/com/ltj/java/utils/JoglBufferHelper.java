@@ -12,7 +12,7 @@ import com.jogamp.opengl.GL3;
 public class JoglBufferHelper {
 	private JoglBufferHelper(){}
 	
-	public static FloatBuffer arrayToBuffer(float[] arr){
+	private static FloatBuffer arrayToBuffer(float[] arr){
 		FloatBuffer buffer = ByteBuffer.allocateDirect(arr.length * 4).order(ByteOrder.nativeOrder()).asFloatBuffer();
 		buffer.put(arr).position(0);
 		return buffer;

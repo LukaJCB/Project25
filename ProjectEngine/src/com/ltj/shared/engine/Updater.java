@@ -31,6 +31,7 @@ public abstract class Updater {
 	private static ArrayList<RenderObject> allObjects;
 	private static ArrayList<ModeSevenObject> allMSObjects;
 	private static SpatialHashMap shMap;
+	private static ArrayList<ParticleEmitter> allParticleEmitters;
 
 	
 	
@@ -56,17 +57,27 @@ public abstract class Updater {
 		allObjects.add(r);
 		allMSObjects.add(r);
 	}
+	
+	public static void addParticleEmitter(ParticleEmitter p){
+		allParticleEmitters.add(p);
+	}
 
 	public Updater(){
 		//initialize Lists
 		allObjects = new ArrayList<RenderObject>();
 		allMSObjects = new ArrayList<ModeSevenObject>();
+		allParticleEmitters = new ArrayList<ParticleEmitter>();
 	}
 
 	public static List<RenderObject> getAllObjects() {
 		return allObjects;
 	}
 	
+	public static List<ParticleEmitter> getAllParticleEmitters() {
+		
+		return allParticleEmitters;
+	}
+
 	public static void update() {
 		ListIterator<RenderObject> i = allObjects.listIterator();
 		while (i.hasNext()){

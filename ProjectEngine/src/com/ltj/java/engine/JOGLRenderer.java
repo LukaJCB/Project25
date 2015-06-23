@@ -12,6 +12,7 @@ import com.ltj.shared.engine.Camera;
 import com.ltj.shared.engine.HeadsUpDisplay;
 import com.ltj.shared.engine.HudElement;
 import com.ltj.shared.engine.ModeSevenObject;
+import com.ltj.shared.engine.ParticleEmitter;
 import com.ltj.shared.engine.RenderObject;
 import com.ltj.shared.engine.Updater;
 
@@ -20,6 +21,8 @@ import static com.jogamp.opengl.GL.*;
 public abstract class JoglRenderer implements GLEventListener, KeyListener {
 
 	public static int programId;
+
+	public static int particleProgramId;
 
 	public static int uMatrixLocation;
 
@@ -33,11 +36,10 @@ public abstract class JoglRenderer implements GLEventListener, KeyListener {
 
 	private JoglUpdater updater;
 
-	private int alphaProgramId;
-
-	private int normalProgramId;
-
+	private int alphaProgramId, normalProgramId;
 	private HeadsUpDisplay hud;
+
+	private float pointSize;
 
 
 	
@@ -57,22 +59,25 @@ public abstract class JoglRenderer implements GLEventListener, KeyListener {
 
 		gl.glEnable(GL_BLEND);
 		gl.glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
-
+		
 		// get shader src
-		String vertexShaderSrc = JoglTextResourceReader.readTextFileFromResource("res/raw/vertex_shader.glsl");
-				
+		String vertexShaderSrc = JoglTextResourceReader.readTextFileFromResource("res/raw/vertex_shader.glsl");		
 		String fragmentShaderSrc = JoglTextResourceReader.readTextFileFromResource("res/raw/fragment_shader.glsl");
 		String alphaFragmentShaderSrc = JoglTextResourceReader.readTextFileFromResource("res/raw/alpha_fragment_shader.glsl");
+		String particleVertexShaderSrc = JoglTextResourceReader.readTextFileFromResource("res/raw/particle_vertex_shader.glsl");
+		String particleFragmentShaderSrc = JoglTextResourceReader.readTextFileFromResource("res/raw/particle_fragment_shader.glsl");
 		// compile shaders
 		int vertexShader = JoglShaderHelper.compileVertexShader(gl,vertexShaderSrc);
 		int fragmentShader = JoglShaderHelper.compileFragmentShader(gl,fragmentShaderSrc);
 		int alphaFragmentShader = JoglShaderHelper.compileFragmentShader(gl,alphaFragmentShaderSrc);
-
+		int particleVertexShader = JoglShaderHelper.compileVertexShader(gl, particleVertexShaderSrc);
+		int particleFragmentShader = JoglShaderHelper.compileFragmentShader(gl, particleFragmentShaderSrc);
+		
 		// link
-		normalProgramId = JoglShaderHelper.linkProgram(gl, vertexShader,
-				fragmentShader);
+		normalProgramId = JoglShaderHelper.linkProgram(gl, vertexShader,fragmentShader);
 		alphaProgramId = JoglShaderHelper.linkProgram(gl, vertexShader, alphaFragmentShader);
-
+		particleProgramId = JoglShaderHelper.linkProgram(gl, particleVertexShader, particleFragmentShader);
+		
 		programId = normalProgramId;
 		// use program
 		gl.glUseProgram(programId);
@@ -84,6 +89,9 @@ public abstract class JoglRenderer implements GLEventListener, KeyListener {
 		Camera.setLookAt(0, 0);
 		
 		hud = new HeadsUpDisplay();
+	
+		pointSize = 5;
+		gl.glPointSize(pointSize);
 	
 	}
 
@@ -105,9 +113,7 @@ public abstract class JoglRenderer implements GLEventListener, KeyListener {
 
 	private void setNormal() {
 		programId = normalProgramId;
-		gl.glUseProgram(normalProgramId);
 		gl.glDisable(GL_DEPTH_TEST);
-		gl.glUseProgram(programId);
 		Camera.setNormalMode();
 		for (ModeSevenObject s : Updater.getAllMSObjects()) {
 			s.setNormalMode();
@@ -117,7 +123,6 @@ public abstract class JoglRenderer implements GLEventListener, KeyListener {
 
 	private void setModeSeven() {
 		programId = alphaProgramId;
-		gl.glUseProgram(alphaProgramId);
 		gl.glEnable(GL_DEPTH_TEST);
 		gl.glDepthFunc(GL_LEQUAL);
 		gl.glDepthMask(true);
@@ -127,10 +132,6 @@ public abstract class JoglRenderer implements GLEventListener, KeyListener {
 			s.setModeSeven();
 		}
 		modeSeven = true;
-	}
-
-	public void dispose(GLAutoDrawable drawable) {
-
 	}
 
 	public void display(GLAutoDrawable drawable) {
@@ -144,6 +145,8 @@ public abstract class JoglRenderer implements GLEventListener, KeyListener {
 		}
 		
 		Updater.update();
+		
+		gl.glUseProgram(programId);
 		
 		//clear framebuffer
 		if (modeSeven){
@@ -160,8 +163,15 @@ public abstract class JoglRenderer implements GLEventListener, KeyListener {
 			r.render();
 		}
 		
+		gl.glUseProgram(particleProgramId);
+		
+		for (ParticleEmitter pe : Updater.getAllParticleEmitters()){
+			pe.render();
+		}
+		
 		gl.glClear(GL_DEPTH_BUFFER_BIT);
 
+		gl.glUseProgram(programId);
 		hud.render();
 		
 
@@ -187,6 +197,10 @@ public abstract class JoglRenderer implements GLEventListener, KeyListener {
 
 	public void keyPressed(KeyEvent e) {
 		updater.keyPressed(e);
+	}
+
+	public void dispose(GLAutoDrawable drawable) {
+	
 	}
 	
 }
