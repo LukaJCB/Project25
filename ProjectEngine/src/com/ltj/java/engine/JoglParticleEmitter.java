@@ -38,10 +38,11 @@ public class JoglParticleEmitter extends AbstractParticleEmitter {
 	
 	public void render(){
 		
+		
 		gl.glEnableVertexAttribArray(aDirectionVectorLocation);
 		gl.glEnableVertexAttribArray(aParticleStartTimeLocation);
-		gl.glUniform1f(uCurrentTimeLocation,  System.currentTimeMillis());
 		
+		gl.glUniform1f(uCurrentTimeLocation,  System.currentTimeMillis() - globalStartTime);
 		//set position uniform
 		gl.glUniform3f(uPositionLocation, getX(),getY(),getZ());
 		
@@ -62,10 +63,8 @@ public class JoglParticleEmitter extends AbstractParticleEmitter {
 		
 	}
 
-
 	@Override
-	public void addParticles(float dx, float dy, float dz,float particleStartTime, int count) {
-		super.addParticles(dx, dy, dz, particleStartTime, count);
+	public void recalculateVBOs() {
 		emitterVBO = JoglBufferHelper.arrayToBufferId(gl, particleDirections);
 		timeVBO = JoglBufferHelper.arrayToBufferId(gl, particleStartTimes);
 	}

@@ -52,10 +52,19 @@ public abstract class AbstractParticleEmitter implements ParticleEmitter {
 	}
 
 
+	public void addParticleExplosion(int count, float speed){
+		float rot = (float) (2 * Math.PI /count);
+		for (int i = 0; i < count;i++){
+			addParticle((float)Math.sin(i*rot)*speed, (float)Math.cos(i* rot)*speed, 0, System.currentTimeMillis() -globalStartTime);
+		}
+		recalculateVBOs();
+	}
+	
 	public void addParticles(float dx, float dy, float dz, float particleStartTime, int count){
 		for (int i = 0; i < count; i++) {
-			addParticle(dx,dy*(i%55)*0.3f,dz, particleStartTime);
+			addParticle(dx,dy,dz, particleStartTime -globalStartTime);
 		}
+		recalculateVBOs();
 	}
 
 
