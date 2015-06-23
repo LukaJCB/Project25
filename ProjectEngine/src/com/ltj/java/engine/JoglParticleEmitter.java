@@ -26,7 +26,8 @@ public class JoglParticleEmitter extends AbstractParticleEmitter {
 		aDirectionVectorLocation = gl.glGetAttribLocation(JoglRenderer.particleProgramId, A_DIRECTION);
 		aParticleStartTimeLocation = gl.glGetAttribLocation(JoglRenderer.particleProgramId, A_START_TIME);
 
-		emitterVBO = JoglBufferHelper.arrayToBufferId(gl, particles);
+		emitterVBO = JoglBufferHelper.arrayToBufferId(gl, particleDirections);
+		timeVBO = JoglBufferHelper.arrayToBufferId(gl, particleStartTimes);
 		
 		//set color uniform
 		gl.glUseProgram(JoglRenderer.particleProgramId);
@@ -37,11 +38,11 @@ public class JoglParticleEmitter extends AbstractParticleEmitter {
 	
 	public void render(){
 		
-		gl.glEnableVertexAttribArray(uPositionLocation);
+		gl.glEnableVertexAttribArray(aDirectionVectorLocation);
+		gl.glEnableVertexAttribArray(aParticleStartTimeLocation);
 		gl.glUniform1f(uCurrentTimeLocation,  System.currentTimeMillis());
 		
 		//set position uniform
-		gl.glUseProgram(JoglRenderer.particleProgramId);
 		gl.glUniform3f(uPositionLocation, getX(),getY(),getZ());
 		
 		float[] mMVPMatrix = new float[16]; 
@@ -49,14 +50,23 @@ public class JoglParticleEmitter extends AbstractParticleEmitter {
 		gl.glUniformMatrix4fv(uMatrixLocation, 1, false, mMVPMatrix, 0);
 		
 		gl.glBindBuffer(GL_ARRAY_BUFFER, emitterVBO[0]);
+		gl.glVertexAttribPointer(aDirectionVectorLocation, 3, GL_FLOAT,false, 0, 0);
 		
-		gl.glVertexAttribPointer(aDirectionVectorLocation, POSITION_COMPONENT_COUNT, GL_FLOAT,false, TOTAL_COMPONENT_COUNT * 4, 0);
-		gl.glVertexAttribPointer(aParticleStartTimeLocation,1,GL_FLOAT,false, TOTAL_COMPONENT_COUNT * 4, POSITION_COMPONENT_COUNT);
+		gl.glBindBuffer(GL_ARRAY_BUFFER, timeVBO[0]);
+		gl.glVertexAttribPointer(aParticleStartTimeLocation,1,GL_FLOAT,false, 0, 0);
 		
 		gl.glBindBuffer(GL_ARRAY_BUFFER, 0);
 		
 		//draw particles
 		gl.glDrawArrays(GL_POINTS, 0, currentParticleCount);
 		
+	}
+
+
+	@Override
+	public void addParticles(float dx, float dy, float dz,float particleStartTime, int count) {
+		super.addParticles(dx, dy, dz, particleStartTime, count);
+		emitterVBO = JoglBufferHelper.arrayToBufferId(gl, particleDirections);
+		timeVBO = JoglBufferHelper.arrayToBufferId(gl, particleStartTimes);
 	}
 }

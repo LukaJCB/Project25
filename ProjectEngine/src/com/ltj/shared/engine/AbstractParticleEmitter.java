@@ -22,11 +22,11 @@ public abstract class AbstractParticleEmitter implements ParticleEmitter {
 	
 
 	protected static final int POSITION_COMPONENT_COUNT = 3;
-	protected static final int TOTAL_COMPONENT_COUNT = POSITION_COMPONENT_COUNT + 1;
-	protected final float[] particles;
+	protected final float[] particleDirections, particleStartTimes;
 	protected int currentParticleCount;
 	protected long globalStartTime;
-	protected int[] emitterVBO;
+	protected int[] emitterVBO, timeVBO;
+	
 	private final int maxParticleCount;
 	private int nextParticle;
 	
@@ -34,7 +34,8 @@ public abstract class AbstractParticleEmitter implements ParticleEmitter {
 	private float x,y,z;
 	
 	public AbstractParticleEmitter(int maxParticleCount, float red, float green, float blue){
-		particles = new float[maxParticleCount * TOTAL_COMPONENT_COUNT];
+		particleDirections = new float[maxParticleCount * POSITION_COMPONENT_COUNT];
+		particleStartTimes = new float[maxParticleCount];
 		this.maxParticleCount = maxParticleCount;
 		
 		//set Matrix
@@ -53,7 +54,7 @@ public abstract class AbstractParticleEmitter implements ParticleEmitter {
 
 	public void addParticles(float dx, float dy, float dz, float particleStartTime, int count){
 		for (int i = 0; i < count; i++) {
-			addParticle(dx,dy*(i%15)*0.3f,dz, particleStartTime);
+			addParticle(dx,dy*(i%55)*0.3f,dz, particleStartTime);
 		}
 	}
 
@@ -88,20 +89,20 @@ public abstract class AbstractParticleEmitter implements ParticleEmitter {
 
 
 	private void addParticle(float dx, float dy, float dz, float particleStartTime) {
-		final int particleOffset = nextParticle * TOTAL_COMPONENT_COUNT;
+		final int particleOffset = nextParticle * POSITION_COMPONENT_COUNT;
 		int currentOffset = particleOffset;
-		nextParticle++;
 		if (currentParticleCount < maxParticleCount) {
 			currentParticleCount++;
 		}
+		particleDirections[currentOffset++] = dx;
+		particleDirections[currentOffset++] = dy;
+		particleDirections[currentOffset++] = dz;
+		particleStartTimes[nextParticle++] = particleStartTime;
+		
 		if (nextParticle == maxParticleCount) {
 			//Start over
 			nextParticle = 0;
 		}
-		particles[currentOffset++] = dx;
-		particles[currentOffset++] = dy;
-		particles[currentOffset++] = dz;
-		particles[currentOffset++] = particleStartTime;
 	}
 
 
