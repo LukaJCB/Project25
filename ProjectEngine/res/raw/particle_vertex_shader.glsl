@@ -10,5 +10,6 @@ varying float vTime;
 void main(){
 	vTime = uCurrentTime - aParticleStartTime;
 	vec3 currentPosition = uPosition + (aDirection * vTime);
+	gl_PointSize = 5.0;
 	gl_Position = uMatrix * vec4(currentPosition, 1.0);
 }

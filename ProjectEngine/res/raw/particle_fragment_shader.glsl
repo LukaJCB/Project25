@@ -1,5 +1,5 @@
+precision mediump float;
 uniform vec3 uColor;
-uniform float uCurrentTime;
 
 varying float vTime;
 

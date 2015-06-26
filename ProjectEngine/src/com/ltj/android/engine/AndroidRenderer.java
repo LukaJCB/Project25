@@ -16,6 +16,7 @@ import com.ltj.shared.engine.Camera;
 import com.ltj.shared.engine.HeadsUpDisplay;
 import com.ltj.shared.engine.HudElement;
 import com.ltj.shared.engine.ModeSevenObject;
+import com.ltj.shared.engine.ParticleEmitter;
 import com.ltj.shared.engine.RenderObject;
 import com.ltj.shared.engine.Updater;
 
@@ -31,14 +32,11 @@ import android.view.View;
 public abstract class AndroidRenderer implements Renderer{
 
 	
-	public static int programId;
-	
+	public static int programId,particleProgramId;
+
 	public static int uMatrixLocation;
 
 	public static Context context;
-
-	
-
 
 	private boolean modeSeven,changeMode;
 	
@@ -50,6 +48,7 @@ public abstract class AndroidRenderer implements Renderer{
 
 	private HeadsUpDisplay hud;
 
+	private float pointSize;
 	
 
 	public boolean onTouch(View v, MotionEvent event) {
@@ -80,15 +79,20 @@ public abstract class AndroidRenderer implements Renderer{
 		String vertexShaderSrc = AndroidTextResourceReader.readTextFileFromResource(context, R.raw.vertex_shader);
 		String fragmentShaderSrc = AndroidTextResourceReader.readTextFileFromResource(context, R.raw.fragment_shader);
 		String alphaFragmentShaderSrc = AndroidTextResourceReader.readTextFileFromResource(context,R.raw.alpha_fragment_shader);
+		String particleVertexShaderSrc = AndroidTextResourceReader.readTextFileFromResource(context, R.raw.particle_vertex_shader);
+		String particleFragmentShaderSrc = AndroidTextResourceReader.readTextFileFromResource(context, R.raw.particle_fragment_shader);
 		
 		// compile shaders
 		int vertexShader = AndroidShaderHelper.compileVertexShader(vertexShaderSrc);
 		int fragmentShader = AndroidShaderHelper.compileFragmentShader(fragmentShaderSrc);
 		int alphaFragmentShader = AndroidShaderHelper.compileFragmentShader(alphaFragmentShaderSrc);
+		int particleVertexShader = AndroidShaderHelper.compileVertexShader(particleVertexShaderSrc);
+		int particleFragmentShader = AndroidShaderHelper.compileFragmentShader(particleFragmentShaderSrc);
 		
-		//link
+		//link programs
 		normalProgramId = AndroidShaderHelper.linkProgram(vertexShader, fragmentShader);
-		alphaProgramId =AndroidShaderHelper.linkProgram( vertexShader, alphaFragmentShader);
+		alphaProgramId =AndroidShaderHelper.linkProgram(vertexShader, alphaFragmentShader);
+		particleProgramId = AndroidShaderHelper.linkProgram(particleVertexShader, particleFragmentShader);
 		
 		programId = normalProgramId;
 		//use program
@@ -97,6 +101,9 @@ public abstract class AndroidRenderer implements Renderer{
 		uMatrixLocation = glGetUniformLocation(programId, "uMatrix");
 		
 		hud = new HeadsUpDisplay();
+		
+		pointSize = 5;
+		
 	}
 
 	public void addHudElement(String key,HudElement element) {
@@ -129,6 +136,7 @@ public abstract class AndroidRenderer implements Renderer{
 			}
 			changeMode = false;
 		}
+		glUseProgram(programId);
 
 		Updater.update();
 		
@@ -146,10 +154,19 @@ public abstract class AndroidRenderer implements Renderer{
 		for(RenderObject r : Updater.getAllObjects()){
 			r.render();
 		}
+	
+		//render particles
+		glUseProgram(particleProgramId);
+		for (ParticleEmitter pe : Updater.getAllParticleEmitters()){
+			pe.render();
+		}
 		
+		//clear framebuffer and draw hud
 		glClear(GL_DEPTH_BUFFER_BIT);
-		
+		glUseProgram(programId);
 		hud.render();
+		
+	
 		
 		long timeDiff = System.currentTimeMillis() - beginTime;
 		if (timeDiff < renderTime){
@@ -182,7 +199,6 @@ public abstract class AndroidRenderer implements Renderer{
 
 	private void setNormal(){
 		programId = normalProgramId;
-		glUseProgram(programId);
 		glDisable(GL_DEPTH_TEST);
 		Log.w("depth: ", ""+glIsEnabled(GL_DEPTH_TEST));
 		Camera.setNormalMode();
@@ -197,7 +213,6 @@ public abstract class AndroidRenderer implements Renderer{
 	
 	private void setModeSeven(){
 		programId = alphaProgramId;
-		glUseProgram(alphaProgramId);
 		glEnable(GL_DEPTH_TEST);
 		glDepthFunc(GL_LEQUAL);
 		glDepthMask(true);
