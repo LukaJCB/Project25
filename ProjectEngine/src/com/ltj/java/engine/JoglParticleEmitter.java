@@ -46,6 +46,7 @@ public class JoglParticleEmitter extends AbstractParticleEmitter {
 		//set position uniform
 		gl.glUniform3f(uPositionLocation, getX(),getY(),getZ());
 		
+		
 		float[] mMVPMatrix = new float[16]; 
 		MatrixHelper.multiplyMM(mMVPMatrix, Camera.getProjectionViewMatrix(), getModelMatrix());
 		gl.glUniformMatrix4fv(uMatrixLocation, 1, false, mMVPMatrix, 0);

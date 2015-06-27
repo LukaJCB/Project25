@@ -115,6 +115,7 @@ public abstract class AbstractSpriteRenderer implements SpriteRenderer{
 		MatrixHelper.rotateM(getModelMatrix(), getRotation(), 0, 0, 1);
 		MatrixHelper.rotateM(getModelMatrix(),  rotationX, 1, 0, 0);
 		MatrixHelper.scaleM(getModelMatrix(),  getWidth(), getHeight(), 1);
+
 	}
 
 	protected float[] getModelMatrix() {

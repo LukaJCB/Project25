@@ -13,6 +13,7 @@ public abstract class AbstractSprite implements RenderObject {
 	private RenderObject parent;
 	private String tag;
 	protected SpriteRenderer renderer;
+	
 	@SuppressWarnings("unchecked")
 	protected void prepareClone(AbstractSprite o){
 		o.setTag(this.getTag());

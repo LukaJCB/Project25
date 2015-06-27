@@ -2,6 +2,7 @@ package com.ltj.shared.utils;
 
 
 
+
 public class MatrixHelper {
 	public static void perspectiveM(float[] m, float yFovInDegrees, float aspect,
 			float n, float f) {
@@ -260,7 +261,6 @@ public class MatrixHelper {
         sx *= rls;
         sy *= rls;
         sz *= rls;
-
      
         float ux = sy * fz - sz * fy;
         float uy = sz * fx - sx * fz;

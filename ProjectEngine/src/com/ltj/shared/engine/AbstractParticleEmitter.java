@@ -117,7 +117,7 @@ public abstract class AbstractParticleEmitter implements ParticleEmitter {
 
 	private void calcMatrix(){
 		MatrixHelper.setIdentityM(getModelMatrix());
-		MatrixHelper.translateM(getModelMatrix(), x,y,z);
+		MatrixHelper.translateM(modelMatrix, x,y,z);
 	}
 	
 	protected float[] getModelMatrix() {

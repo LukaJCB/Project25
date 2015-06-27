@@ -40,6 +40,7 @@ public class JoglShaderHelper {
 				return shaderObjectId;
 			} else {
 				//compilation failed
+				System.err.println("Compilation failed. Type: " + type);
 				gl.glDeleteShader(shaderObjectId);
 				
 				return 0;
@@ -49,7 +50,6 @@ public class JoglShaderHelper {
 			
 		} else {
 			//creation failed
-			
 			return 0;
 		}
 		
