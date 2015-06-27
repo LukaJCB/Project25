@@ -40,15 +40,15 @@ public class JoglSpriteRenderer extends AbstractSpriteRenderer{
 		//convert to buffers
 		if (positionVBO == null){
 			positionVBO = JoglBufferHelper.arrayToBufferId(gl, vertices);
+			//get locations for shaders
 			aPositionLocation = gl.glGetAttribLocation(JoglRenderer.programId, A_POSITION);
-			gl.glEnableVertexAttribArray(aPositionLocation);
-			gl.glEnableVertexAttribArray(aTexCoordsLocation);
 		}
-		textureVBO = JoglBufferHelper.arrayToBufferId(gl, textureCoordinates);
-		
-		//get locations for shaders
+
 		uTextureLocation = gl.glGetUniformLocation(JoglRenderer.programId, U_TEX);
+		textureVBO = JoglBufferHelper.arrayToBufferId(gl, textureCoordinates);
 		aTexCoordsLocation = gl.glGetAttribLocation(JoglRenderer.programId, A_TEX_COORDS);
+		
+
 		
 	
 		//load texture
@@ -59,9 +59,16 @@ public class JoglSpriteRenderer extends AbstractSpriteRenderer{
 			e.printStackTrace();
 		}
 		
+		
+
+		
+		
 	}
 	
 	public void render() {
+		
+		gl.glEnableVertexAttribArray(aPositionLocation);
+		gl.glEnableVertexAttribArray(aTexCoordsLocation);
 		
 		float[] mMVP = new float[16];
 		
