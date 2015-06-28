@@ -16,9 +16,11 @@ import com.ltj.shared.engine.Camera;
 import com.ltj.shared.engine.HeadsUpDisplay;
 import com.ltj.shared.engine.HudElement;
 import com.ltj.shared.engine.ModeSevenObject;
+import com.ltj.shared.engine.OrthoRenderObject;
 import com.ltj.shared.engine.ParticleEmitter;
 import com.ltj.shared.engine.RenderObject;
 import com.ltj.shared.engine.Updater;
+import com.sun.org.apache.xpath.internal.operations.Or;
 
 
 import android.content.Context;
@@ -115,6 +117,7 @@ public abstract class AndroidRenderer implements Renderer{
 		glViewport(0,0,width,height);
 		
 		hud.setDimensions(width,height);
+		Updater.setDimensions(width, height);
 		
 		Camera.createPerspective(height, width);
 		Camera.createOrthographic(height, width);
@@ -149,6 +152,9 @@ public abstract class AndroidRenderer implements Renderer{
 			}
 		} else {
 			glClear(GL_COLOR_BUFFER_BIT);
+			for (OrthoRenderObject r : Updater.getAllOrthoRenderObjects()){
+				r.render();
+			}
 		}
 		
 		for(RenderObject r : Updater.getAllObjects()){
@@ -160,10 +166,10 @@ public abstract class AndroidRenderer implements Renderer{
 		for (ParticleEmitter pe : Updater.getAllParticleEmitters()){
 			pe.render();
 		}
+		glUseProgram(programId);
 		
 		//clear framebuffer and draw hud
 		glClear(GL_DEPTH_BUFFER_BIT);
-		glUseProgram(programId);
 		hud.render();
 		
 	
