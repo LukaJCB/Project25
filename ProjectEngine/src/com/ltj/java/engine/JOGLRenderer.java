@@ -12,6 +12,7 @@ import com.ltj.shared.engine.Camera;
 import com.ltj.shared.engine.HeadsUpDisplay;
 import com.ltj.shared.engine.HudElement;
 import com.ltj.shared.engine.ModeSevenObject;
+import com.ltj.shared.engine.OrthoRenderObject;
 import com.ltj.shared.engine.ParticleEmitter;
 import com.ltj.shared.engine.RenderObject;
 import com.ltj.shared.engine.Updater;
@@ -87,7 +88,6 @@ public abstract class JoglRenderer implements GLEventListener, KeyListener {
 		
 		
 		Camera.setLookAt(0, 0);
-		
 		hud = new HeadsUpDisplay();
 	
 		pointSize = 5;
@@ -135,6 +135,7 @@ public abstract class JoglRenderer implements GLEventListener, KeyListener {
 	}
 
 	public void display(GLAutoDrawable drawable) {
+		
 		if (changeMode){
 			if (modeSeven){
 				setNormal();
@@ -157,6 +158,9 @@ public abstract class JoglRenderer implements GLEventListener, KeyListener {
 			}
 		} else {
 			gl.glClear(GL_COLOR_BUFFER_BIT);
+			for (OrthoRenderObject r : Updater.getAllOrthoRenderObjects()){
+				r.render();
+			}
 		}
 
 		for(RenderObject r : Updater.getAllObjects()){
@@ -168,13 +172,12 @@ public abstract class JoglRenderer implements GLEventListener, KeyListener {
 		for (ParticleEmitter pe : Updater.getAllParticleEmitters()){
 			pe.render();
 		}
+		gl.glUseProgram(programId);
 		
 		gl.glClear(GL_DEPTH_BUFFER_BIT);
 
-		gl.glUseProgram(programId);
 		hud.render();
 		
-
 	}
 
 	public void reshape(GLAutoDrawable drawable, int x, int y, int width,
@@ -182,6 +185,7 @@ public abstract class JoglRenderer implements GLEventListener, KeyListener {
 		gl.glViewport(x, y, width, height);
 
 		hud.setDimensions(width,height);
+		Updater.setDimensions(width, height);
 		
 		Camera.createPerspective(height, width);
 		Camera.createOrthographic(height, width);

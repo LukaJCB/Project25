@@ -32,9 +32,14 @@ public abstract class Updater {
 	private static ArrayList<ModeSevenObject> allMSObjects;
 	private static SpatialHashMap shMap;
 	private static ArrayList<ParticleEmitter> allParticleEmitters;
+	private static ArrayList<OrthoRenderObject> allOrthoRenderObjects;
 
 	
 	
+	public static ArrayList<OrthoRenderObject> getAllOrthoRenderObjects() {
+		return allOrthoRenderObjects;
+	}
+
 	public static void flush(ArrayList<RenderObject> objects,ArrayList<ModeSevenObject> mSObjects ) {
 		for (RenderObject r: allObjects){
 			r.clear();
@@ -61,12 +66,16 @@ public abstract class Updater {
 	public static void addParticleEmitter(ParticleEmitter p){
 		allParticleEmitters.add(p);
 	}
+	public static void addOrthoRenderObject(OrthoRenderObject o){
+		allOrthoRenderObjects.add(o);
+	}
 
 	public Updater(){
 		//initialize Lists
 		allObjects = new ArrayList<RenderObject>();
 		allMSObjects = new ArrayList<ModeSevenObject>();
 		allParticleEmitters = new ArrayList<ParticleEmitter>();
+		allOrthoRenderObjects = new ArrayList<OrthoRenderObject>();
 	}
 
 	public static List<RenderObject> getAllObjects() {
@@ -79,8 +88,8 @@ public abstract class Updater {
 	}
 
 	public static void update() {
-
 		checkCollisions();
+		
 		ListIterator<RenderObject> i = allObjects.listIterator();
 		while (i.hasNext()){
 			RenderObject r = i.next();
@@ -90,9 +99,16 @@ public abstract class Updater {
 				r.update();
 			}
 		}
-
 		
 		Camera.calcPVMatrix();
+	}
+	
+	public static void setDimensions(int width, int height) {
+		for (OrthoRenderObject r : allOrthoRenderObjects){
+			
+			r.setScreenDimensions(width, height);
+		}
+		
 	}
 	private static void checkCollisions() {
 		
