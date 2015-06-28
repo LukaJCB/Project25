@@ -40,18 +40,21 @@ public class SpatialHashMap {
 					if (topBot){
 						map[left][bottom].add(sprite);
 					} else {
-						map[left][bottom].add(sprite);
-						map[left][top].add(sprite);
+						for (int i = bottom; i <= top;i++){
+							map[left][i].add(sprite);
+						}
 					}
 				} else {
 					if (topBot){
-						map[left][bottom].add(sprite);
-						map[right][bottom].add(sprite);
+						for (int i = left; i <= right;i++){
+							map[i][bottom].add(sprite);
+						}
 					} else {
-						map[left][bottom].add(sprite);
-						map[right][bottom].add(sprite);
-						map[left][top].add(sprite);
-						map[right][top].add(sprite);
+						for (int i = left; i <= right;i++){
+							for (int j = bottom; j <= top;j++){
+								map[i][j].add(sprite);
+							}
+						}
 					}
 				}
 			}

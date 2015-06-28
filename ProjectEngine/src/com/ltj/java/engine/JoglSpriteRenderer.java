@@ -44,13 +44,11 @@ public class JoglSpriteRenderer extends AbstractSpriteRenderer{
 			aPositionLocation = gl.glGetAttribLocation(JoglRenderer.programId, A_POSITION);
 		}
 
-		uTextureLocation = gl.glGetUniformLocation(JoglRenderer.programId, U_TEX);
 		textureVBO = JoglBufferHelper.arrayToBufferId(gl, textureCoordinates);
+		uTextureLocation = gl.glGetUniformLocation(JoglRenderer.programId, U_TEX);
 		aTexCoordsLocation = gl.glGetAttribLocation(JoglRenderer.programId, A_TEX_COORDS);
 		
 
-		
-	
 		//load texture
 		try {
 			mTextureDataHandle = JoglTextureHelper.loadTexture(gl, path);
@@ -58,10 +56,6 @@ public class JoglSpriteRenderer extends AbstractSpriteRenderer{
 		}  catch (IOException e) {
 			e.printStackTrace();
 		}
-		
-		
-
-		
 		
 	}
 	

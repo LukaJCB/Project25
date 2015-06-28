@@ -79,6 +79,8 @@ public abstract class Updater {
 	}
 
 	public static void update() {
+
+		checkCollisions();
 		ListIterator<RenderObject> i = allObjects.listIterator();
 		while (i.hasNext()){
 			RenderObject r = i.next();
@@ -90,7 +92,6 @@ public abstract class Updater {
 		}
 
 		
-		checkCollisions();
 		Camera.calcPVMatrix();
 	}
 	private static void checkCollisions() {
@@ -128,7 +129,7 @@ public abstract class Updater {
 		for (RenderObject r : allObjects){
 			r.start();
 		}
-		shMap = new SpatialHashMap(10, 10,collisionZone.getWidth(),collisionZone.getHeight(),collisionZone.getX(),collisionZone.getY());
+		shMap = new SpatialHashMap(5,5,collisionZone.getWidth(),collisionZone.getHeight(),collisionZone.getX(),collisionZone.getY());
 	}
 
 
