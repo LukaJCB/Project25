@@ -2,6 +2,11 @@ package com.ltj.shared.engine;
 
 import java.util.ArrayList;
 
+/**
+ * This class acts as a Facade for the GameObjectController and Renderers.
+ * @author Luka
+ *
+ */
 public abstract class AbstractSprite implements RenderObject {
 
 
@@ -22,6 +27,7 @@ public abstract class AbstractSprite implements RenderObject {
 		if(this.getBehaviourName()!= null){
 			o.addBehaviourName(this.getBehaviourName());
 			try {
+				//get new instance of same behaviour class
 				Class<?> c = Class.forName(o.getBehaviourName());
 				o.addBehaviour((Behaviour<? extends GameObject>) c.newInstance());
 
@@ -106,6 +112,7 @@ public abstract class AbstractSprite implements RenderObject {
 
 	public void translate(float dx, float dy) {
 		renderer.translate(dx, dy);
+		//translate children as well
 		if (childList != null){
 			for (GameObject r : childList){
 				r.translate(dx, dy);
@@ -118,6 +125,7 @@ public abstract class AbstractSprite implements RenderObject {
 
 	public void rotate(float deg) {
 		renderer.rotate(deg);
+		//rotate children as well
 		if (childList != null){
 			for (GameObject r : childList){
 				r.rotate(deg);
@@ -136,6 +144,7 @@ public abstract class AbstractSprite implements RenderObject {
 
 	public void scale(float sx, float sy) {
 		renderer.scale(sx, sy);
+		//scale children as well
 		if (childList != null){
 			for (GameObject r : childList){
 				r.scale(sx, sy);

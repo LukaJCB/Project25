@@ -26,8 +26,11 @@ public abstract class Behaviour<T extends GameObject> {
 		try {
 			Method m = obj.getClass().getMethod("getBehaviour");
 			
+			//get behaviour object
 			Behaviour<? extends GameObject> b = (Behaviour<? extends GameObject>) m.invoke(obj);
 			Method msg;
+			
+			//get method object
 			if (params.length > 0){
 				Class<?>[] classes = new Class<?>[params.length];
 				for (int i = 0; i < params.length;i++){
@@ -38,6 +41,7 @@ public abstract class Behaviour<T extends GameObject> {
 				msg = b.getClass().getMethod(method);
 			}
 			msg.setAccessible(true);
+			//execute method on behaviour object
 			msg.invoke(b, params);
 		} catch (NoSuchMethodException e) {
 			e.printStackTrace();
@@ -60,7 +64,8 @@ public abstract class Behaviour<T extends GameObject> {
 	}
 	
 	public final GameObject createNewGameObject(GameObject obj, float x, float y, float rot){
-		GameObject o = obj;
+		//clone object and set Pos and Rotation
+		GameObject o = obj.cloneObject();
 		o.setPosition(x, y);
 		o.setRotation(rot);
 		Updater.addRenderable((RenderObject) o);

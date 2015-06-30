@@ -61,6 +61,8 @@ public class JoglSpriteRenderer extends AbstractSpriteRenderer{
 	
 	public void setTexture(int column, int row){
 		
+		//set the row and column of the sprite
+		
 		row = (int) ((1.0f/rowSize)- row-1);
 		
 		textureCoordinates[0] = (column+1) * columnSize;
@@ -72,6 +74,7 @@ public class JoglSpriteRenderer extends AbstractSpriteRenderer{
 		textureCoordinates[6] = column * columnSize;
 		textureCoordinates[5] = (row+1) * rowSize;
 		
+		//retransmit to GPU
 		textureVBO = JoglBufferHelper.arrayToBufferId(gl, textureCoordinates);
 		
 	}
@@ -83,6 +86,7 @@ public class JoglSpriteRenderer extends AbstractSpriteRenderer{
 		textureCoordinates[2] = horizontal;
 		textureCoordinates[5] = vertical;
 		
+		//retransmit to GPU
 		textureVBO = JoglBufferHelper.arrayToBufferId(gl, textureCoordinates);
 	}
 
@@ -108,15 +112,16 @@ public class JoglSpriteRenderer extends AbstractSpriteRenderer{
 		//specify uniform matrix
 		gl.glUniformMatrix4fv(JoglRenderer.uMatrixLocation, 1, false,mMVP, 0);
 		
-		//set active texturetype
+		//set active texture
 		gl.glActiveTexture(GL_TEXTURE0 + texNumber);
 		
-		 // Bind the texture to this unit.
+		 // Bind the texture to this unit
 	    gl.glBindTexture(GL_TEXTURE_2D, mTextureDataHandle[0]);
 	    
-	    // Tell the texture uniform sampler to use this texture in the shader.
+	    // Tell the texture uniform sampler to use this texture in the shader
 	    gl.glUniform1i(uTextureLocation, texNumber);
 
+	    //bind VBOs
 	    gl.glBindBuffer(GL_ARRAY_BUFFER, positionVBO[0]);
 		gl.glVertexAttribPointer(aPositionLocation, 2, GL_FLOAT, false, 0,0);
 		

@@ -34,6 +34,7 @@ public abstract class AbstractSpriteRenderer implements SpriteRenderer {
 		//set Matrix
 		MatrixHelper.setIdentityM(modelMatrix);
 
+		//set base values
 		x = y = rotation = 0;
 		height = 1;
 		width = 1;
@@ -111,6 +112,7 @@ public abstract class AbstractSpriteRenderer implements SpriteRenderer {
 
 
 	private void calcMatrix(){
+		//multiply all matrices together
 		MatrixHelper.setIdentityM(getModelMatrix());
 		MatrixHelper.translateM(getModelMatrix(),  getX(), getY(), z);
 		MatrixHelper.rotateM(getModelMatrix(), getRotation(), 0, 0, 1);
