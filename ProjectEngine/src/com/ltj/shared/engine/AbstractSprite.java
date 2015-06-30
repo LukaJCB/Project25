@@ -190,6 +190,11 @@ public abstract class AbstractSprite implements RenderObject {
 	}
 	
 	@Override
+	public void show(){
+		hidden = false;
+	}
+	
+	@Override
 	public void destroy() {
 		destroyed = true;
 		clear();

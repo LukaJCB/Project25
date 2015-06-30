@@ -20,7 +20,6 @@ import com.ltj.shared.engine.OrthoRenderObject;
 import com.ltj.shared.engine.ParticleEmitter;
 import com.ltj.shared.engine.RenderObject;
 import com.ltj.shared.engine.Updater;
-import com.sun.org.apache.xpath.internal.operations.Or;
 
 
 import android.content.Context;

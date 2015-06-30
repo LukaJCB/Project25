@@ -21,4 +21,5 @@ public interface GameObject {
 	GameObject getParent();
 	Behaviour<? extends GameObject> getBehaviour();
 	GameObject cloneObject();
+	void show();
 }
