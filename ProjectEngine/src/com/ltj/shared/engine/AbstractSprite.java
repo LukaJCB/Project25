@@ -5,13 +5,10 @@ import java.util.ArrayList;
 public abstract class AbstractSprite implements RenderObject {
 
 
-	private Behaviour<? extends GameObject> behaviour;
-	private String behaviourName;
-	private boolean destroyed, hidden;
-	private ArrayList<Collider> colliders;
-	private ArrayList<RenderObject> childList;
-	private RenderObject parent;
+	private GameObjectController controller = new GameObjectController(this);
+	private ArrayList<GameObject> childList;
 	private String tag;
+	private boolean destroyed;
 	protected SpriteRenderer renderer;
 	
 	@SuppressWarnings("unchecked")
@@ -39,10 +36,78 @@ public abstract class AbstractSprite implements RenderObject {
 		o.start();
 	}
 	
+	public void update() {
+		controller.update();
+	}
+
+	public void start() {
+		controller.start();
+	}
+
+	public void checkCollision(RenderObject object) {
+		controller.checkCollision(object);
+	}
+
+	public void addBehaviour(Behaviour<? extends GameObject> b) {
+		controller.addBehaviour(b);
+	}
+
+	public Behaviour<? extends GameObject> getBehaviour() {
+		return controller.getBehaviour();
+	}
+
+	public void addCollider(Collider c) {
+		controller.addCollider(c);
+	}
+
+	public Collider getCollider(int index) {
+		return controller.getCollider(index);
+	}
+
+	public ArrayList<Collider> getColliders() {
+		return controller.getColliders();
+	}
+
+	public void onCollisionEnter(GameObject collider) {
+		controller.onCollisionEnter(collider);
+	}
+
+	public void onCollision(GameObject collider) {
+		controller.onCollision(collider);
+	}
+
+	public void onCollisionExit(GameObject collider) {
+		controller.onCollisionExit(collider);
+	}
+
+	public void onChildCollisionEnter(GameObject child, GameObject collider) {
+		controller.onChildCollisionEnter(child, collider);
+	}
+
+	public void onChildCollision(GameObject child, GameObject collider) {
+		controller.onChildCollision(child, collider);
+	}
+
+	public void onChildCollisionExit(GameObject child, GameObject collider) {
+		controller.onChildCollisionExit(child, collider);
+	}
+
+	public void addBehaviourName(String name) {
+		controller.addBehaviourName(name);
+	}
+
+	public String getBehaviourName() {
+		return controller.getBehaviourName();
+	}
+
+	public boolean equals(Object obj) {
+		return controller.equals(obj);
+	}
+
 	public void translate(float dx, float dy) {
 		renderer.translate(dx, dy);
 		if (childList != null){
-			for (RenderObject r : childList){
+			for (GameObject r : childList){
 				r.translate(dx, dy);
 			}
 		}
@@ -54,7 +119,7 @@ public abstract class AbstractSprite implements RenderObject {
 	public void rotate(float deg) {
 		renderer.rotate(deg);
 		if (childList != null){
-			for (RenderObject r : childList){
+			for (GameObject r : childList){
 				r.rotate(deg);
 			}
 		}
@@ -72,7 +137,7 @@ public abstract class AbstractSprite implements RenderObject {
 	public void scale(float sx, float sy) {
 		renderer.scale(sx, sy);
 		if (childList != null){
-			for (RenderObject r : childList){
+			for (GameObject r : childList){
 				r.scale(sx, sy);
 			}
 		}
@@ -122,76 +187,25 @@ public abstract class AbstractSprite implements RenderObject {
 
 	
 
-	public void start(){
-		if (behaviour != null){
-			behaviour.start();
-		}
-	}
-
-	@Override
-	public void update() {
-		if (behaviour != null && !hidden){
-			behaviour.update();
-		}
-	}
-
-	public void checkCollision(RenderObject object) {
-		if (hidden || object == this || object == parent || object.getParent() == this){
-			//objects are related
-			return;
-		}
-
-		if (this.colliders != null && object.getColliders() != null){ 
-			for (Collider collider : colliders){
-				for (Collider objCollider : object.getColliders()){
-					if (collider.getBottom(getY(),getHeight()) < objCollider.getTop(object.getY(),object.getHeight()) &&
-							collider.getTop(getY(),getHeight()) > objCollider.getBottom( object.getY(),object.getHeight()) &&
-							collider.getRight(getX(),getWidth()) > objCollider.getLeft(object.getX(), object.getWidth()) &&
-							collider.getLeft(getX(),getWidth()) < objCollider.getRight(object.getX(), object.getWidth())){
-
-						onCollision(object);
-						object.onCollision(this);
-						return;
-					}
-				}
-			}
-
-		} 
-
-	}
-
-	@Override
-	public void addBehaviour(Behaviour<? extends GameObject> b){
-		behaviour = b;
-	}
-	@Override
-	public Behaviour<? extends GameObject> getBehaviour() {
-		return behaviour;
-	}
-
-	@Override
-	public void addCollider(Collider c){
-		if (colliders == null){
-			colliders = new ArrayList<Collider>();
-		}
-		colliders.add(c);
-	}
 
 	@Override
 	public void render() {
-		if (!hidden){
-			renderer.render();
-		}
+		renderer.render();
 	}
 
 	@Override
-	public void hide() {
-		hidden = true;
+	public boolean isRendererDisabled() {
+		return renderer.isDisabled();
 	}
-	
+
 	@Override
-	public void show(){
-		hidden = false;
+	public void setRendererDisabled(boolean rendererDisabled) {
+		renderer.setDisabled(rendererDisabled);
+	}
+
+	@Override
+	public boolean isControllerDisabled() {
+		return controller.isDisabled();
 	}
 	
 	@Override
@@ -202,92 +216,8 @@ public abstract class AbstractSprite implements RenderObject {
 
 	
 	@Override
-	public void clear() {
-		behaviour.allocateObject(null);
-		behaviour = null;
-		renderer.clear();
-	}
-
-	@Override
 	public boolean isDestroyed() {
 		return destroyed;
-	}
-
-	@Override
-	public Collider getCollider(int index) {
-		return colliders.get(index);
-	}
-	
-	@Override
-	public ArrayList<Collider> getColliders(){
-		return colliders;
-	}
-	
-	public void addBehaviourName(String name){
-		behaviourName = name;
-	}
-	
-	public String getBehaviourName() {
-		return behaviourName;
-	}
-
-	@Override
-	public void onCollisionEnter(GameObject collider) {
-		if (parent != null){
-			parent.onChildCollisionEnter(this,collider);
-		}
-		if (behaviour != null){
-			behaviour.onCollisionEnter(collider);
-		}
-
-	}
-
-	@Override
-	public void onCollision(GameObject collider) {
-
-		if (parent != null){
-			parent.onChildCollision(this,collider);
-		}
-		if (behaviour != null){
-			behaviour.onCollision(collider);
-		}
-
-	}
-
-
-	public void onCollisionExit(GameObject collider) {
-		if (parent != null){
-			parent.onChildCollisionExit(this,collider);
-		}
-		if (behaviour != null){
-			behaviour.onCollisionExit(collider);
-		}
-	
-	}
-
-	@Override
-	public void onChildCollisionEnter(GameObject child,GameObject collider) {
-		if (behaviour != null){
-			behaviour.onChildCollisionEnter(collider);
-		}
-		
-	}
-
-	
-	@Override
-	public void onChildCollision(GameObject child,GameObject collider) {
-		if (behaviour != null){
-			behaviour.onChildCollision(child,collider);
-		}
-		
-	}
-
-
-	@Override 
-	public void onChildCollisionExit(GameObject child,GameObject collider){
-		if (behaviour != null){
-			behaviour.onChildCollisionExit(child,collider);
-		}
 	}
 
 	@Override
@@ -309,19 +239,29 @@ public abstract class AbstractSprite implements RenderObject {
 
 
 	@Override
-	public RenderObject getParent() {
-		return parent;
-	}
-
-	public void setParent(RenderObject parent) {
-		this.parent = parent;
-		parent.addChild(this);
+	public void setControllerDisabled(boolean controllerDisabled) {
+		controller.setDisabled(controllerDisabled);
 	}
 
 	@Override
-	public void addChild(RenderObject child) {
+	public void clear() {
+		controller.clear();
+		renderer.clear();
+	}
+
+	@Override
+	public RenderObject getParent() {
+		return controller.getParent();
+	}
+
+	public void setParent(RenderObject parent) {
+		controller.setParent(parent);
+	}
+
+	@Override
+	public void addChild(GameObject child) {
 		if (childList == null){
-			childList = new ArrayList<RenderObject>();	
+			childList = new ArrayList<GameObject>();	
 		} 
 		childList.add(child);
 		

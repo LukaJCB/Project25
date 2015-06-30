@@ -7,7 +7,7 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 
 @SuppressWarnings("unchecked")
-public abstract class Behaviour<T extends RenderObject> {
+public abstract class Behaviour<T extends GameObject> {
 	
 	private static HashMap<String, Behaviour<? extends GameObject>> behaviours = new HashMap<String,Behaviour<? extends GameObject>>();
 	
@@ -17,14 +17,15 @@ public abstract class Behaviour<T extends RenderObject> {
 	
 	protected T gameObject;
 	
-	public final void allocateObject(T renderObject){
-		this.gameObject = renderObject;
+	public final void allocateObject(GameObject renderObject){
+		this.gameObject = (T) renderObject;
 	}
 	
 	
 	public final void sendMessage(GameObject obj,String method, Object... params){
 		try {
 			Method m = obj.getClass().getMethod("getBehaviour");
+			
 			Behaviour<? extends GameObject> b = (Behaviour<? extends GameObject>) m.invoke(obj);
 			Method msg;
 			if (params.length > 0){
@@ -59,9 +60,9 @@ public abstract class Behaviour<T extends RenderObject> {
 	}
 	
 	public final GameObject createNewGameObject(GameObject obj, float x, float y, float rot){
-		GameObject o = obj.cloneObject();
-		o.translate(x, y);
-		o.rotate(rot);
+		GameObject o = obj;
+		o.setPosition(x, y);
+		o.setRotation(rot);
 		Updater.addRenderable((RenderObject) o);
 		return o;
 	}

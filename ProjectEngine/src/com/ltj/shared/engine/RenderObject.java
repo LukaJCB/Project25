@@ -12,7 +12,7 @@ public interface RenderObject extends GameObject {
 	void addCollider(Collider c);
 	Collider getCollider(int index);
 	ArrayList<Collider> getColliders();
-	void addChild(RenderObject child);
+	void addChild(GameObject child);
 	void onCollisionEnter(GameObject collider);
 	void onCollision(GameObject collider);
 	void onCollisionExit(GameObject collider);

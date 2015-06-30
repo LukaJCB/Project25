@@ -124,4 +124,21 @@ public class EmptyRenderer implements SpriteRenderer {
 		
 	}
 
+	@Override
+	public void draw() {
+		
+		
+	}
+
+	@Override
+	public void setDisabled(boolean disabled) {
+		//do nothing
+		
+	}
+
+	@Override
+	public boolean isDisabled() {
+		return false;
+	}
+
 }

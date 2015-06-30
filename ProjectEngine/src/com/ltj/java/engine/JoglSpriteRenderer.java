@@ -59,45 +59,6 @@ public class JoglSpriteRenderer extends AbstractSpriteRenderer{
 		
 	}
 	
-	public void render() {
-		
-		gl.glEnableVertexAttribArray(aPositionLocation);
-		gl.glEnableVertexAttribArray(aTexCoordsLocation);
-		
-		float[] mMVP = new float[16];
-		
-		//calculate MVP
-		MatrixHelper.multiplyMM(mMVP,Camera.getProjectionViewMatrix(), getModelMatrix());
-		
-		//specify uniform matrix
-		gl.glUniformMatrix4fv(JoglRenderer.uMatrixLocation, 1, false,mMVP, 0);
-		
-		//set active texturetype
-		gl.glActiveTexture(GL_TEXTURE0 + texNumber);
-		
-		 // Bind the texture to this unit.
-	    gl.glBindTexture(GL_TEXTURE_2D, mTextureDataHandle[0]);
-	    
-	    // Tell the texture uniform sampler to use this texture in the shader.
-	    gl.glUniform1i(uTextureLocation, texNumber);
-
-	    gl.glBindBuffer(GL_ARRAY_BUFFER, positionVBO[0]);
-		gl.glVertexAttribPointer(aPositionLocation, 2, GL_FLOAT, false, 0,0);
-		
-		gl.glBindBuffer(GL_ARRAY_BUFFER, textureVBO[0]);
-		gl.glVertexAttribPointer(aTexCoordsLocation, 2, GL_FLOAT, false, 0,0);
-		
-		gl.glBindBuffer(GL_ARRAY_BUFFER, 0);
-		
-		//draw
-		gl.glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);  
-	
-	}
-	
-
-	
-	
-
 	public void setTexture(int column, int row){
 		
 		row = (int) ((1.0f/rowSize)- row-1);
@@ -131,5 +92,42 @@ public class JoglSpriteRenderer extends AbstractSpriteRenderer{
 		gl.glDeleteTextures(1, mTextureDataHandle, 0);
 		gl.glDeleteBuffers(1, positionVBO, 0);
 		gl.glDeleteBuffers(1, textureVBO, 0);
+	}
+
+	@Override
+	public void draw() {
+
+		gl.glEnableVertexAttribArray(aPositionLocation);
+		gl.glEnableVertexAttribArray(aTexCoordsLocation);
+		
+		float[] mMVP = new float[16];
+		
+		//calculate MVP
+		MatrixHelper.multiplyMM(mMVP,Camera.getProjectionViewMatrix(), getModelMatrix());
+		
+		//specify uniform matrix
+		gl.glUniformMatrix4fv(JoglRenderer.uMatrixLocation, 1, false,mMVP, 0);
+		
+		//set active texturetype
+		gl.glActiveTexture(GL_TEXTURE0 + texNumber);
+		
+		 // Bind the texture to this unit.
+	    gl.glBindTexture(GL_TEXTURE_2D, mTextureDataHandle[0]);
+	    
+	    // Tell the texture uniform sampler to use this texture in the shader.
+	    gl.glUniform1i(uTextureLocation, texNumber);
+
+	    gl.glBindBuffer(GL_ARRAY_BUFFER, positionVBO[0]);
+		gl.glVertexAttribPointer(aPositionLocation, 2, GL_FLOAT, false, 0,0);
+		
+		gl.glBindBuffer(GL_ARRAY_BUFFER, textureVBO[0]);
+		gl.glVertexAttribPointer(aTexCoordsLocation, 2, GL_FLOAT, false, 0,0);
+		
+		gl.glBindBuffer(GL_ARRAY_BUFFER, 0);
+		
+		//draw
+		gl.glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);  
+	
+		
 	}
 }

@@ -4,7 +4,7 @@ package com.ltj.shared.engine;
 import com.ltj.shared.engine.SpriteRenderer;
 import com.ltj.shared.utils.MatrixHelper;
 
-public abstract class AbstractSpriteRenderer implements SpriteRenderer{
+public abstract class AbstractSpriteRenderer implements SpriteRenderer {
 	
 	protected final static float[] vertices = {
 			0.5f, 0.5f,
@@ -19,6 +19,7 @@ public abstract class AbstractSpriteRenderer implements SpriteRenderer{
 	protected static int aPositionLocation;
 	protected static int[] positionVBO;
 	protected int texNumber;
+	private boolean disabled;
 	private float[] modelMatrix = new float[16];
 
 	
@@ -134,6 +135,14 @@ public abstract class AbstractSpriteRenderer implements SpriteRenderer{
 
 
 	@Override
+	public final void render() {
+		if (!disabled){
+			draw();
+		}
+	}
+
+
+	@Override
 	public void setPosition(float x, float y) {
 		this.x = x;
 		this.y = y;
@@ -144,5 +153,15 @@ public abstract class AbstractSpriteRenderer implements SpriteRenderer{
 	public void setRotation(float deg) {
 		this.rotation = deg;
 		calcMatrix();
+	}
+
+	@Override
+	public boolean isDisabled() {
+		return disabled;
+	}
+
+	@Override
+	public void setDisabled(boolean disabled) {
+		this.disabled = disabled;
 	}
 }

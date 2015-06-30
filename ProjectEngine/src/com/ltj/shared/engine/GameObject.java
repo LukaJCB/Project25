@@ -2,7 +2,6 @@ package com.ltj.shared.engine;
 
 public interface GameObject {
 	void destroy();
-	void hide();
 	void translate(float dx,float dy);
 	void scale(float sx,float sy);
 	void rotate(float deg);
@@ -21,5 +20,8 @@ public interface GameObject {
 	GameObject getParent();
 	Behaviour<? extends GameObject> getBehaviour();
 	GameObject cloneObject();
-	void show();
+	void setRendererDisabled(boolean disabled);
+	boolean isRendererDisabled();
+	void setControllerDisabled(boolean disabled);
+	boolean isControllerDisabled();
 }
