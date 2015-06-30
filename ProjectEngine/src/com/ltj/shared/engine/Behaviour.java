@@ -17,8 +17,8 @@ public abstract class Behaviour<T extends GameObject> {
 	
 	protected T gameObject;
 	
-	public final void allocateObject(GameObject renderObject){
-		this.gameObject = (T) renderObject;
+	public final void allocateObject(T renderObject){
+		this.gameObject = renderObject;
 	}
 	
 	
