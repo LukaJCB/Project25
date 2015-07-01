@@ -39,6 +39,17 @@ public abstract class AbstractSprite implements RenderObject {
 			} catch (IllegalAccessException e) {
 				e.printStackTrace();
 			}
+		} else if (this.getBehaviour() != null) {
+			try {
+				//get new instance of same behaviour class
+				Class<?> c = this.getBehaviour().getClass();
+				o.addBehaviour((Behaviour<? extends GameObject>) c.newInstance());
+
+			}  catch (InstantiationException e) {
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				e.printStackTrace();
+			}
 		}
 		o.start();
 	}
