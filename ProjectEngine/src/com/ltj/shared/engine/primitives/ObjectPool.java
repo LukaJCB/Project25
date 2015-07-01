@@ -1,7 +1,6 @@
 package com.ltj.shared.engine.primitives;
 
 
-import com.ltj.shared.engine.GameObject;
 import com.ltj.shared.engine.RenderObject;
 import com.ltj.shared.engine.Updater;
 
@@ -17,9 +16,10 @@ public class ObjectPool {
 		}
 	}
 	
-	public GameObject create() throws PoolToSmallException{
-		for (GameObject go : pooledObjects){
+	public RenderObject create() throws PoolToSmallException{
+		for (RenderObject go : pooledObjects){
 			if (go.isInactive()){
+				go.start();
 				return go;
 			}
 		}

@@ -18,7 +18,7 @@ public class GameObjectController {
 	
 	
 	public void start(){
-		if (behaviour != null && !disabled){
+		if (behaviour != null){
 			behaviour.start();
 		} 
 	}

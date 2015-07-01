@@ -20,6 +20,9 @@ public abstract class AbstractSprite implements RenderObject {
 	@SuppressWarnings("unchecked")
 	protected void prepareClone(AbstractSprite o){
 		o.setTag(this.getTag());
+		o.setPosition(getX(), getY());
+		o.setRotation(getRotation());
+		o.scale(getWidth(), getHeight());
 		if (this.getColliders() != null){
 			for (Collider c :this.getColliders()){
 				o.addCollider(c);
@@ -30,7 +33,9 @@ public abstract class AbstractSprite implements RenderObject {
 			try {
 				//get new instance of same behaviour class
 				Class<?> c = Class.forName(o.getBehaviourName());
-				o.addBehaviour((Behaviour<? extends GameObject>) c.newInstance());
+				Behaviour<GameObject> b = (Behaviour<GameObject>) c.newInstance();
+				o.addBehaviour(b);
+				b.allocateObject(o);
 
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
@@ -43,7 +48,9 @@ public abstract class AbstractSprite implements RenderObject {
 			try {
 				//get new instance of same behaviour class
 				Class<?> c = this.getBehaviour().getClass();
-				o.addBehaviour((Behaviour<? extends GameObject>) c.newInstance());
+				Behaviour<GameObject> b = (Behaviour<GameObject>) c.newInstance();
+				o.addBehaviour(b);
+				b.allocateObject(o);
 
 			}  catch (InstantiationException e) {
 				e.printStackTrace();
@@ -297,6 +304,8 @@ public abstract class AbstractSprite implements RenderObject {
 	@Override
 	public void setInactive(boolean inactive) {
 		this.inactive = inactive;
+		renderer.setDisabled(inactive);
+		controller.setDisabled(inactive);
 	}
 
 }
