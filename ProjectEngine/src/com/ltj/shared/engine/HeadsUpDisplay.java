@@ -12,8 +12,8 @@ public class HeadsUpDisplay {
 	}
 
 	public void setDimensions(int width, int height) {
-		
 		for (HudElement r : hudElements.values()){
+			
 			r.setScreenDimensions(width, height);
 		}
 	}

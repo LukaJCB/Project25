@@ -30,7 +30,7 @@ public class SimpleSprite extends AbstractSprite {
 	}
 
 	@Override
-	public GameObject cloneObject() {
+	public RenderObject cloneObject() {
 		SimpleSprite o;
 		if (gl != null){
 			o = new SimpleSprite(gl,path);

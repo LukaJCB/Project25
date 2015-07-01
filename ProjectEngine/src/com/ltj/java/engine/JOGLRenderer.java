@@ -92,7 +92,8 @@ public abstract class JoglRenderer implements GLEventListener, KeyListener {
 	
 		pointSize = 5;
 		gl.glPointSize(pointSize);
-	
+		
+		Camera.setDistance(2);
 	}
 
 	public void addRenderable(RenderObject r) {
@@ -136,6 +137,7 @@ public abstract class JoglRenderer implements GLEventListener, KeyListener {
 
 	public void display(GLAutoDrawable drawable) {
 		
+		
 		if (changeMode){
 			if (modeSeven){
 				setNormal();
@@ -177,7 +179,7 @@ public abstract class JoglRenderer implements GLEventListener, KeyListener {
 		gl.glClear(GL_DEPTH_BUFFER_BIT);
 
 		hud.render();
-		
+		//System.out.println(System.currentTimeMillis() - time);
 	}
 
 	public void reshape(GLAutoDrawable drawable, int x, int y, int width,

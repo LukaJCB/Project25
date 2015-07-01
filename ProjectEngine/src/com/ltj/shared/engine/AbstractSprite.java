@@ -7,13 +7,14 @@ import java.util.ArrayList;
  * @author Luka
  *
  */
+@SuppressWarnings("deprecation")
 public abstract class AbstractSprite implements RenderObject {
 
 
 	private GameObjectController controller = new GameObjectController(this);
 	private ArrayList<GameObject> childList;
 	private String tag;
-	private boolean destroyed;
+	private boolean destroyed, inactive;
 	protected SpriteRenderer renderer;
 	
 	@SuppressWarnings("unchecked")
@@ -86,6 +87,7 @@ public abstract class AbstractSprite implements RenderObject {
 		controller.onCollisionExit(collider);
 	}
 
+	
 	public void onChildCollisionEnter(GameObject child, GameObject collider) {
 		controller.onChildCollisionEnter(child, collider);
 	}
@@ -274,6 +276,16 @@ public abstract class AbstractSprite implements RenderObject {
 		} 
 		childList.add(child);
 		
+	}
+
+	@Override
+	public boolean isInactive() {
+		return inactive;
+	}
+	
+	@Override
+	public void setInactive(boolean inactive) {
+		this.inactive = inactive;
 	}
 
 }

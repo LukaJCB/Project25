@@ -38,6 +38,7 @@ public class JoglBufferHelper {
 		gl.glBindBuffer(GL_ARRAY_BUFFER,bufferId[0]);
 		gl.glBufferData(GL_ARRAY_BUFFER, arr.length * 4,arrayToBuffer(arr), GL_STATIC_DRAW);
 		gl.glBindBuffer(GL_ARRAY_BUFFER, 0);
+		
 		return bufferId;
 	}
 }

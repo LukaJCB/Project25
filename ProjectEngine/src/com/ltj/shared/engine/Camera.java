@@ -29,9 +29,17 @@ public abstract class Camera {
 		return eyePos;
 	}
 	public static void createPerspective(int height, int width){
-		eyePos[2] = 2;
 		MatrixHelper.perspectiveM(perspectiveProjectionMatrix, 60, (float) width / (float) height, 0.1f, 100f);
 	}
+	
+	public static void setDistance(float distance){
+		eyePos[2] = distance;
+	}
+	
+	public static void zoom(float zoomFactor){
+		eyePos[2] /= zoomFactor;
+	}
+	
 	public static void createOrthographic(int height, int width){
 		MatrixHelper.orthoM(orthoProjectionMatrix, 0, width, height,0, -1f, 100f);
 	}

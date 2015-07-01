@@ -43,6 +43,7 @@ public class GameObjectController {
 							collider.getRight(controllerObject.getX(),controllerObject.getWidth()) > objCollider.getLeft(object.getX(), object.getWidth()) &&
 							collider.getLeft(controllerObject.getX(),controllerObject.getWidth()) < objCollider.getRight(object.getX(), object.getWidth())){
 
+						//objects collide
 						onCollision(object);
 						object.onCollision(controllerObject);
 						return;
@@ -98,6 +99,7 @@ public class GameObjectController {
 	
 	}
 
+	@Deprecated
 	public void onCollisionExit(GameObject collider) {
 		if (parent != null){
 			parent.onChildCollisionExit(controllerObject,collider);
@@ -107,21 +109,21 @@ public class GameObjectController {
 		}
 	
 	}
-
+	@Deprecated
 	public void onChildCollisionEnter(GameObject child,GameObject collider) {
 		if (behaviour != null){
 			behaviour.onChildCollisionEnter(collider);
 		}
 		
 	}
-
+	@Deprecated
 	public void onChildCollision(GameObject child,GameObject collider) {
 		if (behaviour != null){
 			behaviour.onChildCollision(child,collider);
 		}
 		
 	}
- 
+	@Deprecated
 	public void onChildCollisionExit(GameObject child,GameObject collider){
 		if (behaviour != null){
 			behaviour.onChildCollisionExit(child,collider);
@@ -158,6 +160,7 @@ public class GameObjectController {
 
 	public void setParent(RenderObject parent) {
 		this.parent = parent;
+		//register child in parent
 		parent.addChild(controllerObject);
 	}
 

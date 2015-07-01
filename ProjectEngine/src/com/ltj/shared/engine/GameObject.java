@@ -19,9 +19,11 @@ public interface GameObject {
 	boolean isDestroyed();
 	GameObject getParent();
 	Behaviour<? extends GameObject> getBehaviour();
-	GameObject cloneObject();
+	RenderObject cloneObject();
 	void setRendererDisabled(boolean disabled);
 	boolean isRendererDisabled();
 	void setControllerDisabled(boolean disabled);
 	boolean isControllerDisabled();
+	boolean isInactive();
+	void setInactive(boolean inactive);
 }

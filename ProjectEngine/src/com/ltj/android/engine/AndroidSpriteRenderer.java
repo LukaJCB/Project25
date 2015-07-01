@@ -47,39 +47,9 @@ public class AndroidSpriteRenderer extends AbstractSpriteRenderer{
 		
 	}
 	
-	public void render() {
-		
-		float[] mMVP = new float[16];
-		
-		//calculate MVP
-		MatrixHelper.multiplyMM(mMVP,Camera.getProjectionViewMatrix(), getModelMatrix());
-		
-		//specify uniform matrix
-		glUniformMatrix4fv(AndroidRenderer.uMatrixLocation, 1, false,mMVP, 0);
-		
-		//set active texturetype
-		glActiveTexture(GL_TEXTURE0 + texNumber);
-		
-		 // Bind the texture to this unit.
-	    glBindTexture(GL_TEXTURE_2D, mTextureDataHandle[0]);
-	    
-	    // Tell the texture uniform sampler to use this texture in the shader by binding to texture unit 0.
-	    glUniform1i(uTextureLocation, texNumber);
-
-	    glBindBuffer(GL_ARRAY_BUFFER, positionVBO[0]);
-		glVertexAttribPointer(aPositionLocation, 2, GL_FLOAT, false, 0,0);
-		
-		glBindBuffer(GL_ARRAY_BUFFER, textureVBO[0]);
-		glVertexAttribPointer(aTexCoordsLocation, 2, GL_FLOAT, false, 0,0);
-		
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
-		
-		//draw
-		glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);  
-	
-	}
-	
 	public void setTexture(int column, int row){
+		
+		//set column and row of the sprite
 		textureCoordinates[0] = column * columnSize;
 		textureCoordinates[1] = row * rowSize;
 		textureCoordinates[2] = column * columnSize;
@@ -89,6 +59,7 @@ public class AndroidSpriteRenderer extends AbstractSpriteRenderer{
 		textureCoordinates[6] = (column+1) * columnSize;
 		textureCoordinates[7] = (row+1) * rowSize;
 		
+		//retransmit vertexBuffer to GPU
 		textureVBO = AndroidBufferHelper.arrayToBufferId(textureCoordinates);;
 		
 	}
@@ -108,7 +79,41 @@ public class AndroidSpriteRenderer extends AbstractSpriteRenderer{
 		textureCoordinates[6] = horizontal;
 		textureCoordinates[7] = vertical;
 		
+		//retransmit vertexBuffer to GPU
 		textureVBO = AndroidBufferHelper.arrayToBufferId(textureCoordinates);
+		
+	}
+
+	@Override
+	public void draw() {
+float[] mMVP = new float[16];
+		
+		//calculate MVP
+		MatrixHelper.multiplyMM(mMVP,Camera.getProjectionViewMatrix(), getModelMatrix());
+		
+		//specify uniform matrix
+		glUniformMatrix4fv(AndroidRenderer.uMatrixLocation, 1, false,mMVP, 0);
+		
+		//set active texture
+		glActiveTexture(GL_TEXTURE0 + texNumber);
+		
+		 // Bind the texture to this unit
+	    glBindTexture(GL_TEXTURE_2D, mTextureDataHandle[0]);
+	    
+	    // Tell the texture uniform sampler to use this texture
+	    glUniform1i(uTextureLocation, texNumber);
+
+	    //Bind VBOs
+	    glBindBuffer(GL_ARRAY_BUFFER, positionVBO[0]);
+		glVertexAttribPointer(aPositionLocation, 2, GL_FLOAT, false, 0,0);
+		
+		glBindBuffer(GL_ARRAY_BUFFER, textureVBO[0]);
+		glVertexAttribPointer(aTexCoordsLocation, 2, GL_FLOAT, false, 0,0);
+		
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		
+		//draw
+		glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);  
 		
 	}
 

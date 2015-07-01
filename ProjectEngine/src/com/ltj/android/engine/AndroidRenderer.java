@@ -105,6 +105,7 @@ public abstract class AndroidRenderer implements Renderer{
 		
 		pointSize = 5;
 		
+		Camera.setDistance(2);
 	}
 
 	public void addHudElement(String key,HudElement element) {

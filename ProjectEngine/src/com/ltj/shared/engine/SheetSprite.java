@@ -20,7 +20,7 @@ public class SheetSprite extends SimpleSprite {
 	}
 
 	@Override
-	public GameObject cloneObject() {
+	public RenderObject cloneObject() {
 		SheetSprite o;
 		if (gl != null){
 			o = new SheetSprite(gl,path,renderer.getNumCols(), renderer.getNumRows());
