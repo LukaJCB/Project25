@@ -2,19 +2,28 @@ package com.ltj.game;
 
 import android.view.MotionEvent;
 
+import com.ltj.android.engine.AndroidParticleEmitter;
 import com.ltj.android.engine.MotionInput;
+import com.ltj.java.engine.JoglParticleEmitter;
 import com.ltj.shared.engine.Behaviour;
 import com.ltj.shared.engine.Camera;
 import com.ltj.shared.engine.GameObject;
 import com.ltj.shared.engine.SimpleSpriteModeS;
+import com.ltj.shared.engine.Updater;
 import com.ltj.shared.engine.primitives.Globals;
 public class PlayerController25D extends Behaviour<SimpleSpriteModeS> {
 
 	private float xMovement,yMovement;
 	private float lastX,lastY;
+	private boolean moving;
+	private AndroidParticleEmitter pe;
 	@Override
 	public void start() {
 		gameObject.scale(0.5f, 0.5f);
+		gameObject.translate(0, -2);
+		pe = new AndroidParticleEmitter(100, 1.0f,1f,1);
+		Updater.addParticleEmitter(pe);
+		moving = true;
 	}
 
 	@Override
@@ -37,16 +46,18 @@ public class PlayerController25D extends Behaviour<SimpleSpriteModeS> {
 
 			}
 		}
-		
-		gameObject.translate(xMovement, yMovement);
-
+		if (moving){
+			gameObject.translate(xMovement, yMovement);
+		}
 		
 		Camera.setRotateAround(gameObject.getX(), gameObject.getY(),gameObject.getRotation());
 	}
 	@Override
-	public void onCollision(GameObject collider){
-		if (collider.compareTag("enemy"))
+	public void onCollision(GameObject c){
 		gameObject.translate(-xMovement, -yMovement);
+		moving = false;
+		gameObject.setRendererDisabled(true);
+		pe.addParticleExplosion(60, 0.007f);
 	}
 
 	

@@ -3,13 +3,15 @@ package com.ltj.game;
 import java.awt.event.KeyEvent;
 
 import com.jogamp.opengl.GLAutoDrawable;
+import com.ltj.java.engine.JoglParticleEmitter;
 import com.ltj.java.engine.JoglRenderer;
 import com.ltj.shared.engine.Behaviour;
 import com.ltj.shared.engine.Camera;
 import com.ltj.shared.engine.EmptyObject;
 import com.ltj.shared.engine.GameObject;
 import com.ltj.shared.engine.HudElement;
-import com.ltj.shared.engine.ModeSevenObject;
+import com.ltj.shared.engine.RenderObject;
+import com.ltj.shared.engine.SheetSpriteModeS;
 import com.ltj.shared.engine.SimpleSprite;
 import com.ltj.shared.engine.SimpleSpriteModeS;
 import com.ltj.shared.engine.Skybox;
@@ -26,68 +28,68 @@ public class JoglGameRenderer extends JoglRenderer {
 		super.init(drawable);
 		SoundManager.initSoundManager(false);
 
-//		Camera.addSkyBox(new Skybox(gl, "assets/img/skyboxtop.png","assets/img/skyboxbottom.png","assets/img/skyboxfront.png",
-//				"assets/img/skyboxback.png","assets/img/skyboxright.png","assets/img/skyboxleft.png"));
+		Camera.addSkyBox(new Skybox(gl, "assets/img/skyboxtop.png","assets/img/skyboxbottom.png","assets/img/skyboxfront.png",
+				"assets/img/skyboxback.png","assets/img/skyboxright.png","assets/img/skyboxleft.png"));
 		
 
-		SimpleSprite r = new SimpleSprite(gl,"assets/img/racer_background.png"); 
+		RenderObject r = new EmptyObject(); 
 		r.scale(30, 30);
 		Updater.addRenderable(r);
 		Updater.setCollisionZone(new Rectangle(r.getX(), r.getY(), r.getWidth(), r.getHeight()));
 
-		System.out.println(Updater.getCollisionZone());
-	
+		final JoglParticleEmitter pe = new JoglParticleEmitter(gl, 1000, 1.0f,0f,0);
+		Updater.addParticleEmitter(pe);
 
-		SimpleSpriteModeS[] s = new SimpleSpriteModeS[10];
-		for (int i = 0;i < s.length;i++){
-			s[i] = new SimpleSpriteModeS(gl,"assets/img/car.png");
-			s[i].translate(-15 +i *2.5f,2);
-			s[i].addCollider(new BoxCollider());
-			Updater.addRenderable(s[i]);
-		}
+		
+
+//		SimpleSpriteModeS[] s = new SimpleSpriteModeS[10];
+//		for (int i = 0;i < s.length;i++){
+//			s[i] = new SimpleSpriteModeS(gl,"assets/img/car.png");
+//			s[i].translate(-15 +i *2.5f,2);
+//			s[i].addCollider(new BoxCollider());
+//			Updater.addRenderable(s[i]);
+//		}
 		
 		
-		SimpleSpriteModeS hero = new SimpleSpriteModeS(gl, "assets/img/car.png");
-		hero.scale(0.4f, 0.3f);
-		Behaviour<SimpleSpriteModeS> b = new Behaviour<SimpleSpriteModeS>(){
+		SheetSpriteModeS hero = new SheetSpriteModeS(gl, "assets/img/ship.png",1,1);
+		hero.scale(0.4f, 0.9f);
+		hero.setTexture(0, 0);
+		Behaviour<SheetSpriteModeS> b = new Behaviour<SheetSpriteModeS>(){
 
 			private float speed, rotation;
+			private boolean moving;
 
 			@Override
 			public void start() {
-				
+				moving = true;
 			}
 
-			@Override
-			public void onCollisionEnter(GameObject collider) {
-				System.out.println("enter");
-			}
-
-			@Override
-			public void onCollisionExit(GameObject collider) {
-				System.out.println("exit");
-			}
 			
 			public void onCollision(GameObject c){
-				System.out.println("col");
+				
+				pe.addParticleExplosion(60, 0.0001f);
+				setMovement(-2 *speed *(float)-Math.sin(Math.toRadians(gameObject.getRotation())), 
+						-2 *speed *(float)Math.cos(Math.toRadians(gameObject.getRotation())));
+				
 			}
 			
 
 
 			@Override
 			public void update() {
-				gameObject.rotate(rotation);
-				Globals.add("rotation", gameObject.getRotation());
-				setMovement(speed *(float)-Math.sin(Math.toRadians(gameObject.getRotation())), 
-						speed *(float)Math.cos(Math.toRadians(gameObject.getRotation())));
-				
-				Camera.setLookAt(gameObject.getX(), gameObject.getY());
-				
+				if (moving){
+					gameObject.rotate(rotation);
+					Globals.add("rotation", gameObject.getRotation());
+					setMovement(speed *(float)-Math.sin(Math.toRadians(gameObject.getRotation())), 
+							speed *(float)Math.cos(Math.toRadians(gameObject.getRotation())));
+
+					Camera.setLookAt(gameObject.getX(), gameObject.getY());
+				}
 			}
 
 			private void setMovement(float f, float cos) {
 				gameObject.translate(f, cos);
-				
+				pe.translate(f, cos, 0);
 			}
 
 			@Override
@@ -135,7 +137,7 @@ public class JoglGameRenderer extends JoglRenderer {
 		//Updater.addRenderable(zone);
 		Updater.addMSRenderable(hero);
 		
-		SimpleSpriteModeS sp3 = new SimpleSpriteModeS(gl, "assets/img/car.png");
+		SimpleSpriteModeS sp3 = new SimpleSpriteModeS(gl, "assets/img/blue.png");
 		sp3.translate(0, 5);
 		//sp3.scale(4f, 3f);
 		sp3.addCollider(new BoxCollider());
@@ -160,7 +162,7 @@ public class JoglGameRenderer extends JoglRenderer {
 		b2.allocateObject(sp3);
 		sp3.addBehaviour(b2);
 		sp3.setTag("ene");
-		SimpleSpriteModeS sp4 = new SimpleSpriteModeS(gl, "assets/img/car.png");
+		SimpleSpriteModeS sp4 = new SimpleSpriteModeS(gl, "assets/img/redship.png");
 		Behaviour<SimpleSprite> b3 = new Behaviour<SimpleSprite>(){
 			
 			
@@ -172,8 +174,9 @@ public class JoglGameRenderer extends JoglRenderer {
 			@Override
 			public void update() {
 				gameObject.setRotation(Globals.getFloat("rotation"));
-					
 			}
+			
+			
 
 			
 			
@@ -183,17 +186,19 @@ public class JoglGameRenderer extends JoglRenderer {
 		sp4.scale(0.4f, 0.3f);
 		sp4.translate(-6, 2);
 		sp4.addCollider(new BoxCollider());
-		Updater.addMSRenderable((ModeSevenObject) sp4);
+		Updater.addMSRenderable( sp4);
 		Updater.addMSRenderable(sp3);
 		HudElement e = new HudElement(gl, "assets/img/ic_launcher.png");
 		
 		e.scale(0.1f, 0.1f);
 		e.setPosition(0.9f, 0);
 		addHudElement("gui",e);
-		//changeMode();
+		changeMode();
 		
 		
 		Updater.start();
 	}
+	
+	
 	
 }
