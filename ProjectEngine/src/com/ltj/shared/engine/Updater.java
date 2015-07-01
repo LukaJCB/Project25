@@ -111,7 +111,10 @@ public abstract class Updater {
 		
 		Camera.calcPVMatrix();
 		if (!dynamicObjects.isEmpty()){
-			allObjects.addAll(dynamicObjects);
+			for (RenderObject r: dynamicObjects){
+				allObjects.add(r);
+				r.start();
+			}
 			dynamicObjects.clear();
 		}
 	}
@@ -161,7 +164,11 @@ public abstract class Updater {
 		}
 		shMap = new SpatialHashMap(5,5,collisionZone.getWidth(),collisionZone.getHeight(),collisionZone.getX(),collisionZone.getY());
 		if (!dynamicObjects.isEmpty()){
-			allObjects.addAll(dynamicObjects);
+			for (RenderObject r: dynamicObjects){
+				allObjects.add(r);
+				r.start();
+			}
+			dynamicObjects.clear();
 		}
 	}
 

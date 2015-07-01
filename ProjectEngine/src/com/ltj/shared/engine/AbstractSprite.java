@@ -58,7 +58,7 @@ public abstract class AbstractSprite implements RenderObject {
 				e.printStackTrace();
 			}
 		}
-		o.start();
+		Updater.addRenderable(o);
 	}
 	
 	public void update() {
