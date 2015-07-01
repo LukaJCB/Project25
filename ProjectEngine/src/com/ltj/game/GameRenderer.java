@@ -9,11 +9,13 @@ import javax.microedition.khronos.opengles.GL10;
 
 import android.content.Context;
 
+import com.ltj.android.engine.AndroidParticleEmitter;
 import com.ltj.android.engine.AndroidRenderer;
 import com.ltj.shared.engine.Behaviour;
 import com.ltj.shared.engine.Camera;
 import com.ltj.shared.engine.HudElement;
 import com.ltj.shared.engine.ModeSevenObject;
+import com.ltj.shared.engine.ParticleEmitter;
 import com.ltj.shared.engine.SimpleSprite;
 import com.ltj.shared.engine.SimpleSpriteModeS;
 import com.ltj.shared.engine.Skybox;
@@ -21,6 +23,7 @@ import com.ltj.shared.engine.SoundManager;
 import com.ltj.shared.engine.Updater;
 import com.ltj.shared.engine.primitives.BoxCollider;
 import com.ltj.shared.engine.primitives.Globals;
+import com.ltj.shared.engine.primitives.Rectangle;
 
 public class GameRenderer extends AndroidRenderer {
 
@@ -39,15 +42,15 @@ public class GameRenderer extends AndroidRenderer {
 		SimpleSprite r = new SimpleSprite("img/racer_background.png");
 		r.scale(20, 20);
 		Updater.addRenderable(r);
-	
-		SimpleSprite[] s = new SimpleSprite[300];
+		Updater.setCollisionZone(new Rectangle(r.getX(), r.getY(), r.getWidth(), r.getHeight()));
+		SimpleSprite[] s = new SimpleSprite[30];
 		for (int i = 0;i < s.length;i++){
 			s[i] = new SimpleSprite("img/car.png");
-			//s[i].addCollider(new BoxCollider());
+			s[i].addCollider(new BoxCollider());
 			Updater.addRenderable(s[i]);
 		}
 		
-
+				
 		SimpleSpriteModeS hero = new SimpleSpriteModeS( "img/car.png");
 		Camera.addSkyBox(new Skybox( "img/skyboxtop.png","img/skyboxbottom.png","img/skyboxfront.png",
 				"img/skyboxback.png","img/skyboxright.png","img/skyboxleft.png"));
