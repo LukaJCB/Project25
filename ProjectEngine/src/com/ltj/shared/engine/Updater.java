@@ -28,11 +28,13 @@ public abstract class Updater {
 		return ids.get(id);
 	}
 
-	private static ArrayList<RenderObject> allObjects;
-	private static ArrayList<ModeSevenObject> allMSObjects;
+	private static ArrayList<RenderObject> allObjects = new ArrayList<RenderObject>();
+	private static ArrayList<RenderObject> dynamicObjects = new ArrayList<RenderObject>();
+	private static ArrayList<ModeSevenObject> allMSObjects = new ArrayList<ModeSevenObject>();
 	private static SpatialHashMap shMap;
-	private static ArrayList<ParticleEmitter> allParticleEmitters;
-	private static ArrayList<OrthoRenderObject> allOrthoRenderObjects;
+	private static ArrayList<ParticleEmitter> allParticleEmitters = new ArrayList<ParticleEmitter>();
+	private static ArrayList<OrthoRenderObject> allOrthoRenderObjects = new ArrayList<OrthoRenderObject>();
+	private static boolean started;
 
 	
 	
@@ -51,32 +53,39 @@ public abstract class Updater {
 
 	
 	public static void addRenderable(RenderObject r){
-		allObjects.add(r);
+		if (!started){
+			allObjects.add(r);
+		} else {
+			dynamicObjects.add(r);
+		}
 	}
 
 	public static void addRenderableList(List<RenderObject> list){
-		allObjects.addAll(list);
+		if (!started){
+			allObjects.addAll(list);
+		} else {
+			for (RenderObject r : list){
+				dynamicObjects.add(r);
+			}
+		}
 	}
 
 	public static void addMSRenderable(ModeSevenObject r){
-		allObjects.add(r);
-		allMSObjects.add(r);
+		if (!started){
+			allObjects.add(r);
+			allMSObjects.add(r);
+		}
 	}
-	
+
 	public static void addParticleEmitter(ParticleEmitter p){
 		allParticleEmitters.add(p);
 	}
+	
+
 	public static void addOrthoRenderObject(OrthoRenderObject o){
 		allOrthoRenderObjects.add(o);
 	}
 
-	public Updater(){
-		//initialize Lists
-		allObjects = new ArrayList<RenderObject>();
-		allMSObjects = new ArrayList<ModeSevenObject>();
-		allParticleEmitters = new ArrayList<ParticleEmitter>();
-		allOrthoRenderObjects = new ArrayList<OrthoRenderObject>();
-	}
 
 	public static List<RenderObject> getAllObjects() {
 		return allObjects;
@@ -101,6 +110,10 @@ public abstract class Updater {
 		}
 		
 		Camera.calcPVMatrix();
+		if (!dynamicObjects.isEmpty()){
+			allObjects.addAll(dynamicObjects);
+			dynamicObjects.clear();
+		}
 	}
 	
 	public static void setDimensions(int width, int height) {
@@ -142,10 +155,14 @@ public abstract class Updater {
 	}
 	
 	public static void start(){
+		started = true;
 		for (RenderObject r : allObjects){
 			r.start();
 		}
 		shMap = new SpatialHashMap(5,5,collisionZone.getWidth(),collisionZone.getHeight(),collisionZone.getX(),collisionZone.getY());
+		if (!dynamicObjects.isEmpty()){
+			allObjects.addAll(dynamicObjects);
+		}
 	}
 
 
