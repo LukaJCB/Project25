@@ -26,7 +26,7 @@ public class SpatialHashMap {
 		}
 	}
 	public void insert(RenderObject sprite){
-		if (sprite.getColliders() != null){
+		if (!sprite.isControllerDisabled() && sprite.getColliders() != null){
 			for (Collider c : sprite.getColliders()){
 				int bottom = clampY((int) ((c.getBottom(sprite.getY(), sprite.getHeight())-gridY)/cellHeight));
 				int top = clampY((int) ((c.getTop(sprite.getY(), sprite.getHeight())-gridY)/cellHeight));
