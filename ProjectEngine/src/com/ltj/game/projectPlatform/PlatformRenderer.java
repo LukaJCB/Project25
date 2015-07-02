@@ -36,6 +36,7 @@ public class PlatformRenderer extends JoglRenderer {
 		Behaviour<GameObject> bulletScript = new BulletController();
 		bullet.addBehaviour(bulletScript);
 		bulletScript.allocateObject(bullet);
+		bullet.addCollider(new BoxCollider());
 		EmptyObject colliderZone = new EmptyObject();
 		
 		hero.scale(0.4f, 0.45f);
@@ -77,6 +78,15 @@ public class PlatformRenderer extends JoglRenderer {
 		platform2.translate(3, -1);
 		platform2.addCollider(new BoxCollider());
 		Updater.addRenderable(platform2);
+		
+		
+		//enemy
+		SimpleSprite enemy = new SimpleSprite(gl, "assets/img/enemy.png");
+		enemy.setTag("enemy");
+		enemy.scale(0.7f, 0.7f);
+		enemy.translate(3, 0.35f);
+		enemy.addCollider(new BoxCollider());
+		Updater.addRenderable(enemy);
 		
 		
 		Updater.start();

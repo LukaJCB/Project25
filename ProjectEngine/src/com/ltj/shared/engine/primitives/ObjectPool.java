@@ -8,6 +8,7 @@ public class ObjectPool {
 	
 	public ObjectPool(int count, RenderObject obj){
 		pooledObjects = new RenderObject[count];
+		obj.setInactive(true);
 		pooledObjects[0] = obj;
 		for (int i = 1; i < pooledObjects.length; i++){
 			pooledObjects[i] = obj.cloneObject();
