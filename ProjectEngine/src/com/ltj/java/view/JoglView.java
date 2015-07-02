@@ -19,7 +19,7 @@ public class JoglView{
 		frame.setSize(1280,720);
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		FPSAnimator animator = new FPSAnimator(canvas, 30,false);
+		FPSAnimator animator = new FPSAnimator(canvas, 60,false);
 		JoglRenderer r = new PlatformRenderer();
 		canvas.addGLEventListener(r);
 		frame.add(canvas);

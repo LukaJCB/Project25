@@ -137,7 +137,7 @@ public abstract class JoglRenderer implements GLEventListener, KeyListener {
 
 	public void display(GLAutoDrawable drawable) {
 		
-		
+		//long time = System.currentTimeMillis();
 		if (changeMode){
 			if (modeSeven){
 				setNormal();

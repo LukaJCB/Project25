@@ -67,7 +67,6 @@ public class CharacterController extends Behaviour<SheetSprite> {
 		} else if (e.getKeyCode() == KeyEvent.VK_SPACE){
 			jumping = false;
 		} else if (e.getKeyCode() == KeyEvent.VK_SHIFT){
-			
 			GameObject rocket = bullets.create();
 			
 			
