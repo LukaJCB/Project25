@@ -145,6 +145,16 @@ public abstract class AbstractSprite implements RenderObject {
 
 	public void rotate(float deg) {
 		renderer.rotate(deg);
+		if (getColliders() != null){
+			//adjust height and width of AABBs
+			double radians = Math.toRadians(deg);
+			float newWidth = (float) (Math.abs(getWidth() * Math.cos(radians) + getHeight() * Math.sin(radians)));
+			float newHeight = (float) (Math.abs(getHeight() * Math.cos(radians) + getWidth() * Math.sin(radians)));
+
+			for (Collider c : getColliders()){
+				c.setScaling(newWidth/getWidth(), newHeight/getHeight());
+			}
+		}
 		//rotate children as well
 		if (childList != null){
 			for (GameObject r : childList){
