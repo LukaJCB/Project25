@@ -106,7 +106,6 @@ public abstract class Updater {
 				r.update();
 			}
 		}
-		
 		checkCollisions();
 		
 		Camera.calcPVMatrix();

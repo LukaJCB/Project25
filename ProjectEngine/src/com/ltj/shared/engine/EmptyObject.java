@@ -12,7 +12,7 @@ public class EmptyObject extends AbstractSprite {
 	@Override
 	public RenderObject cloneObject() {
 		EmptyObject o = new EmptyObject();
-		prepareClone(o);
+		finishClone(o);
 		return o;
 	}
 

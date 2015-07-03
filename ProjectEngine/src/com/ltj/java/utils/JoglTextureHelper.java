@@ -31,7 +31,6 @@ public class JoglTextureHelper {
 		} 
 		int[] textureHandle = new int[2];
 		textureHandle[1] = texCount;
-		System.out.println(texCount + file);
 		texCount++;
 		ByteArrayOutputStream os = new ByteArrayOutputStream();
 	    ImageIO.write(ImageIO.read(new File(file)), "png", os);

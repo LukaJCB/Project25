@@ -18,7 +18,7 @@ public abstract class AbstractSprite implements RenderObject {
 	protected SpriteRenderer renderer;
 	
 	@SuppressWarnings("unchecked")
-	protected void prepareClone(AbstractSprite o){
+	protected void finishClone(AbstractSprite o){
 		o.setTag(this.getTag());
 		o.setPosition(getX(), getY());
 		o.setRotation(getRotation());

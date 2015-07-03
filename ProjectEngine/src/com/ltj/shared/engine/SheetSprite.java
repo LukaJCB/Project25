@@ -27,7 +27,7 @@ public class SheetSprite extends SimpleSprite {
 		} else {
 			o = new SheetSprite(path,renderer.getNumCols(), renderer.getNumRows());
 		}
-		prepareClone(o);
+		finishClone(o);
 		return o;
 	}
 

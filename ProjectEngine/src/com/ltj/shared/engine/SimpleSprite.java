@@ -37,7 +37,7 @@ public class SimpleSprite extends AbstractSprite {
 		} else {
 			o = new SimpleSprite(path);
 		}
-		prepareClone(o);
+		finishClone(o);
 		return o;
 	}
 
