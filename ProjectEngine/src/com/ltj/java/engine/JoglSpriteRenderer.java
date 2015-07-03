@@ -62,7 +62,6 @@ public class JoglSpriteRenderer extends AbstractSpriteRenderer{
 	public void setTexture(int column, int row){
 		
 		//set the row and column of the sprite
-		
 		row = (int) ((1.0f/rowSize)- row-1);
 		
 		textureCoordinates[0] = (column+1) * columnSize;
@@ -73,7 +72,6 @@ public class JoglSpriteRenderer extends AbstractSpriteRenderer{
 		textureCoordinates[7] = row * rowSize;
 		textureCoordinates[6] = column * columnSize;
 		textureCoordinates[5] = (row+1) * rowSize;
-		
 		//retransmit to GPU
 		textureVBO = JoglBufferHelper.arrayToBufferId(gl, textureCoordinates);
 		

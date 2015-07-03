@@ -36,8 +36,6 @@ public class JoglHudRenderer extends AbstractHudRenderer {
 			aPositionLocation = gl.glGetAttribLocation(JoglRenderer.programId, A_POSITION);
 			aTexCoordsLocation = gl.glGetAttribLocation(JoglRenderer.programId, A_TEX_COORDS);
 
-			gl.glEnableVertexAttribArray(aPositionLocation);
-			gl.glEnableVertexAttribArray(aTexCoordsLocation);
 		}
 	
 		//load texture
@@ -62,6 +60,8 @@ public class JoglHudRenderer extends AbstractHudRenderer {
 	@Override
 	public void render() {
 		
+		gl.glEnableVertexAttribArray(aPositionLocation);
+		gl.glEnableVertexAttribArray(aTexCoordsLocation);
 		
 		float[] projectionModelMatrix = new float[16];
 		
