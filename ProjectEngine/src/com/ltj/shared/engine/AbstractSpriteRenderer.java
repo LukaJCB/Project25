@@ -67,6 +67,13 @@ public abstract class AbstractSpriteRenderer implements SpriteRenderer {
 		return x;
 	}
 
+	@Override
+	public void setScale(float x, float y) {
+		width = x;
+		height = y;
+	}
+
+
 	public float getY() {
 		return y;
 	}

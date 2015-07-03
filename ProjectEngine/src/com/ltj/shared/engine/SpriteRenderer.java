@@ -22,6 +22,7 @@ public interface SpriteRenderer {
 	void clear();
 	void setPosition(float x, float y);
 	void setRotation(float deg);
+	void setScale(float x, float y);
 	void draw();
 	void setDisabled(boolean disabled);
 	boolean isDisabled();

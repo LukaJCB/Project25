@@ -141,4 +141,10 @@ public class EmptyRenderer implements SpriteRenderer {
 		return false;
 	}
 
+	@Override
+	public void setScale(float x, float y) {
+		width = x;
+		height = y;
+	}
+
 }
