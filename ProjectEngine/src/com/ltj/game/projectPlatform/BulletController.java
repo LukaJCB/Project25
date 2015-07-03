@@ -24,6 +24,7 @@ public class BulletController extends Behaviour<GameObject> {
 
 	@Override
 	public void onCollision(GameObject collider) {
+
 		if (collider.compareTag("ground")){
 			this.gameObject.setInactive(true);
 		} else if (collider.compareTag("enemy")){

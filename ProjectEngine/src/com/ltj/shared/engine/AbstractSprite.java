@@ -155,11 +155,25 @@ public abstract class AbstractSprite implements RenderObject {
 
 
 	public void setPosition(float x, float y) {
+		//check pos of children
+		if (childList != null){
+			for (GameObject r : childList){
+				float xOffset = r.getX() - getX();
+				float yOffset = r.getY() - getY();
+				r.setPosition(x+ xOffset, y+ yOffset);
+			}
+		}
 		renderer.setPosition(x, y);
+		
 	}
 
 	public void setRotation(float deg) {
 		renderer.setRotation(deg);
+		if (childList != null){
+			for (GameObject r : childList){
+				r.setRotation(deg);
+			}
+		}
 	}
 
 	public void scale(float sx, float sy) {
@@ -306,6 +320,11 @@ public abstract class AbstractSprite implements RenderObject {
 		this.inactive = inactive;
 		renderer.setDisabled(inactive);
 		controller.setDisabled(inactive);
+		if (childList != null){
+			for (GameObject o : childList){
+				o.setInactive(inactive);
+			}
+		}
 	}
 
 }
