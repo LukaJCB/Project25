@@ -19,15 +19,17 @@ public abstract class AbstractSprite implements RenderObject {
 	
 	@SuppressWarnings("unchecked")
 	protected void finishClone(AbstractSprite o){
-		o.setTag(this.getTag());
-		o.setPosition(getX(), getY());
-		o.setRotation(getRotation());
-		o.scale(getWidth(), getHeight());
 		if (this.getColliders() != null){
 			for (Collider c :this.getColliders()){
 				o.addCollider(c);
 			}
 		}
+		
+		o.setTag(this.getTag());
+		o.setPosition(getX(), getY());
+		o.setRotation(getRotation());
+		o.scale(getWidth(), getHeight());
+		
 		if(this.getBehaviourName()!= null){
 			o.addBehaviourName(this.getBehaviourName());
 			try {
