@@ -97,8 +97,6 @@ public abstract class Updater {
 	}
 
 	public static void update() {
-		checkCollisions();
-		
 		ListIterator<RenderObject> i = allObjects.listIterator();
 		while (i.hasNext()){
 			RenderObject r = i.next();
@@ -108,6 +106,8 @@ public abstract class Updater {
 				r.update();
 			}
 		}
+		
+		checkCollisions();
 		
 		Camera.calcPVMatrix();
 		if (!dynamicObjects.isEmpty()){

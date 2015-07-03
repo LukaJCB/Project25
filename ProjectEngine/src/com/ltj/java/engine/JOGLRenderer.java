@@ -37,6 +37,8 @@ public abstract class JoglRenderer implements GLEventListener, KeyListener {
 
 	private JoglUpdater updater;
 
+	private long renderTime = 1000 / 60;
+	
 	private int alphaProgramId, normalProgramId;
 	private HeadsUpDisplay hud;
 
@@ -137,7 +139,7 @@ public abstract class JoglRenderer implements GLEventListener, KeyListener {
 
 	public void display(GLAutoDrawable drawable) {
 		
-		//long time = System.currentTimeMillis();
+		long time = System.currentTimeMillis();
 		if (changeMode){
 			if (modeSeven){
 				setNormal();
@@ -179,7 +181,15 @@ public abstract class JoglRenderer implements GLEventListener, KeyListener {
 		gl.glClear(GL_DEPTH_BUFFER_BIT);
 
 		hud.render();
-		//System.out.println(System.currentTimeMillis() - time);
+		long timeDiff = System.currentTimeMillis() - time;
+		
+		if (timeDiff < renderTime){
+			try {
+				Thread.sleep(renderTime - timeDiff);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	public void reshape(GLAutoDrawable drawable, int x, int y, int width,

@@ -20,29 +20,27 @@ public class CharacterController extends Behaviour<SheetSprite> {
 	
 	@Override
 	public void start() {
-		gravity = 0.016f;
-		bullets = new ObjectPool(10, rocket);
+		gravity = 0.013f;
+		bullets = new ObjectPool(20, rocket);
 		Camera.setDistance(7.2f);
 	}
 
 	@Override
 	public void update() {
-		if (!grounded){
-			upSpeed -= gravity;
+		if (jumping){
+			jumping = false;
+			grounded = false;
+			upSpeed = 0.22f;
+		}
+		if (grounded){
+			upSpeed = -gravity;
 		} else {
-			if (jumping){
-				jumping = false;
-				grounded = false;
-				upSpeed = 0.22f;
-			} else {
-				upSpeed = 0;
-			}
+			upSpeed -= gravity;
 		}
 		
 		gameObject.translate(speed, upSpeed);
 		Camera.setLookAt(gameObject.getX(), gameObject.getY()+0.4f);
 		grounded = false;
-		
 		
 	}
 
@@ -50,9 +48,9 @@ public class CharacterController extends Behaviour<SheetSprite> {
 	@Override
 	public void onKeyInput(KeyEvent e) {
 		if (e.getKeyCode() ==KeyEvent.VK_RIGHT){
-			speed = 0.14f;
+			speed = 0.1f;
 		} else if (e.getKeyCode() ==KeyEvent.VK_LEFT){
-			speed = -0.14f;
+			speed = -0.1f;
 		} else if (e.getKeyCode() == KeyEvent.VK_SPACE){
 			jumping = true;
 		}
@@ -78,14 +76,35 @@ public class CharacterController extends Behaviour<SheetSprite> {
 
 
 	@Override
-	public void onChildCollision(GameObject child, GameObject collider) {
-		if (child.compareTag("bottomCollider")){
-			if (collider.compareTag("ground")){
+	public void onCollision(GameObject collider) {
+		if (collider.compareTag("ground")){
+			if ((gameObject.getY() -upSpeed - gameObject.getHeight()*0.3f) > collider.getY() + collider.getHeight()/2){
+				//collision is below
 				grounded = true;
 				gameObject.setPosition(gameObject.getX(), collider.getY()+collider.getHeight()/2 +gameObject.getHeight()/2);
+				
+			} else if ((gameObject.getY() -upSpeed + gameObject.getHeight()*0.3) < collider.getY() - collider.getHeight()/2){
+				//collision is above 
+				gameObject.setPosition(gameObject.getX(), collider.getY()-collider.getHeight()/2 -gameObject.getHeight()/2);
+				upSpeed = 0;
+				
+			} else if ((gameObject.getX() - speed - gameObject.getWidth()*0.3f) > collider.getX() + collider.getWidth()/2){
+				//collision is to the right
+				speed = 0;
+				gameObject.setPosition(collider.getX()+ collider.getWidth()/2 + gameObject.getWidth()/2,gameObject.getY());
+				
+			} else if ((gameObject.getX() - speed + gameObject.getWidth()*0.3f) < collider.getX() - collider.getWidth()/2){
+				//collision is to the left
+				speed = 0;
+				gameObject.setPosition(collider.getX()- collider.getWidth()/2 - gameObject.getWidth()/2,gameObject.getY());
 			} 
-		} 
+		}
+		
 	}
+
+	
+	
+	
 	
 	
 	

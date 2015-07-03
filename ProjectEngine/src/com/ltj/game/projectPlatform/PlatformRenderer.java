@@ -21,7 +21,7 @@ public class PlatformRenderer extends JoglRenderer {
 	public void init(GLAutoDrawable drawable) {
 		super.init(drawable);
 
-		RenderObject background = new SimpleSprite(gl,"assets/img/sky.png"); 
+		EmptyObject background = new EmptyObject();
 		background.scale(10, 10);
 		
 		
@@ -37,48 +37,49 @@ public class PlatformRenderer extends JoglRenderer {
 		bullet.addBehaviour(bulletScript);
 		bulletScript.allocateObject(bullet);
 		bullet.addCollider(new BoxCollider());
-		EmptyObject colliderZone = new EmptyObject();
+		bullet.getCollider(0).setScaling(0.6f, 0.3f);
 		
-		hero.scale(0.4f, 0.45f);
 		hero.setTexture(0, 0);
-		colliderZone.translate(0, -hero.getHeight()*0.2f);
-		colliderZone.setTag("bottomCollider");
-		colliderZone.addCollider(new BoxCollider());
-		colliderZone.setParent(hero);
 		CharacterController b = new CharacterController();
 		hero.addCollider(new BoxCollider());
 		hero.addBehaviour(b);
 		b.allocateObject(hero);
 		b.rocket = bullet;
-		bullet.scale(0.1f, 0.2f);
-		bullet.setRendererDisabled(true);
+		bullet.scale(0.3f, 0.6f);
 		hero.scale(0.5f, 0.5f);
 		hero.setTag("hero");
 
 		Updater.addRenderable(hero);
-		Updater.addRenderable(colliderZone);
-		Updater.addRenderable(bullet);
 		
 		
 		
 		
 		
 		//platforms
-		SimpleSprite platform = new SimpleSprite(gl,"assets/img/car.png");
+		SimpleSprite platform = new SimpleSprite(gl,"assets/img/tile_t.png");
 		platform.setTag("ground");
-		platform.scale(1.5f, 1f);
-		platform.translate(0, -1);
+		platform.setRepeat(2, 1);
+		platform.scale(2f, 1f);
+		platform.translate(0, -2);
 		platform.addCollider(new BoxCollider());
 		Updater.addRenderable(platform);
 		
 
-		SimpleSprite platform2 = new SimpleSprite(gl,"assets/img/car.png");
+		SimpleSprite platform2 = new SimpleSprite(gl,"assets/img/tile_t.png");
 		platform2.setTag("ground");
-		platform2.scale(1.5f, 1f);
+		platform2.setRepeat(2, 1);
+		platform2.scale(2f, 1f);
 		platform2.translate(3, -1);
 		platform2.addCollider(new BoxCollider());
 		Updater.addRenderable(platform2);
 		
+		SimpleSprite ground = new SimpleSprite(gl, "assets/img/tile.png");
+		ground.setRepeat(15,4);
+		ground.scale(15, 4);
+		ground.translate(3,-5);
+		ground.setTag("ground");
+		ground.addCollider(new BoxCollider());
+		Updater.addRenderable(ground);
 		
 		//enemy
 		SimpleSprite enemy = new SimpleSprite(gl, "assets/img/enemy.png");
