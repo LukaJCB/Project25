@@ -29,10 +29,11 @@ public abstract class AbstractParticleEmitter implements ParticleEmitter {
 	
 	private final int maxParticleCount;
 	private int nextParticle;
+	private int runningTime;
 	
 	private float[] modelMatrix = new float[16];
 	private float[] position = new float[3];
-	public AbstractParticleEmitter(int maxParticleCount, float red, float green, float blue){
+	public AbstractParticleEmitter(int maxParticleCount,int runningtime, float red, float green, float blue){
 		particleDirections = new float[maxParticleCount * POSITION_COMPONENT_COUNT];
 		particleStartTimes = new float[maxParticleCount];
 		this.maxParticleCount = maxParticleCount;
@@ -40,7 +41,7 @@ public abstract class AbstractParticleEmitter implements ParticleEmitter {
 		//set Matrix
 		MatrixHelper.setIdentityM(modelMatrix);
 
-		
+		runningTime = runningtime;
 		globalStartTime = System.currentTimeMillis();
 	}
 	
@@ -51,6 +52,7 @@ public abstract class AbstractParticleEmitter implements ParticleEmitter {
 
 
 	public void addParticleExplosion(int count, float speed){
+		globalStartTime = System.currentTimeMillis();
 		float rot = (float) (2 * Math.PI /count);
 		for (int i = 0; i < count;i++){
 			addParticle((float)Math.sin(i*rot)*speed, (float)Math.cos(i* rot)*speed, 0, System.currentTimeMillis() -globalStartTime);
@@ -125,6 +127,16 @@ public abstract class AbstractParticleEmitter implements ParticleEmitter {
 	
 	protected float[] getModelMatrix() {
 		return modelMatrix;
+	}
+
+
+	public int getRunningTime() {
+		return runningTime;
+	}
+
+
+	public void setRunningTime(int runningTime) {
+		this.runningTime = runningTime;
 	}
 	
 }

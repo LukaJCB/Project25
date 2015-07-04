@@ -9,8 +9,8 @@ import com.ltj.shared.utils.MatrixHelper;
 
 public class AndroidParticleEmitter extends AbstractParticleEmitter {
 
-	public AndroidParticleEmitter(int maxParticleCount, float red, float green, float blue) {
-		super(maxParticleCount, red,green,blue);
+	public AndroidParticleEmitter(int maxParticleCount,int runningtime, float red, float green, float blue) {
+		super(maxParticleCount,runningtime, red,green,blue);
 
 
 		//uniforms
@@ -34,27 +34,30 @@ public class AndroidParticleEmitter extends AbstractParticleEmitter {
 
 	public void render(){
 
-		glEnableVertexAttribArray(aDirectionVectorLocation);
-		glEnableVertexAttribArray(aParticleStartTimeLocation);
+		long current = System.currentTimeMillis() - globalStartTime ;
+		if (current  <  getRunningTime()){
 
-		glUniform1f(uCurrentTimeLocation,  System.currentTimeMillis() - globalStartTime);
-		//set position uniform
-		glUniform3fv(uPositionLocation,3, getPosition(), 0);
-		float[] mMVPMatrix = new float[16]; 
-		MatrixHelper.multiplyMM(mMVPMatrix, Camera.getProjectionViewMatrix(), getModelMatrix());
-		glUniformMatrix4fv(uMatrixLocation, 1, false, mMVPMatrix, 0);
+			glEnableVertexAttribArray(aDirectionVectorLocation);
+			glEnableVertexAttribArray(aParticleStartTimeLocation);
 
-		glBindBuffer(GL_ARRAY_BUFFER, emitterVBO[0]);
-		glVertexAttribPointer(aDirectionVectorLocation, 3, GL_FLOAT,false, 0, 0);
+			glUniform1f(uCurrentTimeLocation,  System.currentTimeMillis() - globalStartTime);
+			//set position uniform
+			glUniform3fv(uPositionLocation,3, getPosition(), 0);
+			float[] mMVPMatrix = new float[16]; 
+			MatrixHelper.multiplyMM(mMVPMatrix, Camera.getProjectionViewMatrix(), getModelMatrix());
+			glUniformMatrix4fv(uMatrixLocation, 1, false, mMVPMatrix, 0);
 
-		glBindBuffer(GL_ARRAY_BUFFER, timeVBO[0]);
-		glVertexAttribPointer(aParticleStartTimeLocation,1,GL_FLOAT,false, 0, 0);
+			glBindBuffer(GL_ARRAY_BUFFER, emitterVBO[0]);
+			glVertexAttribPointer(aDirectionVectorLocation, 3, GL_FLOAT,false, 0, 0);
 
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
+			glBindBuffer(GL_ARRAY_BUFFER, timeVBO[0]);
+			glVertexAttribPointer(aParticleStartTimeLocation,1,GL_FLOAT,false, 0, 0);
 
-		//draw particles
-		glDrawArrays(GL_POINTS, 0, currentParticleCount);
+			glBindBuffer(GL_ARRAY_BUFFER, 0);
 
+			//draw particles
+			glDrawArrays(GL_POINTS, 0, currentParticleCount);
+		}
 	}
 
 	@Override
