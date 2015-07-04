@@ -10,7 +10,6 @@ public interface RenderObject extends GameObject {
 	void render();
 	void addBehaviour(Behaviour<? extends GameObject> b);
 	void addCollider(Collider c);
-	Collider getCollider(int index);
 	ArrayList<Collider> getColliders();
 	void addChild(GameObject child);
 	void onCollisionEnter(GameObject collider);

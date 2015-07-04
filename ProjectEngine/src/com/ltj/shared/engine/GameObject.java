@@ -1,5 +1,7 @@
 package com.ltj.shared.engine;
 
+import java.util.ArrayList;
+
 public interface GameObject {
 	void destroy();
 	void translate(float dx,float dy);
@@ -26,4 +28,7 @@ public interface GameObject {
 	boolean isControllerDisabled();
 	boolean isInactive();
 	void setInactive(boolean inactive);
+	ArrayList<GameObject> getChildList();
+	Collider getCollider(int index);
+	
 }

@@ -265,8 +265,15 @@ public abstract class AbstractSprite implements RenderObject {
 	
 	@Override
 	public void destroy() {
-		destroyed = true;
-		clear();
+		if (!destroyed){
+			destroyed = true;
+			clear();
+			if (childList != null){
+				for (GameObject g : childList){
+					g.destroy();
+				}
+			}
+		}
 	}
 
 	
@@ -311,6 +318,11 @@ public abstract class AbstractSprite implements RenderObject {
 
 	public void setParent(RenderObject parent) {
 		controller.setParent(parent);
+	}
+
+	@Override
+	public ArrayList<GameObject> getChildList() {
+		return childList;
 	}
 
 	@Override

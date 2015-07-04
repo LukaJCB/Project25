@@ -30,8 +30,9 @@ public class GameObjectController {
 	}
 
 	public void checkCollision(RenderObject object) {
-		if (disabled || object == controllerObject || object == parent || object.getParent() == controllerObject){
-			//objects are related
+		if (disabled || object == controllerObject || object == parent || object.getParent() == controllerObject 
+				||controllerObject == null || object == null || controllerObject.isDestroyed() || object.isDestroyed()){
+			//objects are related, inactive or destroyed
 			return;
 		}
 
@@ -148,7 +149,9 @@ public class GameObjectController {
 
 	
 	public void clear() {
-		behaviour.allocateObject(null);
+		if (behaviour != null){
+			behaviour.allocateObject(null);
+		}
 		behaviour = null;
 		controllerObject = null;
 	}
