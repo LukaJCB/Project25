@@ -39,8 +39,7 @@ public class AndroidParticleEmitter extends AbstractParticleEmitter {
 
 		glUniform1f(uCurrentTimeLocation,  System.currentTimeMillis() - globalStartTime);
 		//set position uniform
-		glUniform3f(uPositionLocation, getX(),getY(),getZ());
-
+		glUniform3fv(uPositionLocation,3, getPosition(), 0);
 		float[] mMVPMatrix = new float[16]; 
 		MatrixHelper.multiplyMM(mMVPMatrix, Camera.getProjectionViewMatrix(), getModelMatrix());
 		glUniformMatrix4fv(uMatrixLocation, 1, false, mMVPMatrix, 0);
