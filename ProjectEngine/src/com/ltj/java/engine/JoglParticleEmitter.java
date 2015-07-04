@@ -44,7 +44,8 @@ public class JoglParticleEmitter extends AbstractParticleEmitter {
 		
 		gl.glUniform1f(uCurrentTimeLocation,  System.currentTimeMillis() - globalStartTime);
 		//set position uniform
-		gl.glUniform3f(uPositionLocation, getX(),getY(),getZ());
+		
+		gl.glUniform3fv(uPositionLocation, 3, getPosition(), 0);
 		
 		
 		float[] mMVPMatrix = new float[16]; 

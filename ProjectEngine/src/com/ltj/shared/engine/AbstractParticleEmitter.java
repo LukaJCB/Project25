@@ -31,8 +31,7 @@ public abstract class AbstractParticleEmitter implements ParticleEmitter {
 	private int nextParticle;
 	
 	private float[] modelMatrix = new float[16];
-	private float x,y,z;
-	
+	private float[] position = new float[3];
 	public AbstractParticleEmitter(int maxParticleCount, float red, float green, float blue){
 		particleDirections = new float[maxParticleCount * POSITION_COMPONENT_COUNT];
 		particleStartTimes = new float[maxParticleCount];
@@ -41,7 +40,6 @@ public abstract class AbstractParticleEmitter implements ParticleEmitter {
 		//set Matrix
 		MatrixHelper.setIdentityM(modelMatrix);
 
-		x = y = z = 0;
 		
 		globalStartTime = System.currentTimeMillis();
 	}
@@ -69,31 +67,35 @@ public abstract class AbstractParticleEmitter implements ParticleEmitter {
 
 
 	public void setPosition(float x, float y, float z) {
-		this.x = x;
-		this.y = y;
-		this.z = z;
+		position[0] = x;
+		position[1] = y;
+		position[2] = z;
 		calcMatrix();
 	}
 	
 	public void translate(float x, float y, float z){
-		this.x += x;
-		this.y += y;
-		this.z += z;
+		position[0] += x;
+		position[1] += y;
+		position[2] += z;
 		calcMatrix();
 	}
 	
 	public float getX() {
-		return x;
+		return position[0];
 	}
 
 
 	public float getY() {
-		return y;
+		return position[1];
 	}
 
 
 	public float getZ() {
-		return z;
+		return position[2];
+	}
+	
+	public float[] getPosition(){
+		return position;
 	}
 
 
@@ -117,7 +119,8 @@ public abstract class AbstractParticleEmitter implements ParticleEmitter {
 
 	private void calcMatrix(){
 		MatrixHelper.setIdentityM(getModelMatrix());
-		MatrixHelper.translateM(modelMatrix, x,y,z);
+		MatrixHelper.translateM(modelMatrix, position[0],position[1],position[2]);
+		
 	}
 	
 	protected float[] getModelMatrix() {
