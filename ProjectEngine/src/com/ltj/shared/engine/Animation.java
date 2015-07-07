@@ -55,5 +55,10 @@ public class Animation {
 		counter = 0;
 		texCol = 0;
 	}
+
+	public void start() {
+		playing = true;
+		reset();
+	}
 	
 }

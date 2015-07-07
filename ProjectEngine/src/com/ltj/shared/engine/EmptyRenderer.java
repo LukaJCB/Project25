@@ -153,4 +153,22 @@ public class EmptyRenderer implements SpriteRenderer {
 		
 	}
 
+	@Override
+	public void startAnimation(String name) {
+		// do nothing
+		
+	}
+
+
+	@Override
+	public void addAnimation(String name, int animationTime, int texRow,
+			boolean looping, int numCols) {
+		// do nothing
+	}
+
+	@Override
+	public void stopAnimation() {
+		// do nothing
+	}
+
 }

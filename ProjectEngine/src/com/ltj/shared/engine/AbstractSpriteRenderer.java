@@ -51,20 +51,24 @@ public abstract class AbstractSpriteRenderer implements SpriteRenderer {
 		}
 	}
 
-	public void addAnimator(){
-		animator = new Animator();
-	}
 	
+	
+	
+	@Override
 	public void addAnimation(String name, int animationTime, int texRow, boolean looping, int numCols){
-		animator.addAnimation("name", new Animation(animationTime, texRow, looping, numCols));
+		if (animator == null){
+			animator = new Animator();
+		}
+		animator.addAnimation(name, new Animation(animationTime, texRow, looping, numCols));
 	}
 	
 	
-	
+	@Override
 	public void startAnimation(String name) {
 		animator.startAnimation(name);
 	}
 
+	@Override
 	public void stopAnimation() {
 		animator.stopAnimation();
 	}

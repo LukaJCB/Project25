@@ -247,6 +247,21 @@ public abstract class AbstractSprite implements RenderObject {
 		renderer.animate();
 	}
 
+	
+	
+	public void startAnimation(String name) {
+		renderer.startAnimation(name);
+	}
+
+	public void addAnimation(String name, int animationTime, int texRow,
+			boolean looping, int numCols) {
+		renderer.addAnimation(name, animationTime, texRow, looping, numCols);
+	}
+
+	public void stopAnimation() {
+		renderer.stopAnimation();
+	}
+
 	@Override
 	public void render() {
 		renderer.render();
