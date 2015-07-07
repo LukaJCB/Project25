@@ -12,6 +12,7 @@ public abstract class Camera {
 	private static float[] projectionViewMatrix = new float[16];
 	private static float sevenY,sevenZ;
 	private static float[] eyePos = new float[4];
+	private static float[] lookAt = new float[2];
 	private static Skybox skybox;
 	private static boolean activeSkybox;
 	
@@ -56,6 +57,9 @@ public abstract class Camera {
 	}
 	
 	public static void setLookAt(float x, float y){
+		lookAt[0] = x;
+		lookAt[1] = y;
+		
 		eyePos[0] = x;
 		eyePos[1] = y-sevenY;
 		
@@ -67,6 +71,9 @@ public abstract class Camera {
 	}
 	
 	public static void setRotateAround(float x, float y,float rotation){
+		lookAt[0] = x;
+		lookAt[1] = y;
+		
 		float[] camPos = new float[4];
 		camPos[3] = 1;
 		float[] rotationMatrix = new float[16];
@@ -89,6 +96,10 @@ public abstract class Camera {
 				0,0,1); 
 	}
 	
+	public static float[] getLookAt() {
+		return lookAt;
+	}
+
 	public static void setModeSeven() {
 		sevenY = 1.5f;
 		sevenZ = 1.5f;

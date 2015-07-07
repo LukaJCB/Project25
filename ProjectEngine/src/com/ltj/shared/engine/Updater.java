@@ -35,6 +35,11 @@ public abstract class Updater {
 	private static ArrayList<ParticleEmitter> allParticleEmitters = new ArrayList<ParticleEmitter>();
 	private static ArrayList<OrthoRenderObject> allOrthoRenderObjects = new ArrayList<OrthoRenderObject>();
 	private static boolean started;
+	private static boolean zoneChanged;
+	
+	static int[] currentArea = new int[2];
+	static HashMap<int[], Area> areas = new HashMap<int[], Area>();
+	static float areaWidth, areaHeight;
 
 	
 	
@@ -101,12 +106,17 @@ public abstract class Updater {
 		while (i.hasNext()){
 			RenderObject r = i.next();
 			if (r.isDestroyed()){
+				r.clear();
 				i.remove();
 			} else {
 				r.update();
 			}
 		}
 		checkCollisions();
+		
+		for (RenderObject r : allObjects){
+			r.animate();
+		}
 		
 		Camera.calcPVMatrix();
 		if (!dynamicObjects.isEmpty()){
@@ -115,6 +125,12 @@ public abstract class Updater {
 				r.start();
 			}
 			dynamicObjects.clear();
+		}
+		
+		if (zoneChanged){
+			zoneChanged = false;
+			shMap.clear();
+			shMap = new SpatialHashMap(5,5,collisionZone.getWidth(),collisionZone.getHeight(),collisionZone.getX(),collisionZone.getY());
 		}
 	}
 	
@@ -183,8 +199,57 @@ public abstract class Updater {
 
 	public static void setCollisionZone(Rectangle collisionZone) {
 		Updater.collisionZone = collisionZone;
+		if (started){
+			zoneChanged = true;
+		}
 	}
 	
+	static void checkArea(){
+		if (!cameraInArea(areas.get(currentArea))){
+			int[] nextPosition = new int[2];
+			for (int i = currentArea[0] - 1; i < currentArea[0] + 2; i++){
+				for (int j = currentArea[1] - 1; j < currentArea[1] + 2; j++){
+					nextPosition[0] = i;
+					nextPosition[1] = j;
+					Area next = areas.get(nextPosition);
+					if (next != null && cameraInArea(next)){
+						currentArea = nextPosition;
+						areas.get(currentArea).setCollisionZone();
+						return;
+					}
+				}
+			}
+		}
+	}
+	
+	static boolean cameraInArea(Area a){
+		return a.isInArea(Camera.getLookAt()[0],Camera.getLookAt()[1]);
+	}
+	
+	static void setAreaSize(float width, float height){
+		areaWidth = width;
+		areaHeight = height;
+	}
+	
+	static void addArea(int x, int y){
+		Area a = new Area(areaWidth, areaHeight);
+		a.translate(areaWidth*x + areaWidth/2, areaHeight * y + areaHeight/2);
+		int[] pos = new int[2];
+		pos[0] = x;
+		pos[1] = y;
+		areas.put(pos,a);
+	}
+	static Area getArea(int x, int y){
+		int[] pos = new int[2];
+		pos[0] = x;
+		pos[1] = y;
+		return areas.get(pos);
+	}
+	
+	
+	static void loadArea(int x, int y){
+		//TODO
+	}
 	
 
 }
