@@ -12,6 +12,7 @@ public class Animator {
 	
 	public void startAnimation(String name){
 		currentAnimation = animations.get(name);
+		currentAnimation.reset();
 	}
 	
 	public void stopAnimation(){

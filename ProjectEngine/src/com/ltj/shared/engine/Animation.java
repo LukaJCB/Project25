@@ -53,6 +53,7 @@ public class Animation {
 
 	public void reset() {
 		counter = 0;
+		texCol = 0;
 	}
 	
 }
