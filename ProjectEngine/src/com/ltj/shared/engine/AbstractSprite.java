@@ -243,6 +243,10 @@ public abstract class AbstractSprite implements RenderObject {
 	
 
 
+	public void animate() {
+		renderer.animate();
+	}
+
 	@Override
 	public void render() {
 		renderer.render();
@@ -267,7 +271,6 @@ public abstract class AbstractSprite implements RenderObject {
 	public void destroy() {
 		if (!destroyed){
 			destroyed = true;
-			clear();
 			if (childList != null){
 				for (GameObject g : childList){
 					g.destroy();

@@ -29,6 +29,9 @@ public abstract class AbstractSpriteRenderer implements SpriteRenderer {
 	private float rotationX;
 	private float z;
 	protected float rowSize, columnSize;
+	private Animator animator;
+	
+	
 	public AbstractSpriteRenderer(){
 		
 		//set Matrix
@@ -41,15 +44,36 @@ public abstract class AbstractSpriteRenderer implements SpriteRenderer {
 		
 	}
 	
+	@Override
+	public void animate(){
+		if (animator != null){
+			animator.play(this);
+		}
+	}
+
+	public void addAnimator(){
+		animator = new Animator();
+	}
 	
+	public void addAnimation(String name, int animationTime, int texRow, boolean looping, int numCols){
+		animator.addAnimation("name", new Animation(animationTime, texRow, looping, numCols));
+	}
+	
+	
+	
+	public void startAnimation(String name) {
+		animator.startAnimation(name);
+	}
+
+	public void stopAnimation() {
+		animator.stopAnimation();
+	}
+
 	public void translate(float dx, float dy){
 		x += dx;
 		y += dy;
 		calcMatrix();
 	}
-	
-
-	
 	
 
 	public void rotate(float deg){
@@ -116,6 +140,7 @@ public abstract class AbstractSpriteRenderer implements SpriteRenderer {
 		rowSize = 1.0f / rows;
 	}
 	
+	
 
 
 	private void calcMatrix(){
@@ -173,4 +198,7 @@ public abstract class AbstractSpriteRenderer implements SpriteRenderer {
 	public void setDisabled(boolean disabled) {
 		this.disabled = disabled;
 	}
+	
+	
+	
 }

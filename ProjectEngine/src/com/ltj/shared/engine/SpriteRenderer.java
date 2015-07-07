@@ -26,4 +26,5 @@ public interface SpriteRenderer {
 	void draw();
 	void setDisabled(boolean disabled);
 	boolean isDisabled();
+	void animate();
 }

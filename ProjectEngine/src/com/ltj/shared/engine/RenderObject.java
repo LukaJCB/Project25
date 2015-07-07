@@ -19,6 +19,7 @@ public interface RenderObject extends GameObject {
 	void onChildCollision(GameObject child, GameObject collider);
 	void onChildCollisionExit(GameObject child, GameObject collider);
 	void clear();
+	void animate();
 	
 	
 	

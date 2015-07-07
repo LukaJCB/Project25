@@ -147,4 +147,10 @@ public class EmptyRenderer implements SpriteRenderer {
 		height = y;
 	}
 
+	@Override
+	public void animate() {
+		// do nothing
+		
+	}
+
 }
