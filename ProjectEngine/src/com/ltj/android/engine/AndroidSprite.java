@@ -8,15 +8,15 @@ public class AndroidSprite extends AbstractSprite {
 	protected String path;
 
 
-	public AndroidSprite(String path){
+	public AndroidSprite(String path,int columns, int rows){
 		this.path = path;
-		renderer = new AndroidSpriteRenderer(path);
+		renderer = new AndroidSpriteRenderer(path,columns, rows);
 	}
 	
 	
 	@Override
 	public RenderObject cloneObject() {
-		AndroidSprite o = new AndroidSprite(path);
+		AndroidSprite o = new AndroidSprite(path,getNumCols(),getNumRows());
 		finishClone(o);
 		return o;
 	}

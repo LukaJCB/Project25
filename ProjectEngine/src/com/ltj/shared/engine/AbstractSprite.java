@@ -16,7 +16,16 @@ public abstract class AbstractSprite implements RenderObject,SingleSprite,Sprite
 	private String tag;
 	private boolean destroyed, inactive;
 	protected SpriteRenderer renderer;
+	protected String path;
 	
+	public int getNumCols() {
+		return renderer.getNumCols();
+	}
+
+	public int getNumRows() {
+		return renderer.getNumRows();
+	}
+
 	@SuppressWarnings("unchecked")
 	protected void finishClone(AbstractSprite o){
 		if (this.getColliders() != null){

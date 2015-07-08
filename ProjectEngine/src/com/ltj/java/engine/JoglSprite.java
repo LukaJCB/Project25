@@ -7,7 +7,7 @@ import com.ltj.shared.engine.RenderObject;
 
 public class JoglSprite extends AbstractSprite {
 
-	private String path;
+	
 	private GL3 gl;
 
 
@@ -20,7 +20,7 @@ public class JoglSprite extends AbstractSprite {
 	
 	@Override
 	public RenderObject cloneObject() {
-		JoglSprite o = new JoglSprite(gl,path);
+		JoglSprite o = new JoglSprite(gl,path,getNumCols(),getNumRows());
 		finishClone(o);
 		return o;
 	}
