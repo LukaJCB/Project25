@@ -26,8 +26,8 @@ public class AndroidSpriteRenderer extends AbstractSpriteRenderer{
 	private int uTextureLocation;
 	private int[] mTextureDataHandle;
 	
-	public AndroidSpriteRenderer(String path){
-		super();
+	public AndroidSpriteRenderer(String path, int cols, int rows){
+		super(cols,rows);
 		
 		//convert to buffers
 		if (positionVBO == null){

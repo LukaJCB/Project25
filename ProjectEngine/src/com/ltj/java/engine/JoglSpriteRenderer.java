@@ -33,8 +33,8 @@ public class JoglSpriteRenderer extends AbstractSpriteRenderer{
 	private int[] mTextureDataHandle;
 	
 	private GL3 gl;
-	public JoglSpriteRenderer(GL3 gl, String path){
-		super();
+	public JoglSpriteRenderer(GL3 gl, String path,int cols, int rows){
+		super(cols,rows);
 		this.gl = gl;
 
 		//convert to buffers

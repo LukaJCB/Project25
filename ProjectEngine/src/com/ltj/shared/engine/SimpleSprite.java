@@ -17,17 +17,14 @@ public class SimpleSprite extends AbstractSprite {
 	public SimpleSprite (GL3 gl,String path){
 		this.gl = gl;
 		this.path = path;
-		renderer = new JoglSpriteRenderer(gl, path);
+		renderer = new JoglSpriteRenderer(gl, path,1,1);
 	}
 	
 	public SimpleSprite(String path){
 		this.path = path;
-		renderer = new AndroidSpriteRenderer(path);
+		renderer = new AndroidSpriteRenderer(path,1,1);
 	}
 	
-	public void setRepeat(float horizontal, float vertical){
-		renderer.setRepeatTexture(horizontal, vertical);
-	}
 
 	@Override
 	public RenderObject cloneObject() {

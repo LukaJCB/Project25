@@ -33,7 +33,10 @@ public abstract class AbstractSpriteRenderer implements SpriteRenderer {
 	private boolean modeSEnabled;
 	
 	
-	public AbstractSpriteRenderer(){
+	public AbstractSpriteRenderer(int columns, int rows){
+		
+		//set sheet dimensions
+		setSheetDimensions(columns, rows);
 		
 		//set Matrix
 		MatrixHelper.setIdentityM(modelMatrix);

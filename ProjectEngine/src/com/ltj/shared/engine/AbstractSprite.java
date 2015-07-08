@@ -8,7 +8,7 @@ import java.util.ArrayList;
  *
  */
 @SuppressWarnings("deprecation")
-public abstract class AbstractSprite implements RenderObject {
+public abstract class AbstractSprite implements RenderObject,SingleSprite,SpriteSheet {
 
 
 	private GameObjectController controller = new GameObjectController(this);
@@ -374,5 +374,18 @@ public abstract class AbstractSprite implements RenderObject {
 			}
 		}
 	}
+
+	@Override
+	public void setTexture(int column, int row) {
+		renderer.setTexture(column, row);
+	}
+
+	@Override
+	public void setRepeat(float horizontal, float vertical) {
+		renderer.setRepeatTexture(horizontal, vertical);
+	}
+
+
+	
 
 }

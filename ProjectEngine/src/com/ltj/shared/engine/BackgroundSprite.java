@@ -8,11 +8,11 @@ public class BackgroundSprite {
 	private SpriteRenderer renderer;
 	
 	public BackgroundSprite(GL3 gl, String path){
-		renderer = new JoglSpriteRenderer(gl, path);
+		renderer = new JoglSpriteRenderer(gl, path,1,1);
 	}
 	
 	public BackgroundSprite(String path){
-		renderer = new AndroidSpriteRenderer(path);
+		renderer = new AndroidSpriteRenderer(path,1,1);
 	}
 
 	public void render() {
