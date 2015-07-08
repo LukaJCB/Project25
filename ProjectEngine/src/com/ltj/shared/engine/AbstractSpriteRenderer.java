@@ -30,6 +30,7 @@ public abstract class AbstractSpriteRenderer implements SpriteRenderer {
 	private float z;
 	protected float rowSize, columnSize;
 	private Animator animator;
+	private boolean modeSEnabled;
 	
 	
 	public AbstractSpriteRenderer(){
@@ -123,16 +124,25 @@ public abstract class AbstractSpriteRenderer implements SpriteRenderer {
 		calcMatrix();
 	}
 
+	@Override
+	public void setModeSevenEnabled(boolean modeSEnabled) {
+		this.modeSEnabled = modeSEnabled;
+	}
+
 	public void setModeSeven() {
-		z = getHeight()/2;
-		rotationX = 90;
-		calcMatrix();
+		if (modeSEnabled){
+			z = getHeight()/2;
+			rotationX = 90;
+			calcMatrix();
+		}
 	}
 	
 	public void setNormalMode(){
-		z = 0;
-		rotationX = 0;
-		calcMatrix();
+		if (modeSEnabled){
+			z = 0;
+			rotationX = 0;
+			calcMatrix();
+		}
 	}
 
 	public float getZ() {

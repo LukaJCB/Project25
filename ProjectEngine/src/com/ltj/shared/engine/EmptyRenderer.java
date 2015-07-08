@@ -171,4 +171,10 @@ public class EmptyRenderer implements SpriteRenderer {
 		// do nothing
 	}
 
+	@Override
+	public void setModeSevenEnabled(boolean modeSEnabled) {
+		// do nothing
+		
+	}
+
 }

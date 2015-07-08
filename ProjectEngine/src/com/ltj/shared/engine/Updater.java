@@ -30,7 +30,6 @@ public abstract class Updater {
 
 	private static ArrayList<RenderObject> allObjects = new ArrayList<RenderObject>();
 	private static ArrayList<RenderObject> dynamicObjects = new ArrayList<RenderObject>();
-	private static ArrayList<ModeSevenObject> allMSObjects = new ArrayList<ModeSevenObject>();
 	private static SpatialHashMap shMap;
 	private static ArrayList<ParticleEmitter> allParticleEmitters = new ArrayList<ParticleEmitter>();
 	private static ArrayList<OrthoRenderObject> allOrthoRenderObjects = new ArrayList<OrthoRenderObject>();
@@ -47,13 +46,12 @@ public abstract class Updater {
 		return allOrthoRenderObjects;
 	}
 
-	public static void flush(ArrayList<RenderObject> objects,ArrayList<ModeSevenObject> mSObjects ) {
+	public static void flush(ArrayList<RenderObject> objects) {
 		for (RenderObject r: allObjects){
 			r.clear();
 		}
 		Camera.flush();
 		allObjects = objects;
-		allMSObjects = mSObjects;
 	}
 
 	
@@ -75,12 +73,7 @@ public abstract class Updater {
 		}
 	}
 
-	public static void addMSRenderable(ModeSevenObject r){
-		if (!started){
-			allObjects.add(r);
-			allMSObjects.add(r);
-		}
-	}
+
 
 	public static void addParticleEmitter(ParticleEmitter p){
 		allParticleEmitters.add(p);
@@ -189,9 +182,6 @@ public abstract class Updater {
 
 
 
-	public static List<ModeSevenObject> getAllMSObjects() {
-		return allMSObjects;
-	}
 
 	public static Rectangle getCollisionZone() {
 		return collisionZone;

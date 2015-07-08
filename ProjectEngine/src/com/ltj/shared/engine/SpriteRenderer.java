@@ -31,4 +31,5 @@ public interface SpriteRenderer {
 	void addAnimation(String name, int animationTime, int texRow,
 			boolean looping, int numCols);
 	void stopAnimation();
+	void setModeSevenEnabled(boolean modeSEnabled);
 }

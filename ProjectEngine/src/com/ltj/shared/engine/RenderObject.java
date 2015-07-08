@@ -20,6 +20,11 @@ public interface RenderObject extends GameObject {
 	void onChildCollisionExit(GameObject child, GameObject collider);
 	void clear();
 	void animate();
+	void setNormalMode();
+	void setModeSeven();
+	void setZ(float z);
+	float getZ();
+	void setModeSevenEnabled(boolean modeSEnabled);
 	
 	
 	
