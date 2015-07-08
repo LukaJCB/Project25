@@ -9,15 +9,11 @@ import javax.microedition.khronos.opengles.GL10;
 
 import android.content.Context;
 
-import com.ltj.android.engine.AndroidParticleEmitter;
 import com.ltj.android.engine.AndroidRenderer;
 import com.ltj.shared.engine.Behaviour;
 import com.ltj.shared.engine.Camera;
 import com.ltj.shared.engine.HudElement;
-import com.ltj.shared.engine.ModeSevenObject;
-import com.ltj.shared.engine.ParticleEmitter;
 import com.ltj.shared.engine.SimpleSprite;
-import com.ltj.shared.engine.SimpleSpriteModeS;
 import com.ltj.shared.engine.Skybox;
 import com.ltj.shared.engine.SoundManager;
 import com.ltj.shared.engine.Updater;
@@ -51,7 +47,7 @@ public class GameRenderer extends AndroidRenderer {
 		}
 		
 				
-		SimpleSpriteModeS hero = new SimpleSpriteModeS( "img/car.png");
+		SimpleSprite hero = new SimpleSprite( "img/car.png");
 		Camera.addSkyBox(new Skybox( "img/skyboxtop.png","img/skyboxbottom.png","img/skyboxfront.png",
 				"img/skyboxback.png","img/skyboxright.png","img/skyboxleft.png"));
 		hero.addBehaviourName("PlayerController25D");
@@ -80,10 +76,10 @@ public class GameRenderer extends AndroidRenderer {
 	
 		
 		
-		addMSRenderable(hero);
+		addRenderable(hero);
 		
 		
-		SimpleSpriteModeS sp3 = new SimpleSpriteModeS("img/car.png");
+		SimpleSprite sp3 = new SimpleSprite("img/car.png");
 		sp3.translate(0, 5);
 		sp3.scale(0.4f, 0.3f);
 		sp3.addCollider(new BoxCollider());
@@ -108,7 +104,7 @@ public class GameRenderer extends AndroidRenderer {
 		b2.allocateObject(sp3);
 		sp3.addBehaviour(b2);
 		sp3.setTag("ene");
-		SimpleSpriteModeS sp4 = new SimpleSpriteModeS("img/car.png");
+		SimpleSprite sp4 = new SimpleSprite("img/car.png");
 		Behaviour<SimpleSprite> b3 = new Behaviour<SimpleSprite>(){
 			
 			
@@ -130,8 +126,8 @@ public class GameRenderer extends AndroidRenderer {
 		sp4.addBehaviour(b3);
 		sp4.scale(0.4f, 0.3f);
 		sp4.translate(-6, 2);
-		Updater.addMSRenderable((ModeSevenObject) sp4);
-		Updater.addMSRenderable(sp3);
+		Updater.addRenderable( sp4);
+		Updater.addRenderable(sp3);
 		HudElement e = new HudElement("img/ic_launcher.png");
 		
 		e.scale(0.1f, 0.1f);

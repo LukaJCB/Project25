@@ -8,14 +8,13 @@ import com.ltj.java.engine.JoglRenderer;
 import com.ltj.shared.engine.Behaviour;
 import com.ltj.shared.engine.Camera;
 import com.ltj.shared.engine.EmptyObject;
-import com.ltj.shared.engine.GameObject;
 import com.ltj.shared.engine.HudElement;
 import com.ltj.shared.engine.RenderObject;
-import com.ltj.shared.engine.SheetSpriteModeS;
+import com.ltj.shared.engine.SheetSprite;
 import com.ltj.shared.engine.SimpleSprite;
-import com.ltj.shared.engine.SimpleSpriteModeS;
 import com.ltj.shared.engine.Skybox;
 import com.ltj.shared.engine.SoundManager;
+import com.ltj.shared.engine.Sprite;
 import com.ltj.shared.engine.Updater;
 import com.ltj.shared.engine.primitives.BoxCollider;
 import com.ltj.shared.engine.primitives.Globals;
@@ -37,7 +36,7 @@ public class JoglGameRenderer extends JoglRenderer {
 		Updater.addRenderable(r);
 		Updater.setCollisionZone(new Rectangle(r.getX(), r.getY(), r.getWidth(), r.getHeight()));
 
-		final JoglParticleEmitter pe = new JoglParticleEmitter(gl, 1000, 1.0f,0f,0);
+		final JoglParticleEmitter pe = new JoglParticleEmitter(gl, 100,1000, 1.0f,0f,0);
 		Updater.addParticleEmitter(pe);
 
 		
@@ -51,10 +50,10 @@ public class JoglGameRenderer extends JoglRenderer {
 //		}
 		
 		
-		SheetSpriteModeS hero = new SheetSpriteModeS(gl, "assets/img/ship.png",1,1);
+		SheetSprite hero = new SheetSprite(gl, "assets/img/ship.png",1,1);
 		hero.scale(0.4f, 0.9f);
 		hero.setTexture(0, 0);
-		Behaviour<SheetSpriteModeS> b = new Behaviour<SheetSpriteModeS>(){
+		Behaviour<SheetSprite> b = new Behaviour<SheetSprite>(){
 
 			private float speed, rotation;
 			private boolean moving;
@@ -65,7 +64,7 @@ public class JoglGameRenderer extends JoglRenderer {
 			}
 
 			
-			public void onCollision(GameObject c){
+			public void onCollision(Sprite c){
 				
 				pe.addParticleExplosion(60, 0.0001f);
 				setMovement(-2 *speed *(float)-Math.sin(Math.toRadians(gameObject.getRotation())), 
@@ -135,9 +134,9 @@ public class JoglGameRenderer extends JoglRenderer {
 		zone.setParent(hero);
 		zone.setTag("zon");
 		//Updater.addRenderable(zone);
-		Updater.addMSRenderable(hero);
+		Updater.addRenderable(hero);
 		
-		SimpleSpriteModeS sp3 = new SimpleSpriteModeS(gl, "assets/img/blue.png");
+		SimpleSprite sp3 = new SimpleSprite(gl, "assets/img/blue.png");
 		sp3.translate(0, 5);
 		//sp3.scale(4f, 3f);
 		sp3.addCollider(new BoxCollider());
@@ -162,7 +161,7 @@ public class JoglGameRenderer extends JoglRenderer {
 		b2.allocateObject(sp3);
 		sp3.addBehaviour(b2);
 		sp3.setTag("ene");
-		SimpleSpriteModeS sp4 = new SimpleSpriteModeS(gl, "assets/img/redship.png");
+		SimpleSprite sp4 = new SimpleSprite(gl, "assets/img/redship.png");
 		Behaviour<SimpleSprite> b3 = new Behaviour<SimpleSprite>(){
 			
 			
@@ -186,8 +185,8 @@ public class JoglGameRenderer extends JoglRenderer {
 		sp4.scale(0.4f, 0.3f);
 		sp4.translate(-6, 2);
 		sp4.addCollider(new BoxCollider());
-		Updater.addMSRenderable( sp4);
-		Updater.addMSRenderable(sp3);
+		Updater.addRenderable( sp4);
+		Updater.addRenderable(sp3);
 		HudElement e = new HudElement(gl, "assets/img/ic_launcher.png");
 		
 		e.scale(0.1f, 0.1f);

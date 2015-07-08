@@ -5,12 +5,12 @@ import android.view.MotionEvent;
 import com.ltj.android.engine.MotionInput;
 import com.ltj.shared.engine.Behaviour;
 import com.ltj.shared.engine.Camera;
-import com.ltj.shared.engine.GameObject;
 import com.ltj.shared.engine.HudElement;
-import com.ltj.shared.engine.SimpleSpriteModeS;
+import com.ltj.shared.engine.SimpleSprite;
 import com.ltj.shared.engine.SoundManager;
+import com.ltj.shared.engine.Sprite;
 
-public class PlayerController extends Behaviour<SimpleSpriteModeS> {
+public class PlayerController extends Behaviour<SimpleSprite> {
 
 
 	private HudElement e;
@@ -48,7 +48,7 @@ public class PlayerController extends Behaviour<SimpleSpriteModeS> {
 	
 
 
-	public void onCollision(GameObject collider){
+	public void onCollision(Sprite collider){
 		if (collider.compareTag("enemy")){
 			gameObject.translate(-xMovement, -yMovement);
 			//gameObject.hide();

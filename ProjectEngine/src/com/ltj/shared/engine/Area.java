@@ -31,7 +31,7 @@ public class Area  {
 		return root.getWidth();
 	}
 	
-	public boolean isInArea(GameObject gm){
+	public boolean isInArea(Sprite gm){
 		return (root.getY() - root.getHeight()/2 < gm.getY() + gm.getHeight()/2 &&
 				root.getY() + root.getHeight()/2 > gm.getY() - gm.getHeight()/2 &&
 				root.getX() + root.getWidth()/2 > gm.getX() - gm.getWidth()/2  &&
@@ -50,18 +50,18 @@ public class Area  {
 		Updater.setCollisionZone(new Rectangle(root.getX(), root.getY(), root.getWidth(), root.getHeight()));
 	}
 	
-	public void addObject(GameObject child){
+	public void addObject(Sprite child){
 		root.addChild(child);
 	}
 	
 	public void destroy(){
-		for (GameObject g : root.getChildList()){
+		for (Sprite g : root.getChildList()){
 			g.destroy();
 		}
 	}
 	
 	public void deactivate(){
-		for (GameObject g : root.getChildList()){
+		for (Sprite g : root.getChildList()){
 			g.setInactive(true);
 		}
 	}

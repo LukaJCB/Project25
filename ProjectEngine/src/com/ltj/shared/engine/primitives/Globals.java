@@ -2,7 +2,6 @@ package com.ltj.shared.engine.primitives;
 
 import java.util.HashMap;
 
-import com.ltj.shared.engine.GameObject;
 import com.ltj.shared.engine.RenderObject;
 
 public class Globals {

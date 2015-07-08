@@ -15,7 +15,6 @@ import com.ltj.projectengine.R;
 import com.ltj.shared.engine.Camera;
 import com.ltj.shared.engine.HeadsUpDisplay;
 import com.ltj.shared.engine.HudElement;
-import com.ltj.shared.engine.ModeSevenObject;
 import com.ltj.shared.engine.OrthoRenderObject;
 import com.ltj.shared.engine.ParticleEmitter;
 import com.ltj.shared.engine.RenderObject;

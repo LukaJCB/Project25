@@ -1,9 +1,9 @@
 package com.ltj.game.projectPlatform;
 
 import com.ltj.shared.engine.Behaviour;
-import com.ltj.shared.engine.GameObject;
+import com.ltj.shared.engine.Sprite;
 
-public class BulletController extends Behaviour<GameObject> {
+public class BulletController extends Behaviour<Sprite> {
 
 	private int counter;
 	@Override
@@ -23,7 +23,7 @@ public class BulletController extends Behaviour<GameObject> {
 	}
 
 	@Override
-	public void onCollision(GameObject collider) {
+	public void onCollision(Sprite collider) {
 
 		if (collider.compareTag("ground")){
 			this.gameObject.setInactive(true);

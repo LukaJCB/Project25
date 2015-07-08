@@ -5,12 +5,12 @@ import java.util.ArrayList;
 public class GameObjectController {
 
 
-	private Behaviour<? extends GameObject> behaviour;
+	private Behaviour<? extends Sprite> behaviour;
 	private String behaviourName;
 	private boolean disabled;
 	private RenderObject parent;
 	private ArrayList<Collider> colliders;
-	private GameObject controllerObject;
+	private RenderObject controllerObject;
 
 	public GameObjectController(RenderObject obj){
 		this.controllerObject = obj;
@@ -56,11 +56,11 @@ public class GameObjectController {
 
 	}
 
-	public void addBehaviour(Behaviour<? extends GameObject> b){
+	public void addBehaviour(Behaviour<? extends Sprite> b){
 		behaviour = b;
 	}
 	
-	public Behaviour<? extends GameObject> getBehaviour() {
+	public Behaviour<? extends Sprite> getBehaviour() {
 		return behaviour;
 	}
 
@@ -79,7 +79,7 @@ public class GameObjectController {
 		return colliders;
 	}
 
-	public void onCollisionEnter(GameObject collider) {
+	public void onCollisionEnter(Sprite collider) {
 		if (parent != null){
 			parent.onChildCollisionEnter(controllerObject,collider);
 		}
@@ -89,7 +89,7 @@ public class GameObjectController {
 	
 	}
 
-	public void onCollision(GameObject collider) {
+	public void onCollision(Sprite collider) {
 
 		if (parent != null){
 			parent.onChildCollision(controllerObject,collider);
@@ -101,7 +101,7 @@ public class GameObjectController {
 	}
 
 	@Deprecated
-	public void onCollisionExit(GameObject collider) {
+	public void onCollisionExit(Sprite collider) {
 		if (parent != null){
 			parent.onChildCollisionExit(controllerObject,collider);
 		}
@@ -111,21 +111,21 @@ public class GameObjectController {
 	
 	}
 	@Deprecated
-	public void onChildCollisionEnter(GameObject child,GameObject collider) {
+	public void onChildCollisionEnter(Sprite child,Sprite collider) {
 		if (behaviour != null){
 			behaviour.onChildCollisionEnter(collider);
 		}
 		
 	}
 	@Deprecated
-	public void onChildCollision(GameObject child,GameObject collider) {
+	public void onChildCollision(Sprite child,Sprite collider) {
 		if (behaviour != null){
 			behaviour.onChildCollision(child,collider);
 		}
 		
 	}
 	@Deprecated
-	public void onChildCollisionExit(GameObject child,GameObject collider){
+	public void onChildCollisionExit(Sprite child,Sprite collider){
 		if (behaviour != null){
 			behaviour.onChildCollisionExit(child,collider);
 		}

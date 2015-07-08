@@ -4,27 +4,33 @@ package com.ltj.shared.engine;
 import java.util.ArrayList;
 
 
-public interface RenderObject extends GameObject {
+public interface RenderObject extends Sprite {
 	void start();
 	void update();
 	void render();
-	void addBehaviour(Behaviour<? extends GameObject> b);
+	void addBehaviour(Behaviour<? extends Sprite> b);
 	void addCollider(Collider c);
 	ArrayList<Collider> getColliders();
-	void addChild(GameObject child);
-	void onCollisionEnter(GameObject collider);
-	void onCollision(GameObject collider);
-	void onCollisionExit(GameObject collider);
-	void onChildCollisionEnter(GameObject child, GameObject collider);
-	void onChildCollision(GameObject child, GameObject collider);
-	void onChildCollisionExit(GameObject child, GameObject collider);
+	void onCollisionEnter(Sprite collider);
+	void onCollision(Sprite collider);
+	void onCollisionExit(Sprite collider);
+	void onChildCollisionEnter(Sprite child, Sprite collider);
+	void onChildCollision(Sprite child, Sprite collider);
+	void onChildCollisionExit(Sprite child, Sprite collider);
 	void clear();
 	void animate();
 	void setNormalMode();
 	void setModeSeven();
-	void setZ(float z);
-	float getZ();
-	void setModeSevenEnabled(boolean modeSEnabled);
+	void setTag(String tag);
+	String getTag();
+	void checkCollision(RenderObject collider);
+	boolean isDestroyed();
+	Behaviour<? extends Sprite> getBehaviour();
+	RenderObject cloneObject();
+	boolean isRendererDisabled();
+	boolean isControllerDisabled();
+	boolean isInactive();
+	
 	
 	
 	

@@ -2,7 +2,7 @@ package com.ltj.shared.engine;
 
 import java.util.ArrayList;
 
-public interface GameObject {
+public interface Sprite {
 	void destroy();
 	void translate(float dx,float dy);
 	void scale(float sx,float sy);
@@ -13,22 +13,16 @@ public interface GameObject {
 	float getY();
 	float getHeight();
 	float getWidth();
-	void setTag(String tag);
-	String getTag();
 	boolean compareTag(String string);
 	float getRotation();
-	void checkCollision(RenderObject collider);
-	boolean isDestroyed();
-	GameObject getParent();
-	Behaviour<? extends GameObject> getBehaviour();
-	RenderObject cloneObject();
+	Sprite getParent();
 	void setRendererDisabled(boolean disabled);
-	boolean isRendererDisabled();
 	void setControllerDisabled(boolean disabled);
-	boolean isControllerDisabled();
-	boolean isInactive();
 	void setInactive(boolean inactive);
-	ArrayList<GameObject> getChildList();
+	ArrayList<Sprite> getChildList();
 	Collider getCollider(int index);
-	
+	void setZ(float z);
+	float getZ();
+	void setModeSevenEnabled(boolean modeSEnabled);
+	void addChild(Sprite child);
 }

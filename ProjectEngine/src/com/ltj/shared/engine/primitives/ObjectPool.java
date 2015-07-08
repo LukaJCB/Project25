@@ -2,6 +2,7 @@ package com.ltj.shared.engine.primitives;
 
 
 import com.ltj.shared.engine.RenderObject;
+import com.ltj.shared.engine.Sprite;
 import com.ltj.shared.engine.Updater;
 
 public class ObjectPool {
@@ -18,7 +19,7 @@ public class ObjectPool {
 		}
 	}
 	
-	public RenderObject create() throws PoolToSmallException{
+	public Sprite create() throws PoolToSmallException{
 		for (RenderObject go : pooledObjects){
 			if (go.isInactive()){
 				go.start();

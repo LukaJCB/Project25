@@ -28,8 +28,7 @@ public interface SpriteRenderer {
 	boolean isDisabled();
 	void animate();
 	void startAnimation(String name);
-	void addAnimation(String name, int animationTime, int texRow,
-			boolean looping, int numCols);
+	void addAnimation(String name, int animationTime, int texRow,boolean looping, int numCols);
 	void stopAnimation();
 	void setModeSevenEnabled(boolean modeSEnabled);
 }

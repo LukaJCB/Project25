@@ -4,14 +4,13 @@ import android.view.MotionEvent;
 
 import com.ltj.android.engine.AndroidParticleEmitter;
 import com.ltj.android.engine.MotionInput;
-import com.ltj.java.engine.JoglParticleEmitter;
 import com.ltj.shared.engine.Behaviour;
 import com.ltj.shared.engine.Camera;
-import com.ltj.shared.engine.GameObject;
-import com.ltj.shared.engine.SimpleSpriteModeS;
+import com.ltj.shared.engine.SimpleSprite;
+import com.ltj.shared.engine.Sprite;
 import com.ltj.shared.engine.Updater;
 import com.ltj.shared.engine.primitives.Globals;
-public class PlayerController25D extends Behaviour<SimpleSpriteModeS> {
+public class PlayerController25D extends Behaviour<SimpleSprite> {
 
 	private float xMovement,yMovement;
 	private float lastX,lastY;
@@ -21,7 +20,7 @@ public class PlayerController25D extends Behaviour<SimpleSpriteModeS> {
 	public void start() {
 		gameObject.scale(0.5f, 0.5f);
 		gameObject.translate(0, -2);
-		pe = new AndroidParticleEmitter(100, 1.0f,1f,1);
+		pe = new AndroidParticleEmitter(100,100, 1.0f,1f,1);
 		Updater.addParticleEmitter(pe);
 		moving = true;
 	}
@@ -53,7 +52,7 @@ public class PlayerController25D extends Behaviour<SimpleSpriteModeS> {
 		Camera.setRotateAround(gameObject.getX(), gameObject.getY(),gameObject.getRotation());
 	}
 	@Override
-	public void onCollision(GameObject c){
+	public void onCollision(Sprite c){
 		gameObject.translate(-xMovement, -yMovement);
 		moving = false;
 		gameObject.setRendererDisabled(true);

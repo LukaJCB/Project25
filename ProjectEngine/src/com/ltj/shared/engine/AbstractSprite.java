@@ -12,7 +12,7 @@ public abstract class AbstractSprite implements RenderObject {
 
 
 	private GameObjectController controller = new GameObjectController(this);
-	private ArrayList<GameObject> childList;
+	private ArrayList<Sprite> childList;
 	private String tag;
 	private boolean destroyed, inactive;
 	protected SpriteRenderer renderer;
@@ -35,7 +35,7 @@ public abstract class AbstractSprite implements RenderObject {
 			try {
 				//get new instance of same behaviour class
 				Class<?> c = Class.forName(o.getBehaviourName());
-				Behaviour<GameObject> b = (Behaviour<GameObject>) c.newInstance();
+				Behaviour<Sprite> b = (Behaviour<Sprite>) c.newInstance();
 				o.addBehaviour(b);
 				b.allocateObject(o);
 
@@ -50,7 +50,7 @@ public abstract class AbstractSprite implements RenderObject {
 			try {
 				//get new instance of same behaviour class
 				Class<?> c = this.getBehaviour().getClass();
-				Behaviour<GameObject> b = (Behaviour<GameObject>) c.newInstance();
+				Behaviour<Sprite> b = (Behaviour<Sprite>) c.newInstance();
 				o.addBehaviour(b);
 				b.allocateObject(o);
 
@@ -75,11 +75,11 @@ public abstract class AbstractSprite implements RenderObject {
 		controller.checkCollision(object);
 	}
 
-	public void addBehaviour(Behaviour<? extends GameObject> b) {
+	public void addBehaviour(Behaviour<? extends Sprite> b) {
 		controller.addBehaviour(b);
 	}
 
-	public Behaviour<? extends GameObject> getBehaviour() {
+	public Behaviour<? extends Sprite> getBehaviour() {
 		return controller.getBehaviour();
 	}
 
@@ -95,28 +95,28 @@ public abstract class AbstractSprite implements RenderObject {
 		return controller.getColliders();
 	}
 
-	public void onCollisionEnter(GameObject collider) {
+	public void onCollisionEnter(Sprite collider) {
 		controller.onCollisionEnter(collider);
 	}
 
-	public void onCollision(GameObject collider) {
+	public void onCollision(Sprite collider) {
 		controller.onCollision(collider);
 	}
 
-	public void onCollisionExit(GameObject collider) {
+	public void onCollisionExit(Sprite collider) {
 		controller.onCollisionExit(collider);
 	}
 
 	
-	public void onChildCollisionEnter(GameObject child, GameObject collider) {
+	public void onChildCollisionEnter(Sprite child, Sprite collider) {
 		controller.onChildCollisionEnter(child, collider);
 	}
 
-	public void onChildCollision(GameObject child, GameObject collider) {
+	public void onChildCollision(Sprite child, Sprite collider) {
 		controller.onChildCollision(child, collider);
 	}
 
-	public void onChildCollisionExit(GameObject child, GameObject collider) {
+	public void onChildCollisionExit(Sprite child, Sprite collider) {
 		controller.onChildCollisionExit(child, collider);
 	}
 
@@ -136,7 +136,7 @@ public abstract class AbstractSprite implements RenderObject {
 		renderer.translate(dx, dy);
 		//translate children as well
 		if (childList != null){
-			for (GameObject r : childList){
+			for (Sprite r : childList){
 				r.translate(dx, dy);
 			}
 		}
@@ -159,7 +159,7 @@ public abstract class AbstractSprite implements RenderObject {
 		}
 		//rotate children as well
 		if (childList != null){
-			for (GameObject r : childList){
+			for (Sprite r : childList){
 				r.rotate(deg);
 			}
 		}
@@ -169,7 +169,7 @@ public abstract class AbstractSprite implements RenderObject {
 	public void setPosition(float x, float y) {
 		//check pos of children
 		if (childList != null){
-			for (GameObject r : childList){
+			for (Sprite r : childList){
 				float xOffset = r.getX() - getX();
 				float yOffset = r.getY() - getY();
 				r.setPosition(x+ xOffset, y+ yOffset);
@@ -182,7 +182,7 @@ public abstract class AbstractSprite implements RenderObject {
 	public void setRotation(float deg) {
 		renderer.setRotation(deg);
 		if (childList != null){
-			for (GameObject r : childList){
+			for (Sprite r : childList){
 				r.setRotation(deg);
 			}
 		}
@@ -192,7 +192,7 @@ public abstract class AbstractSprite implements RenderObject {
 		renderer.scale(sx, sy);
 		//scale children as well
 		if (childList != null){
-			for (GameObject r : childList){
+			for (Sprite r : childList){
 				r.scale(sx, sy);
 			}
 		}
@@ -293,7 +293,7 @@ public abstract class AbstractSprite implements RenderObject {
 		if (!destroyed){
 			destroyed = true;
 			if (childList != null){
-				for (GameObject g : childList){
+				for (Sprite g : childList){
 					g.destroy();
 				}
 			}
@@ -345,14 +345,14 @@ public abstract class AbstractSprite implements RenderObject {
 	}
 
 	@Override
-	public ArrayList<GameObject> getChildList() {
+	public ArrayList<Sprite> getChildList() {
 		return childList;
 	}
 
 	@Override
-	public void addChild(GameObject child) {
+	public void addChild(Sprite child) {
 		if (childList == null){
-			childList = new ArrayList<GameObject>();	
+			childList = new ArrayList<Sprite>();	
 		} 
 		childList.add(child);
 		
@@ -369,7 +369,7 @@ public abstract class AbstractSprite implements RenderObject {
 		renderer.setDisabled(inactive);
 		controller.setDisabled(inactive);
 		if (childList != null){
-			for (GameObject o : childList){
+			for (Sprite o : childList){
 				o.setInactive(inactive);
 			}
 		}

@@ -7,11 +7,11 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 
 @SuppressWarnings("unchecked")
-public abstract class Behaviour<T extends GameObject> {
+public abstract class Behaviour<T extends Sprite> {
 	
-	private static HashMap<String, Behaviour<? extends GameObject>> behaviours = new HashMap<String,Behaviour<? extends GameObject>>();
+	private static HashMap<String, Behaviour<? extends Sprite>> behaviours = new HashMap<String,Behaviour<? extends Sprite>>();
 	
-	public static void addBehaviour(String name, Behaviour<? extends GameObject> b){
+	public static void addBehaviour(String name, Behaviour<? extends Sprite> b){
 		behaviours.put(name, b);
 	}
 	
@@ -22,12 +22,12 @@ public abstract class Behaviour<T extends GameObject> {
 	}
 	
 	
-	public final void sendMessage(GameObject obj,String method, Object... params){
+	public final void sendMessage(Sprite obj,String method, Object... params){
 		try {
 			Method m = obj.getClass().getMethod("getBehaviour");
 			
 			//get behaviour object
-			Behaviour<? extends GameObject> b = (Behaviour<? extends GameObject>) m.invoke(obj);
+			Behaviour<? extends Sprite> b = (Behaviour<? extends Sprite>) m.invoke(obj);
 			Method msg;
 			
 			//get method object
@@ -55,7 +55,7 @@ public abstract class Behaviour<T extends GameObject> {
 			e.printStackTrace();
 		}
 	}
-	public final GameObject getObjectByID(String id){
+	public final RenderObject getObjectByID(String id){
 		return Updater.getObjectByID(id);
 	}
 	
@@ -63,12 +63,12 @@ public abstract class Behaviour<T extends GameObject> {
 		return HeadsUpDisplay.get(id);
 	}
 	
-	public final GameObject createNewGameObject(GameObject obj, float x, float y, float rot){
+	public final RenderObject createNewGameObject(RenderObject obj, float x, float y, float rot){
 		//clone object and set Pos and Rotation
-		GameObject o = obj.cloneObject();
+		RenderObject o = obj.cloneObject();
 		o.setPosition(x, y);
 		o.setRotation(rot);
-		Updater.addRenderable((RenderObject) o);
+		Updater.addRenderable(o);
 		return o;
 	}
 
@@ -77,32 +77,32 @@ public abstract class Behaviour<T extends GameObject> {
 	public abstract void update();
 
 
-	public void onCollisionEnter(GameObject collider) {
+	public void onCollisionEnter(Sprite collider) {
 		
 		
 	}
 
 
-	public void onCollision(GameObject collider) {
-		
-	}
-	
-	public void onChildCollisionEnter(GameObject collider) {
-		
-	}
-
-
-	public void onChildCollision(GameObject child, GameObject collider){
+	public void onCollision(Sprite collider) {
 		
 	}
 	
-	
-	public void onChildCollisionExit(GameObject child, GameObject collider) {
+	public void onChildCollisionEnter(Sprite collider) {
 		
 	}
 
 
-	public void onCollisionExit(GameObject collider) {
+	public void onChildCollision(Sprite child, Sprite collider){
+		
+	}
+	
+	
+	public void onChildCollisionExit(Sprite child, Sprite collider) {
+		
+	}
+
+
+	public void onCollisionExit(Sprite collider) {
 		
 	}
 
