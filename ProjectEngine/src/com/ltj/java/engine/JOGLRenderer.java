@@ -11,7 +11,6 @@ import com.ltj.java.utils.JoglTextResourceReader;
 import com.ltj.shared.engine.Camera;
 import com.ltj.shared.engine.HeadsUpDisplay;
 import com.ltj.shared.engine.HudElement;
-import com.ltj.shared.engine.ModeSevenObject;
 import com.ltj.shared.engine.OrthoRenderObject;
 import com.ltj.shared.engine.ParticleEmitter;
 import com.ltj.shared.engine.RenderObject;
@@ -106,9 +105,6 @@ public abstract class JoglRenderer implements GLEventListener, KeyListener {
 		hud.addHudElement(key,e);
 	}
 
-	public void addMSRenderable(ModeSevenObject r) {
-		Updater.addMSRenderable(r);
-	}
 
 	public void changeMode() {
 		changeMode = true;
@@ -118,8 +114,8 @@ public abstract class JoglRenderer implements GLEventListener, KeyListener {
 		programId = normalProgramId;
 		gl.glDisable(GL_DEPTH_TEST);
 		Camera.setNormalMode();
-		for (ModeSevenObject s : Updater.getAllMSObjects()) {
-			s.setNormalMode();
+		for (RenderObject g : Updater.getAllObjects()) {
+			g.setNormalMode();
 		}
 		modeSeven = false;
 	}
@@ -131,8 +127,8 @@ public abstract class JoglRenderer implements GLEventListener, KeyListener {
 		gl.glDepthMask(true);
 
 		Camera.setModeSeven();
-		for (ModeSevenObject s : Updater.getAllMSObjects()) {
-			s.setModeSeven();
+		for (RenderObject g : Updater.getAllObjects()) {
+			g.setModeSeven();
 		}
 		modeSeven = true;
 	}
@@ -182,7 +178,6 @@ public abstract class JoglRenderer implements GLEventListener, KeyListener {
 
 		hud.render();
 		long timeDiff = System.currentTimeMillis() - time;
-		
 		if (timeDiff < renderTime){
 			try {
 				Thread.sleep(renderTime - timeDiff);

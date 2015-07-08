@@ -199,15 +199,9 @@ public abstract class AbstractSprite implements RenderObject {
 	}
 
 
-
-
-
 	public float getX() {
 		return renderer.getX();
 	}
-
-
-
 
 
 	public float getY() {
@@ -215,15 +209,9 @@ public abstract class AbstractSprite implements RenderObject {
 	}
 
 
-
-
-
 	public float getHeight() {
 		return renderer.getHeight();
 	}
-
-
-
 
 
 	public float getWidth() {
@@ -231,17 +219,35 @@ public abstract class AbstractSprite implements RenderObject {
 	}
 
 
-
-
-
 	public float getRotation() {
 		return renderer.getRotation();
 	}
 
 
+	@Override
+	public void setModeSevenEnabled(boolean modeSEnabled) {
+		renderer.setModeSevenEnabled(modeSEnabled);
+	}
 
-	
+	@Override
+	public void setModeSeven() {
+		renderer.setModeSeven();
+	}
 
+	@Override
+	public void setNormalMode() {
+		renderer.setNormalMode();
+	}
+
+	@Override
+	public float getZ() {
+		return renderer.getZ();
+	}
+
+	@Override
+	public void setZ(float z) {
+		renderer.setZ(z);
+	}
 
 	public void animate() {
 		renderer.animate();
