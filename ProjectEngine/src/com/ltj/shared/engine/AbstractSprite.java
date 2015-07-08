@@ -263,16 +263,16 @@ public abstract class AbstractSprite implements RenderObject,SingleSprite,Sprite
 	}
 
 	
-	
+	@Override
 	public void startAnimation(String name) {
 		renderer.startAnimation(name);
 	}
-
+	@Override
 	public void addAnimation(String name, int animationTime, int texRow,
 			boolean looping, int numCols) {
 		renderer.addAnimation(name, animationTime, texRow, looping, numCols);
 	}
-
+	@Override
 	public void stopAnimation() {
 		renderer.stopAnimation();
 	}
