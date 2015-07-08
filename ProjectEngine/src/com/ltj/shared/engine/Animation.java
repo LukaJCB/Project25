@@ -34,7 +34,7 @@ public class Animation {
 			counter = 0;
 			texCol++;
 			
-			if(texCol > numCols){
+			if(texCol == numCols){
 				texCol = 0;
 				if (!looping){ 
 					playing = false;

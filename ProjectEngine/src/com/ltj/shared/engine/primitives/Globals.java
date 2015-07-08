@@ -3,6 +3,7 @@ package com.ltj.shared.engine.primitives;
 import java.util.HashMap;
 
 import com.ltj.shared.engine.GameObject;
+import com.ltj.shared.engine.RenderObject;
 
 public class Globals {
 	private Globals(){}
@@ -10,7 +11,7 @@ public class Globals {
 	private static HashMap<String,Boolean> boolMap = new HashMap<String,Boolean>();
 	private static HashMap<String,Float> floatMap = new HashMap<String,Float>();
 	private static HashMap<String,Integer> intMap = new HashMap<String,Integer>();
-	private static HashMap<String,GameObject> objectMap = new HashMap<String,GameObject>();
+	private static HashMap<String,RenderObject> objectMap = new HashMap<String,RenderObject>();
 	
 	public static void add(String key, boolean value){
 		boolMap.put(key, value);
@@ -22,7 +23,7 @@ public class Globals {
 		intMap.put(key, value);
 	}
 	
-	public static void add(String key, GameObject value){
+	public static void add(String key, RenderObject value){
 		objectMap.put(key, value);
 	}
 	public static boolean getBool(String key){
@@ -35,7 +36,7 @@ public class Globals {
 		return intMap.getOrDefault(key,0);
 	}
 	
-	public static GameObject getGameObject(String key){
+	public static RenderObject getGameObject(String key){
 		return objectMap.get(key);
 	}
 

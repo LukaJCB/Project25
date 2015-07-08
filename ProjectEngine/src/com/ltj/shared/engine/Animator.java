@@ -11,7 +11,7 @@ public class Animator {
 	}
 	
 	public void startAnimation(String name){
-		if (currentAnimation == null){
+		if (currentAnimation != animations.get(name)){
 			currentAnimation = animations.get(name);
 			currentAnimation.start();
 		}
