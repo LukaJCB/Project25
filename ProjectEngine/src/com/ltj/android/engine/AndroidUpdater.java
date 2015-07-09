@@ -1,6 +1,6 @@
 package com.ltj.android.engine;
 
-import com.ltj.shared.engine.Updater;
+import com.ltj.shared.engine.Engine;
 
 import android.content.Context;
 import android.hardware.Sensor;
@@ -11,7 +11,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 
-public class AndroidUpdater extends Updater implements SensorEventListener,OnTouchListener  {
+public class AndroidUpdater extends Engine implements SensorEventListener,OnTouchListener  {
 
 
 	private boolean motionInput,tiltInput;

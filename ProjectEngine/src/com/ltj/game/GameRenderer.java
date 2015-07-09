@@ -16,7 +16,7 @@ import com.ltj.shared.engine.Camera;
 import com.ltj.shared.engine.HudElement;
 import com.ltj.shared.engine.Skybox;
 import com.ltj.shared.engine.SoundManager;
-import com.ltj.shared.engine.Updater;
+import com.ltj.shared.engine.Engine;
 import com.ltj.shared.engine.primitives.BoxCollider;
 import com.ltj.shared.engine.primitives.Globals;
 import com.ltj.shared.engine.primitives.Rectangle;
@@ -37,19 +37,19 @@ public class GameRenderer extends AndroidRenderer {
 		
 		AndroidSprite r = new AndroidSprite("img/racer_background.png", 1, 1);
 		r.scale(20, 20);
-		Updater.addRenderable(r);
-		Updater.setCollisionZone(new Rectangle(r.getX(), r.getY(), r.getWidth(), r.getHeight()));
+		Engine.addRenderable(r);
+		Engine.setCollisionZone(new Rectangle(r.getX(), r.getY(), r.getWidth(), r.getHeight()));
 		AndroidSprite[] s = new AndroidSprite[30];
 		for (int i = 0;i < s.length;i++){
 			s[i] = new AndroidSprite("img/car.png", 1, 1);
 			s[i].addCollider(new BoxCollider());
-			Updater.addRenderable(s[i]);
+			Engine.addRenderable(s[i]);
 		}
 		
 				
 		AndroidSprite hero = new AndroidSprite( "img/car.png", 1, 1);
 		Camera.addSkyBox(new Skybox( "img/skyboxtop.png","img/skyboxbottom.png","img/skyboxfront.png",
-				"img/skyboxback.png","img/skyboxright.png","img/skyboxleft.png"));
+				"img/skyboxback.png","img/skyboxright.png","img/skyboxleft.png",Engine.ANDROID));
 		hero.addBehaviourName("PlayerController25D");
 		String className = hero.getBehaviourName();
 		Behaviour b = null;
@@ -126,9 +126,9 @@ public class GameRenderer extends AndroidRenderer {
 		sp4.addBehaviour(b3);
 		sp4.scale(0.4f, 0.3f);
 		sp4.translate(-6, 2);
-		Updater.addRenderable( sp4);
-		Updater.addRenderable(sp3);
-		HudElement e = new HudElement("img/ic_launcher.png");
+		Engine.addRenderable( sp4);
+		Engine.addRenderable(sp3);
+		HudElement e = new HudElement("img/ic_launcher.png",Engine.ANDROID);
 		
 		e.scale(0.1f, 0.1f);
 		e.setPosition(0.9f, 0);

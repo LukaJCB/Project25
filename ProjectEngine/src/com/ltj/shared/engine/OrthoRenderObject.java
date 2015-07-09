@@ -9,12 +9,14 @@ public class OrthoRenderObject {
 	private HudRenderer renderer;
 	
 	
-
-	public OrthoRenderObject(String path, boolean isJogl) {
-		if (isJogl){
+	public OrthoRenderObject(String path, int platform){
+		switch (platform){
+		case Engine.DESKTOP:
 			renderer = new JoglHudRenderer( path);
-		} else {
-			this.renderer = new AndroidHudRenderer(path);
+			break;
+		case Engine.ANDROID:
+			renderer = new AndroidHudRenderer(path);
+			break;
 		}
 	}
 

@@ -7,7 +7,7 @@ import com.ltj.android.engine.MotionInput;
 import com.ltj.shared.engine.Behaviour;
 import com.ltj.shared.engine.Camera;
 import com.ltj.shared.engine.Sprite;
-import com.ltj.shared.engine.Updater;
+import com.ltj.shared.engine.Engine;
 import com.ltj.shared.engine.primitives.Globals;
 public class PlayerController25D extends Behaviour<Sprite> {
 
@@ -20,7 +20,7 @@ public class PlayerController25D extends Behaviour<Sprite> {
 		gameObject.scale(0.5f, 0.5f);
 		gameObject.translate(0, -2);
 		pe = new AndroidParticleEmitter(100,100, 1.0f,1f,1);
-		Updater.addParticleEmitter(pe);
+		Engine.addParticleEmitter(pe);
 		moving = true;
 	}
 

@@ -15,7 +15,7 @@ import com.ltj.shared.engine.HudElement;
 import com.ltj.shared.engine.OrthoRenderObject;
 import com.ltj.shared.engine.ParticleEmitter;
 import com.ltj.shared.engine.RenderObject;
-import com.ltj.shared.engine.Updater;
+import com.ltj.shared.engine.Engine;
 
 import static com.jogamp.opengl.GL.*;
 
@@ -99,7 +99,7 @@ public abstract class JoglRenderer implements GLEventListener, KeyListener {
 	}
 
 	public void addRenderable(RenderObject r) {
-		Updater.addRenderable(r);
+		Engine.addRenderable(r);
 	}
 	
 	public void addHudElement(String key,HudElement e){
@@ -115,7 +115,7 @@ public abstract class JoglRenderer implements GLEventListener, KeyListener {
 		programId = normalProgramId;
 		glDisable(GL_DEPTH_TEST);
 		Camera.setNormalMode();
-		for (RenderObject g : Updater.getAllObjects()) {
+		for (RenderObject g : Engine.getAllObjects()) {
 			g.setNormalMode();
 		}
 		modeSeven = false;
@@ -128,7 +128,7 @@ public abstract class JoglRenderer implements GLEventListener, KeyListener {
 		glDepthMask(true);
 
 		Camera.setModeSeven();
-		for (RenderObject g : Updater.getAllObjects()) {
+		for (RenderObject g : Engine.getAllObjects()) {
 			g.setModeSeven();
 		}
 		modeSeven = true;
@@ -146,7 +146,7 @@ public abstract class JoglRenderer implements GLEventListener, KeyListener {
 			changeMode = false;
 		}
 		
-		Updater.update();
+		Engine.update();
 		
 		glUseProgram(programId);
 		
@@ -159,18 +159,18 @@ public abstract class JoglRenderer implements GLEventListener, KeyListener {
 			}
 		} else {
 			glClear(GL_COLOR_BUFFER_BIT);
-			for (OrthoRenderObject r : Updater.getAllOrthoRenderObjects()){
+			for (OrthoRenderObject r : Engine.getAllOrthoRenderObjects()){
 				r.render();
 			}
 		}
 
-		for(RenderObject r : Updater.getAllObjects()){
+		for(RenderObject r : Engine.getAllObjects()){
 			r.render();
 		}
 		
 		glUseProgram(particleProgramId);
 		
-		for (ParticleEmitter pe : Updater.getAllParticleEmitters()){
+		for (ParticleEmitter pe : Engine.getAllParticleEmitters()){
 			pe.render();
 		}
 		glUseProgram(programId);
@@ -193,7 +193,7 @@ public abstract class JoglRenderer implements GLEventListener, KeyListener {
 		glViewport(x, y, width, height);
 
 		hud.setDimensions(width,height);
-		Updater.setDimensions(width, height);
+		Engine.setDimensions(width, height);
 		
 		Camera.createPerspective(height, width);
 		Camera.createOrthographic(height, width);

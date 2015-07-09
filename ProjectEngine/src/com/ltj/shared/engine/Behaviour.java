@@ -56,7 +56,7 @@ public abstract class Behaviour<T extends Sprite> {
 		}
 	}
 	public final RenderObject getObjectByID(String id){
-		return Updater.getObjectByID(id);
+		return Engine.getObjectByID(id);
 	}
 	
 	public final HudElement getHudElementByID(String id){
@@ -68,7 +68,7 @@ public abstract class Behaviour<T extends Sprite> {
 		RenderObject o = obj.cloneObject();
 		o.setPosition(x, y);
 		o.setRotation(rot);
-		Updater.addRenderable(o);
+		Engine.addRenderable(o);
 		return o;
 	}
 

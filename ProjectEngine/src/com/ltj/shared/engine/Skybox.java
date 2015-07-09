@@ -4,30 +4,19 @@ package com.ltj.shared.engine;
 
 public class Skybox {
 	private BackgroundSprite[] skybox = new BackgroundSprite[6];
-	public Skybox( String top, String bottom, String front, String back, String right, String left){
-		addImages( top, bottom, front, back, right, left);
-	}
-	public Skybox( String top, String bottom, String front, String back, String right, String left,boolean isJogl){
-		addImages( top, bottom, front, back, right, left);
+	public Skybox( String top, String bottom, String front, String back, String right, String left, int platform){
+		addImages( top, bottom, front, back, right, left, platform);
 	}
 	
-	public void addImages( String top, String bottom, String front, String back, String right, String left, boolean isJogl){
-		skybox[0] = new BackgroundSprite( top,isJogl);
-		skybox[1] = new BackgroundSprite( bottom,isJogl);
-		skybox[2] = new BackgroundSprite( front,isJogl);
-		skybox[3] = new BackgroundSprite( back,isJogl);
-		skybox[4] = new BackgroundSprite( right,isJogl);
-		skybox[5] = new BackgroundSprite( left,isJogl);
-		
-		setupSkybox();
-	}
-	public void addImages(String top, String bottom, String front, String back, String right, String left){
-		skybox[0] = new BackgroundSprite(top);
-		skybox[1] = new BackgroundSprite(bottom);
-		skybox[2] = new BackgroundSprite(front);
-		skybox[3] = new BackgroundSprite(back);
-		skybox[4] = new BackgroundSprite(right);
-		skybox[5] = new BackgroundSprite(left);
+	
+	
+	public void addImages(String top, String bottom, String front, String back, String right, String left,int platform){
+		skybox[0] = new BackgroundSprite(top,platform);
+		skybox[1] = new BackgroundSprite(bottom,platform);
+		skybox[2] = new BackgroundSprite(front,platform);
+		skybox[3] = new BackgroundSprite(back,platform);
+		skybox[4] = new BackgroundSprite(right,platform);
+		skybox[5] = new BackgroundSprite(left,platform);
 		
 		setupSkybox();
 	}

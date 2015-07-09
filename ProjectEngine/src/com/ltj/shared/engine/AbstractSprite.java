@@ -69,7 +69,7 @@ public abstract class AbstractSprite implements RenderObject,SingleSprite,Sprite
 				e.printStackTrace();
 			}
 		}
-		Updater.addRenderable(o);
+		Engine.addRenderable(o);
 	}
 	
 	public void update() {

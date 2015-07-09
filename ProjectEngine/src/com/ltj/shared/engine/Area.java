@@ -47,7 +47,7 @@ public class Area  {
 	}
 	
 	public void setCollisionZone(){
-		Updater.setCollisionZone(new Rectangle(root.getX(), root.getY(), root.getWidth(), root.getHeight()));
+		Engine.setCollisionZone(new Rectangle(root.getX(), root.getY(), root.getWidth(), root.getHeight()));
 	}
 	
 	public void addObject(Sprite child){

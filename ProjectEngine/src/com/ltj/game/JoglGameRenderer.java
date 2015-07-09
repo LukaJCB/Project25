@@ -14,7 +14,7 @@ import com.ltj.shared.engine.RenderObject;
 import com.ltj.shared.engine.Skybox;
 import com.ltj.shared.engine.SoundManager;
 import com.ltj.shared.engine.Sprite;
-import com.ltj.shared.engine.Updater;
+import com.ltj.shared.engine.Engine;
 import com.ltj.shared.engine.primitives.BoxCollider;
 import com.ltj.shared.engine.primitives.Globals;
 import com.ltj.shared.engine.primitives.Rectangle;
@@ -27,16 +27,16 @@ public class JoglGameRenderer extends JoglRenderer {
 		SoundManager.initSoundManager(false);
 
 		Camera.addSkyBox(new Skybox( "assets/img/skyboxtop.png","assets/img/skyboxbottom.png","assets/img/skyboxfront.png",
-				"assets/img/skyboxback.png","assets/img/skyboxright.png","assets/img/skyboxleft.png"));
+				"assets/img/skyboxback.png","assets/img/skyboxright.png","assets/img/skyboxleft.png",Engine.DESKTOP));
 		
 
 		RenderObject r = new EmptyObject(); 
 		r.scale(30, 30);
-		Updater.addRenderable(r);
-		Updater.setCollisionZone(new Rectangle(r.getX(), r.getY(), r.getWidth(), r.getHeight()));
+		Engine.addRenderable(r);
+		Engine.setCollisionZone(new Rectangle(r.getX(), r.getY(), r.getWidth(), r.getHeight()));
 
 		final JoglParticleEmitter pe = new JoglParticleEmitter( 100,1000, 1.0f,0f,0);
-		Updater.addParticleEmitter(pe);
+		Engine.addParticleEmitter(pe);
 
 		
 
@@ -133,7 +133,7 @@ public class JoglGameRenderer extends JoglRenderer {
 		zone.setParent(hero);
 		zone.setTag("zon");
 		//Updater.addRenderable(zone);
-		Updater.addRenderable(hero);
+		Engine.addRenderable(hero);
 		
 		JoglSprite sp3 = new JoglSprite( "assets/img/blue.png", 1, 1);
 		sp3.translate(0, 5);
@@ -184,9 +184,9 @@ public class JoglGameRenderer extends JoglRenderer {
 		sp4.scale(0.4f, 0.3f);
 		sp4.translate(-6, 2);
 		sp4.addCollider(new BoxCollider());
-		Updater.addRenderable( sp4);
-		Updater.addRenderable(sp3);
-		HudElement e = new HudElement( "assets/img/ic_launcher.png");
+		Engine.addRenderable( sp4);
+		Engine.addRenderable(sp3);
+		HudElement e = new HudElement( "assets/img/ic_launcher.png",Engine.DESKTOP);
 		
 		e.scale(0.1f, 0.1f);
 		e.setPosition(0.9f, 0);
@@ -194,7 +194,7 @@ public class JoglGameRenderer extends JoglRenderer {
 		changeMode();
 		
 		
-		Updater.start();
+		Engine.start();
 	}
 	
 	

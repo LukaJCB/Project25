@@ -6,13 +6,20 @@ import com.ltj.java.engine.JoglSpriteRenderer;
 public class BackgroundSprite {
 	private SpriteRenderer renderer;
 	
-	public BackgroundSprite( String path, boolean isJogl){
-		renderer = new JoglSpriteRenderer( path,1,1);
+	
+	
+	public BackgroundSprite(String path,int platform){
+		switch (platform){
+		case Engine.DESKTOP:
+			renderer = new JoglSpriteRenderer(path,1,1);
+			break;
+		case Engine.ANDROID:
+			renderer = new AndroidSpriteRenderer(path,1,1);
+			break;
+		}
 	}
 	
-	public BackgroundSprite(String path){
-		renderer = new AndroidSpriteRenderer(path,1,1);
-	}
+	
 
 	public void render() {
 		renderer.render();

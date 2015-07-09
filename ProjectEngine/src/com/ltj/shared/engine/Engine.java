@@ -10,8 +10,11 @@ import com.ltj.shared.engine.primitives.Rectangle;
 import com.ltj.shared.engine.primitives.SpatialHashMap;
 
 
-public abstract class Updater {
+public abstract class Engine {
 
+	public static final int DESKTOP = 0;
+	public static final int ANDROID = 1;
+	
 	private static HashMap<String,RenderObject> ids = new HashMap<String,RenderObject>();
 	private static Rectangle collisionZone;
 
@@ -188,7 +191,7 @@ public abstract class Updater {
 	}
 
 	public static void setCollisionZone(Rectangle collisionZone) {
-		Updater.collisionZone = collisionZone;
+		Engine.collisionZone = collisionZone;
 		if (started){
 			zoneChanged = true;
 		}

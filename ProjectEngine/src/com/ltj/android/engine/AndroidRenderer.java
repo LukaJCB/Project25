@@ -18,7 +18,7 @@ import com.ltj.shared.engine.HudElement;
 import com.ltj.shared.engine.OrthoRenderObject;
 import com.ltj.shared.engine.ParticleEmitter;
 import com.ltj.shared.engine.RenderObject;
-import com.ltj.shared.engine.Updater;
+import com.ltj.shared.engine.Engine;
 
 
 import android.content.Context;
@@ -116,14 +116,14 @@ public abstract class AndroidRenderer implements Renderer{
 		glViewport(0,0,width,height);
 		
 		hud.setDimensions(width,height);
-		Updater.setDimensions(width, height);
+		Engine.setDimensions(width, height);
 		
 		Camera.createPerspective(height, width);
 		Camera.createOrthographic(height, width);
 		
 	}
 	public void start(){
-		Updater.start();
+		Engine.start();
 	}
 	
 	@Override
@@ -140,7 +140,7 @@ public abstract class AndroidRenderer implements Renderer{
 		}
 		glUseProgram(programId);
 
-		Updater.update();
+		Engine.update();
 		
 		//clear framebuffer
 		if (modeSeven){
@@ -151,18 +151,18 @@ public abstract class AndroidRenderer implements Renderer{
 			}
 		} else {
 			glClear(GL_COLOR_BUFFER_BIT);
-			for (OrthoRenderObject r : Updater.getAllOrthoRenderObjects()){
+			for (OrthoRenderObject r : Engine.getAllOrthoRenderObjects()){
 				r.render();
 			}
 		}
 		
-		for(RenderObject r : Updater.getAllObjects()){
+		for(RenderObject r : Engine.getAllObjects()){
 			r.render();
 		}
 	
 		//render particles
 		glUseProgram(particleProgramId);
-		for (ParticleEmitter pe : Updater.getAllParticleEmitters()){
+		for (ParticleEmitter pe : Engine.getAllParticleEmitters()){
 			pe.render();
 		}
 		glUseProgram(programId);
@@ -188,7 +188,7 @@ public abstract class AndroidRenderer implements Renderer{
 	
 	
 	public void addRenderable(RenderObject r) {
-		Updater.addRenderable(r);
+		Engine.addRenderable(r);
 	}
 
 
@@ -204,7 +204,7 @@ public abstract class AndroidRenderer implements Renderer{
 		glDisable(GL_DEPTH_TEST);
 		Log.w("depth: ", ""+glIsEnabled(GL_DEPTH_TEST));
 		Camera.setNormalMode();
-		for (RenderObject s : Updater.getAllObjects()){
+		for (RenderObject s : Engine.getAllObjects()){
 			s.setNormalMode();
 		}
 		modeSeven = false;
@@ -220,7 +220,7 @@ public abstract class AndroidRenderer implements Renderer{
 		glDepthMask(true);
 		Log.w("depth: ", ""+glIsEnabled(GL_DEPTH_TEST));
 		Camera.setModeSeven();
-		for (RenderObject s : Updater.getAllObjects()){
+		for (RenderObject s : Engine.getAllObjects()){
 			s.setModeSeven();
 		}
 		modeSeven = true;

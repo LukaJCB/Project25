@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import com.ltj.shared.engine.Camera;
 import com.ltj.shared.engine.RenderObject;
-import com.ltj.shared.engine.Updater;
+import com.ltj.shared.engine.Engine;
 
 
 
@@ -17,7 +17,7 @@ public class Scene {
 	}
 
 	public void init(){
-		Updater.flush(allObjects);
+		Engine.flush(allObjects);
 		Camera.flush();
 	}
 	
