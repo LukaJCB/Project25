@@ -6,11 +6,10 @@ import com.ltj.android.engine.MotionInput;
 import com.ltj.shared.engine.Behaviour;
 import com.ltj.shared.engine.Camera;
 import com.ltj.shared.engine.HudElement;
-import com.ltj.shared.engine.SimpleSprite;
 import com.ltj.shared.engine.SoundManager;
 import com.ltj.shared.engine.Sprite;
 
-public class PlayerController extends Behaviour<SimpleSprite> {
+public class PlayerController extends Behaviour<Sprite> {
 
 
 	private HudElement e;

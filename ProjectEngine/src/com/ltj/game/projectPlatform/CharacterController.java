@@ -8,11 +8,11 @@ import com.ltj.java.engine.JoglParticleEmitter;
 import com.ltj.shared.engine.Behaviour;
 import com.ltj.shared.engine.Camera;
 import com.ltj.shared.engine.RenderObject;
-import com.ltj.shared.engine.SheetSprite;
 import com.ltj.shared.engine.Sprite;
+import com.ltj.shared.engine.SpriteSheet;
 import com.ltj.shared.engine.primitives.Globals;
 import com.ltj.shared.engine.primitives.ObjectPool;
-public class CharacterController extends Behaviour<SheetSprite> {
+public class CharacterController extends Behaviour<SpriteSheet> {
 	
 	private float speed, upSpeed;
 	private boolean grounded;

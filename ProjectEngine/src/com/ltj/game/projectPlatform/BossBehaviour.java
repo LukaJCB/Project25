@@ -2,11 +2,11 @@ package com.ltj.game.projectPlatform;
 
 import com.ltj.java.engine.JoglParticleEmitter;
 import com.ltj.shared.engine.Behaviour;
-import com.ltj.shared.engine.SheetSprite;
 import com.ltj.shared.engine.Sprite;
+import com.ltj.shared.engine.SpriteSheet;
 import com.ltj.shared.engine.primitives.Globals;
 
-public class BossBehaviour extends Behaviour<SheetSprite> {
+public class BossBehaviour extends Behaviour<SpriteSheet> {
 
 	private float left,right;
 	private boolean movingRight;

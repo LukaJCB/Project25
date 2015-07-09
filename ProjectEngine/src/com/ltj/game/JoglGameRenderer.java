@@ -5,13 +5,12 @@ import java.awt.event.KeyEvent;
 import com.jogamp.opengl.GLAutoDrawable;
 import com.ltj.java.engine.JoglParticleEmitter;
 import com.ltj.java.engine.JoglRenderer;
+import com.ltj.java.engine.JoglSprite;
 import com.ltj.shared.engine.Behaviour;
 import com.ltj.shared.engine.Camera;
 import com.ltj.shared.engine.EmptyObject;
 import com.ltj.shared.engine.HudElement;
 import com.ltj.shared.engine.RenderObject;
-import com.ltj.shared.engine.SheetSprite;
-import com.ltj.shared.engine.SimpleSprite;
 import com.ltj.shared.engine.Skybox;
 import com.ltj.shared.engine.SoundManager;
 import com.ltj.shared.engine.Sprite;
@@ -50,10 +49,10 @@ public class JoglGameRenderer extends JoglRenderer {
 //		}
 		
 		
-		SheetSprite hero = new SheetSprite(gl, "assets/img/ship.png",1,1);
+		JoglSprite hero = new JoglSprite(gl, "assets/img/ship.png",1,1);
 		hero.scale(0.4f, 0.9f);
 		hero.setTexture(0, 0);
-		Behaviour<SheetSprite> b = new Behaviour<SheetSprite>(){
+		Behaviour<JoglSprite> b = new Behaviour<JoglSprite>(){
 
 			private float speed, rotation;
 			private boolean moving;
@@ -136,11 +135,11 @@ public class JoglGameRenderer extends JoglRenderer {
 		//Updater.addRenderable(zone);
 		Updater.addRenderable(hero);
 		
-		SimpleSprite sp3 = new SimpleSprite(gl, "assets/img/blue.png");
+		JoglSprite sp3 = new JoglSprite(gl, "assets/img/blue.png", 1, 1);
 		sp3.translate(0, 5);
 		//sp3.scale(4f, 3f);
 		sp3.addCollider(new BoxCollider());
-		Behaviour<SimpleSprite> b2 = new Behaviour<SimpleSprite>(){
+		Behaviour<JoglSprite> b2 = new Behaviour<JoglSprite>(){
 			
 		
 			@Override
@@ -161,8 +160,8 @@ public class JoglGameRenderer extends JoglRenderer {
 		b2.allocateObject(sp3);
 		sp3.addBehaviour(b2);
 		sp3.setTag("ene");
-		SimpleSprite sp4 = new SimpleSprite(gl, "assets/img/redship.png");
-		Behaviour<SimpleSprite> b3 = new Behaviour<SimpleSprite>(){
+		JoglSprite sp4 = new JoglSprite(gl, "assets/img/redship.png", 1, 1);
+		Behaviour<JoglSprite> b3 = new Behaviour<JoglSprite>(){
 			
 			
 			@Override

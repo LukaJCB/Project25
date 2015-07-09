@@ -6,11 +6,10 @@ import com.ltj.android.engine.AndroidParticleEmitter;
 import com.ltj.android.engine.MotionInput;
 import com.ltj.shared.engine.Behaviour;
 import com.ltj.shared.engine.Camera;
-import com.ltj.shared.engine.SimpleSprite;
 import com.ltj.shared.engine.Sprite;
 import com.ltj.shared.engine.Updater;
 import com.ltj.shared.engine.primitives.Globals;
-public class PlayerController25D extends Behaviour<SimpleSprite> {
+public class PlayerController25D extends Behaviour<Sprite> {
 
 	private float xMovement,yMovement;
 	private float lastX,lastY;

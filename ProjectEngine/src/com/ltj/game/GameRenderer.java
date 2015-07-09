@@ -10,10 +10,10 @@ import javax.microedition.khronos.opengles.GL10;
 import android.content.Context;
 
 import com.ltj.android.engine.AndroidRenderer;
+import com.ltj.android.engine.AndroidSprite;
 import com.ltj.shared.engine.Behaviour;
 import com.ltj.shared.engine.Camera;
 import com.ltj.shared.engine.HudElement;
-import com.ltj.shared.engine.SimpleSprite;
 import com.ltj.shared.engine.Skybox;
 import com.ltj.shared.engine.SoundManager;
 import com.ltj.shared.engine.Updater;
@@ -35,19 +35,19 @@ public class GameRenderer extends AndroidRenderer {
 		super.onSurfaceCreated(gl, config);
 		SoundManager.initSoundManager(true);
 		
-		SimpleSprite r = new SimpleSprite("img/racer_background.png");
+		AndroidSprite r = new AndroidSprite("img/racer_background.png", 1, 1);
 		r.scale(20, 20);
 		Updater.addRenderable(r);
 		Updater.setCollisionZone(new Rectangle(r.getX(), r.getY(), r.getWidth(), r.getHeight()));
-		SimpleSprite[] s = new SimpleSprite[30];
+		AndroidSprite[] s = new AndroidSprite[30];
 		for (int i = 0;i < s.length;i++){
-			s[i] = new SimpleSprite("img/car.png");
+			s[i] = new AndroidSprite("img/car.png", 1, 1);
 			s[i].addCollider(new BoxCollider());
 			Updater.addRenderable(s[i]);
 		}
 		
 				
-		SimpleSprite hero = new SimpleSprite( "img/car.png");
+		AndroidSprite hero = new AndroidSprite( "img/car.png", 1, 1);
 		Camera.addSkyBox(new Skybox( "img/skyboxtop.png","img/skyboxbottom.png","img/skyboxfront.png",
 				"img/skyboxback.png","img/skyboxright.png","img/skyboxleft.png"));
 		hero.addBehaviourName("PlayerController25D");
@@ -79,11 +79,11 @@ public class GameRenderer extends AndroidRenderer {
 		addRenderable(hero);
 		
 		
-		SimpleSprite sp3 = new SimpleSprite("img/car.png");
+		AndroidSprite sp3 = new AndroidSprite("img/car.png", 1, 1);
 		sp3.translate(0, 5);
 		sp3.scale(0.4f, 0.3f);
 		sp3.addCollider(new BoxCollider());
-		Behaviour<SimpleSprite> b2 = new Behaviour<SimpleSprite>(){
+		Behaviour<AndroidSprite> b2 = new Behaviour<AndroidSprite>(){
 			
 		
 			@Override
@@ -104,8 +104,8 @@ public class GameRenderer extends AndroidRenderer {
 		b2.allocateObject(sp3);
 		sp3.addBehaviour(b2);
 		sp3.setTag("ene");
-		SimpleSprite sp4 = new SimpleSprite("img/car.png");
-		Behaviour<SimpleSprite> b3 = new Behaviour<SimpleSprite>(){
+		AndroidSprite sp4 = new AndroidSprite("img/car.png", 1, 1);
+		Behaviour<AndroidSprite> b3 = new Behaviour<AndroidSprite>(){
 			
 			
 			@Override

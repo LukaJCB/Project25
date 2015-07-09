@@ -4,12 +4,11 @@ package com.ltj.game.projectPlatform;
 import com.jogamp.opengl.GLAutoDrawable;
 import com.ltj.java.engine.JoglParticleEmitter;
 import com.ltj.java.engine.JoglRenderer;
+import com.ltj.java.engine.JoglSprite;
 import com.ltj.shared.engine.Behaviour;
 import com.ltj.shared.engine.EmptyObject;
 import com.ltj.shared.engine.HudElement;
 import com.ltj.shared.engine.OrthoRenderObject;
-import com.ltj.shared.engine.SheetSprite;
-import com.ltj.shared.engine.SimpleSprite;
 import com.ltj.shared.engine.Sprite;
 import com.ltj.shared.engine.Updater;
 import com.ltj.shared.engine.primitives.BoxCollider;
@@ -31,37 +30,37 @@ public class PlatformRenderer extends JoglRenderer {
 		OrthoRenderObject o = new HudElement(gl, "assets/img/skyboxleft.png");
 		Updater.addOrthoRenderObject(o);
 		
-		SimpleSprite star1 = new SimpleSprite(gl, "assets/img/star.png");
+		JoglSprite star1 = new JoglSprite(gl, "assets/img/star.png", 1, 1);
 		star1.translate(10, 16);
 		star1.scale(10, 10);
 		star1.setZ(-68);
 		Updater.addRenderable(star1);
 		
-		SimpleSprite star2 = new SimpleSprite(gl, "assets/img/star.png");
+		JoglSprite star2 = new JoglSprite(gl, "assets/img/star.png", 1, 1);
 		star2.translate(-4, 19);
 		star2.scale(10, 10);
 		star2.setZ(-88);
 		Updater.addRenderable(star2);
 		
-		SimpleSprite star3 = new SimpleSprite(gl, "assets/img/star.png");
+		JoglSprite star3 = new JoglSprite(gl, "assets/img/star.png", 1, 1);
 		star3.translate(30, 27);
 		star3.scale(10, 10);
 		star3.setZ(-99);
 		Updater.addRenderable(star3);
 		
-		SimpleSprite moon1 = new SimpleSprite(gl, "assets/img/moon.png");
+		JoglSprite moon1 = new JoglSprite(gl, "assets/img/moon.png", 1, 1);
 		moon1.translate(0, 14);
 		moon1.scale(4, 4);
 		moon1.setZ(-28);
 		Updater.addRenderable(moon1);
 		
-		SimpleSprite moon2 = new SimpleSprite(gl, "assets/img/moon.png");
+		JoglSprite moon2 = new JoglSprite(gl, "assets/img/moon.png", 1, 1);
 		moon2.translate(0, 8);
 		moon2.scale(4, 4);
 		moon2.setZ(-18);
 		Updater.addRenderable(moon2);
 		
-		SimpleSprite moon3 = new SimpleSprite(gl, "assets/img/moon.png");
+		JoglSprite moon3 = new JoglSprite(gl, "assets/img/moon.png", 1, 1);
 		moon3.translate(0, 9);
 		moon3.scale(4, 4);
 		moon3.setZ(-58);
@@ -70,8 +69,8 @@ public class PlatformRenderer extends JoglRenderer {
 		Globals.add("gravity", 0.013f);
 		
 		//hero 
-		SheetSprite hero = new SheetSprite(gl, "assets/img/player_sheet.png",4,3);
-		SimpleSprite bullet = new SimpleSprite(gl, "assets/img/ship.png");
+		JoglSprite hero = new JoglSprite(gl, "assets/img/player_sheet.png",4,3);
+		JoglSprite bullet = new JoglSprite(gl, "assets/img/ship.png",1,1);
 		bullet.setTag("bullet");
 		Behaviour<Sprite> bulletScript = new BulletController();
 		bullet.addBehaviour(bulletScript);
@@ -118,7 +117,7 @@ public class PlatformRenderer extends JoglRenderer {
 		
 		
 		//platforms
-		SimpleSprite platform = new SimpleSprite(gl,"assets/img/tile_t.png");
+		JoglSprite platform = new JoglSprite(gl,"assets/img/tile_t.png", 1, 1);
 		platform.setTag("ground");
 		platform.setRepeat(6, 1);
 		platform.scale(2f, 0.3f);
@@ -128,7 +127,7 @@ public class PlatformRenderer extends JoglRenderer {
 		platform.setParent(e);
 		
 
-		SimpleSprite platform2 = new SimpleSprite(gl,"assets/img/tile_t.png");
+		JoglSprite platform2 = new JoglSprite(gl,"assets/img/tile_t.png", 1, 1);
 		platform2.setTag("ground");
 		platform2.setRepeat(30, 1);
 		platform2.scale(10f, 0.3f);
@@ -137,7 +136,7 @@ public class PlatformRenderer extends JoglRenderer {
 		Updater.addRenderable(platform2);
 		platform2.setParent(e);
 		
-		SimpleSprite ground = new SimpleSprite(gl, "assets/img/tile.png");
+		JoglSprite ground = new JoglSprite(gl, "assets/img/tile.png", 1, 1);
 		ground.setRepeat(10,2);
 		ground.scale(25, 5);
 		ground.translate(0,-5);
@@ -147,7 +146,7 @@ public class PlatformRenderer extends JoglRenderer {
 		ground.setParent(e);
 		
 		//enemy
-		SheetSprite enemy = new SheetSprite(gl, "assets/img/spritesheet_hero.png",3,4);
+		JoglSprite enemy = new JoglSprite(gl, "assets/img/spritesheet_hero.png",3,4);
 		enemy.setTag("enemy");
 		enemy.scale(0.6f, 0.9f);
 		enemy.setPosition(platform2.getX() , platform2.getY()+platform2.getHeight()/2 + enemy.getHeight()/2);
@@ -169,7 +168,7 @@ public class PlatformRenderer extends JoglRenderer {
 		Updater.addRenderable(enemy);
 		
 		//spikes
-		SimpleSprite spikes = new SimpleSprite(gl, "assets/img/spike.png");
+		JoglSprite spikes = new JoglSprite(gl, "assets/img/spike.png", 1, 1);
 		spikes.setRepeat(1, 4);
 		spikes.scale(1, 4);
 		spikes.addCollider(new BoxCollider());
@@ -182,7 +181,7 @@ public class PlatformRenderer extends JoglRenderer {
 	
 	private void setupRight(){
 
-		SimpleSprite wall = new SimpleSprite(gl, "assets/img/tile.png");
+		JoglSprite wall = new JoglSprite(gl, "assets/img/tile.png", 1, 1);
 		wall.setRepeat(2, 15);
 		wall.scale(2, 15);
 		wall.setTag("ground");
@@ -191,7 +190,7 @@ public class PlatformRenderer extends JoglRenderer {
 		Updater.addRenderable(wall);
 		
 		
-		SimpleSprite wall2 = new SimpleSprite(gl, "assets/img/tile.png");
+		JoglSprite wall2 = new JoglSprite(gl, "assets/img/tile.png", 1, 1);
 		wall2.setRepeat(20, 2);
 		wall2.scale(20, 2);
 		wall2.setTag("ground");
@@ -199,7 +198,7 @@ public class PlatformRenderer extends JoglRenderer {
 		wall2.translate(28.2f, 4);
 		Updater.addRenderable(wall2);
 		
-		SimpleSprite wall4 = new SimpleSprite(gl, "assets/img/tile.png");
+		JoglSprite wall4 = new JoglSprite(gl, "assets/img/tile.png", 1, 1);
 		wall4.setRepeat(0.5f, 10);
 		wall4.scale(0.5f, 10);
 		wall4.setTag("ground");
@@ -207,7 +206,7 @@ public class PlatformRenderer extends JoglRenderer {
 		wall4.translate(38.45f, 0);
 		Updater.addRenderable(wall4);
 		
-		SimpleSprite wall5 = new SimpleSprite(gl, "assets/img/tile.png");
+		JoglSprite wall5 = new JoglSprite(gl, "assets/img/tile.png", 1, 1);
 		wall5.setRepeat(0.5f, 14);
 		wall5.scale(0.5f, 14);
 		wall5.setTag("ground");
@@ -215,13 +214,13 @@ public class PlatformRenderer extends JoglRenderer {
 		wall5.translate(42.45f, -2f);
 		Updater.addRenderable(wall5);
 		
-		SimpleSprite wall6 = new SimpleSprite(gl, "assets/img/tile.png");
+		JoglSprite wall6 = new JoglSprite(gl, "assets/img/tile.png", 1, 1);
 		wall6.setRepeat(4, 0.5f);
 		wall6.scale(4, 0.5f);
 		wall6.translate(40.7f, -9.25f);
 		Updater.addRenderable(wall6);
 		
-		SimpleSprite wall7 = new SimpleSprite(gl, "assets/img/tile.png");
+		JoglSprite wall7 = new JoglSprite(gl, "assets/img/tile.png", 1, 1);
 		wall7.setRepeat(8, 1.5f);
 		wall7.scale(8, 1.5f);
 		wall7.setTag("ground");
@@ -229,7 +228,7 @@ public class PlatformRenderer extends JoglRenderer {
 		wall7.translate(34.7f, -8.75f);
 		Updater.addRenderable(wall7);
 		
-		SimpleSprite wall8 = new SimpleSprite(gl, "assets/img/tile_t.png");
+		JoglSprite wall8 = new JoglSprite(gl, "assets/img/tile_t.png", 1, 1);
 		wall8.setRepeat(3, 0.5f);
 		wall8.scale(3, 0.5f);
 		wall8.setTag("ground");
@@ -237,7 +236,7 @@ public class PlatformRenderer extends JoglRenderer {
 		wall8.translate(19.7f, -1f);
 		Updater.addRenderable(wall8);
 		
-		SimpleSprite wall9 = new SimpleSprite(gl, "assets/img/tile_t.png");
+		JoglSprite wall9 = new JoglSprite(gl, "assets/img/tile_t.png", 1, 1);
 		wall9.setRepeat(2f, 0.5f);
 		wall9.scale(2f, 0.5f);
 		wall9.setTag("ground");
@@ -245,19 +244,19 @@ public class PlatformRenderer extends JoglRenderer {
 		wall9.translate(20.2f, -5f);
 		Updater.addRenderable(wall9);
 		
-		SimpleSprite wall10 = new SimpleSprite(gl, "assets/img/tile.png");
+		JoglSprite wall10 = new JoglSprite(gl, "assets/img/tile.png", 1, 1);
 		wall10.setRepeat(12f, 0.5f);
 		wall10.scale(12f, 0.5f);
 		wall10.translate(25.2f,-9.25f);
 		Updater.addRenderable(wall10);
 		
-		SimpleSprite wall11 = new SimpleSprite(gl, "assets/img/tile.png");
+		JoglSprite wall11 = new JoglSprite(gl, "assets/img/tile.png", 1, 1);
 		wall11.setRepeat(2f, 0.5f);
 		wall11.scale(2f, 0.5f);
 		wall11.translate(26f,-1.75f);
 		Updater.addRenderable(wall11);
 		
-		SimpleSprite platform = new SimpleSprite(gl,"assets/img/tile_t.png");
+		JoglSprite platform = new JoglSprite(gl,"assets/img/tile_t.png", 1, 1);
 		platform.setRepeat(2, 0.5f);
 		platform.scale(2, 0.5f);
 		platform.setPosition(36.5f, -5.5f);
@@ -269,7 +268,7 @@ public class PlatformRenderer extends JoglRenderer {
 		Updater.addRenderable(platform);
 		
 		
-		SimpleSprite platform2 = new SimpleSprite(gl,"assets/img/tile_t.png");
+		JoglSprite platform2 = new JoglSprite(gl,"assets/img/tile_t.png", 1, 1);
 		platform2.setRepeat(2, 0.5f);
 		platform2.scale(2, 0.5f);
 		platform2.setPosition(33.5f, -2.5f);
@@ -280,7 +279,7 @@ public class PlatformRenderer extends JoglRenderer {
 		platform2.addBehaviour(s2);
 		Updater.addRenderable(platform2);
 		
-		SimpleSprite movingPlatform = new SimpleSprite(gl,"assets/img/tile_t.png");
+		JoglSprite movingPlatform = new JoglSprite(gl,"assets/img/tile_t.png", 1, 1);
 		movingPlatform.setRepeat(2, 0.5f);
 		movingPlatform.scale(2, 0.5f);
 		movingPlatform.setPosition(31f, -1f);
@@ -293,7 +292,7 @@ public class PlatformRenderer extends JoglRenderer {
 		
 	
 		//hazards
-		SimpleSprite spikes1 = new SimpleSprite(gl, "assets/img/spike.png");
+		JoglSprite spikes1 = new JoglSprite(gl, "assets/img/spike.png", 1, 1);
 		spikes1.setRepeat(1, 15);
 		spikes1.scale(1, 15);
 		spikes1.addCollider(new BoxCollider());
@@ -302,7 +301,7 @@ public class PlatformRenderer extends JoglRenderer {
 		spikes1.translate(30f, 2.5f);
 		Updater.addRenderable(spikes1);
 		
-		SimpleSprite spikes2 = new SimpleSprite(gl, "assets/img/spike.png");
+		JoglSprite spikes2 = new JoglSprite(gl, "assets/img/spike.png", 1, 1);
 		spikes2.setRepeat(1, 10);
 		spikes2.scale(1, 10);
 		spikes2.addCollider(new BoxCollider());
@@ -311,7 +310,7 @@ public class PlatformRenderer extends JoglRenderer {
 		spikes2.translate(39.2f, 0f);
 		Updater.addRenderable(spikes2);
 		
-		SimpleSprite spikes3 = new SimpleSprite(gl, "assets/img/spike.png");
+		JoglSprite spikes3 = new JoglSprite(gl, "assets/img/spike.png", 1, 1);
 		spikes3.setRepeat(1, 13);
 		spikes3.scale(1, 13);
 		spikes3.addCollider(new BoxCollider());
@@ -319,7 +318,7 @@ public class PlatformRenderer extends JoglRenderer {
 		spikes3.translate(41.7f, -1.5f);
 		Updater.addRenderable(spikes3);
 		
-		SimpleSprite spikes4 = new SimpleSprite(gl, "assets/img/spike.png");
+		JoglSprite spikes4 = new JoglSprite(gl, "assets/img/spike.png", 1, 1);
 		spikes4.setRepeat(1, 3);
 		spikes4.scale(1, 3);
 		spikes4.addCollider(new BoxCollider());
@@ -328,7 +327,7 @@ public class PlatformRenderer extends JoglRenderer {
 		spikes4.translate(40.45f, -8.5f);
 		Updater.addRenderable(spikes4);
 		
-		SimpleSprite spikes5 = new SimpleSprite(gl, "assets/img/spike.png");
+		JoglSprite spikes5 = new JoglSprite(gl, "assets/img/spike.png", 1, 1);
 		spikes5.setRepeat(1, 2);
 		spikes5.scale(1, 2);
 		spikes5.addCollider(new BoxCollider());
@@ -337,14 +336,14 @@ public class PlatformRenderer extends JoglRenderer {
 		spikes5.translate(26f, -1);
 		Updater.addRenderable(spikes5);
 		
-		SimpleSprite spikes6 = new SimpleSprite(gl, "assets/img/spike.png");
+		JoglSprite spikes6 = new JoglSprite(gl, "assets/img/spike.png", 1, 1);
 		spikes6.addCollider(new BoxCollider());
 		spikes6.rotate(-90);
 		spikes6.setTag("hazard");
 		spikes6.translate(20.7f, -4.25f);
 		Updater.addRenderable(spikes6);
 		
-		SimpleSprite spikes7 = new SimpleSprite(gl, "assets/img/spike.png");
+		JoglSprite spikes7 = new JoglSprite(gl, "assets/img/spike.png", 1, 1);
 		spikes7.setRepeat(1, 11);
 		spikes7.scale(1, 11);
 		spikes7.addCollider(new BoxCollider());
@@ -354,7 +353,7 @@ public class PlatformRenderer extends JoglRenderer {
 		Updater.addRenderable(spikes7);
 		
 		//enemy
-		SheetSprite enemy2 = new SheetSprite(gl, "assets/img/spritesheet_hero.png",3,4);
+		JoglSprite enemy2 = new JoglSprite(gl, "assets/img/spritesheet_hero.png",3,4);
 		enemy2.setTag("enemy");
 		enemy2.scale(0.6f, 0.9f);
 		enemy2.setPosition(wall2.getX() + wall2.getWidth()/4 , wall2.getY()+wall2.getHeight()/2 + enemy2.getHeight()/2);
@@ -374,7 +373,7 @@ public class PlatformRenderer extends JoglRenderer {
 		Updater.addRenderable(enemy2);
 		Updater.addRenderable(awareness2);
 		
-		SheetSprite enemy3 = new SheetSprite(gl, "assets/img/spritesheet_hero.png",3,4);
+		JoglSprite enemy3 = new JoglSprite(gl, "assets/img/spritesheet_hero.png",3,4);
 		enemy3.setTag("enemy");
 		enemy3.scale(0.6f, 0.9f);
 		enemy3.setPosition(wall2.getX() - wall2.getWidth()/4 , wall2.getY()+wall2.getHeight()/2 + enemy2.getHeight()/2);
@@ -400,7 +399,7 @@ public class PlatformRenderer extends JoglRenderer {
 		e.scale(25, 15);
 		
 
-		SimpleSprite wall = new SimpleSprite(gl, "assets/img/tile.png");
+		JoglSprite wall = new JoglSprite(gl, "assets/img/tile.png", 1, 1);
 		wall.setRepeat(1, 15);
 		wall.scale(1, 15);
 		wall.setTag("ground");
@@ -410,7 +409,7 @@ public class PlatformRenderer extends JoglRenderer {
 		wall.setParent(e);
 		
 		
-		SimpleSprite wall2 = new SimpleSprite(gl, "assets/img/tile.png");
+		JoglSprite wall2 = new JoglSprite(gl, "assets/img/tile.png", 1, 1);
 		wall2.setRepeat(1, 15);
 		wall2.scale(1, 15);
 		wall2.setTag("ground");
@@ -419,7 +418,7 @@ public class PlatformRenderer extends JoglRenderer {
 		Updater.addRenderable(wall2);
 		wall2.setParent(e);
 		
-		SimpleSprite wall4 = new SimpleSprite(gl, "assets/img/tile.png");
+		JoglSprite wall4 = new JoglSprite(gl, "assets/img/tile.png", 1, 1);
 		wall4.setRepeat(25, 2);
 		wall4.scale(25, 2);
 		wall4.setTag("ground");
@@ -428,7 +427,7 @@ public class PlatformRenderer extends JoglRenderer {
 		Updater.addRenderable(wall4);
 		wall4.setParent(e);
 		
-		SheetSprite boss = new SheetSprite(gl, "assets/img/boss.png", 1, 1);
+		JoglSprite boss = new JoglSprite(gl, "assets/img/boss.png", 1, 1);
 		EnemyBehaviour bb = new EnemyBehaviour();
 		bb.allocateObject(boss);
 		boss.addBehaviour(bb);

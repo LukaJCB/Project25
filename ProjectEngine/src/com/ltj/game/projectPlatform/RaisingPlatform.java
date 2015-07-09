@@ -1,10 +1,10 @@
 package com.ltj.game.projectPlatform;
 
 import com.ltj.shared.engine.Behaviour;
-import com.ltj.shared.engine.SimpleSprite;
+import com.ltj.shared.engine.SingleSprite;
 import com.ltj.shared.engine.Sprite;
 
-public class RaisingPlatform extends Behaviour<SimpleSprite> {
+public class RaisingPlatform extends Behaviour<SingleSprite> {
 
 	private float raiseSpeed;
 	private boolean raising;
