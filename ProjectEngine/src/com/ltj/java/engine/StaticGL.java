@@ -35,9 +35,12 @@ public abstract class StaticGL {
 
 	private static GL3 gl;
 
+
 	public static void insertGL(GL3 gl){
 		StaticGL.gl = gl;
 	}
+	
+	
 
 	public static boolean isGL() {
 		return gl.isGL();
@@ -4452,6 +4455,6 @@ public abstract class StaticGL {
 	public static void glUniform(GLUniformData data) {
 		gl.glUniform(data);
 	}
-	
-	
+
+
 }

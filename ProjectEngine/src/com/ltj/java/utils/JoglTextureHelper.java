@@ -9,9 +9,9 @@ import java.util.HashMap;
 
 import javax.imageio.ImageIO;
 
-import com.jogamp.opengl.GL3;
 import com.jogamp.opengl.util.texture.Texture;
 import com.jogamp.opengl.util.texture.TextureIO;
+import static com.ltj.java.engine.StaticGL.*;
 
 import static com.jogamp.opengl.GL3.*;
 
@@ -24,7 +24,7 @@ public class JoglTextureHelper {
 		
 	}
 	
-	public static int[] loadTexture(GL3 gl,String file) throws IOException {
+	public static int[] loadTexture(String file) throws IOException {
 		
 		if (textureMap.containsKey(file)){
 			return textureMap.get(file);
@@ -36,16 +36,16 @@ public class JoglTextureHelper {
 	    ImageIO.write(ImageIO.read(new File(file)), "png", os);
 	    InputStream fis = new ByteArrayInputStream(os.toByteArray());
 	    Texture tex = TextureIO.newTexture(fis, false, TextureIO.PNG);
-	    tex.bind(gl);
-	    gl.glGenerateMipmap(GL_TEXTURE_2D);
+	    tex.bind(getGL());
+	    glGenerateMipmap(GL_TEXTURE_2D);
 	    
 	    float[] aniso = new float[1];
-	    gl.glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, aniso, 0);
-	    gl.glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, aniso[0]);
-	    tex.setTexParameteri(gl, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-	    tex.setTexParameteri(gl, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	    tex.setTexParameteri(gl, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	    tex.setTexParameteri(gl, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	    glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, aniso, 0);
+	    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, aniso[0]);
+	    tex.setTexParameteri(getGL(), GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	    tex.setTexParameteri(getGL(), GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	    tex.setTexParameteri(getGL(), GL_TEXTURE_WRAP_S, GL_REPEAT);
+	    tex.setTexParameteri(getGL(), GL_TEXTURE_WRAP_T, GL_REPEAT);
 	    textureHandle[0] = tex.getTextureObject();
 	    
 

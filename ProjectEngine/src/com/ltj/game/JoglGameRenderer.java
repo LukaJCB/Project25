@@ -26,7 +26,7 @@ public class JoglGameRenderer extends JoglRenderer {
 		super.init(drawable);
 		SoundManager.initSoundManager(false);
 
-		Camera.addSkyBox(new Skybox(gl, "assets/img/skyboxtop.png","assets/img/skyboxbottom.png","assets/img/skyboxfront.png",
+		Camera.addSkyBox(new Skybox( "assets/img/skyboxtop.png","assets/img/skyboxbottom.png","assets/img/skyboxfront.png",
 				"assets/img/skyboxback.png","assets/img/skyboxright.png","assets/img/skyboxleft.png"));
 		
 
@@ -35,21 +35,21 @@ public class JoglGameRenderer extends JoglRenderer {
 		Updater.addRenderable(r);
 		Updater.setCollisionZone(new Rectangle(r.getX(), r.getY(), r.getWidth(), r.getHeight()));
 
-		final JoglParticleEmitter pe = new JoglParticleEmitter(gl, 100,1000, 1.0f,0f,0);
+		final JoglParticleEmitter pe = new JoglParticleEmitter( 100,1000, 1.0f,0f,0);
 		Updater.addParticleEmitter(pe);
 
 		
 
 //		SimpleSpriteModeS[] s = new SimpleSpriteModeS[10];
 //		for (int i = 0;i < s.length;i++){
-//			s[i] = new SimpleSpriteModeS(gl,"assets/img/car.png");
+//			s[i] = new SimpleSpriteModeS("assets/img/car.png");
 //			s[i].translate(-15 +i *2.5f,2);
 //			s[i].addCollider(new BoxCollider());
 //			Updater.addRenderable(s[i]);
 //		}
 		
 		
-		JoglSprite hero = new JoglSprite(gl, "assets/img/ship.png",1,1);
+		JoglSprite hero = new JoglSprite( "assets/img/ship.png",1,1);
 		hero.scale(0.4f, 0.9f);
 		hero.setTexture(0, 0);
 		Behaviour<JoglSprite> b = new Behaviour<JoglSprite>(){
@@ -135,7 +135,7 @@ public class JoglGameRenderer extends JoglRenderer {
 		//Updater.addRenderable(zone);
 		Updater.addRenderable(hero);
 		
-		JoglSprite sp3 = new JoglSprite(gl, "assets/img/blue.png", 1, 1);
+		JoglSprite sp3 = new JoglSprite( "assets/img/blue.png", 1, 1);
 		sp3.translate(0, 5);
 		//sp3.scale(4f, 3f);
 		sp3.addCollider(new BoxCollider());
@@ -160,7 +160,7 @@ public class JoglGameRenderer extends JoglRenderer {
 		b2.allocateObject(sp3);
 		sp3.addBehaviour(b2);
 		sp3.setTag("ene");
-		JoglSprite sp4 = new JoglSprite(gl, "assets/img/redship.png", 1, 1);
+		JoglSprite sp4 = new JoglSprite( "assets/img/redship.png", 1, 1);
 		Behaviour<JoglSprite> b3 = new Behaviour<JoglSprite>(){
 			
 			
@@ -186,7 +186,7 @@ public class JoglGameRenderer extends JoglRenderer {
 		sp4.addCollider(new BoxCollider());
 		Updater.addRenderable( sp4);
 		Updater.addRenderable(sp3);
-		HudElement e = new HudElement(gl, "assets/img/ic_launcher.png");
+		HudElement e = new HudElement( "assets/img/ic_launcher.png");
 		
 		e.scale(0.1f, 0.1f);
 		e.setPosition(0.9f, 0);

@@ -1,22 +1,23 @@
 package com.ltj.shared.engine;
 
-import com.jogamp.opengl.GL3;
+
 
 public class Skybox {
 	private BackgroundSprite[] skybox = new BackgroundSprite[6];
-	public Skybox(GL3 gl, String top, String bottom, String front, String back, String right, String left){
-		addImages(gl, top, bottom, front, back, right, left);
+	public Skybox( String top, String bottom, String front, String back, String right, String left){
+		addImages( top, bottom, front, back, right, left);
 	}
-	public Skybox(String top, String bottom, String front, String back, String right, String left){
-		addImages(top, bottom, front, back, right, left);
+	public Skybox( String top, String bottom, String front, String back, String right, String left,boolean isJogl){
+		addImages( top, bottom, front, back, right, left);
 	}
-	public void addImages(GL3 gl, String top, String bottom, String front, String back, String right, String left){
-		skybox[0] = new BackgroundSprite(gl, top);
-		skybox[1] = new BackgroundSprite(gl, bottom);
-		skybox[2] = new BackgroundSprite(gl, front);
-		skybox[3] = new BackgroundSprite(gl, back);
-		skybox[4] = new BackgroundSprite(gl, right);
-		skybox[5] = new BackgroundSprite(gl, left);
+	
+	public void addImages( String top, String bottom, String front, String back, String right, String left, boolean isJogl){
+		skybox[0] = new BackgroundSprite( top,isJogl);
+		skybox[1] = new BackgroundSprite( bottom,isJogl);
+		skybox[2] = new BackgroundSprite( front,isJogl);
+		skybox[3] = new BackgroundSprite( back,isJogl);
+		skybox[4] = new BackgroundSprite( right,isJogl);
+		skybox[5] = new BackgroundSprite( left,isJogl);
 		
 		setupSkybox();
 	}

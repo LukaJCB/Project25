@@ -1,14 +1,13 @@
 package com.ltj.shared.engine;
 
-import com.jogamp.opengl.GL3;
 import com.ltj.android.engine.AndroidSpriteRenderer;
 import com.ltj.java.engine.JoglSpriteRenderer;
 
 public class BackgroundSprite {
 	private SpriteRenderer renderer;
 	
-	public BackgroundSprite(GL3 gl, String path){
-		renderer = new JoglSpriteRenderer(gl, path,1,1);
+	public BackgroundSprite( String path, boolean isJogl){
+		renderer = new JoglSpriteRenderer( path,1,1);
 	}
 	
 	public BackgroundSprite(String path){

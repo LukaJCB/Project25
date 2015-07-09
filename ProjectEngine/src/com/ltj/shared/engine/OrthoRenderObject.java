@@ -1,6 +1,6 @@
 package com.ltj.shared.engine;
 
-import com.jogamp.opengl.GL3;
+
 import com.ltj.android.engine.AndroidHudRenderer;
 import com.ltj.java.engine.JoglHudRenderer;
 
@@ -8,12 +8,14 @@ public class OrthoRenderObject {
 
 	private HudRenderer renderer;
 	
-	public OrthoRenderObject(GL3 gl, String path){
-		this.renderer = new JoglHudRenderer(gl,path);
-	}
+	
 
-	public OrthoRenderObject(String path) {
-		this.renderer = new AndroidHudRenderer(path);
+	public OrthoRenderObject(String path, boolean isJogl) {
+		if (isJogl){
+			renderer = new JoglHudRenderer( path);
+		} else {
+			this.renderer = new AndroidHudRenderer(path);
+		}
 	}
 
 	public void render() {
