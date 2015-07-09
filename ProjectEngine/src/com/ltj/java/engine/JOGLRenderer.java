@@ -3,6 +3,7 @@ package com.ltj.java.engine;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+import static com.ltj.java.engine.StaticGL.*;
 import com.jogamp.opengl.GL3;
 import com.jogamp.opengl.GLAutoDrawable;
 import com.jogamp.opengl.GLEventListener;
@@ -52,15 +53,15 @@ public abstract class JoglRenderer implements GLEventListener, KeyListener {
 		} else {
 			gl = drawable.getGL().getGL3();
 		}
-
+		StaticGL.insertGL(gl);
 
 		updater = new JoglUpdater(true);
 		
 		// tell opengl to clear the colorbuffer
-		gl.glClearColor(0, 0, 0, 0);
+		glClearColor(0, 0, 0, 0);
 
-		gl.glEnable(GL_BLEND);
-		gl.glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
 		
 		// get shader src
 		String vertexShaderSrc = JoglTextResourceReader.readTextFileFromResource("res/raw/vertex_shader.glsl");		
@@ -82,7 +83,7 @@ public abstract class JoglRenderer implements GLEventListener, KeyListener {
 		
 		programId = normalProgramId;
 		// use program
-		gl.glUseProgram(programId);
+		glUseProgram(programId);
 
 		// get locations
 		uMatrixLocation = gl.glGetUniformLocation(programId, "uMatrix");
@@ -92,7 +93,7 @@ public abstract class JoglRenderer implements GLEventListener, KeyListener {
 		hud = new HeadsUpDisplay();
 	
 		pointSize = 5;
-		gl.glPointSize(pointSize);
+		glPointSize(pointSize);
 		
 		Camera.setDistance(2);
 	}
@@ -112,7 +113,7 @@ public abstract class JoglRenderer implements GLEventListener, KeyListener {
 
 	private void setNormal() {
 		programId = normalProgramId;
-		gl.glDisable(GL_DEPTH_TEST);
+		glDisable(GL_DEPTH_TEST);
 		Camera.setNormalMode();
 		for (RenderObject g : Updater.getAllObjects()) {
 			g.setNormalMode();
@@ -122,9 +123,9 @@ public abstract class JoglRenderer implements GLEventListener, KeyListener {
 
 	private void setModeSeven() {
 		programId = alphaProgramId;
-		gl.glEnable(GL_DEPTH_TEST);
-		gl.glDepthFunc(GL_LEQUAL);
-		gl.glDepthMask(true);
+		glEnable(GL_DEPTH_TEST);
+		glDepthFunc(GL_LEQUAL);
+		glDepthMask(true);
 
 		Camera.setModeSeven();
 		for (RenderObject g : Updater.getAllObjects()) {
@@ -147,17 +148,17 @@ public abstract class JoglRenderer implements GLEventListener, KeyListener {
 		
 		Updater.update();
 		
-		gl.glUseProgram(programId);
+		glUseProgram(programId);
 		
 		//clear framebuffer
 		if (modeSeven){
-			gl.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			if (Camera.activeSkybox()){
 				Camera.renderSkybox();
-				gl.glClear(GL_DEPTH_BUFFER_BIT);
+				glClear(GL_DEPTH_BUFFER_BIT);
 			}
 		} else {
-			gl.glClear(GL_COLOR_BUFFER_BIT);
+			glClear(GL_COLOR_BUFFER_BIT);
 			for (OrthoRenderObject r : Updater.getAllOrthoRenderObjects()){
 				r.render();
 			}
@@ -167,14 +168,14 @@ public abstract class JoglRenderer implements GLEventListener, KeyListener {
 			r.render();
 		}
 		
-		gl.glUseProgram(particleProgramId);
+		glUseProgram(particleProgramId);
 		
 		for (ParticleEmitter pe : Updater.getAllParticleEmitters()){
 			pe.render();
 		}
-		gl.glUseProgram(programId);
+		glUseProgram(programId);
 		
-		gl.glClear(GL_DEPTH_BUFFER_BIT);
+		glClear(GL_DEPTH_BUFFER_BIT);
 
 		hud.render();
 		long timeDiff = System.currentTimeMillis() - time;
@@ -189,7 +190,7 @@ public abstract class JoglRenderer implements GLEventListener, KeyListener {
 
 	public void reshape(GLAutoDrawable drawable, int x, int y, int width,
 			int height) {
-		gl.glViewport(x, y, width, height);
+		glViewport(x, y, width, height);
 
 		hud.setDimensions(width,height);
 		Updater.setDimensions(width, height);
