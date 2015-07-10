@@ -26,13 +26,22 @@ public class Globals {
 		objectMap.put(key, value);
 	}
 	public static boolean getBool(String key){
-		return boolMap.getOrDefault(key,false);
+		if (boolMap.get(key) != null){
+			return boolMap.get(key);
+		}
+		return false;
 	}
 	public static float getFloat(String key){
-		return floatMap.getOrDefault(key, 0.0f);
+		if (floatMap.get(key) != null){
+			return floatMap.get(key);
+		}
+		return 0.0f;
 	}
 	public static int getInt(String key){
-		return intMap.getOrDefault(key,0);
+		if (intMap.get(key) != null){
+			return intMap.get(key);
+		} 
+		return 0;
 	}
 	
 	public static RenderObject getGameObject(String key){
