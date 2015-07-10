@@ -1,6 +1,7 @@
 package com.ltj.android.utils;
 
 import static android.opengl.GLES20.*;
+import static com.ltj.java.engine.StaticGL.glDeleteTextures;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -125,5 +126,15 @@ public class AndroidTextureHelper {
 	    }
 
 	    return bitmap;
+	}
+
+	public static void deleteTexture(String path) {
+		int[] arr = textureMap.get(path);
+		arr[2]--;
+		if (arr[2] == 0){
+			glDeleteTextures(1, arr, 0);
+			textureMap.remove(path);
+		}
+		
 	}
 }

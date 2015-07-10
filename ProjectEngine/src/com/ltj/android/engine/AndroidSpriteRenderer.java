@@ -27,7 +27,7 @@ public class AndroidSpriteRenderer extends AbstractSpriteRenderer{
 	private int[] mTextureDataHandle;
 	
 	public AndroidSpriteRenderer(String path, int cols, int rows){
-		super(cols,rows);
+		super(path,cols,rows);
 		
 		//convert to buffers
 		if (positionVBO == null){
@@ -66,7 +66,7 @@ public class AndroidSpriteRenderer extends AbstractSpriteRenderer{
 
 	@Override
 	public void clear() {
-		glDeleteTextures(1, mTextureDataHandle, 0);
+		AndroidTextureHelper.deleteTexture(path);
 		glDeleteBuffers(1, textureVBO, 0);
 		glDeleteBuffers(1, positionVBO, 0);
 	}

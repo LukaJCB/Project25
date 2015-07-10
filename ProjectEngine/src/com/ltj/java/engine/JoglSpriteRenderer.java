@@ -30,7 +30,7 @@ public class JoglSpriteRenderer extends AbstractSpriteRenderer{
 	private int[] mTextureDataHandle;
 	
 	public JoglSpriteRenderer(String path,int cols, int rows){
-		super(cols,rows);
+		super(path,cols,rows);
 		
 
 		//convert to buffers
@@ -47,7 +47,7 @@ public class JoglSpriteRenderer extends AbstractSpriteRenderer{
 
 		//load texture
 		try {
-			mTextureDataHandle = JoglTextureHelper.loadTexture( path);
+			mTextureDataHandle = JoglTextureHelper.loadTexture(path);
 			texNumber = mTextureDataHandle[1];
 		}  catch (IOException e) {
 			e.printStackTrace();
@@ -87,7 +87,7 @@ public class JoglSpriteRenderer extends AbstractSpriteRenderer{
 
 	@Override
 	public void clear() {
-		 glDeleteTextures(1, mTextureDataHandle, 0);
+		 JoglTextureHelper.deleteTexture(path);
 		 glDeleteBuffers(1, positionVBO, 0);
 		 glDeleteBuffers(1, textureVBO, 0);
 	}

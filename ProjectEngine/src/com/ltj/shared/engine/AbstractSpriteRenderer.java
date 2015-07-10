@@ -31,9 +31,9 @@ public abstract class AbstractSpriteRenderer implements SpriteRenderer {
 	protected float rowSize, columnSize;
 	private Animator animator;
 	private boolean modeSEnabled;
+	protected String path;
 	
-	
-	public AbstractSpriteRenderer(int columns, int rows){
+	public AbstractSpriteRenderer(String path,int columns, int rows){
 		
 		//set sheet dimensions
 		setSheetDimensions(columns, rows);
@@ -45,6 +45,8 @@ public abstract class AbstractSpriteRenderer implements SpriteRenderer {
 		x = y = rotation = 0;
 		height = 1;
 		width = 1;
+		
+		this.path = path;
 		
 	}
 	
