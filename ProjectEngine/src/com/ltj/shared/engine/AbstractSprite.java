@@ -17,6 +17,7 @@ public abstract class AbstractSprite implements RenderObject,SingleSprite,Sprite
 	private boolean destroyed, inactive;
 	protected SpriteRenderer renderer;
 	protected String path;
+	private boolean mirroredX, mirroredY;
 	
 	public int getNumCols() {
 		return renderer.getNumCols();
@@ -209,19 +210,7 @@ public abstract class AbstractSprite implements RenderObject,SingleSprite,Sprite
 
 	public void scale(float sx, float sy) {
 		renderer.scale(sx, sy);
-		if (getColliders() != null){
-			//adjust height and width of AABBs when mirroring
-			if (sx < 0){
-				for (Collider c : getColliders()){
-					c.scale(sx,1);
-				}
-			} 
-			if (sy < 0){
-				for (Collider c : getColliders()){
-					c.scale(1,sy);
-				}
-			}
-		}
+		
 		//scale children as well
 		if (childList != null){
 			for (Sprite r : childList){
@@ -229,6 +218,41 @@ public abstract class AbstractSprite implements RenderObject,SingleSprite,Sprite
 			}
 		}
 		
+	}
+	
+	@Override
+	public void setScale(float width, float height){
+		renderer.setScale(width, height);
+		//scale children as well
+		if (childList != null){
+			for (Sprite r : childList){
+				r.setScale(width,height);
+			}
+		}
+	}
+	
+	
+	@Override
+	public void setMirroring(boolean x, boolean y){
+		if (x != mirroredX){
+			mirrorX();
+		}
+		if (y != mirroredY){
+			mirrorY();
+		}
+	}
+
+	@Override
+	public void mirrorX(){
+		mirroredX = !mirroredX;
+		setScale(-renderer.getWidth(),getHeight());
+		System.out.println(getWidth() +"/" + getHeight());
+	}
+	
+	@Override
+	public void mirrorY(){
+		mirroredY = !mirroredY;
+		setScale(getWidth(),-renderer.getHeight());
 	}
 
 
@@ -243,11 +267,17 @@ public abstract class AbstractSprite implements RenderObject,SingleSprite,Sprite
 
 
 	public float getHeight() {
+		if (mirroredY){
+			return -renderer.getHeight();
+		}
 		return renderer.getHeight();
 	}
 
 
 	public float getWidth() {
+		if (mirroredX){
+			return -renderer.getWidth();
+		}
 		return renderer.getWidth();
 	}
 

@@ -25,4 +25,8 @@ public interface Sprite {
 	float getZ();
 	void setModeSevenEnabled(boolean modeSEnabled);
 	void addChild(Sprite child);
+	void setScale(float width, float height);
+	void mirrorX();
+	void mirrorY();
+	void setMirroring(boolean x, boolean y);
 }
