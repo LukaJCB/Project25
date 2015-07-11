@@ -3,6 +3,7 @@ package com.ltj.shared.engine;
 
 
 
+
 public class EmptyObject extends AbstractSprite {
 
 	public EmptyObject(){
@@ -15,6 +16,14 @@ public class EmptyObject extends AbstractSprite {
 		finishClone(o);
 		return o;
 	}
+
+	@Override
+	public boolean isLoaded() {
+		return true;
+	}
+	
+	
+	
 
 	
 }

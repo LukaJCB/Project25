@@ -71,11 +71,6 @@ public class EmptyRenderer implements SpriteRenderer {
 
 	}
 
-	@Override
-	public void setSheetDimensions(int cols, int rows) {
-		// do nothing
-
-	}
 
 	@Override
 	public void setTexture(int col, int row) {
@@ -175,6 +170,13 @@ public class EmptyRenderer implements SpriteRenderer {
 	public void setModeSevenEnabled(boolean modeSEnabled) {
 		// do nothing
 		
+	}
+
+	@Override
+	public String toJSON() {
+		
+		return "\"x\":" + x + ",\"y\":" + y  + ",\"rotation\":" + rotation 
+				+ ",\"width\":" + width + ",\"height\":" + height;
 	}
 
 }

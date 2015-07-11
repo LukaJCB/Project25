@@ -15,4 +15,6 @@ public interface Collider {
 	void setOffet(float x, float y);
 
 	void scale(float sx, float sy);
+
+	String toJSON();
 }

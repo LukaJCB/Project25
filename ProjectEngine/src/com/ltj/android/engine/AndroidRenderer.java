@@ -1,25 +1,26 @@
 package com.ltj.android.engine;
 
-import static android.opengl.GLES20.*;
-
-
-
+import static android.opengl.GLES20.GL_BLEND;
+import static android.opengl.GLES20.GL_COLOR_BUFFER_BIT;
+import static android.opengl.GLES20.GL_DEPTH_BUFFER_BIT;
+import static android.opengl.GLES20.GL_DEPTH_TEST;
+import static android.opengl.GLES20.GL_LEQUAL;
+import static android.opengl.GLES20.GL_ONE;
+import static android.opengl.GLES20.GL_ONE_MINUS_SRC_ALPHA;
+import static android.opengl.GLES20.glBlendFunc;
+import static android.opengl.GLES20.glClear;
+import static android.opengl.GLES20.glClearColor;
+import static android.opengl.GLES20.glDepthFunc;
+import static android.opengl.GLES20.glDepthMask;
+import static android.opengl.GLES20.glDisable;
+import static android.opengl.GLES20.glEnable;
+import static android.opengl.GLES20.glGetUniformLocation;
+import static android.opengl.GLES20.glIsEnabled;
+import static android.opengl.GLES20.glUseProgram;
+import static android.opengl.GLES20.glViewport;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
-
-
-import com.ltj.android.utils.AndroidShaderHelper;
-import com.ltj.android.utils.AndroidTextResourceReader;
-import com.ltj.projectengine.R;
-import com.ltj.shared.engine.Camera;
-import com.ltj.shared.engine.HeadsUpDisplay;
-import com.ltj.shared.engine.HudElement;
-import com.ltj.shared.engine.OrthoRenderObject;
-import com.ltj.shared.engine.ParticleEmitter;
-import com.ltj.shared.engine.RenderObject;
-import com.ltj.shared.engine.Engine;
-
 
 import android.content.Context;
 import android.hardware.SensorEvent;
@@ -27,6 +28,17 @@ import android.opengl.GLSurfaceView.Renderer;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+
+import com.ltj.android.utils.AndroidShaderHelper;
+import com.ltj.android.utils.AndroidTextResourceReader;
+import com.ltj.projectengine.R;
+import com.ltj.shared.engine.Camera;
+import com.ltj.shared.engine.Engine;
+import com.ltj.shared.engine.HeadsUpDisplay;
+import com.ltj.shared.engine.HudElement;
+import com.ltj.shared.engine.OrthoRenderObject;
+import com.ltj.shared.engine.ParticleEmitter;
+import com.ltj.shared.engine.RenderObject;
 
 
 public abstract class AndroidRenderer implements Renderer{

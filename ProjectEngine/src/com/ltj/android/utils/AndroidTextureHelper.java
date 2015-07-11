@@ -1,12 +1,23 @@
 package com.ltj.android.utils;
 
-import static android.opengl.GLES20.*;
+import static android.opengl.GLES20.GL_LINEAR;
+import static android.opengl.GLES20.GL_LINEAR_MIPMAP_LINEAR;
+import static android.opengl.GLES20.GL_NEAREST;
+import static android.opengl.GLES20.GL_REPEAT;
+import static android.opengl.GLES20.GL_TEXTURE_2D;
+import static android.opengl.GLES20.GL_TEXTURE_MAG_FILTER;
+import static android.opengl.GLES20.GL_TEXTURE_MIN_FILTER;
+import static android.opengl.GLES20.GL_TEXTURE_WRAP_S;
+import static android.opengl.GLES20.GL_TEXTURE_WRAP_T;
+import static android.opengl.GLES20.glBindTexture;
+import static android.opengl.GLES20.glGenTextures;
+import static android.opengl.GLES20.glGenerateMipmap;
+import static android.opengl.GLES20.glTexParameteri;
 import static com.ltj.java.engine.StaticGL.glDeleteTextures;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
-
 
 import android.content.Context;
 import android.content.res.AssetManager;

@@ -2,13 +2,27 @@ package com.ltj.android.engine;
 
 
 
+import static android.opengl.GLES20.GL_ARRAY_BUFFER;
+import static android.opengl.GLES20.GL_FLOAT;
+import static android.opengl.GLES20.GL_TEXTURE0;
+import static android.opengl.GLES20.GL_TEXTURE_2D;
+import static android.opengl.GLES20.GL_TRIANGLE_STRIP;
+import static android.opengl.GLES20.glActiveTexture;
+import static android.opengl.GLES20.glBindBuffer;
+import static android.opengl.GLES20.glBindTexture;
+import static android.opengl.GLES20.glDeleteBuffers;
+import static android.opengl.GLES20.glDrawArrays;
+import static android.opengl.GLES20.glGetAttribLocation;
+import static android.opengl.GLES20.glGetUniformLocation;
+import static android.opengl.GLES20.glUniform1i;
+import static android.opengl.GLES20.glUniformMatrix4fv;
+import static android.opengl.GLES20.glVertexAttribPointer;
+
 import com.ltj.android.utils.AndroidBufferHelper;
 import com.ltj.android.utils.AndroidTextureHelper;
 import com.ltj.shared.engine.AbstractSpriteRenderer;
 import com.ltj.shared.engine.Camera;
 import com.ltj.shared.utils.MatrixHelper;
-
-import static android.opengl.GLES20.*;
 
 
 public class AndroidSpriteRenderer extends AbstractSpriteRenderer{

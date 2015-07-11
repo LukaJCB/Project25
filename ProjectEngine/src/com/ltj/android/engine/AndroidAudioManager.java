@@ -2,14 +2,13 @@ package com.ltj.android.engine;
 
 import java.io.IOException;
 
-
-import com.ltj.shared.engine.AudioManagable;
-
 import android.content.res.AssetFileDescriptor;
 import android.content.res.AssetManager;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.SoundPool;
+
+import com.ltj.shared.engine.AudioManagable;
 
 public class AndroidAudioManager implements AudioManagable, MediaPlayer.OnPreparedListener  {
 	private MediaPlayer player;

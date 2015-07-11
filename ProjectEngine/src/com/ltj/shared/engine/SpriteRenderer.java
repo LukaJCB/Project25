@@ -14,7 +14,6 @@ public interface SpriteRenderer {
 	void setNormalMode();
 	float getZ();
 	void setZ(float z);
-	void setSheetDimensions(int cols, int rows);
 	void setTexture(int col, int row);
 	void setRepeatTexture(float xRepeat, float yRepeat);
 	int getNumCols();
@@ -31,4 +30,5 @@ public interface SpriteRenderer {
 	void addAnimation(String name, int animationTime, int texRow,boolean looping, int numCols);
 	void stopAnimation();
 	void setModeSevenEnabled(boolean modeSEnabled);
+	String toJSON();
 }

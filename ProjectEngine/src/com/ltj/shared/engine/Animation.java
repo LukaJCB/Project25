@@ -60,5 +60,11 @@ public class Animation {
 		playing = true;
 		reset();
 	}
+
+	public String toJSON() {
+		return "\"animationTime\":" + animationTime + ",\"texRow\":" + texRow 
+				+ ",\"looping\":" + looping + ",\"numCols\":" + numCols;
+		
+	}
 	
 }

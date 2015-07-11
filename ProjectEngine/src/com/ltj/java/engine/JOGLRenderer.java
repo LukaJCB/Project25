@@ -1,23 +1,38 @@
 package com.ltj.java.engine;
 
+import static com.jogamp.opengl.GL.GL_BLEND;
+import static com.jogamp.opengl.GL.GL_COLOR_BUFFER_BIT;
+import static com.jogamp.opengl.GL.GL_DEPTH_BUFFER_BIT;
+import static com.jogamp.opengl.GL.GL_DEPTH_TEST;
+import static com.jogamp.opengl.GL.GL_LEQUAL;
+import static com.jogamp.opengl.GL.GL_ONE;
+import static com.jogamp.opengl.GL.GL_ONE_MINUS_SRC_ALPHA;
+import static com.ltj.java.engine.StaticGL.glBlendFunc;
+import static com.ltj.java.engine.StaticGL.glClear;
+import static com.ltj.java.engine.StaticGL.glClearColor;
+import static com.ltj.java.engine.StaticGL.glDepthFunc;
+import static com.ltj.java.engine.StaticGL.glDepthMask;
+import static com.ltj.java.engine.StaticGL.glDisable;
+import static com.ltj.java.engine.StaticGL.glEnable;
+import static com.ltj.java.engine.StaticGL.glPointSize;
+import static com.ltj.java.engine.StaticGL.glUseProgram;
+import static com.ltj.java.engine.StaticGL.glViewport;
+
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-import static com.ltj.java.engine.StaticGL.*;
 import com.jogamp.opengl.GL3;
 import com.jogamp.opengl.GLAutoDrawable;
 import com.jogamp.opengl.GLEventListener;
 import com.ltj.java.utils.JoglShaderHelper;
 import com.ltj.java.utils.JoglTextResourceReader;
 import com.ltj.shared.engine.Camera;
+import com.ltj.shared.engine.Engine;
 import com.ltj.shared.engine.HeadsUpDisplay;
 import com.ltj.shared.engine.HudElement;
 import com.ltj.shared.engine.OrthoRenderObject;
 import com.ltj.shared.engine.ParticleEmitter;
 import com.ltj.shared.engine.RenderObject;
-import com.ltj.shared.engine.Engine;
-
-import static com.jogamp.opengl.GL.*;
 
 public abstract class JoglRenderer implements GLEventListener, KeyListener {
 

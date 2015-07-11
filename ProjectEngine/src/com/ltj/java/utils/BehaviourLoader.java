@@ -7,10 +7,10 @@ import java.net.URL;
 import java.net.URLClassLoader;
 
 import javax.tools.JavaCompiler;
+import javax.tools.JavaCompiler.CompilationTask;
 import javax.tools.JavaFileObject;
 import javax.tools.StandardJavaFileManager;
 import javax.tools.ToolProvider;
-import javax.tools.JavaCompiler.CompilationTask;
 
 import com.ltj.shared.engine.Behaviour;
 import com.ltj.shared.engine.RenderObject;

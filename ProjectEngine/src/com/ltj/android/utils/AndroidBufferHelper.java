@@ -1,11 +1,15 @@
 package com.ltj.android.utils;
 
 
+import static android.opengl.GLES20.GL_ARRAY_BUFFER;
+import static android.opengl.GLES20.GL_STATIC_DRAW;
+import static android.opengl.GLES20.glBindBuffer;
+import static android.opengl.GLES20.glBufferData;
+import static android.opengl.GLES20.glGenBuffers;
+
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
-
-import static android.opengl.GLES20.*;
 
 public class AndroidBufferHelper {
 	private AndroidBufferHelper(){}

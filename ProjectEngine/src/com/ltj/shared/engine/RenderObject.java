@@ -30,6 +30,8 @@ public interface RenderObject extends Sprite {
 	boolean isRendererDisabled();
 	boolean isControllerDisabled();
 	boolean isInactive();
+	boolean isLoaded();
+	String toJSON();
 	
 	
 	

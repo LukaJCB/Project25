@@ -1,7 +1,10 @@
 package com.ltj.java.utils;
 
-import static com.jogamp.opengl.GL3.*;
-
+import static com.jogamp.opengl.GL2ES2.GL_COMPILE_STATUS;
+import static com.jogamp.opengl.GL2ES2.GL_FRAGMENT_SHADER;
+import static com.jogamp.opengl.GL2ES2.GL_LINK_STATUS;
+import static com.jogamp.opengl.GL2ES2.GL_VALIDATE_STATUS;
+import static com.jogamp.opengl.GL2ES2.GL_VERTEX_SHADER;
 
 import com.jogamp.opengl.GL3;
 

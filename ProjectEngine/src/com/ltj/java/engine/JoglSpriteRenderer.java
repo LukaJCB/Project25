@@ -1,11 +1,25 @@
 package com.ltj.java.engine;
 
 
+import static com.jogamp.opengl.GL.GL_ARRAY_BUFFER;
+import static com.jogamp.opengl.GL.GL_FLOAT;
+import static com.jogamp.opengl.GL.GL_TEXTURE0;
+import static com.jogamp.opengl.GL.GL_TEXTURE_2D;
+import static com.jogamp.opengl.GL.GL_TRIANGLE_STRIP;
+import static com.ltj.java.engine.StaticGL.glActiveTexture;
+import static com.ltj.java.engine.StaticGL.glBindBuffer;
+import static com.ltj.java.engine.StaticGL.glBindTexture;
+import static com.ltj.java.engine.StaticGL.glDeleteBuffers;
+import static com.ltj.java.engine.StaticGL.glDrawArrays;
+import static com.ltj.java.engine.StaticGL.glEnableVertexAttribArray;
+import static com.ltj.java.engine.StaticGL.glGetAttribLocation;
+import static com.ltj.java.engine.StaticGL.glGetUniformLocation;
+import static com.ltj.java.engine.StaticGL.glUniform1i;
+import static com.ltj.java.engine.StaticGL.glUniformMatrix4fv;
+import static com.ltj.java.engine.StaticGL.glVertexAttribPointer;
+
 import java.io.IOException;
 
-
-import static com.ltj.java.engine.StaticGL.*;
-import static com.jogamp.opengl.GL.*;
 import com.ltj.java.utils.JoglBufferHelper;
 import com.ltj.java.utils.JoglTextureHelper;
 import com.ltj.shared.engine.AbstractSpriteRenderer;

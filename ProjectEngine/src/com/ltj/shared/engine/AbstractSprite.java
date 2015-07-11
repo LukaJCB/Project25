@@ -246,7 +246,6 @@ public abstract class AbstractSprite implements RenderObject,SingleSprite,Sprite
 	public void mirrorX(){
 		mirroredX = !mirroredX;
 		setScale(-renderer.getWidth(),getHeight());
-		System.out.println(getWidth() +"/" + getHeight());
 	}
 	
 	@Override
@@ -452,6 +451,12 @@ public abstract class AbstractSprite implements RenderObject,SingleSprite,Sprite
 	@Override
 	public void setRepeat(float horizontal, float vertical) {
 		renderer.setRepeatTexture(horizontal, vertical);
+	}
+
+	public String toJSON() {
+		String s = "{" + renderer.toJSON() + "\"tag\":\"" + tag  + "\",\"inactive\":" + inactive 
+				+ ",\"mirroredX\":" + mirroredX + ",\"mirroredY\":" + mirroredY + controller.toJSON() + "}";
+		return s;
 	}
 
 

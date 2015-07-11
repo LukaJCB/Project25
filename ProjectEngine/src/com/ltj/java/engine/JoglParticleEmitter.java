@@ -1,8 +1,19 @@
 package com.ltj.java.engine;
 
-import static com.ltj.java.engine.StaticGL.*;
-import static com.jogamp.opengl.GL3.*;
-
+import static com.jogamp.opengl.GL.GL_ARRAY_BUFFER;
+import static com.jogamp.opengl.GL.GL_FLOAT;
+import static com.jogamp.opengl.GL.GL_POINTS;
+import static com.ltj.java.engine.StaticGL.glBindBuffer;
+import static com.ltj.java.engine.StaticGL.glDrawArrays;
+import static com.ltj.java.engine.StaticGL.glEnableVertexAttribArray;
+import static com.ltj.java.engine.StaticGL.glGetAttribLocation;
+import static com.ltj.java.engine.StaticGL.glGetUniformLocation;
+import static com.ltj.java.engine.StaticGL.glUniform1f;
+import static com.ltj.java.engine.StaticGL.glUniform3f;
+import static com.ltj.java.engine.StaticGL.glUniform3fv;
+import static com.ltj.java.engine.StaticGL.glUniformMatrix4fv;
+import static com.ltj.java.engine.StaticGL.glUseProgram;
+import static com.ltj.java.engine.StaticGL.glVertexAttribPointer;
 
 import com.ltj.java.utils.JoglBufferHelper;
 import com.ltj.shared.engine.AbstractParticleEmitter;

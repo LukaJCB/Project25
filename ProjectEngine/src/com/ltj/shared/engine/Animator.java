@@ -1,6 +1,8 @@
 package com.ltj.shared.engine;
 
 import java.util.HashMap;
+import java.util.Map.Entry;
+
 
 public class Animator {
 	private HashMap<String,	Animation> animations = new HashMap<String, Animation>();
@@ -29,5 +31,16 @@ public class Animator {
 				currentAnimation = null;
 			}
 		}
+	}
+	
+	public String toJSON(){
+		String animJSON = "[";
+		for (Entry<String, Animation> a : animations.entrySet()){
+			animJSON += "{\"name\":\""+ a.getKey()+ "\"," + a.getValue().toJSON() + "},";
+		}
+		animJSON = animJSON.substring(0,animJSON.length()-1);
+		animJSON += "],";
+		return animJSON;
+		
 	}
 }

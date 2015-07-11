@@ -1,6 +1,5 @@
 package com.ltj.shared.utils;
 
-import android.annotation.SuppressLint;
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -10,6 +9,8 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.KeyGenerator;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
+
+import android.annotation.SuppressLint;
 
 public class StringEncoder {
 

@@ -21,4 +21,10 @@ public class JoglSprite extends AbstractSprite {
 		return o;
 	}
 
+	public String toJSON(){
+		return super.toJSON();
+		
+	}
+	
+	
 }

@@ -117,8 +117,10 @@ public abstract class Engine {
 		Camera.calcPVMatrix();
 		if (!dynamicObjects.isEmpty()){
 			for (RenderObject r: dynamicObjects){
-				allObjects.add(r);
-				r.start();
+				if (r.isLoaded()){
+					allObjects.add(r);
+					r.start();
+				}
 			}
 			dynamicObjects.clear();
 		}

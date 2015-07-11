@@ -1,7 +1,5 @@
 package com.ltj.android.engine;
 
-import com.ltj.shared.engine.Engine;
-
 import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -10,6 +8,8 @@ import android.hardware.SensorManager;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
+
+import com.ltj.shared.engine.Engine;
 
 public class AndroidUpdater extends Engine implements SensorEventListener,OnTouchListener  {
 

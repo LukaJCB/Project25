@@ -1,11 +1,16 @@
 package com.ltj.java.utils;
 
-import static com.ltj.java.engine.StaticGL.*;
+import static com.jogamp.opengl.GL.GL_ARRAY_BUFFER;
+import static com.jogamp.opengl.GL.GL_STATIC_DRAW;
+import static com.ltj.java.engine.StaticGL.glBindBuffer;
+import static com.ltj.java.engine.StaticGL.glBindVertexArray;
+import static com.ltj.java.engine.StaticGL.glBufferData;
+import static com.ltj.java.engine.StaticGL.glGenBuffers;
+import static com.ltj.java.engine.StaticGL.glGenVertexArrays;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
-import static com.jogamp.opengl.GL.*;
 
 public class JoglBufferHelper {
 	private JoglBufferHelper(){}

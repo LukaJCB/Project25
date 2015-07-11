@@ -167,4 +167,20 @@ public class GameObjectController {
 		parent.addChild(controllerObject);
 	}
 
+
+	public String toJSON() {
+		String json = ",\"controller_disabled\":" + disabled + ",\"behaviour\":\"" + behaviourName+ "\",\"colliders\":";
+		if (colliders != null){
+			json += "[";
+			for (Collider c: colliders){
+				json += "{" + c.toJSON() +"},";
+			}
+			json = json.substring(0,json.length()-1);
+			json += "]";
+		} else {
+			json += "null";
+		}
+		return json;
+	}
+
 }

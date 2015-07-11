@@ -1,7 +1,6 @@
 package com.ltj.shared.engine;
 
 
-import com.ltj.shared.engine.SpriteRenderer;
 import com.ltj.shared.utils.MatrixHelper;
 
 public abstract class AbstractSpriteRenderer implements SpriteRenderer {
@@ -154,7 +153,7 @@ public abstract class AbstractSpriteRenderer implements SpriteRenderer {
 		return z;
 	}
 	
-	public void setSheetDimensions(int cols, int rows){
+	private void setSheetDimensions(int cols, int rows){
 		columnSize = 1.0f / cols;
 		rowSize = 1.0f / rows;
 	}
@@ -216,6 +215,21 @@ public abstract class AbstractSpriteRenderer implements SpriteRenderer {
 	@Override
 	public void setDisabled(boolean disabled) {
 		this.disabled = disabled;
+	}
+
+	@Override
+	public String toJSON() {
+		String basics = "\"x\":" + x + ",\"y\":" + y + ",\"z\":" + z + ",\"rotation\":" + rotation 
+				+ ",\"width\":" + width + ",\"height\":" + height + ",\"rotationX\":" + rotationX
+				+ ",\"renderer_disabled\":" + disabled + ",\"path\":\"" + path + "\",\"columns\":" + getNumCols() 
+				+ ",\"rows\":" + getNumRows() + ",\"modeSEnabled\":" + modeSEnabled + ",\"animator\":";
+		if (animator != null){
+			basics += animator.toJSON();
+		} else {
+			basics += "null,";
+		}
+		return basics;
+				
 	}
 	
 	

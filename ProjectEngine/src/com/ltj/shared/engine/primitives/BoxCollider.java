@@ -45,8 +45,12 @@ public class BoxCollider implements Collider {
 		return  y+yOffset - yScaling*height/2;
 	}
 	
-	public String toString(){
-		return xScaling +"/" + yScaling;
+	
+
+	@Override
+	public String toJSON() {
+		return "\"xScaling\":" + xScaling + ",\"yScaling\":" + yScaling 
+				+ ",\"xOffset\":" + xOffset + ",\"yOffset\":" + yOffset;
 	}
 
 

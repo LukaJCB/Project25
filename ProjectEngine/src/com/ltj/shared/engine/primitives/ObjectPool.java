@@ -1,9 +1,9 @@
 package com.ltj.shared.engine.primitives;
 
 
+import com.ltj.shared.engine.Engine;
 import com.ltj.shared.engine.RenderObject;
 import com.ltj.shared.engine.Sprite;
-import com.ltj.shared.engine.Engine;
 
 public class ObjectPool {
 	private RenderObject[] pooledObjects;

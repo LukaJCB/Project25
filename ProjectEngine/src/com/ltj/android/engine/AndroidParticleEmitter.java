@@ -1,6 +1,19 @@
 package com.ltj.android.engine;
 
-import static android.opengl.GLES20.*;
+import static android.opengl.GLES20.GL_ARRAY_BUFFER;
+import static android.opengl.GLES20.GL_FLOAT;
+import static android.opengl.GLES20.GL_POINTS;
+import static android.opengl.GLES20.glBindBuffer;
+import static android.opengl.GLES20.glDrawArrays;
+import static android.opengl.GLES20.glEnableVertexAttribArray;
+import static android.opengl.GLES20.glGetAttribLocation;
+import static android.opengl.GLES20.glGetUniformLocation;
+import static android.opengl.GLES20.glUniform1f;
+import static android.opengl.GLES20.glUniform3f;
+import static android.opengl.GLES20.glUniform3fv;
+import static android.opengl.GLES20.glUniformMatrix4fv;
+import static android.opengl.GLES20.glUseProgram;
+import static android.opengl.GLES20.glVertexAttribPointer;
 
 import com.ltj.android.utils.AndroidBufferHelper;
 import com.ltj.shared.engine.AbstractParticleEmitter;
