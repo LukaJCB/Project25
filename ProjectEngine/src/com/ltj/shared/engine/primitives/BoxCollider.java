@@ -14,6 +14,12 @@ public class BoxCollider implements Collider {
 	}
 	
 	@Override
+	public void scale(float sx, float sy){
+		xScaling *= sx;
+		yScaling *= sy;
+	}
+	
+	@Override
 	public void setOffet(float x, float y) {
 		xOffset = x;
 		yOffset = y;
@@ -38,6 +44,7 @@ public class BoxCollider implements Collider {
 	public float getBottom(float y, float height) {
 		return  y+yOffset - yScaling*height/2;
 	}
+	
 
 
 }

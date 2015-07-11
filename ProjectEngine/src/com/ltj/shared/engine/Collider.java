@@ -13,4 +13,6 @@ public interface Collider {
 	void setScaling(float width, float height);
 	
 	void setOffet(float x, float y);
+
+	void scale(float sx, float sy);
 }

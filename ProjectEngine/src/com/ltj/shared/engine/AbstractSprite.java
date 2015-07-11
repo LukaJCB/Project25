@@ -213,12 +213,12 @@ public abstract class AbstractSprite implements RenderObject,SingleSprite,Sprite
 			//adjust height and width of AABBs when mirroring
 			if (sx < 0){
 				for (Collider c : getColliders()){
-					c.setScaling(sx,1);
+					c.scale(sx,1);
 				}
 			} 
 			if (sy < 0){
 				for (Collider c : getColliders()){
-					c.setScaling(1,sy);
+					c.scale(1,sy);
 				}
 			}
 		}
@@ -228,6 +228,7 @@ public abstract class AbstractSprite implements RenderObject,SingleSprite,Sprite
 				r.scale(sx, sy);
 			}
 		}
+		
 	}
 
 
