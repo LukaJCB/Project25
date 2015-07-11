@@ -158,7 +158,7 @@ public abstract class AbstractSprite implements RenderObject,SingleSprite,Sprite
 		renderer.rotate(deg);
 		if (getColliders() != null){
 			//adjust height and width of AABBs
-			double radians = Math.toRadians(deg);
+			double radians = Math.toRadians(getRotation());
 			float newWidth = (float) (Math.abs(getWidth() * Math.cos(radians) + getHeight() * Math.sin(radians)));
 			float newHeight = (float) (Math.abs(getHeight() * Math.cos(radians) + getWidth() * Math.sin(radians)));
 
@@ -190,6 +190,16 @@ public abstract class AbstractSprite implements RenderObject,SingleSprite,Sprite
 
 	public void setRotation(float deg) {
 		renderer.setRotation(deg);
+		if (getColliders() != null){
+			//adjust height and width of AABBs
+			double radians = Math.toRadians(deg);
+			float newWidth = (float) (Math.abs(getWidth() * Math.cos(radians) + getHeight() * Math.sin(radians)));
+			float newHeight = (float) (Math.abs(getHeight() * Math.cos(radians) + getWidth() * Math.sin(radians)));
+
+			for (Collider c : getColliders()){
+				c.setScaling(newWidth/getWidth(), newHeight/getHeight());
+			}
+		}
 		if (childList != null){
 			for (Sprite r : childList){
 				r.setRotation(deg);
@@ -199,6 +209,19 @@ public abstract class AbstractSprite implements RenderObject,SingleSprite,Sprite
 
 	public void scale(float sx, float sy) {
 		renderer.scale(sx, sy);
+		if (getColliders() != null){
+			//adjust height and width of AABBs when mirroring
+			if (sx < 0){
+				for (Collider c : getColliders()){
+					c.setScaling(sx,1);
+				}
+			} 
+			if (sy < 0){
+				for (Collider c : getColliders()){
+					c.setScaling(1,sy);
+				}
+			}
+		}
 		//scale children as well
 		if (childList != null){
 			for (Sprite r : childList){
@@ -241,6 +264,12 @@ public abstract class AbstractSprite implements RenderObject,SingleSprite,Sprite
 	@Override
 	public void setModeSeven() {
 		renderer.setModeSeven();
+	}
+
+	@Override
+	public boolean isLoaded() {
+		//TODO
+		return false;
 	}
 
 	@Override
