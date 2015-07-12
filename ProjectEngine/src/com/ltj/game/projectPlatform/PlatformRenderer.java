@@ -7,10 +7,10 @@ import com.ltj.java.engine.JoglRenderer;
 import com.ltj.java.engine.JoglSprite;
 import com.ltj.shared.engine.Behaviour;
 import com.ltj.shared.engine.EmptyObject;
+import com.ltj.shared.engine.Engine;
 import com.ltj.shared.engine.HudElement;
 import com.ltj.shared.engine.OrthoRenderObject;
 import com.ltj.shared.engine.Sprite;
-import com.ltj.shared.engine.Engine;
 import com.ltj.shared.engine.primitives.BoxCollider;
 import com.ltj.shared.engine.primitives.Globals;
 import com.ltj.shared.engine.primitives.Rectangle;
@@ -27,14 +27,13 @@ public class PlatformRenderer extends JoglRenderer {
 		
 		Engine.setCollisionZone(new Rectangle(background.getX(), background.getY(), background.getWidth(), background.getHeight()));
 		//background
-		OrthoRenderObject o = new HudElement("assets/img/skyboxleft.png",Engine.DESKTOP);
+		OrthoRenderObject o = new HudElement("assets/img/skyboxtop.png",Engine.DESKTOP);
 		Engine.addOrthoRenderObject(o);
 		
 		JoglSprite star1 = new JoglSprite( "assets/img/star.png", 1, 1);
 		star1.translate(10, 16);
 		star1.scale(10, 10);
 		star1.setZ(-68);
-		Engine.addRenderable(star1);
 		
 		JoglSprite star2 = new JoglSprite( "assets/img/star.png", 1, 1);
 		star2.translate(-4, 19);
@@ -69,7 +68,7 @@ public class PlatformRenderer extends JoglRenderer {
 		Globals.add("gravity", 0.013f);
 		
 		//hero 
-		JoglSprite hero = new JoglSprite( "assets/img/player_sheet.png",4,3);
+		JoglSprite hero = new JoglSprite( "assets/img/player_run.png",4,1);
 		JoglSprite bullet = new JoglSprite( "assets/img/ship.png",1,1);
 		bullet.setTag("bullet");
 		Behaviour<Sprite> bulletScript = new BulletController();
@@ -77,7 +76,7 @@ public class PlatformRenderer extends JoglRenderer {
 		bulletScript.allocateObject(bullet);
 		bullet.addCollider(new BoxCollider());
 		bullet.getCollider(0).setScaling(0.6f, 0.3f);
-		
+		Engine.addRenderable(bullet);
 		hero.setTexture(0, 0);
 		CharacterController b = new CharacterController();
 		hero.addCollider(new BoxCollider());
@@ -87,12 +86,13 @@ public class PlatformRenderer extends JoglRenderer {
 		bullet.scale(0.3f, 0.6f);
 		hero.scale(0.5f, 0.5f);
 		hero.setTag("hero");
-		//hero.setPosition(20, 0);
+		hero.setPosition(20, -12);
 		hero.addAnimation("walk_right", 10, 1, true, 4);
 		hero.addAnimation("walk_left", 10, 2, true, 4);
-		hero.addAnimation("idle", 10, 0, true, 4);
-
+		hero.addAnimation("walk", 10, 0, true, 4);
 		Engine.addRenderable(hero);
+		bullet.setParent(hero);
+		moon3.setParent(hero);
 		
 		JoglParticleEmitter jpe = new JoglParticleEmitter(100, 1000, 1, 0.2f, 0.1f);
 		b.emitter = jpe;
@@ -104,7 +104,6 @@ public class PlatformRenderer extends JoglRenderer {
 		setupRight();
 		
 		setupBottomRight();
-		
 		Engine.start();
 		
 

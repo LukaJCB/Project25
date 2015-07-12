@@ -6,7 +6,6 @@ public class GameObjectController {
 
 
 	private Behaviour<? extends Sprite> behaviour;
-	private String behaviourName;
 	private boolean disabled;
 	private RenderObject parent;
 	private ArrayList<Collider> colliders;
@@ -63,6 +62,14 @@ public class GameObjectController {
 	public Behaviour<? extends Sprite> getBehaviour() {
 		return behaviour;
 	}
+
+	public String getBehaviourName() {
+		if (behaviour != null){
+			return behaviour.getClass().getName();
+		}
+		return "null";
+	}
+
 
 	public void addCollider(Collider c){
 		if (colliders == null){
@@ -131,14 +138,8 @@ public class GameObjectController {
 		}
 	}
 
-	public void addBehaviourName(String name){
-		behaviourName = name;
-	}
-
-	public String getBehaviourName() {
-		return behaviourName;
-	}
 	
+
 	public void setDisabled(boolean controllerDisabled) {
 		this.disabled = controllerDisabled;
 	}
@@ -169,16 +170,23 @@ public class GameObjectController {
 
 
 	public String toJSON() {
-		String json = ",\"controller_disabled\":" + disabled + ",\"behaviour\":\"" + behaviourName+ "\",\"colliders\":";
+		String p;
+		if (parent != null){
+			p =  ""+parent.getId();
+		} else {
+			p = "-1";
+		}
+		String json = ",\"controller_disabled\":" + disabled + ",\"parent\":" + p
+				+ ",\"behaviour\":\"" + getBehaviourName()+ "\",\"colliders\":";
 		if (colliders != null){
 			json += "[";
 			for (Collider c: colliders){
 				json += "{" + c.toJSON() +"},";
 			}
 			json = json.substring(0,json.length()-1);
-			json += "]";
+			json += "],";
 		} else {
-			json += "null";
+			json += "\"null\",";
 		}
 		return json;
 	}

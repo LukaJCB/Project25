@@ -13,11 +13,12 @@ public abstract class AbstractSprite implements RenderObject,SingleSprite,Sprite
 
 	private GameObjectController controller = new GameObjectController(this);
 	private ArrayList<Sprite> childList;
-	private String tag;
+	private String tag = "";
 	private boolean destroyed, inactive;
 	protected SpriteRenderer renderer;
 	protected String path;
 	private boolean mirroredX, mirroredY;
+	private int id;
 	
 	public int getNumCols() {
 		return renderer.getNumCols();
@@ -41,10 +42,10 @@ public abstract class AbstractSprite implements RenderObject,SingleSprite,Sprite
 		o.scale(getWidth(), getHeight());
 		
 		if(this.getBehaviourName()!= null){
-			o.addBehaviourName(this.getBehaviourName());
+			
 			try {
 				//get new instance of same behaviour class
-				Class<?> c = Class.forName(o.getBehaviourName());
+				Class<?> c = Class.forName(this.getBehaviourName());
 				Behaviour<Sprite> b = (Behaviour<Sprite>) c.newInstance();
 				o.addBehaviour(b);
 				b.allocateObject(o);
@@ -71,6 +72,15 @@ public abstract class AbstractSprite implements RenderObject,SingleSprite,Sprite
 			}
 		}
 		Engine.addRenderable(o);
+	}
+	
+	public int getId() {
+		return id;
+	}
+
+	@Override
+	public void setId(int id) {
+		this.id = id;
 	}
 	
 	public void update() {
@@ -130,9 +140,6 @@ public abstract class AbstractSprite implements RenderObject,SingleSprite,Sprite
 		controller.onChildCollisionExit(child, collider);
 	}
 
-	public void addBehaviourName(String name) {
-		controller.addBehaviourName(name);
-	}
 
 	public String getBehaviourName() {
 		return controller.getBehaviourName();
@@ -408,6 +415,7 @@ public abstract class AbstractSprite implements RenderObject,SingleSprite,Sprite
 		return controller.getParent();
 	}
 
+	@Override
 	public void setParent(RenderObject parent) {
 		controller.setParent(parent);
 	}
@@ -454,8 +462,18 @@ public abstract class AbstractSprite implements RenderObject,SingleSprite,Sprite
 	}
 
 	public String toJSON() {
-		String s = "{" + renderer.toJSON() + "\"tag\":\"" + tag  + "\",\"inactive\":" + inactive 
-				+ ",\"mirroredX\":" + mirroredX + ",\"mirroredY\":" + mirroredY + controller.toJSON() + "}";
+		String s = "\"id\":" + id + "," + renderer.toJSON() + "\"tag\":\"" + tag  + "\",\"inactive\":" + inactive 
+				+ ",\"mirroredX\":" + mirroredX + ",\"mirroredY\":" + mirroredY + controller.toJSON() + "\"children\":";
+		if (childList != null){
+			s+= "[";
+			for (Sprite sprite : childList){
+				s+= ((RenderObject) sprite).getId() + ",";
+			}
+			s = s.substring(0,s.length()-1);
+			s+= "]";
+		} else {
+			s+= "\"null\"";
+		}
 		return s;
 	}
 

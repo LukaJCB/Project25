@@ -55,9 +55,7 @@ public abstract class Behaviour<T extends Sprite> {
 			e.printStackTrace();
 		}
 	}
-	public final RenderObject getObjectByID(String id){
-		return Engine.getObjectByID(id);
-	}
+
 	
 	public final HudElement getHudElementByID(String id){
 		return HeadsUpDisplay.get(id);

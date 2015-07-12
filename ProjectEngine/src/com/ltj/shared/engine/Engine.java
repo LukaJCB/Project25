@@ -15,22 +15,11 @@ public abstract class Engine {
 	public static final int DESKTOP = 0;
 	public static final int ANDROID = 1;
 	
-	private static HashMap<String,RenderObject> ids = new HashMap<String,RenderObject>();
+	
 	private static Rectangle collisionZone;
 
 
-	public static void addId(String id, RenderObject r){
-		ids.put(id, r);
-	}
-	
-	public static void removeId(String id){
-		ids.remove(id);
-	}
-	
-	public static RenderObject getObjectByID(String id){
-		return ids.get(id);
-	}
-
+	private static int gameObjectIds;
 	private static ArrayList<RenderObject> allObjects = new ArrayList<RenderObject>();
 	private static ArrayList<RenderObject> dynamicObjects = new ArrayList<RenderObject>();
 	private static SpatialHashMap shMap;
@@ -42,6 +31,7 @@ public abstract class Engine {
 	static int[] currentArea = new int[2];
 	static HashMap<int[], Area> areas = new HashMap<int[], Area>();
 	static float areaWidth, areaHeight;
+	private static int resyncIds;
 
 	
 	
@@ -61,19 +51,20 @@ public abstract class Engine {
 	public static void addRenderable(RenderObject r){
 		if (!started){
 			allObjects.add(r);
+			System.out.println(gameObjectIds + "/" + r.getTag());
+			r.setId(gameObjectIds);
+			gameObjectIds++;
+			
 		} else {
 			dynamicObjects.add(r);
 		}
 	}
 
 	public static void addRenderableList(List<RenderObject> list){
-		if (!started){
-			allObjects.addAll(list);
-		} else {
-			for (RenderObject r : list){
-				dynamicObjects.add(r);
-			}
+		for (RenderObject r : list){
+			addRenderable(r);
 		}
+		
 	}
 
 
@@ -104,21 +95,35 @@ public abstract class Engine {
 			if (r.isDestroyed()){
 				r.clear();
 				i.remove();
+				
+				resyncIds++;
+				gameObjectIds--;
 			} else {
 				r.update();
+				if (resyncIds > 0){
+					r.setId(r.getId()- resyncIds);
+				}
 			}
 		}
+		//reset ids
+		resyncIds = 0;
+		
+		//collision detection
 		checkCollisions();
 		
+		//animation
 		for (RenderObject r : allObjects){
 			r.animate();
 		}
 		
 		Camera.calcPVMatrix();
+		//add objects that try to get inserted this frame
 		if (!dynamicObjects.isEmpty()){
 			for (RenderObject r: dynamicObjects){
 				if (r.isLoaded()){
 					allObjects.add(r);
+					r.setId(gameObjectIds);
+					gameObjectIds++;
 					r.start();
 				}
 			}
@@ -132,6 +137,7 @@ public abstract class Engine {
 		}
 	}
 	
+
 	public static void setDimensions(int width, int height) {
 		for (OrthoRenderObject r : allOrthoRenderObjects){
 			

@@ -1,7 +1,6 @@
 package com.ltj.shared.engine.primitives;
 
 
-import com.ltj.shared.engine.Engine;
 import com.ltj.shared.engine.RenderObject;
 import com.ltj.shared.engine.Sprite;
 
@@ -11,7 +10,6 @@ public class ObjectPool {
 	public ObjectPool(int count, RenderObject obj){
 		pooledObjects = new RenderObject[count];
 		obj.setInactive(true);
-		Engine.addRenderable(obj);
 		pooledObjects[0] = obj;
 		for (int i = 1; i < pooledObjects.length; i++){
 			pooledObjects[i] = obj.cloneObject();

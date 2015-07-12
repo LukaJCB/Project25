@@ -1,12 +1,12 @@
 package com.ltj.android.view;
 
-import com.ltj.game.GameRenderer;
-
 import android.content.Context;
 import android.opengl.GLSurfaceView;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
+
+import com.ltj.game.GameRenderer;
 
 public class GlEngineView extends GLSurfaceView implements OnTouchListener {
 

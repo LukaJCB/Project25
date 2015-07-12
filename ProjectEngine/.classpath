@@ -6,7 +6,8 @@
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
-	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.USER_LIBRARY/jogl"/>
-	<classpathentry exported="true" kind="src" path="/JOGL"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/jogl"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/JOGL"/>
+	<classpathentry exported="true" kind="lib" path="E:/Downloads/gson-2.3.1.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

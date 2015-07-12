@@ -1,7 +1,7 @@
 {
     "gameObjects": [
         {
-            "type": "JoglSprite",
+            "type": "com.ltj.java.engine.JoglSprite",
             "id": 6,
             "x": 20,
             "y": -22.25,
@@ -9,7 +9,6 @@
             "rotation": 0,
             "width": 0.5,
             "height": 0.5,
-            "rotationX": 0,
             "renderer_disabled": false,
             "path": "assets/img/player_run.png",
             "columns": 4,
@@ -43,7 +42,8 @@
             "mirroredX": false,
             "mirroredY": false,
             "controller_disabled": false,
-            "behaviour": "null",
+            "parent": -1,
+            "behaviour": "com.ltj.game.projectPlatform.CharacterController",
             "colliders": [
                 {
                     "xScaling": 1,
@@ -51,30 +51,34 @@
                     "xOffset": 0,
                     "yOffset": 0
                 }
+            ],
+            "children": [
+                5,
+                4
             ]
         },
         {
-            "type": "JoglSprite",
-            "id": 0,
+            "type": "com.ltj.java.engine.JoglSprite",
+            "id": 5,
             "x": 20,
             "y": -22.25,
             "z": 0,
             "rotation": 90,
             "width": 0.3,
             "height": 0.6,
-            "rotationX": 0,
             "renderer_disabled": false,
             "path": "assets/img/ship.png",
             "columns": 1,
             "rows": 1,
             "modeSEnabled": false,
-            "animator": null,
+            "animator": "null",
             "tag": "bullet",
             "inactive": false,
             "mirroredX": false,
             "mirroredY": false,
             "controller_disabled": false,
-            "behaviour": "null",
+            "parent": 6,
+            "behaviour": "com.ltj.game.projectPlatform.BulletController",
             "colliders": [
                 {
                     "xScaling": 2,
@@ -82,7 +86,8 @@
                     "xOffset": 0,
                     "yOffset": 0
                 }
-            ]
+            ],
+            "children": "null"
         }
     ]
 }

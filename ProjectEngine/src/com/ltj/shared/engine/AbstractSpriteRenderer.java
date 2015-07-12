@@ -220,13 +220,13 @@ public abstract class AbstractSpriteRenderer implements SpriteRenderer {
 	@Override
 	public String toJSON() {
 		String basics = "\"x\":" + x + ",\"y\":" + y + ",\"z\":" + z + ",\"rotation\":" + rotation 
-				+ ",\"width\":" + width + ",\"height\":" + height + ",\"rotationX\":" + rotationX
-				+ ",\"renderer_disabled\":" + disabled + ",\"path\":\"" + path + "\",\"columns\":" + getNumCols() 
-				+ ",\"rows\":" + getNumRows() + ",\"modeSEnabled\":" + modeSEnabled + ",\"animator\":";
+				+ ",\"width\":" + width + ",\"height\":" + height + ",\"renderer_disabled\":" + disabled 
+				+ ",\"path\":\"" + path + "\",\"columns\":" + getNumCols() + ",\"rows\":" + getNumRows() 
+				+ ",\"modeSEnabled\":" + modeSEnabled + ",\"animator\":";
 		if (animator != null){
 			basics += animator.toJSON();
 		} else {
-			basics += "null,";
+			basics += "\"null\",";
 		}
 		return basics;
 				

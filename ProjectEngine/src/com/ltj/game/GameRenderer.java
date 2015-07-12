@@ -13,10 +13,10 @@ import com.ltj.android.engine.AndroidRenderer;
 import com.ltj.android.engine.AndroidSprite;
 import com.ltj.shared.engine.Behaviour;
 import com.ltj.shared.engine.Camera;
+import com.ltj.shared.engine.Engine;
 import com.ltj.shared.engine.HudElement;
 import com.ltj.shared.engine.Skybox;
 import com.ltj.shared.engine.SoundManager;
-import com.ltj.shared.engine.Engine;
 import com.ltj.shared.engine.primitives.BoxCollider;
 import com.ltj.shared.engine.primitives.Globals;
 import com.ltj.shared.engine.primitives.Rectangle;
@@ -50,11 +50,11 @@ public class GameRenderer extends AndroidRenderer {
 		AndroidSprite hero = new AndroidSprite( "img/car.png", 1, 1);
 		Camera.addSkyBox(new Skybox( "img/skyboxtop.png","img/skyboxbottom.png","img/skyboxfront.png",
 				"img/skyboxback.png","img/skyboxright.png","img/skyboxleft.png",Engine.ANDROID));
-		hero.addBehaviourName("PlayerController25D");
+		hero.addBehaviour(new PlayerController25D());
 		String className = hero.getBehaviourName();
 		Behaviour b = null;
 		try {
-			Class<?> c = Class.forName("com.ltj.game." + className);
+			Class<?> c = Class.forName(className);
 			Constructor<?> constructor = c.getConstructors()[0];
 			b = (Behaviour) constructor.newInstance();
 		} catch (ClassNotFoundException e) {
@@ -73,6 +73,7 @@ public class GameRenderer extends AndroidRenderer {
 		hero.addBehaviour(b);
 		hero.addCollider(new BoxCollider());
 		hero.scale(0.4f, 0.3f);
+		hero.setModeSevenEnabled(true);
 	
 		
 		
@@ -133,10 +134,9 @@ public class GameRenderer extends AndroidRenderer {
 		e.scale(0.1f, 0.1f);
 		e.setPosition(0.9f, 0);
 		addHudElement("gui",e);
-		changeMode();
 		
 		
-		start();
+		Engine.start();
 	}
 
 	

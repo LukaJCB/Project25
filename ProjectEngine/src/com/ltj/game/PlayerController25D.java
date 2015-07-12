@@ -2,25 +2,22 @@ package com.ltj.game;
 
 import android.view.MotionEvent;
 
-import com.ltj.android.engine.AndroidParticleEmitter;
 import com.ltj.android.engine.MotionInput;
 import com.ltj.shared.engine.Behaviour;
 import com.ltj.shared.engine.Camera;
 import com.ltj.shared.engine.Sprite;
-import com.ltj.shared.engine.Engine;
 import com.ltj.shared.engine.primitives.Globals;
 public class PlayerController25D extends Behaviour<Sprite> {
 
 	private float xMovement,yMovement;
 	private float lastX,lastY;
 	private boolean moving;
-	private AndroidParticleEmitter pe;
 	@Override
 	public void start() {
 		gameObject.scale(0.5f, 0.5f);
 		gameObject.translate(0, -2);
-		pe = new AndroidParticleEmitter(100,100, 1.0f,1f,1);
-		Engine.addParticleEmitter(pe);
+		
+		
 		moving = true;
 	}
 
@@ -55,7 +52,7 @@ public class PlayerController25D extends Behaviour<Sprite> {
 		gameObject.translate(-xMovement, -yMovement);
 		moving = false;
 		gameObject.setRendererDisabled(true);
-		pe.addParticleExplosion(60, 0.007f);
+		
 	}
 
 	

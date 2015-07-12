@@ -1,8 +1,9 @@
 package com.ltj.game.projectPlatform;
 
 import java.awt.event.KeyEvent;
+import java.lang.reflect.InvocationTargetException;
 
-
+import org.json.JSONException;
 
 import com.ltj.java.engine.JoglParticleEmitter;
 import com.ltj.shared.engine.Behaviour;
@@ -12,6 +13,7 @@ import com.ltj.shared.engine.Sprite;
 import com.ltj.shared.engine.SpriteSheet;
 import com.ltj.shared.engine.primitives.Globals;
 import com.ltj.shared.engine.primitives.ObjectPool;
+import com.ltj.shared.engine.primitives.Scene;
 public class CharacterController extends Behaviour<SpriteSheet> {
 	
 	private float speed, upSpeed;
@@ -24,13 +26,14 @@ public class CharacterController extends Behaviour<SpriteSheet> {
 	private float maxSpeed;
 	public JoglParticleEmitter emitter;
 	private float lastColliderX;
+	private boolean movingRight;
+	
 	@Override
 	public void start() {
 		gravity = Globals.getFloat("gravity");
 		bullets = new ObjectPool(20, Globals.getGameObject("bullet"));
 		Camera.setDistance(7f);
 		maxSpeed = -0.31f;
-		gameObject.startAnimation("idle");
 	}
 
 	@Override
@@ -55,7 +58,33 @@ public class CharacterController extends Behaviour<SpriteSheet> {
 		emitter.setPosition(gameObject.getX(),gameObject.getY(),0);
 		Camera.setLookAt(gameObject.getX(), gameObject.getY()+0.4f);
 		grounded = false;
-		
+//		if (movingRight){
+//			try {
+//				Scene.load();
+//				movingRight = false;
+//			} catch (ClassNotFoundException e1) {
+//				// TODO Auto-generated catch block
+//				e1.printStackTrace();
+//			} catch (InstantiationException e1) {
+//				// TODO Auto-generated catch block
+//				e1.printStackTrace();
+//			} catch (IllegalAccessException e1) {
+//				// TODO Auto-generated catch block
+//				e1.printStackTrace();
+//			} catch (NoSuchMethodException e1) {
+//				// TODO Auto-generated catch block
+//				e1.printStackTrace();
+//			} catch (SecurityException e1) {
+//				// TODO Auto-generated catch block
+//				e1.printStackTrace();
+//			} catch (IllegalArgumentException e1) {
+//				// TODO Auto-generated catch block
+//				e1.printStackTrace();
+//			} catch (InvocationTargetException e1) {
+//				// TODO Auto-generated catch block
+//				e1.printStackTrace();
+//			}
+//		}	
 	}
 
 
@@ -63,10 +92,12 @@ public class CharacterController extends Behaviour<SpriteSheet> {
 	public void onKeyInput(KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_RIGHT){
 			speed = 0.1f;
-			gameObject.startAnimation("walk_right");
+			gameObject.setMirroring(false,false);
+			gameObject.startAnimation("walk");
 		} else if (e.getKeyCode() == KeyEvent.VK_LEFT){
 			speed = -0.1f;
-			gameObject.startAnimation("walk_left");
+			gameObject.setMirroring(true,false);
+			gameObject.startAnimation("walk");
 		} else if (e.getKeyCode() == KeyEvent.VK_SPACE){
 			if (grounded){
 				jumping = true;
@@ -81,10 +112,10 @@ public class CharacterController extends Behaviour<SpriteSheet> {
 	public void onKeyRelease(KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_RIGHT){
 			speed = 0;
-			gameObject.startAnimation("idle");
+			gameObject.stopAnimation();
 		} else if (e.getKeyCode() == KeyEvent.VK_LEFT){
 			speed = 0;
-			gameObject.startAnimation("idle");
+			gameObject.stopAnimation();
 		} else if (e.getKeyCode() == KeyEvent.VK_SPACE){
 			jumping = false;
 		} else if (e.getKeyCode() == KeyEvent.VK_SHIFT){
@@ -93,6 +124,9 @@ public class CharacterController extends Behaviour<SpriteSheet> {
 			rocket.setPosition(gameObject.getX(), gameObject.getY());
 			rocket.setRotation(90);
 			rocket.setInactive(false);
+			movingRight = true;
+			System.out.println(((RenderObject) gameObject).toJSON());
+			System.out.println(((RenderObject) gameObject.getChildList().get(0)).toJSON());
 		}
 	}
 

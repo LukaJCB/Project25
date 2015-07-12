@@ -32,6 +32,11 @@ public interface RenderObject extends Sprite {
 	boolean isInactive();
 	boolean isLoaded();
 	String toJSON();
+	void setId(int id);
+	int getId();
+	void addAnimation(String name, int animationTime, int texRow,
+			boolean looping, int numCols);
+	void setParent(RenderObject parent);
 	
 	
 	

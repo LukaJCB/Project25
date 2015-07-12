@@ -22,8 +22,7 @@ public class JoglSprite extends AbstractSprite {
 	}
 
 	public String toJSON(){
-		return super.toJSON();
-		
+		return "{ \"type\":\"" + getClass().getName() + "\", "+ super.toJSON() + "}";
 	}
 	
 	
