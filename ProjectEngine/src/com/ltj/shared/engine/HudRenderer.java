@@ -15,4 +15,5 @@ public interface HudRenderer {
 	float getHeight();
 	float getWidth();
 	float getRotation();
+	String toJSON();
 }

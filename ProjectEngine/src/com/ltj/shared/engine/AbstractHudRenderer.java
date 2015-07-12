@@ -28,7 +28,9 @@ public abstract class AbstractHudRenderer implements HudRenderer {
 	private float x,y;
 	private float rotation;
 	private float height,width;
-	public AbstractHudRenderer(){
+	private String path;
+	public AbstractHudRenderer(String path){
+		this.path = path;
 
 		//set Matrix
 		MatrixHelper.setIdentityM(modelMatrix);
@@ -129,6 +131,15 @@ public abstract class AbstractHudRenderer implements HudRenderer {
 	}
 
 
+	@Override
+	public String toJSON() {
+		
+				
+		return "\"x\":" + x + ",\"y\":" + y + ",\"rotation\":" + rotation 
+				+ ",\"width\":" + width + ",\"height\":" + height 
+				+ ",\"path\":\"" + path + ",";
+				
+	}
 
 
 }

@@ -462,7 +462,8 @@ public abstract class AbstractSprite implements RenderObject,SingleSprite,Sprite
 	}
 
 	public String toJSON() {
-		String s = "\"id\":" + id + "," + renderer.toJSON() + "\"tag\":\"" + tag  + "\",\"inactive\":" + inactive 
+		String s ="{ \"type\":\"" + getClass().getName() + "\", " 
+		 +  "\"id\":" + id + "," + renderer.toJSON() + "\"tag\":\"" + tag  + "\",\"inactive\":" + inactive 
 				+ ",\"mirroredX\":" + mirroredX + ",\"mirroredY\":" + mirroredY + controller.toJSON() + "\"children\":";
 		if (childList != null){
 			s+= "[";
@@ -474,6 +475,7 @@ public abstract class AbstractSprite implements RenderObject,SingleSprite,Sprite
 		} else {
 			s+= "\"null\"";
 		}
+		s+=  "}";
 		return s;
 	}
 

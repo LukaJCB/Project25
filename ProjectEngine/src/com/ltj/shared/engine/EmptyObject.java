@@ -22,9 +22,6 @@ public class EmptyObject extends AbstractSprite {
 		return true;
 	}
 	
-	public String toJSON(){
-		return "{ \"type\":\"" + getClass().getSimpleName() + "\", "+ super.toJSON() + "}";
-	}
 	
 	
 

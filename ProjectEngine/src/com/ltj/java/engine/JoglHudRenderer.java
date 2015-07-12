@@ -38,7 +38,7 @@ public class JoglHudRenderer extends AbstractHudRenderer {
 	
 
 	public JoglHudRenderer(String path){
-		super();
+		super(path);
 		
 
 		if (positionVBO == null){

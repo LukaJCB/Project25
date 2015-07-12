@@ -36,7 +36,7 @@ public class AndroidHudRenderer extends AbstractHudRenderer {
 	private int[] mTextureDataHandle;
 	
 	public AndroidHudRenderer(String path){
-		super();
+		super(path);
 		
 		if (positionVBO == null){
 			//convert to buffers

@@ -7,9 +7,10 @@ import com.ltj.java.engine.JoglHudRenderer;
 public class OrthoRenderObject {
 
 	private HudRenderer renderer;
-	
+	private int platform;
 	
 	public OrthoRenderObject(String path, int platform){
+		this.platform = platform;
 		switch (platform){
 		case Engine.DESKTOP:
 			renderer = new JoglHudRenderer( path);
@@ -51,6 +52,10 @@ public class OrthoRenderObject {
 
 	public void clear() {
 		renderer.clear();
+	}
+	
+	public String toJSON(){
+		return "{" +  renderer.toJSON() + "\"type\":\"" + getClass().getName() + "\",\"platform\":"+ platform  + "}";
 	}
 	
 	

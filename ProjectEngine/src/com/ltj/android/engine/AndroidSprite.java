@@ -21,8 +21,5 @@ public class AndroidSprite extends AbstractSprite {
 		return o;
 	}
 
-	@Override
-	public String toJSON(){
-		return "{ \"type\":\"" + getClass().getName() + "\", "+ super.toJSON() + "}";
-	}
+	
 }
