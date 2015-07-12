@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 
+import android.annotation.SuppressLint;
 import android.util.SparseArray;
 
 import com.ltj.java.utils.JoglTextResourceReader;
@@ -20,12 +21,13 @@ import com.ltj.shared.engine.json.JSONObject;
 
 
 
+@SuppressLint("UseSparseArrays") 
 public class Scene {
 
 	private static ArrayList<RenderObject>  allObjects;
 	
-	private static SparseArray<ArrayList<RenderObject>> parentsToAdd;
-	private static SparseArray<RenderObject> childrenToAdd;
+	private static HashMap<Integer,ArrayList<RenderObject>> parentsToAdd;
+	private static HashMap<Integer,RenderObject> childrenToAdd;
 	public void start(){
 	
 	}
@@ -37,8 +39,8 @@ public class Scene {
 	
 	public static void load() throws ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchMethodException, SecurityException, IllegalArgumentException, InvocationTargetException, JSONException{
 		allObjects = new ArrayList<RenderObject>();
-		parentsToAdd = new SparseArray<ArrayList<RenderObject>>();
-		childrenToAdd = new SparseArray<RenderObject>();
+		parentsToAdd = new HashMap<Integer, ArrayList<RenderObject>>();
+		childrenToAdd = new HashMap<Integer, RenderObject>();
 		//load json
 		JSONObject json = new JSONObject(JoglTextResourceReader.readTextFileFromResource("res/raw/test.json"));
 		JSONArray gameObjects = json.getJSONArray("gameObjects");
@@ -48,7 +50,6 @@ public class Scene {
 			RenderObject r = reconstructObject(renderObject);
 			
 			allObjects.add(r);
-			System.out.println(r.toJSON());
 			
 		}
 		
@@ -80,6 +81,7 @@ public class Scene {
 		//check if this object is a child of someone
 		if (childrenToAdd.get(r.getId()) != null){
 			r.setParent(childrenToAdd.get(r.getId()));
+			
 		}
 		
 		
@@ -128,7 +130,7 @@ public class Scene {
 		int parentId = obj.getInt("parent");
 		if (parentId != -1){
 			if ( parentId < r.getId()){
-				r.setParent(Engine.getAllObjects().get(obj.getInt("parent")));
+				r.setParent(Engine.getAllObjects().get(parentId));
 			} else {
 				if (parentsToAdd.get(parentId) == null){
 					parentsToAdd.put(parentId, new ArrayList<RenderObject>());
