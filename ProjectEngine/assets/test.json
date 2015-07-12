@@ -1,0 +1,88 @@
+{
+    "gameObjects": [
+        {
+            "type": "JoglSprite",
+            "id": 6,
+            "x": 20,
+            "y": -22.25,
+            "z": 0,
+            "rotation": 0,
+            "width": 0.5,
+            "height": 0.5,
+            "rotationX": 0,
+            "renderer_disabled": false,
+            "path": "assets/img/player_run.png",
+            "columns": 4,
+            "rows": 1,
+            "modeSEnabled": false,
+            "animator": [
+                {
+                    "name": "walk_right",
+                    "animationTime": 10,
+                    "texRow": 1,
+                    "looping": true,
+                    "numCols": 4
+                },
+                {
+                    "name": "walk_left",
+                    "animationTime": 10,
+                    "texRow": 2,
+                    "looping": true,
+                    "numCols": 4
+                },
+                {
+                    "name": "walk",
+                    "animationTime": 10,
+                    "texRow": 0,
+                    "looping": true,
+                    "numCols": 4
+                }
+            ],
+            "tag": "hero",
+            "inactive": false,
+            "mirroredX": false,
+            "mirroredY": false,
+            "controller_disabled": false,
+            "behaviour": "null",
+            "colliders": [
+                {
+                    "xScaling": 1,
+                    "yScaling": 1,
+                    "xOffset": 0,
+                    "yOffset": 0
+                }
+            ]
+        },
+        {
+            "type": "JoglSprite",
+            "id": 0,
+            "x": 20,
+            "y": -22.25,
+            "z": 0,
+            "rotation": 90,
+            "width": 0.3,
+            "height": 0.6,
+            "rotationX": 0,
+            "renderer_disabled": false,
+            "path": "assets/img/ship.png",
+            "columns": 1,
+            "rows": 1,
+            "modeSEnabled": false,
+            "animator": null,
+            "tag": "bullet",
+            "inactive": false,
+            "mirroredX": false,
+            "mirroredY": false,
+            "controller_disabled": false,
+            "behaviour": "null",
+            "colliders": [
+                {
+                    "xScaling": 2,
+                    "yScaling": 0.5,
+                    "xOffset": 0,
+                    "yOffset": 0
+                }
+            ]
+        }
+    ]
+}
