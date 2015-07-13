@@ -1,6 +1,7 @@
 package com.ltj.shared.engine;
 
 import java.util.HashMap;
+import java.util.Map.Entry;
 
 
 public class HeadsUpDisplay {
@@ -32,6 +33,21 @@ public class HeadsUpDisplay {
 		for (HudElement r : hudElements.values()){
 			r.clear();
 		}
+	}
+	
+	public String toJSON(){
+		if (hudElements.isEmpty()){
+			return "\"null\"";
+		}
+		
+		String hudJSON = "[";
+		for (Entry<String, HudElement> hud : hudElements.entrySet()){
+			hudJSON += "{\"name\":\""+ hud.getKey()+ "\",\"value\":" + hud.getValue().toJSON() + "},";
+		}
+		hudJSON = hudJSON.substring(0,hudJSON.length()-1);
+		hudJSON += "]";
+		return hudJSON;
+		
 	}
 	
 }

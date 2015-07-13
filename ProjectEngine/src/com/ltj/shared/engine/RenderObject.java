@@ -27,6 +27,7 @@ public interface RenderObject extends Sprite {
 	boolean isDestroyed();
 	Behaviour<? extends Sprite> getBehaviour();
 	RenderObject cloneObject();
+	boolean isGlobal();
 	boolean isRendererDisabled();
 	boolean isControllerDisabled();
 	boolean isInactive();

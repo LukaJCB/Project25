@@ -54,4 +54,14 @@ public class Skybox {
 		
 	}
 	
+	public String toJSON(){
+		String json = "[";
+		for(BackgroundSprite s: skybox){
+			json += s.toJSON() + ",";
+		}
+		json = json.substring(0,json.length()-1);
+		json += "]";
+		return json;
+	}
+	
 }

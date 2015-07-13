@@ -19,6 +19,7 @@ public abstract class AbstractSprite implements RenderObject,SingleSprite,Sprite
 	protected String path;
 	private boolean mirroredX, mirroredY;
 	private int id;
+	private boolean global;
 	
 	public int getNumCols() {
 		return renderer.getNumCols();
@@ -240,6 +241,15 @@ public abstract class AbstractSprite implements RenderObject,SingleSprite,Sprite
 	
 	
 	@Override
+	public boolean isGlobal() {
+		return global;
+	}
+	
+	public void setGlobal(){
+		global = true;
+	}
+
+	@Override
 	public void setMirroring(boolean x, boolean y){
 		if (x != mirroredX){
 			mirrorX();
@@ -306,7 +316,7 @@ public abstract class AbstractSprite implements RenderObject,SingleSprite,Sprite
 	@Override
 	public boolean isLoaded() {
 		//TODO
-		return false;
+		return true;
 	}
 
 	@Override

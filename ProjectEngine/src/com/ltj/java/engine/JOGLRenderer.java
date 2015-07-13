@@ -28,8 +28,6 @@ import com.ltj.java.utils.JoglShaderHelper;
 import com.ltj.java.utils.JoglTextResourceReader;
 import com.ltj.shared.engine.Camera;
 import com.ltj.shared.engine.Engine;
-import com.ltj.shared.engine.HeadsUpDisplay;
-import com.ltj.shared.engine.HudElement;
 import com.ltj.shared.engine.OrthoRenderObject;
 import com.ltj.shared.engine.ParticleEmitter;
 import com.ltj.shared.engine.RenderObject;
@@ -55,7 +53,6 @@ public abstract class JoglRenderer implements GLEventListener, KeyListener {
 	private long renderTime = 1000 / 60;
 	
 	private int alphaProgramId, normalProgramId;
-	private HeadsUpDisplay hud;
 
 	private float pointSize;
 
@@ -105,7 +102,6 @@ public abstract class JoglRenderer implements GLEventListener, KeyListener {
 		
 		
 		Camera.setLookAt(0, 0);
-		hud = new HeadsUpDisplay();
 	
 		pointSize = 5;
 		glPointSize(pointSize);
@@ -117,9 +113,7 @@ public abstract class JoglRenderer implements GLEventListener, KeyListener {
 		Engine.addRenderable(r);
 	}
 	
-	public void addHudElement(String key,HudElement e){
-		hud.addHudElement(key,e);
-	}
+	
 
 
 	public void changeMode() {
@@ -192,7 +186,7 @@ public abstract class JoglRenderer implements GLEventListener, KeyListener {
 		
 		glClear(GL_DEPTH_BUFFER_BIT);
 
-		hud.render();
+		Engine.getHud().render();
 		long timeDiff = System.currentTimeMillis() - time;
 		if (timeDiff < renderTime){
 			try {
@@ -207,7 +201,6 @@ public abstract class JoglRenderer implements GLEventListener, KeyListener {
 			int height) {
 		glViewport(x, y, width, height);
 
-		hud.setDimensions(width,height);
 		Engine.setDimensions(width, height);
 		
 		Camera.createPerspective(height, width);

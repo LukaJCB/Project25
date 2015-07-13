@@ -176,7 +176,7 @@ public class EmptyRenderer implements SpriteRenderer {
 	public String toJSON() {
 		
 		return "\"x\":" + x + ",\"y\":" + y  + ",\"rotation\":" + rotation 
-				+ ",\"width\":" + width + ",\"height\":" + height;
+				+ ",\"width\":" + width + ",\"height\":" + height + ",";
 	}
 
 }

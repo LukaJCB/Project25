@@ -130,5 +130,10 @@ public abstract class Camera {
 		return perspectiveProjectionMatrix;
 	}
 	
+	public static String toJSON(){
+		return null;
+		
+	}
+	
 	
 }

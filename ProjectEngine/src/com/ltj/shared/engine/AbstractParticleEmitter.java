@@ -33,6 +33,7 @@ public abstract class AbstractParticleEmitter implements ParticleEmitter {
 	
 	private float[] modelMatrix = new float[16];
 	private float[] position = new float[3];
+	private float[] colors;
 	public AbstractParticleEmitter(int maxParticleCount,int runningtime, float red, float green, float blue){
 		particleDirections = new float[maxParticleCount * POSITION_COMPONENT_COUNT];
 		particleStartTimes = new float[maxParticleCount];
@@ -43,6 +44,11 @@ public abstract class AbstractParticleEmitter implements ParticleEmitter {
 
 		runningTime = runningtime;
 		globalStartTime = System.currentTimeMillis();
+		
+		colors = new float[3];
+		colors[0] = red;
+		colors[1] = green;
+		colors[2] = blue;
 	}
 	
 	
@@ -137,6 +143,12 @@ public abstract class AbstractParticleEmitter implements ParticleEmitter {
 
 	public void setRunningTime(int runningTime) {
 		this.runningTime = runningTime;
+	}
+	
+	public String toJSON(){
+		return "{\"type\":\""+ getClass().getName() + "\",\"x\":" + position[0] + ",\"y\":" + position[1]
+				+ ",\"z\":" + position[2] + ",\"runningTime\":" + runningTime + ",\"maxParticles\":" + maxParticleCount
+				+ ",\"red\":" + colors[0] + ",\"green\":" + colors[1] + ",\"blue\":" + colors[2] + "}";
 	}
 	
 }
