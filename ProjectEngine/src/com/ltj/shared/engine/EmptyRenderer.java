@@ -174,9 +174,14 @@ public class EmptyRenderer implements SpriteRenderer {
 
 	@Override
 	public String toJSON() {
+		String basics = "\"x\":" + x + ",\"y\":" + y + ",\"z\":" +getZ() + ",\"rotation\":" + rotation 
+				+ ",\"width\":" + width + ",\"height\":" + height + ",\"repeatX\":" + 1 + ",\"repeatY\":" + 1 
+				+ ",\"renderer_disabled\":"+ "false"+ ",\"textureRow\":" + 0 + ",\"textureCol\":" + 0
+				+ ",\"path\":\"null\",\"columns\":" + getNumCols()
+				+ ",\"rows\":" + getNumRows() + ",\"modeSEnabled\":" + "false" + ",\"animator\":\"null\",";
 		
-		return "\"x\":" + x + ",\"y\":" + y  + ",\"rotation\":" + rotation 
-				+ ",\"width\":" + width + ",\"height\":" + height + ",";
+		return basics;
+		
 	}
 
 }

@@ -74,6 +74,7 @@ public abstract class AbstractParticleEmitter implements ParticleEmitter {
 	}
 
 
+	@Override
 	public void setPosition(float x, float y, float z) {
 		position[0] = x;
 		position[1] = y;

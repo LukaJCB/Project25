@@ -30,6 +30,10 @@ public class Globals {
 		poolMap.put(key, new ObjectPool(count, objectMap.get(value)));
 	}
 	
+	public static void add(String key, ObjectPool value){
+		poolMap.put(key, value);
+	}
+	
 	public static boolean getBool(String key){
 		if (boolMap.get(key) != null){
 			return boolMap.get(key);

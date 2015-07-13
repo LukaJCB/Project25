@@ -38,7 +38,8 @@ public interface RenderObject extends Sprite {
 	void addAnimation(String name, int animationTime, int texRow,
 			boolean looping, int numCols);
 	void setParent(RenderObject parent);
-	
+	void setRepeat(float horizontal, float vertical);
+	void setTexture(int col, int row);
 	
 	
 	

@@ -632,6 +632,9 @@ import java.util.Set;
         Object object = this.get(key);
         if (object instanceof JSONObject) {
             return (JSONObject) object;
+        } else if (object instanceof String && ((String) object)
+                .equalsIgnoreCase("null")) {
+        	return null;
         }
         throw new JSONException("JSONObject[" + quote(key)
                 + "] is not a JSONObject.");

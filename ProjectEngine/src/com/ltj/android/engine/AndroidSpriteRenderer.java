@@ -62,6 +62,9 @@ public class AndroidSpriteRenderer extends AbstractSpriteRenderer{
 	}
 	
 	public void setTexture(int column, int row){
+		textureCol = column;
+		textureRow = row;
+		
 		
 		//set column and row of the sprite
 		textureCoordinates[0] = column * columnSize;
@@ -87,7 +90,9 @@ public class AndroidSpriteRenderer extends AbstractSpriteRenderer{
 
 	@Override
 	public void setRepeatTexture(float horizontal, float vertical) {
-
+		repeatX = horizontal;
+		repeatY = vertical;
+		
 		textureCoordinates[3] = vertical;
 		textureCoordinates[4] = horizontal;
 		textureCoordinates[6] = horizontal;

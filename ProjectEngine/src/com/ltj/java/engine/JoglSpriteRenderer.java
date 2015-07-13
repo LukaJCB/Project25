@@ -70,6 +70,8 @@ public class JoglSpriteRenderer extends AbstractSpriteRenderer{
 	}
 	
 	public void setTexture(int column, int row){
+		textureCol = column;
+		textureRow = row;
 		
 		//set the row and column of the sprite
 		row = (int) ((1.0f/rowSize)- row-1);
@@ -88,6 +90,8 @@ public class JoglSpriteRenderer extends AbstractSpriteRenderer{
 	}
 
 	public void setRepeatTexture(float horizontal, float vertical){
+		repeatX = horizontal;
+		repeatY = vertical;
 		
 		textureCoordinates[0] = horizontal;
 		textureCoordinates[1] = vertical;

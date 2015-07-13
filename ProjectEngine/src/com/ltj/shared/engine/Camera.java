@@ -14,16 +14,14 @@ public abstract class Camera {
 	private static float[] eyePos = new float[4];
 	private static float[] lookAt = new float[2];
 	private static Skybox skybox;
-	private static boolean activeSkybox;
 	
 	
 	public static void addSkyBox(Skybox box){
 		skybox = box;
-		activeSkybox = true;
 	}
 	
 	public static boolean activeSkybox(){
-		return activeSkybox;
+		return skybox != null;
 	}
 	
 	public static float[] getEyePos() {
@@ -116,10 +114,9 @@ public abstract class Camera {
 	}
 
 	public static void flush() {
-		if (activeSkybox){
+		if (skybox != null){
 			skybox.clear();
 			skybox = null;
-			activeSkybox = false;
 		}
 		
 		
@@ -131,7 +128,14 @@ public abstract class Camera {
 	}
 	
 	public static String toJSON(){
-		return null;
+		String json = "{ \"distance\":" + eyePos[2]+ ",\"x\":" + lookAt[0] + ",\"y\":" + lookAt[1] + ",\"skybox\":";
+		if (skybox != null){
+			json += skybox.toJSON();
+		} else {
+			json += "\"null\"";
+		}
+		json += "}";
+		return json;
 		
 	}
 	

@@ -27,6 +27,8 @@ public abstract class AbstractSpriteRenderer implements SpriteRenderer {
 	private float height,width;
 	private float rotationX;
 	private float z;
+	protected float repeatX, repeatY;
+	protected int textureRow, textureCol;
 	protected float rowSize, columnSize;
 	private Animator animator;
 	private boolean modeSEnabled;
@@ -41,9 +43,8 @@ public abstract class AbstractSpriteRenderer implements SpriteRenderer {
 		MatrixHelper.setIdentityM(modelMatrix);
 
 		//set base values
-		x = y = rotation = 0;
-		height = 1;
-		width = 1;
+		x = y = rotation = textureRow = textureCol = 0;
+		height = width = repeatX = repeatY = 1;
 		
 		this.path = path;
 		
@@ -220,7 +221,8 @@ public abstract class AbstractSpriteRenderer implements SpriteRenderer {
 	@Override
 	public String toJSON() {
 		String basics = "\"x\":" + x + ",\"y\":" + y + ",\"z\":" + z + ",\"rotation\":" + rotation 
-				+ ",\"width\":" + width + ",\"height\":" + height + ",\"renderer_disabled\":" + disabled 
+				+ ",\"width\":" + width + ",\"height\":" + height + ",\"repeatX\":" + repeatX + ",\"repeatY\":" + repeatY
+				+",\"renderer_disabled\":" + disabled + ",\"textureRow\":" + textureRow + ",\"textureCol\":" + textureCol
 				+ ",\"path\":\"" + path + "\",\"columns\":" + getNumCols() + ",\"rows\":" + getNumRows() 
 				+ ",\"modeSEnabled\":" + modeSEnabled + ",\"animator\":";
 		if (animator != null){

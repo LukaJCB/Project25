@@ -4,8 +4,10 @@ package com.ltj.shared.engine;
 
 public class Skybox {
 	private BackgroundSprite[] skybox = new BackgroundSprite[6];
+	private int platform;
 	public Skybox( String top, String bottom, String front, String back, String right, String left, int platform){
 		addImages( top, bottom, front, back, right, left, platform);
+		this.platform = platform;
 	}
 	
 	
@@ -51,16 +53,15 @@ public class Skybox {
 		for (BackgroundSprite bs : skybox){
 			bs.clear();
 		}
-		
 	}
 	
 	public String toJSON(){
-		String json = "[";
+		String json = "{\"platform\":" + platform + ",\"paths\":[";
 		for(BackgroundSprite s: skybox){
 			json += s.toJSON() + ",";
 		}
 		json = json.substring(0,json.length()-1);
-		json += "]";
+		json += "]}";
 		return json;
 	}
 	

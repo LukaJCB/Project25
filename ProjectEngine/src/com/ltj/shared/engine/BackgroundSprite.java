@@ -5,11 +5,11 @@ import com.ltj.java.engine.JoglSpriteRenderer;
 
 public class BackgroundSprite {
 	private SpriteRenderer renderer;
-	private int platform;
+	private String path;
 	
 	
 	public BackgroundSprite(String path,int platform){
-		this.platform = platform;
+		this.path = path;
 		switch (platform){
 		case Engine.DESKTOP:
 			renderer = new JoglSpriteRenderer(path,1,1);
@@ -66,7 +66,7 @@ public class BackgroundSprite {
 	}
 	
 	public String toJSON(){
-		return "{" +  renderer.toJSON() + "\"type\":\"" + getClass().getName() + "\",\"platform\":"+ platform  + "}";
+		return "\"" + path + "\"";
 	}
 
 	

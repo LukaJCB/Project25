@@ -27,6 +27,11 @@ public class Rectangle {
 	public float getHeight() {
 		return height;
 	}
+
+	public String toJSON() {
+		
+		return "{\"x\":" + x + ",\"y\":" + y + ",\"width\":" + width + ",\"height\":" + height + "}";
+	}
 	
 
 	

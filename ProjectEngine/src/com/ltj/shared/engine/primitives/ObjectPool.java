@@ -25,7 +25,6 @@ public class ObjectPool {
 		pooledObjects = new RenderObject[count];
 		for (int i = 0; i < pooledObjects.length; i++){
 			pooledObjects[i] = Engine.getAllObjects().get(id + i);
-			pooledObjects[i].setInactive(true);
 		}
 	}
 	

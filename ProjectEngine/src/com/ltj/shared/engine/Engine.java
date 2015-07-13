@@ -272,7 +272,7 @@ public abstract class Engine {
 			json += or.toJSON() + ",";
 		}
 		json = json.substring(0,json.length()-1);
-		json += "], \"Hud\":" + hud.toJSON();   
+		json += "], \"Hud\":" + hud.toJSON() + ",\"Camera\":" + Camera.toJSON() + ",\"collisionZone\":" + collisionZone.toJSON();   
 		json += "}";
 		return json;
 	}
