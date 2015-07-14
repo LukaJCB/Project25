@@ -14,18 +14,12 @@ public class EnemyBehaviour extends Behaviour<SpriteSheet> {
 	private boolean grounded,jumping;
 	private float upSpeed,gravity;
 	private float speed;
-	public JoglParticleEmitter pe;
 	private int counter;
 	private int texCol;
 	
-	public void setMovingRight(boolean m){
-		movingRight = m;
-	}
 	
-	public void setDistance(float f){
-		left = f;
-		right = -f;
-	}
+	
+	
 	@Override
 	public void start() {
 		startPosX = gameObject.getX();
@@ -89,7 +83,6 @@ public class EnemyBehaviour extends Behaviour<SpriteSheet> {
 				}
 			}
 		}
-		pe.setPosition(gameObject.getX(), gameObject.getY(), 0);
 		
 	}
 
@@ -107,11 +100,9 @@ public class EnemyBehaviour extends Behaviour<SpriteSheet> {
 				//collision is below
 				grounded = true;
 				gameObject.setPosition(gameObject.getX(), collider.getY()+collider.getHeight()/2 +gameObject.getHeight()/2);
-				pe.setPosition(gameObject.getX(), gameObject.getY(), 0);
+			
 			} 
-		} else if (collider.compareTag("bullet")){
-			pe.addParticleExplosion(50, 0.02f);
-		}
+		} 
 	}
 	
 	

@@ -171,13 +171,6 @@ public abstract class AndroidRenderer implements Renderer{
 		for(RenderObject r : Engine.getAllObjects()){
 			r.render();
 		}
-	
-		//render particles
-		glUseProgram(particleProgramId);
-		for (ParticleEmitter pe : Engine.getAllParticleEmitters()){
-			pe.render();
-		}
-		glUseProgram(programId);
 		
 		//clear framebuffer and draw hud
 		glClear(GL_DEPTH_BUFFER_BIT);

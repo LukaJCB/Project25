@@ -35,8 +35,6 @@ public class JoglGameRenderer extends JoglRenderer {
 		Engine.addRenderable(r);
 		Engine.setCollisionZone(new Rectangle(r.getX(), r.getY(), r.getWidth(), r.getHeight()));
 
-		final JoglParticleEmitter pe = new JoglParticleEmitter( 100,1000, 1.0f,0f,0);
-		Engine.addParticleEmitter(pe);
 
 		
 
@@ -65,7 +63,7 @@ public class JoglGameRenderer extends JoglRenderer {
 			
 			public void onCollision(Sprite c){
 				
-				pe.addParticleExplosion(60, 0.0001f);
+				
 				setMovement(-2 *speed *(float)-Math.sin(Math.toRadians(gameObject.getRotation())), 
 						-2 *speed *(float)Math.cos(Math.toRadians(gameObject.getRotation())));
 				
@@ -87,7 +85,7 @@ public class JoglGameRenderer extends JoglRenderer {
 
 			private void setMovement(float f, float cos) {
 				gameObject.translate(f, cos);
-				pe.translate(f, cos, 0);
+				
 			}
 
 			@Override
@@ -190,7 +188,7 @@ public class JoglGameRenderer extends JoglRenderer {
 		
 		e.scale(0.1f, 0.1f);
 		e.setPosition(0.9f, 0);
-		addHudElement("gui",e);
+		Engine.getHud().addHudElement("gui",e);
 		changeMode();
 		
 		

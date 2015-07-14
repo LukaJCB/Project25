@@ -1,6 +1,7 @@
 package com.ltj.shared.engine;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public interface Sprite {
 	void destroy();
@@ -29,4 +30,6 @@ public interface Sprite {
 	void mirrorX();
 	void mirrorY();
 	void setMirroring(boolean x, boolean y);
+	List<ParticleEmitter> getParticleEmitterList();
+	void addParticleEmitter(ParticleEmitter pe);
 }

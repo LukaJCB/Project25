@@ -20,7 +20,7 @@ public abstract class Engine {
 	private static Rectangle collisionZone;
 
 
-	private static int gameObjectIds;
+	private static int gameObjectIds,emitterIds;
 	private static ArrayList<RenderObject> allObjects = new ArrayList<RenderObject>();
 	private static ArrayList<RenderObject> dynamicObjects = new ArrayList<RenderObject>();
 	private static SpatialHashMap shMap;
@@ -72,6 +72,8 @@ public abstract class Engine {
 
 	public static void addParticleEmitter(ParticleEmitter p){
 		allParticleEmitters.add(p);
+		p.setId(emitterIds);
+		emitterIds++;
 	}
 	
 
@@ -256,24 +258,34 @@ public abstract class Engine {
 	}
 	
 	public static String parseAll(){
-		String json = "{ \"gameObjects\":[";
-		for (RenderObject r: allObjects){
-			json += r.toJSON() + ",";
+
+		String json = "{\"Camera\":" + Camera.toJSON() + ",\"particleEmitters\": [";
+		if (!allParticleEmitters.isEmpty()){
+			for (ParticleEmitter pe : allParticleEmitters){
+				json += pe.toJSON() + ",";
+			}
+			json = json.substring(0,json.length()-1);
 		}
-		json = json.substring(0,json.length()-1);
-		json +=   "],\"particleEmitters\":[";
-		for (ParticleEmitter pe : allParticleEmitters){
-			json += pe.toJSON() + ",";
+		json +=   "],\"gameObjects\":[";
+		if (!allObjects.isEmpty()){
+			for (RenderObject r: allObjects){
+				json += r.toJSON() + ",";
+			}
+			json = json.substring(0,json.length()-1);
 		}
-		json = json.substring(0,json.length()-1);
 		json += "],\"Globals\":" + Globals.toJSON(); 
 		json +=   ",\"orthoObjects\":[";
-		for (OrthoRenderObject or: allOrthoRenderObjects){
-			json += or.toJSON() + ",";
+		if (!allOrthoRenderObjects.isEmpty()){
+			for (OrthoRenderObject or: allOrthoRenderObjects){
+				json += or.toJSON() + ",";
+			}
 		}
 		json = json.substring(0,json.length()-1);
-		json += "], \"Hud\":" + hud.toJSON() + ",\"Camera\":" + Camera.toJSON() + ",\"collisionZone\":" + collisionZone.toJSON();   
+		json += "], \"Hud\":" + hud.toJSON() + ",\"collisionZone\":" + collisionZone.toJSON();   
 		json += "}";
+
+		
+		
 		return json;
 	}
 	

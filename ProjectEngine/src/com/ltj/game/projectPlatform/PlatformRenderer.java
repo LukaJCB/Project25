@@ -1,118 +1,161 @@
 package com.ltj.game.projectPlatform;
 
 
+import java.lang.reflect.InvocationTargetException;
+
 import com.jogamp.opengl.GLAutoDrawable;
 import com.ltj.java.engine.JoglParticleEmitter;
 import com.ltj.java.engine.JoglRenderer;
 import com.ltj.java.engine.JoglSprite;
 import com.ltj.shared.engine.Behaviour;
+import com.ltj.shared.engine.Camera;
 import com.ltj.shared.engine.EmptyObject;
 import com.ltj.shared.engine.Engine;
 import com.ltj.shared.engine.HudElement;
 import com.ltj.shared.engine.OrthoRenderObject;
+import com.ltj.shared.engine.Skybox;
 import com.ltj.shared.engine.Sprite;
+import com.ltj.shared.engine.json.JSONException;
 import com.ltj.shared.engine.primitives.BoxCollider;
 import com.ltj.shared.engine.primitives.Globals;
 import com.ltj.shared.engine.primitives.Rectangle;
+import com.ltj.shared.engine.primitives.Scene;
 
 public class PlatformRenderer extends JoglRenderer {
 
 	@Override
 	public void init(GLAutoDrawable drawable) {
 		super.init(drawable);
+		boolean load = true;
+		if (!load){
+			EmptyObject background = new EmptyObject();
+			background.scale(10, 10);
 
-		EmptyObject background = new EmptyObject();
-		background.scale(10, 10);
-		
-		
-		Engine.setCollisionZone(new Rectangle(background.getX(), background.getY(), background.getWidth(), background.getHeight()));
-		//background
-		OrthoRenderObject o = new HudElement("assets/img/skyboxtop.png",Engine.DESKTOP);
-		Engine.addOrthoRenderObject(o);
-		
-		JoglSprite star1 = new JoglSprite( "assets/img/star.png", 1, 1);
-		star1.translate(10, 16);
-		star1.scale(10, 10);
-		star1.setZ(-68);
-		
-		JoglSprite star2 = new JoglSprite( "assets/img/star.png", 1, 1);
-		star2.translate(-4, 19);
-		star2.scale(10, 10);
-		star2.setZ(-88);
-		Engine.addRenderable(star2);
-		
-		JoglSprite star3 = new JoglSprite( "assets/img/star.png", 1, 1);
-		star3.translate(30, 27);
-		star3.scale(10, 10);
-		star3.setZ(-99);
-		Engine.addRenderable(star3);
-		
-		JoglSprite moon1 = new JoglSprite( "assets/img/moon.png", 1, 1);
-		moon1.translate(0, 14);
-		moon1.scale(4, 4);
-		moon1.setZ(-28);
-		Engine.addRenderable(moon1);
-		
-		JoglSprite moon2 = new JoglSprite( "assets/img/moon.png", 1, 1);
-		moon2.translate(0, 8);
-		moon2.scale(4, 4);
-		moon2.setZ(-18);
-		Engine.addRenderable(moon2);
-		
-		JoglSprite moon3 = new JoglSprite( "assets/img/moon.png", 1, 1);
-		moon3.translate(0, 9);
-		moon3.scale(4, 4);
-		moon3.setZ(-58);
-		Engine.addRenderable(moon3);
-		
-		Globals.add("gravity", 0.013f);
-		
-		//hero 
-		JoglSprite hero = new JoglSprite( "assets/img/player_run.png",4,1);
-		JoglSprite bullet = new JoglSprite( "assets/img/ship.png",1,1);
-		bullet.setTag("bullet");
-		Behaviour<Sprite> bulletScript = new BulletController();
-		bullet.addBehaviour(bulletScript);
-		bulletScript.allocateObject(bullet);
-		bullet.addCollider(new BoxCollider());
-		bullet.getCollider(0).setScaling(0.6f, 0.3f);
-		Engine.addRenderable(bullet);
-		hero.setTexture(0, 0);
-		CharacterController b = new CharacterController();
-		hero.addCollider(new BoxCollider());
-		hero.addBehaviour(b);
-		b.allocateObject(hero);
-		Globals.add("bullet", bullet);
-		bullet.scale(0.3f, 0.6f);
-		hero.scale(0.5f, 0.5f);
-		hero.setTag("hero");
-		hero.setPosition(20, -12);
-		hero.addAnimation("walk_right", 10, 1, true, 4);
-		hero.addAnimation("walk_left", 10, 2, true, 4);
-		hero.addAnimation("walk", 10, 0, true, 4);
-		Engine.addRenderable(hero);
-		bullet.setParent(hero);
-		moon3.setParent(hero);
-		
-		JoglParticleEmitter jpe = new JoglParticleEmitter(100, 1000, 1, 0.2f, 0.1f);
-		b.emitter = jpe;
-		Engine.addParticleEmitter(jpe);
-		
-		
-		setupMiddle();
-		
-		setupRight();
-		
-		setupBottomRight();
+			Camera.addSkyBox(new Skybox( "assets/img/skyboxtop.png","assets/img/skyboxbottom.png","assets/img/skyboxfront.png",
+					"assets/img/skyboxback.png","assets/img/skyboxright.png","assets/img/skyboxleft.png",Engine.DESKTOP));
+
+			Engine.setCollisionZone(new Rectangle(background.getX(), background.getY(), background.getWidth(), background.getHeight()));
+			//background
+			OrthoRenderObject o = new OrthoRenderObject("assets/img/skyboxtop.png",Engine.DESKTOP);
+			Engine.addOrthoRenderObject(o);
+
+			JoglSprite star1 = new JoglSprite( "assets/img/star.png", 1, 1);
+			star1.translate(10, 16);
+			star1.scale(10, 10);
+			star1.setZ(-68);
+
+			JoglSprite star2 = new JoglSprite( "assets/img/star.png", 1, 1);
+			star2.translate(-4, 19);
+			star2.scale(10, 10);
+			star2.setZ(-88);
+			Engine.addRenderable(star2);
+
+			JoglSprite star3 = new JoglSprite( "assets/img/star.png", 1, 1);
+			star3.translate(30, 27);
+			star3.scale(10, 10);
+			star3.setZ(-99);
+			Engine.addRenderable(star3);
+
+			JoglSprite moon1 = new JoglSprite( "assets/img/moon.png", 1, 1);
+			moon1.translate(0, 14);
+			moon1.scale(4, 4);
+			moon1.setZ(-28);
+			Engine.addRenderable(moon1);
+
+			JoglSprite moon2 = new JoglSprite( "assets/img/moon.png", 1, 1);
+			moon2.translate(0, 8);
+			moon2.scale(4, 4);
+			moon2.setZ(-18);
+			Engine.addRenderable(moon2);
+
+			JoglSprite moon3 = new JoglSprite( "assets/img/moon.png", 1, 1);
+			moon3.translate(0, 9);
+			moon3.scale(4, 4);
+			moon3.setZ(-58);
+			Engine.addRenderable(moon3);
+
+			Globals.add("gravity", 0.013f);
+
+			//hero 
+			JoglSprite hero = new JoglSprite( "assets/img/player_run.png",4,1);
+			JoglSprite bullet = new JoglSprite( "assets/img/ship.png",1,1);
+			bullet.setTag("bullet");
+			Behaviour<Sprite> bulletScript = new BulletController();
+			bullet.addBehaviour(bulletScript);
+			bulletScript.allocateObject(bullet);
+			bullet.addCollider(new BoxCollider());
+			bullet.getCollider(0).setScaling(0.6f, 0.3f);
+			Engine.addRenderable(bullet);
+			hero.setTexture(0, 0);
+			CharacterController b = new CharacterController();
+			hero.addCollider(new BoxCollider());
+			hero.addBehaviour(b);
+			b.allocateObject(hero);
+			JoglParticleEmitter jpe = new JoglParticleEmitter(100, 1000, 0.1f, 0.9f, 0.1f);
+			Engine.addParticleEmitter(jpe);
+			hero.addParticleEmitter(jpe);
+			Globals.add("bullet", bullet);
+
+			bullet.scale(0.3f, 0.6f);
+			hero.scale(0.5f, 0.5f);
+			hero.setTag("hero");
+			//hero.setPosition(20, -12);
+			hero.addAnimation("walk_right", 10, 1, true, 4);
+			hero.addAnimation("walk_left", 10, 2, true, 4);
+			hero.addAnimation("walk", 10, 0, true, 4);
+
+			Globals.createPool("bullets", "bullet", 20);
+			Engine.addRenderable(hero);
+
+			
+
+			HudElement e = new HudElement( "assets/img/ic_launcher.png",Engine.DESKTOP);
+
+			e.scale(0.1f, 0.1f);
+			e.setPosition(0.9f, 0);
+			Engine.getHud().addHudElement("gui",e);
+
+
+			setupMiddle();
+
+			setupRight();
+
+			setupBottomRight();
+		} else {
+			try {
+				Scene.load();
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (InstantiationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (NoSuchMethodException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (SecurityException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IllegalArgumentException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (InvocationTargetException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		Engine.start();
 		
 
 	}
 	
 	private void setupMiddle(){
-		
-		EmptyObject e = new EmptyObject();
-		e.scale(30, 15);
 		
 		
 		//platforms
@@ -123,7 +166,6 @@ public class PlatformRenderer extends JoglRenderer {
 		platform.translate(15, 2.2f);
 		platform.addCollider(new BoxCollider());
 		Engine.addRenderable(platform);
-		platform.setParent(e);
 		
 
 		JoglSprite platform2 = new JoglSprite("assets/img/tile_t.png", 1, 1);
@@ -133,7 +175,7 @@ public class PlatformRenderer extends JoglRenderer {
 		platform2.translate(10, -1);
 		platform2.addCollider(new BoxCollider());
 		Engine.addRenderable(platform2);
-		platform2.setParent(e);
+		
 		
 		JoglSprite ground = new JoglSprite( "assets/img/tile.png", 1, 1);
 		ground.setRepeat(10,2);
@@ -142,7 +184,7 @@ public class PlatformRenderer extends JoglRenderer {
 		ground.setTag("ground");
 		ground.addCollider(new BoxCollider());
 		Engine.addRenderable(ground);
-		ground.setParent(e);
+	
 		
 		//enemy
 		JoglSprite enemy = new JoglSprite( "assets/img/spritesheet_hero.png",3,4);
@@ -153,10 +195,7 @@ public class PlatformRenderer extends JoglRenderer {
 		EnemyBehaviour eb = new EnemyBehaviour();
 		eb.allocateObject(enemy);
 		enemy.addBehaviour(eb);
-		JoglParticleEmitter pe1 = new JoglParticleEmitter( 100, 1000, 1, 0, 0);
-		Engine.addParticleEmitter(pe1);
-		eb.pe = pe1;
-		enemy.setParent(e);
+		
 		
 		EmptyObject awareness = new EmptyObject();
 		awareness.setParent(enemy);
@@ -174,7 +213,7 @@ public class PlatformRenderer extends JoglRenderer {
 		spikes.setTag("hazard");
 		spikes.translate(15.7f, 0);
 		Engine.addRenderable(spikes);
-		spikes.setParent(e);
+		
 		
 	}
 	
@@ -360,9 +399,6 @@ public class PlatformRenderer extends JoglRenderer {
 		EnemyBehaviour eb2 = new EnemyBehaviour();
 		eb2.allocateObject(enemy2);
 		enemy2.addBehaviour(eb2);
-		JoglParticleEmitter pe2 = new JoglParticleEmitter( 100, 1000, 1, 0, 0);
-		Engine.addParticleEmitter(pe2);
-		eb2.pe = pe2;
 		
 		EmptyObject awareness2 = new EmptyObject();
 		awareness2.setParent(enemy2);
@@ -380,9 +416,6 @@ public class PlatformRenderer extends JoglRenderer {
 		EnemyBehaviour eb3 = new EnemyBehaviour();
 		eb3.allocateObject(enemy3);
 		enemy3.addBehaviour(eb3);
-		JoglParticleEmitter pe3 = new JoglParticleEmitter( 100, 1000, 1, 0, 0);
-		Engine.addParticleEmitter(pe3);
-		eb3.pe = pe3;
 		
 		EmptyObject awareness3 = new EmptyObject();
 		awareness3.setParent(enemy3);
@@ -434,19 +467,15 @@ public class PlatformRenderer extends JoglRenderer {
 		Engine.addRenderable(boss);
 		boss.setParent(e);
 		boss.addCollider(new BoxCollider());
-		JoglParticleEmitter pe2 = new JoglParticleEmitter( 100, 1000, 1, 0, 0);
-		Engine.addParticleEmitter(pe2);
-		bb.pe = pe2;
-		
 		EmptyObject awareness = new EmptyObject();
 		awareness.setParent(boss);
 		awareness.addCollider(new BoxCollider());
 		awareness.scale(boss.getWidth(),boss.getHeight());
 		awareness.setPosition(boss.getX()-awareness.getWidth()/2, boss.getY());
-		Engine.addRenderable(boss);
 		Engine.addRenderable(awareness);
 		
 		e.translate(29, -17);
+		Engine.addRenderable(e);
 	}
 	
 }

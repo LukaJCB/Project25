@@ -3,11 +3,11 @@ package com.ltj.game.projectPlatform;
 import java.awt.event.KeyEvent;
 import java.lang.reflect.InvocationTargetException;
 
-import org.json.JSONException;
 
 import com.ltj.java.engine.JoglParticleEmitter;
 import com.ltj.shared.engine.Behaviour;
 import com.ltj.shared.engine.Camera;
+import com.ltj.shared.engine.Engine;
 import com.ltj.shared.engine.RenderObject;
 import com.ltj.shared.engine.Sprite;
 import com.ltj.shared.engine.SpriteSheet;
@@ -21,17 +21,15 @@ public class CharacterController extends Behaviour<SpriteSheet> {
 	private float gravity;
 	private boolean jumping;
 	private ObjectPool bullets;
-	public RenderObject rocket;
 	private boolean doubleJumped;
 	private float maxSpeed;
-	public JoglParticleEmitter emitter;
 	private float lastColliderX;
 	private boolean movingRight;
 	
 	@Override
 	public void start() {
 		gravity = Globals.getFloat("gravity");
-		bullets = new ObjectPool(20, Globals.getGameObject("bullet"));
+		bullets = Globals.getObjectPool("bullets");
 		Camera.setDistance(7f);
 		maxSpeed = -0.31f;
 	}
@@ -55,36 +53,35 @@ public class CharacterController extends Behaviour<SpriteSheet> {
 		}
 	
 		gameObject.translate(speed, upSpeed);
-		emitter.setPosition(gameObject.getX(),gameObject.getY(),0);
 		Camera.setLookAt(gameObject.getX(), gameObject.getY()+0.4f);
 		grounded = false;
-//		if (movingRight){
-//			try {
-//				Scene.load();
-//				movingRight = false;
-//			} catch (ClassNotFoundException e1) {
-//				// TODO Auto-generated catch block
-//				e1.printStackTrace();
-//			} catch (InstantiationException e1) {
-//				// TODO Auto-generated catch block
-//				e1.printStackTrace();
-//			} catch (IllegalAccessException e1) {
-//				// TODO Auto-generated catch block
-//				e1.printStackTrace();
-//			} catch (NoSuchMethodException e1) {
-//				// TODO Auto-generated catch block
-//				e1.printStackTrace();
-//			} catch (SecurityException e1) {
-//				// TODO Auto-generated catch block
-//				e1.printStackTrace();
-//			} catch (IllegalArgumentException e1) {
-//				// TODO Auto-generated catch block
-//				e1.printStackTrace();
-//			} catch (InvocationTargetException e1) {
-//				// TODO Auto-generated catch block
-//				e1.printStackTrace();
-//			}
-//		}	
+		if (movingRight){
+			try {
+				Scene.load();
+				movingRight = false;
+			} catch (ClassNotFoundException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (InstantiationException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (IllegalAccessException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (NoSuchMethodException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (SecurityException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (IllegalArgumentException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (InvocationTargetException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}	
 	}
 
 
@@ -124,9 +121,10 @@ public class CharacterController extends Behaviour<SpriteSheet> {
 			rocket.setPosition(gameObject.getX(), gameObject.getY());
 			rocket.setRotation(90);
 			rocket.setInactive(false);
-			movingRight = true;
-			System.out.println(((RenderObject) gameObject).toJSON());
-			System.out.println(((RenderObject) gameObject.getChildList().get(0)).toJSON());
+			System.out.println(Engine.parseAll());
+//			movingRight = true;
+//			System.out.println(((RenderObject) gameObject).toJSON());
+//			System.out.println(((RenderObject) gameObject.getChildList().get(0)).toJSON());
 		}
 	}
 
@@ -140,30 +138,29 @@ public class CharacterController extends Behaviour<SpriteSheet> {
 				doubleJumped = false;
 				gameObject.setPosition(gameObject.getX(), collider.getY()+collider.getHeight()/2 +gameObject.getHeight()/2);
 
-				emitter.setPosition(gameObject.getX(),gameObject.getY(),0);
 				Camera.setLookAt(gameObject.getX(), gameObject.getY()+0.4f);
 				
 			} else if ((gameObject.getY() -upSpeed + gameObject.getHeight()*0.3) < collider.getY() - collider.getHeight()/2){
 				//collision is above 
 				gameObject.setPosition(gameObject.getX(), collider.getY()-collider.getHeight()/2 -gameObject.getHeight()/2);
-				emitter.setPosition(gameObject.getX(),gameObject.getY(),0);
+			
 				upSpeed = 0;
 				Camera.setLookAt(gameObject.getX(), gameObject.getY()+0.4f);
 				
 			} else if ((gameObject.getX() - speed - gameObject.getWidth()*0.3f) > collider.getX() + collider.getWidth()/2){
 				//collision is to the right
 				gameObject.setPosition(collider.getX()+ collider.getWidth()/2 + gameObject.getWidth()/2,gameObject.getY());
-				emitter.setPosition(gameObject.getX(),gameObject.getY(),0);
+				
 				Camera.setLookAt(gameObject.getX(), gameObject.getY()+0.4f);
 				
 			} else if ((gameObject.getX() - speed + gameObject.getWidth()*0.3f) < collider.getX() - collider.getWidth()/2){
 				//collision is to the left
 				gameObject.setPosition(collider.getX()- collider.getWidth()/2 - gameObject.getWidth()/2,gameObject.getY());
-				emitter.setPosition(gameObject.getX(),gameObject.getY(),0);
+				
 				Camera.setLookAt(gameObject.getX(), gameObject.getY()+0.4f);
 			} 
 		} else if (collider.compareTag("enemy") || collider.compareTag("hazard")){
-			emitter.addParticleExplosion(90, 0.01f);
+			gameObject.getParticleEmitterList().get(0).addParticleExplosion(90,0.01f);
 			gameObject.setInactive(true);
 		} else if (collider.compareTag("moving")){
 			
@@ -180,27 +177,27 @@ public class CharacterController extends Behaviour<SpriteSheet> {
 				
 				gameObject.setPosition(gameObject.getX() + deltaX, collider.getY()+collider.getHeight()/2 +gameObject.getHeight()/2);
 
-				emitter.setPosition(gameObject.getX(),gameObject.getY(),0);
+				
 				Camera.setLookAt(gameObject.getX(), gameObject.getY()+0.4f);
 				
 				
 			} else if ((gameObject.getY() -upSpeed + gameObject.getHeight()*0.3) < collider.getY() - collider.getHeight()/2){
 				//collision is above 
 				gameObject.setPosition(gameObject.getX(), collider.getY()-collider.getHeight()/2 -gameObject.getHeight()/2);
-				emitter.setPosition(gameObject.getX(),gameObject.getY(),0);
+				
 				upSpeed = 0;
 				Camera.setLookAt(gameObject.getX(), gameObject.getY()+0.4f);
 				
 			} else if ((gameObject.getX() - speed - gameObject.getWidth()*0.3f) > collider.getX() + collider.getWidth()/2){
 				//collision is to the right
 				gameObject.setPosition(collider.getX()+ collider.getWidth()/2 + gameObject.getWidth()/2,gameObject.getY());
-				emitter.setPosition(gameObject.getX(),gameObject.getY(),0);
+				
 				Camera.setLookAt(gameObject.getX(), gameObject.getY()+0.4f);
 				
 			} else if ((gameObject.getX() - speed + gameObject.getWidth()*0.3f) < collider.getX() - collider.getWidth()/2){
 				//collision is to the left
 				gameObject.setPosition(collider.getX()- collider.getWidth()/2 - gameObject.getWidth()/2,gameObject.getY());
-				emitter.setPosition(gameObject.getX(),gameObject.getY(),0);
+				
 				Camera.setLookAt(gameObject.getX(), gameObject.getY()+0.4f);
 			} 
 		}

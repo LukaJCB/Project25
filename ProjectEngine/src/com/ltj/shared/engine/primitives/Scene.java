@@ -44,18 +44,34 @@ public class Scene {
 		allObjects = new ArrayList<RenderObject>();
 		parentsToAdd = new HashMap<Integer, ArrayList<RenderObject>>();
 		childrenToAdd = new HashMap<Integer, RenderObject>();
+		
 		//load json
 		JSONObject json = new JSONObject(JoglTextResourceReader.readTextFileFromResource("res/raw/test.json"));
-		JSONArray gameObjects = json.getJSONArray("gameObjects");
-		for (int i = 0; i < gameObjects.length(); i++){
-			JSONObject renderObject = gameObjects.getJSONObject(i);
-			Engine.addRenderable(reconstructObject(renderObject));
+		
+		JSONObject cam = json.getJSONObject("Camera");
+		Camera.setDistance(cam.getFloat("distance"));
+		Camera.setLookAt(cam.getFloat("x"), cam.getFloat("y"));
+		JSONObject skybox = cam.getJSONObject("skybox");
+		if (skybox != null){
+			int platform = skybox.getInt("platform");
+			JSONArray paths = skybox.getJSONArray("paths");
+			Camera.addSkyBox(new Skybox(paths.getString(0), paths.getString(1), paths.getString(2),
+					paths.getString(3), paths.getString(4), paths.getString(5), platform));
 		}
+		
 		JSONArray particleEmitters = json.getJSONArray("particleEmitters");
 		for (int i = 0;i < particleEmitters.length(); i++){
 			JSONObject emitter = particleEmitters.getJSONObject(i);
 			Engine.addParticleEmitter(reconstructEmitter(emitter));
 		}
+		
+		
+		JSONArray gameObjects = json.getJSONArray("gameObjects");
+		for (int i = 0; i < gameObjects.length(); i++){
+			JSONObject renderObject = gameObjects.getJSONObject(i);
+			Engine.addRenderable(reconstructObject(renderObject));
+		}
+		
 		
 		JSONObject globals = json.getJSONObject("Globals");
 		
@@ -115,16 +131,7 @@ public class Scene {
 				Engine.getHud().addHudElement(hud.getString("name"), reconstructHudElement(hud.getJSONObject("value")));
 			}
 		}
-		JSONObject cam = json.getJSONObject("Camera");
-		Camera.setDistance(cam.getFloat("distance"));
-		Camera.setLookAt(cam.getFloat("x"), cam.getFloat("y"));
-		JSONObject skybox = cam.getJSONObject("skybox");
-		if (skybox != null){
-			int platform = skybox.getInt("platform");
-			JSONArray paths = skybox.getJSONArray("paths");
-			Camera.addSkyBox(new Skybox(paths.getString(0), paths.getString(1), paths.getString(2),
-					paths.getString(3), paths.getString(4), paths.getString(5), platform));
-		}
+	
 		
 		JSONObject zone = json.getJSONObject("collisionZone");
 		Engine.setCollisionZone(new Rectangle(zone.getFloat("x"), zone.getFloat("y"), zone.getFloat("width"),zone.getFloat("height")));
@@ -259,6 +266,14 @@ public class Scene {
 				} else {
 					childrenToAdd.put(id, r);
 				}
+			}
+		}
+		
+		//set up particleEmitters
+		JSONArray emitters = obj.getJSONArray("emitters");
+		if (emitters != null){
+			for (int i = 0; i < emitters.length();i++){
+				r.addParticleEmitter(Engine.getAllParticleEmitters().get(emitters.getInt(i)));
 			}
 		}
 		

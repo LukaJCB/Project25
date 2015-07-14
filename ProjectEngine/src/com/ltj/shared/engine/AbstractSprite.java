@@ -1,6 +1,7 @@
 package com.ltj.shared.engine;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class acts as a Facade for the GameObjectController and Renderers.
@@ -13,13 +14,13 @@ public abstract class AbstractSprite implements RenderObject,SingleSprite,Sprite
 
 	private GameObjectController controller = new GameObjectController(this);
 	private ArrayList<Sprite> childList;
+	private ArrayList<ParticleEmitter> emitterList;
 	private String tag = "";
 	private boolean destroyed, inactive;
 	protected SpriteRenderer renderer;
 	protected String path;
 	private boolean mirroredX, mirroredY;
 	private int id;
-	private boolean global;
 	
 	public int getNumCols() {
 		return renderer.getNumCols();
@@ -158,6 +159,11 @@ public abstract class AbstractSprite implements RenderObject,SingleSprite,Sprite
 				r.translate(dx, dy);
 			}
 		}
+		if (emitterList != null){
+			for (ParticleEmitter pe : emitterList){
+				pe.translate(dx, dy, 0);
+			}
+		}
 	}
 
 
@@ -191,6 +197,13 @@ public abstract class AbstractSprite implements RenderObject,SingleSprite,Sprite
 				float xOffset = r.getX() - getX();
 				float yOffset = r.getY() - getY();
 				r.setPosition(x+ xOffset, y+ yOffset);
+			}
+		}
+		if (emitterList != null){
+			for (ParticleEmitter pe : emitterList){
+				float xOffset = pe.getX() - getX();
+				float yOffset = pe.getY() - getY();
+				pe.setPosition(x+ xOffset, y+ yOffset, pe.getZ());
 			}
 		}
 		renderer.setPosition(x, y);
@@ -240,14 +253,6 @@ public abstract class AbstractSprite implements RenderObject,SingleSprite,Sprite
 	}
 	
 	
-	@Override
-	public boolean isGlobal() {
-		return global;
-	}
-	
-	public void setGlobal(){
-		global = true;
-	}
 
 	@Override
 	public void setMirroring(boolean x, boolean y){
@@ -356,6 +361,11 @@ public abstract class AbstractSprite implements RenderObject,SingleSprite,Sprite
 	@Override
 	public void render() {
 		renderer.render();
+		if (emitterList != null){
+			for (ParticleEmitter pe : emitterList){
+				pe.render();
+			}
+		}
 	}
 
 	@Override
@@ -418,6 +428,7 @@ public abstract class AbstractSprite implements RenderObject,SingleSprite,Sprite
 	public void clear() {
 		controller.clear();
 		renderer.clear();
+		
 	}
 
 	@Override
@@ -442,6 +453,19 @@ public abstract class AbstractSprite implements RenderObject,SingleSprite,Sprite
 		} 
 		childList.add(child);
 		
+	}
+	
+	@Override
+	public void addParticleEmitter(ParticleEmitter pe){
+		if (emitterList == null){
+			emitterList = new ArrayList<ParticleEmitter>();
+		}
+		emitterList.add(pe);
+	}
+	
+	@Override
+	public List<ParticleEmitter> getParticleEmitterList(){
+		return emitterList;
 	}
 
 	@Override
@@ -479,6 +503,17 @@ public abstract class AbstractSprite implements RenderObject,SingleSprite,Sprite
 			s+= "[";
 			for (Sprite sprite : childList){
 				s+= ((RenderObject) sprite).getId() + ",";
+			}
+			s = s.substring(0,s.length()-1);
+			s+= "]";
+		} else {
+			s+= "\"null\"";
+		}
+		s+= ",\"emitters\":";
+		if (emitterList != null){
+			s+= "[";
+			for (ParticleEmitter emitter : emitterList){
+				s+= emitter.getId() + ",";
 			}
 			s = s.substring(0,s.length()-1);
 			s+= "]";
