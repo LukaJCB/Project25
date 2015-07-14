@@ -1,12 +1,12 @@
 package com.ltj.shared.engine;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map.Entry;
 
 
 public class HeadsUpDisplay {
 
-	private static HashMap<String,HudElement> hudElements = new HashMap<String,HudElement>();
+	private static LinkedHashMap<String,HudElement> hudElements = new LinkedHashMap<String,HudElement>();
 
 	public static HudElement get(Object key) {
 		return hudElements.get(key);

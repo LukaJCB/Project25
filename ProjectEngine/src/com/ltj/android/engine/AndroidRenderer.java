@@ -37,7 +37,6 @@ import com.ltj.shared.engine.Engine;
 import com.ltj.shared.engine.HeadsUpDisplay;
 import com.ltj.shared.engine.HudElement;
 import com.ltj.shared.engine.OrthoRenderObject;
-import com.ltj.shared.engine.ParticleEmitter;
 import com.ltj.shared.engine.RenderObject;
 
 
@@ -168,7 +167,7 @@ public abstract class AndroidRenderer implements Renderer{
 			}
 		}
 		
-		for(RenderObject r : Engine.getAllObjects()){
+		for(RenderObject r : Engine.getAllObjects().values()){
 			r.render();
 		}
 		
@@ -209,7 +208,7 @@ public abstract class AndroidRenderer implements Renderer{
 		glDisable(GL_DEPTH_TEST);
 		Log.w("depth: ", ""+glIsEnabled(GL_DEPTH_TEST));
 		Camera.setNormalMode();
-		for (RenderObject s : Engine.getAllObjects()){
+		for (RenderObject s : Engine.getAllObjects().values()){
 			s.setNormalMode();
 		}
 		modeSeven = false;
@@ -225,7 +224,7 @@ public abstract class AndroidRenderer implements Renderer{
 		glDepthMask(true);
 		Log.w("depth: ", ""+glIsEnabled(GL_DEPTH_TEST));
 		Camera.setModeSeven();
-		for (RenderObject s : Engine.getAllObjects()){
+		for (RenderObject s : Engine.getAllObjects().values()){
 			s.setModeSeven();
 		}
 		modeSeven = true;

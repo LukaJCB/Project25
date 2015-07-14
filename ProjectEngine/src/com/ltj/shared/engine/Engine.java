@@ -3,8 +3,9 @@ package com.ltj.shared.engine;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.ListIterator;
 
 import com.ltj.shared.engine.primitives.Globals;
 import com.ltj.shared.engine.primitives.Rectangle;
@@ -21,11 +22,11 @@ public abstract class Engine {
 
 
 	private static int gameObjectIds,emitterIds;
-	private static ArrayList<RenderObject> allObjects = new ArrayList<RenderObject>();
+	private static LinkedHashMap<Integer,RenderObject> allObjects = new LinkedHashMap<Integer,RenderObject>();
+	private static LinkedHashMap<Integer,ParticleEmitter> allParticleEmitters = new LinkedHashMap<Integer,ParticleEmitter>();
+	private static ArrayList<OrthoRenderObject> allOrthoRenderObjects = new ArrayList<OrthoRenderObject>();
 	private static ArrayList<RenderObject> dynamicObjects = new ArrayList<RenderObject>();
 	private static SpatialHashMap shMap;
-	private static ArrayList<ParticleEmitter> allParticleEmitters = new ArrayList<ParticleEmitter>();
-	private static ArrayList<OrthoRenderObject> allOrthoRenderObjects = new ArrayList<OrthoRenderObject>();
 	private static HeadsUpDisplay hud = new HeadsUpDisplay();
 	private static boolean started;
 	private static boolean zoneChanged;
@@ -33,7 +34,6 @@ public abstract class Engine {
 	static int[] currentArea = new int[2];
 	static HashMap<int[], Area> areas = new HashMap<int[], Area>();
 	static float areaWidth, areaHeight;
-	private static int resyncIds;
 
 	
 	
@@ -41,8 +41,8 @@ public abstract class Engine {
 		return allOrthoRenderObjects;
 	}
 
-	public static void flush(ArrayList<RenderObject> objects) {
-		for (RenderObject r: allObjects){
+	public static void flush(LinkedHashMap<Integer,RenderObject> objects) {
+		for (RenderObject r: allObjects.values()){
 			r.clear();
 		}
 		Camera.flush();
@@ -52,10 +52,9 @@ public abstract class Engine {
 	
 	public static void addRenderable(RenderObject r){
 		if (!started){
-			allObjects.add(r);
+			allObjects.put(gameObjectIds, r);
 			r.setId(gameObjectIds);
 			gameObjectIds++;
-			
 		} else {
 			dynamicObjects.add(r);
 		}
@@ -71,7 +70,7 @@ public abstract class Engine {
 
 
 	public static void addParticleEmitter(ParticleEmitter p){
-		allParticleEmitters.add(p);
+		allParticleEmitters.put(emitterIds, p);
 		p.setId(emitterIds);
 		emitterIds++;
 	}
@@ -82,40 +81,31 @@ public abstract class Engine {
 	}
 
 
-	public static List<RenderObject> getAllObjects() {
+	public static LinkedHashMap<Integer, RenderObject> getAllObjects() {
 		return allObjects;
 	}
 	
-	public static List<ParticleEmitter> getAllParticleEmitters() {
-		
+	public static LinkedHashMap<Integer, ParticleEmitter> getAllParticleEmitters() {
 		return allParticleEmitters;
 	}
 
 	public static void update() {
-		ListIterator<RenderObject> i = allObjects.listIterator();
+		Iterator<RenderObject> i = allObjects.values().iterator();
 		while (i.hasNext()){
 			RenderObject r = i.next();
 			if (r.isDestroyed()){
 				r.clear();
 				i.remove();
-				
-				resyncIds++;
-				gameObjectIds--;
 			} else {
 				r.update();
-				if (resyncIds > 0){
-					r.setId(r.getId()- resyncIds);
-				}
 			}
 		}
-		//reset ids
-		resyncIds = 0;
 		
 		//collision detection
 		checkCollisions();
 		
 		//animation
-		for (RenderObject r : allObjects){
+		for (RenderObject r : allObjects.values()){
 			r.animate();
 		}
 		
@@ -147,7 +137,7 @@ public abstract class Engine {
 	private static void checkCollisions() {
 		
 		shMap.clear();
-		for (RenderObject r: allObjects){
+		for (RenderObject r: allObjects.values()){
 			shMap.insert(r);
 		}
 		shMap.collideAll();
@@ -161,7 +151,7 @@ public abstract class Engine {
 	
 	private static void addRenderableDynamic(RenderObject r){
 		if (r.isLoaded()){
-			allObjects.add(r);
+			allObjects.put(gameObjectIds, r);
 			r.setId(gameObjectIds);
 			gameObjectIds++;
 			r.start();
@@ -169,7 +159,7 @@ public abstract class Engine {
 	}
 
 	public static void onKeyInput(KeyEvent e){
-		for (RenderObject r : allObjects){
+		for (RenderObject r : allObjects.values()){
 			if (r.getBehaviour() != null){
 				r.getBehaviour().onKeyInput(e);
 			}
@@ -177,7 +167,7 @@ public abstract class Engine {
 	}
 	
 	public static void onKeyReleased(KeyEvent e){
-		for (RenderObject r : allObjects){
+		for (RenderObject r : allObjects.values()){
 			if (r.getBehaviour() != null){
 				r.getBehaviour().onKeyRelease(e);
 			}
@@ -186,7 +176,7 @@ public abstract class Engine {
 	
 	public static void start(){
 		started = true;
-		for (RenderObject r : allObjects){
+		for (RenderObject r : allObjects.values()){
 			r.start();
 		}
 		shMap = new SpatialHashMap(5,5,collisionZone.getWidth(),collisionZone.getHeight(),collisionZone.getX(),collisionZone.getY());
@@ -261,14 +251,14 @@ public abstract class Engine {
 
 		String json = "{\"Camera\":" + Camera.toJSON() + ",\"particleEmitters\": [";
 		if (!allParticleEmitters.isEmpty()){
-			for (ParticleEmitter pe : allParticleEmitters){
+			for (ParticleEmitter pe : allParticleEmitters.values()){
 				json += pe.toJSON() + ",";
 			}
 			json = json.substring(0,json.length()-1);
 		}
 		json +=   "],\"gameObjects\":[";
 		if (!allObjects.isEmpty()){
-			for (RenderObject r: allObjects){
+			for (RenderObject r: allObjects.values()){
 				json += r.toJSON() + ",";
 			}
 			json = json.substring(0,json.length()-1);

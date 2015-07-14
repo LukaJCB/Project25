@@ -124,7 +124,7 @@ public abstract class JoglRenderer implements GLEventListener, KeyListener {
 		programId = normalProgramId;
 		glDisable(GL_DEPTH_TEST);
 		Camera.setNormalMode();
-		for (RenderObject g : Engine.getAllObjects()) {
+		for (RenderObject g : Engine.getAllObjects().values()) {
 			g.setNormalMode();
 		}
 		modeSeven = false;
@@ -137,7 +137,7 @@ public abstract class JoglRenderer implements GLEventListener, KeyListener {
 		glDepthMask(true);
 
 		Camera.setModeSeven();
-		for (RenderObject g : Engine.getAllObjects()) {
+		for (RenderObject g : Engine.getAllObjects().values()) {
 			g.setModeSeven();
 		}
 		modeSeven = true;
@@ -173,13 +173,13 @@ public abstract class JoglRenderer implements GLEventListener, KeyListener {
 			}
 		}
 
-		for(RenderObject r : Engine.getAllObjects()){
+		for(RenderObject r : Engine.getAllObjects().values()){
 			r.render();
 		}
 		
 		glUseProgram(particleProgramId);
 		
-		for (ParticleEmitter pe : Engine.getAllParticleEmitters()){
+		for (ParticleEmitter pe : Engine.getAllParticleEmitters().values()){
 			pe.render();
 		}
 		glUseProgram(programId);
