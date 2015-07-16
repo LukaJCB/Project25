@@ -20,7 +20,6 @@ import static android.opengl.GLES20.glVertexAttribPointer;
 
 import com.ltj.android.utils.AndroidBufferHelper;
 import com.ltj.android.utils.AndroidTextureHelper;
-import com.ltj.java.utils.JoglTextureHelper;
 import com.ltj.shared.engine.AbstractSpriteRenderer;
 import com.ltj.shared.engine.Camera;
 import com.ltj.shared.utils.MatrixHelper;
@@ -96,7 +95,6 @@ public class AndroidSpriteRenderer extends AbstractSpriteRenderer{
 	public void clear() {
 		AndroidTextureHelper.deleteTexture(path);
 		glDeleteBuffers(1, textureVBO, 0);
-		glDeleteBuffers(1, positionVBO, 0);
 	}
 
 	@Override

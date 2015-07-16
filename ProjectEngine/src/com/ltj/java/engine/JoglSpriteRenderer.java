@@ -122,7 +122,6 @@ public class JoglSpriteRenderer extends AbstractSpriteRenderer{
 	@Override
 	public void clear() {
 		 JoglTextureHelper.deleteTexture(path);
-		 glDeleteBuffers(1, positionVBO, 0);
 		 glDeleteBuffers(1, textureVBO, 0);
 	}
 
