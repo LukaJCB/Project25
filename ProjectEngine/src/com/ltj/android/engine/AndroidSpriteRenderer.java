@@ -20,6 +20,7 @@ import static android.opengl.GLES20.glVertexAttribPointer;
 
 import com.ltj.android.utils.AndroidBufferHelper;
 import com.ltj.android.utils.AndroidTextureHelper;
+import com.ltj.java.utils.JoglTextureHelper;
 import com.ltj.shared.engine.AbstractSpriteRenderer;
 import com.ltj.shared.engine.Camera;
 import com.ltj.shared.utils.MatrixHelper;
@@ -43,16 +44,7 @@ public class AndroidSpriteRenderer extends AbstractSpriteRenderer{
 	public AndroidSpriteRenderer(String path, int cols, int rows){
 		super(path,cols,rows);
 		
-		//convert to buffers
-		if (positionVBO == null){
-			positionVBO = AndroidBufferHelper.arrayToBufferId(vertices);
-			aPositionLocation = glGetAttribLocation(AndroidRenderer.programId, A_POSITION);
-		}
-		textureVBO = AndroidBufferHelper.arrayToBufferId(textureCoordinates);
-		
-		//get locations for shaders
-		uTextureLocation = glGetUniformLocation(AndroidRenderer.programId, U_TEX);
-		aTexCoordsLocation = glGetAttribLocation(AndroidRenderer.programId, A_TEX_COORDS);
+		initRenderer();
 		
 	
 		//load texture
@@ -60,7 +52,13 @@ public class AndroidSpriteRenderer extends AbstractSpriteRenderer{
 		texNumber = mTextureDataHandle[1];
 		
 	}
-	
+
+	public AndroidSpriteRenderer(String path, int columns, int rows,AndroidSprite obj) {
+		super(path,columns,rows);
+		initRenderer();
+		AndroidTextureHelper.loadTextureAsync(path, obj);
+	}
+
 	public void setTexture(int column, int row){
 		textureCol = column;
 		textureRow = row;
@@ -79,6 +77,19 @@ public class AndroidSpriteRenderer extends AbstractSpriteRenderer{
 		//retransmit vertexBuffer to GPU
 		textureVBO = AndroidBufferHelper.arrayToBufferId(textureCoordinates);;
 		
+	}
+
+	private void initRenderer() {
+		//convert to buffers
+		if (positionVBO == null){
+			positionVBO = AndroidBufferHelper.arrayToBufferId(vertices);
+			aPositionLocation = glGetAttribLocation(AndroidRenderer.programId, A_POSITION);
+		}
+		textureVBO = AndroidBufferHelper.arrayToBufferId(textureCoordinates);
+		
+		//get locations for shaders
+		uTextureLocation = glGetUniformLocation(AndroidRenderer.programId, U_TEX);
+		aTexCoordsLocation = glGetAttribLocation(AndroidRenderer.programId, A_TEX_COORDS);
 	}
 
 	@Override
@@ -134,6 +145,13 @@ float[] mMVP = new float[16];
 		//draw
 		glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);  
 		
+	}
+
+	@Override
+	public void finishLoading(String path) {
+		initRenderer();
+		mTextureDataHandle = AndroidTextureHelper.finishLoading(path);
+		texNumber = mTextureDataHandle[1];
 	}
 
 }

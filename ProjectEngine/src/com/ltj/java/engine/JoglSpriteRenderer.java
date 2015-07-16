@@ -24,6 +24,7 @@ import com.ltj.java.utils.JoglBufferHelper;
 import com.ltj.java.utils.JoglTextureHelper;
 import com.ltj.shared.engine.AbstractSpriteRenderer;
 import com.ltj.shared.engine.Camera;
+import com.ltj.shared.engine.RenderObject;
 import com.ltj.shared.utils.MatrixHelper;
 
 
@@ -47,6 +48,31 @@ public class JoglSpriteRenderer extends AbstractSpriteRenderer{
 		super(path,cols,rows);
 		
 
+		initRenderer();
+		
+
+		//load texture
+		loadTexture(path);
+		
+	}
+
+	public JoglSpriteRenderer(String path, int columns, int rows,RenderObject obj) {
+		super(path,columns,rows);
+		initRenderer();
+		
+		JoglTextureHelper.loadTextureAsync(path, obj);
+	}
+
+	public void loadTexture(String path) {
+		try {
+			mTextureDataHandle = JoglTextureHelper.loadTexture(path);
+			texNumber = mTextureDataHandle[1];
+		}  catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void initRenderer() {
 		//convert to buffers
 		if (positionVBO == null){
 			positionVBO = JoglBufferHelper.arrayToBufferId( vertices);
@@ -57,16 +83,6 @@ public class JoglSpriteRenderer extends AbstractSpriteRenderer{
 		textureVBO = JoglBufferHelper.arrayToBufferId( textureCoordinates);
 		uTextureLocation =  glGetUniformLocation(JoglRenderer.programId, U_TEX);
 		aTexCoordsLocation =  glGetAttribLocation(JoglRenderer.programId, A_TEX_COORDS);
-		
-
-		//load texture
-		try {
-			mTextureDataHandle = JoglTextureHelper.loadTexture(path);
-			texNumber = mTextureDataHandle[1];
-		}  catch (IOException e) {
-			e.printStackTrace();
-		}
-		
 	}
 	
 	public void setTexture(int column, int row){
@@ -146,5 +162,12 @@ public class JoglSpriteRenderer extends AbstractSpriteRenderer{
 		 glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);  
 	
 		
+	}
+
+	@Override
+	public void finishLoading(String path) {
+		initRenderer();
+		mTextureDataHandle = JoglTextureHelper.finishLoading(path);
+		texNumber = mTextureDataHandle[1];
 	}
 }

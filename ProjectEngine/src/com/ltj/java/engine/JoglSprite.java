@@ -1,6 +1,5 @@
 package com.ltj.java.engine;
 
-
 import com.ltj.shared.engine.AbstractSprite;
 import com.ltj.shared.engine.RenderObject;
 
@@ -9,8 +8,15 @@ public class JoglSprite extends AbstractSprite {
 	
 
 	public JoglSprite( String path,int columns, int rows){
-		this.path = path;
+		super(path);
 		renderer = new JoglSpriteRenderer( path,columns,rows);
+	}
+	
+	public JoglSprite(String path, int columns, int rows,boolean dynamic){
+		super(path);
+		setLoaded(false);
+		renderer  = new JoglSpriteRenderer(path,columns,rows,this);
+		
 	}
 	
 	
@@ -21,7 +27,15 @@ public class JoglSprite extends AbstractSprite {
 		return o;
 	}
 
-	
+
+
+
+	@Override
+	public void finishLoading() {
+		renderer.finishLoading(path);
+		
+	}
+
 	
 	
 }

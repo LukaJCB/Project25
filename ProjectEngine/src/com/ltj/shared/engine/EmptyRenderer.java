@@ -184,4 +184,8 @@ public class EmptyRenderer implements SpriteRenderer {
 		
 	}
 
+	@Override
+	public void finishLoading(String path) {
+	}
+
 }

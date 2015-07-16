@@ -39,6 +39,8 @@ public interface RenderObject extends Sprite {
 	void setParent(RenderObject parent);
 	void setRepeat(float horizontal, float vertical);
 	void setTexture(int col, int row);
+	void finishLoading();
+	void setLoaded(boolean b);
 	
 	
 	

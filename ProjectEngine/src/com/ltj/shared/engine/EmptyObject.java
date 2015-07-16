@@ -7,6 +7,7 @@ package com.ltj.shared.engine;
 public class EmptyObject extends AbstractSprite {
 
 	public EmptyObject(){
+		super(null);
 		this.renderer = new EmptyRenderer();
 	}
 
@@ -20,6 +21,12 @@ public class EmptyObject extends AbstractSprite {
 	@Override
 	public boolean isLoaded() {
 		return true;
+	}
+
+	@Override
+	public void finishLoading() {
+	
+		
 	}
 	
 	

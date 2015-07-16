@@ -7,7 +7,6 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-import com.ltj.shared.engine.primitives.Globals;
 import com.ltj.shared.engine.primitives.Rectangle;
 import com.ltj.shared.engine.primitives.SpatialHashMap;
 
@@ -16,7 +15,7 @@ public abstract class Engine {
 
 	public static final int DESKTOP = 0;
 	public static final int ANDROID = 1;
-	
+	private static int platform;
 	
 	private static Rectangle collisionZone;
 
@@ -90,12 +89,12 @@ public abstract class Engine {
 	}
 
 	public static void update() {
-		Iterator<RenderObject> i = allObjects.values().iterator();
-		while (i.hasNext()){
-			RenderObject r = i.next();
+		Iterator<RenderObject> it = allObjects.values().iterator();
+		while (it.hasNext()){
+			RenderObject r = it.next();
 			if (r.isDestroyed()){
 				r.clear();
-				i.remove();
+				it.remove();
 			} else {
 				r.update();
 			}
@@ -112,10 +111,14 @@ public abstract class Engine {
 		Camera.calcPVMatrix();
 		//add objects that try to get inserted this frame
 		if (!dynamicObjects.isEmpty()){
-			for (RenderObject r: dynamicObjects){
-				addRenderableDynamic(r);
+			for (int i = dynamicObjects.size()-1;i > -1;i--){
+				RenderObject r = dynamicObjects.get(i);
+				if (r.isLoaded()){
+					r.finishLoading();
+					addRenderableDynamic(dynamicObjects.remove(i));
+					break;
+				}
 			}
-			dynamicObjects.clear();
 		}
 		
 		if (zoneChanged){
@@ -150,12 +153,10 @@ public abstract class Engine {
 	}
 	
 	private static void addRenderableDynamic(RenderObject r){
-		if (r.isLoaded()){
-			allObjects.put(gameObjectIds, r);
-			r.setId(gameObjectIds);
-			gameObjectIds++;
-			r.start();
-		}
+		allObjects.put(gameObjectIds, r);
+		r.setId(gameObjectIds);
+		gameObjectIds++;
+		r.start();
 	}
 
 	public static void onKeyInput(KeyEvent e){
@@ -247,40 +248,14 @@ public abstract class Engine {
 		//TODO
 	}
 	
-	public static String parseAll(){
 
-		String json = "{\"Camera\":" + Camera.toJSON() + ",\"particleEmitters\": [";
-		if (!allParticleEmitters.isEmpty()){
-			for (ParticleEmitter pe : allParticleEmitters.values()){
-				json += pe.toJSON() + ",";
-			}
-			json = json.substring(0,json.length()-1);
-		}
-		json +=   "],\"gameObjects\":[";
-		if (!allObjects.isEmpty()){
-			for (RenderObject r: allObjects.values()){
-				json += r.toJSON() + ",";
-			}
-			json = json.substring(0,json.length()-1);
-		}
-		json += "],\"Globals\":" + Globals.toJSON(); 
-		json +=   ",\"orthoObjects\":[";
-		if (!allOrthoRenderObjects.isEmpty()){
-			for (OrthoRenderObject or: allOrthoRenderObjects){
-				json += or.toJSON() + ",";
-			}
-		}
-		json = json.substring(0,json.length()-1);
-		json += "], \"Hud\":" + hud.toJSON() + ",\"collisionZone\":" + collisionZone.toJSON();   
-		json += "}";
-
-		
-		
-		return json;
-	}
 	
 	public static HeadsUpDisplay getHud(){
 		return hud;
+	}
+
+	public static int getPlatform(){
+		return platform;
 	}
 	
 

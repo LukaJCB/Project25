@@ -3,6 +3,7 @@ package com.ltj.shared.engine;
 import java.util.ArrayList;
 import java.util.List;
 
+
 /**
  * This class acts as a Facade for the GameObjectController and Renderers.
  * @author Luka
@@ -21,6 +22,7 @@ public abstract class AbstractSprite implements RenderObject,SingleSprite,Sprite
 	protected String path;
 	private boolean mirroredX, mirroredY;
 	private int id;
+	private boolean loading;
 	
 	public int getNumCols() {
 		return renderer.getNumCols();
@@ -75,6 +77,11 @@ public abstract class AbstractSprite implements RenderObject,SingleSprite,Sprite
 		}
 		Engine.addRenderable(o);
 	}
+	
+	public AbstractSprite(String path){
+		this.path = path;
+	}
+	
 	
 	public int getId() {
 		return id;
@@ -319,9 +326,13 @@ public abstract class AbstractSprite implements RenderObject,SingleSprite,Sprite
 	}
 
 	@Override
+	public void setLoaded(boolean b) {
+		loading = !b;
+	}
+
+	@Override
 	public boolean isLoaded() {
-		//TODO
-		return true;
+		return !loading;
 	}
 
 	@Override
@@ -524,6 +535,7 @@ public abstract class AbstractSprite implements RenderObject,SingleSprite,Sprite
 		return s;
 	}
 
+	
 
 	
 

@@ -31,4 +31,5 @@ public interface SpriteRenderer {
 	void stopAnimation();
 	void setModeSevenEnabled(boolean modeSEnabled);
 	String toJSON();
+	void finishLoading(String path);
 }

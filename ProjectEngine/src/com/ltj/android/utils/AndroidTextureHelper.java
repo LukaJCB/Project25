@@ -1,23 +1,13 @@
 package com.ltj.android.utils;
 
-import static android.opengl.GLES20.GL_LINEAR;
-import static android.opengl.GLES20.GL_LINEAR_MIPMAP_LINEAR;
-import static android.opengl.GLES20.GL_NEAREST;
-import static android.opengl.GLES20.GL_REPEAT;
-import static android.opengl.GLES20.GL_TEXTURE_2D;
-import static android.opengl.GLES20.GL_TEXTURE_MAG_FILTER;
-import static android.opengl.GLES20.GL_TEXTURE_MIN_FILTER;
-import static android.opengl.GLES20.GL_TEXTURE_WRAP_S;
-import static android.opengl.GLES20.GL_TEXTURE_WRAP_T;
-import static android.opengl.GLES20.glBindTexture;
-import static android.opengl.GLES20.glGenTextures;
-import static android.opengl.GLES20.glGenerateMipmap;
-import static android.opengl.GLES20.glTexParameteri;
-import static com.ltj.java.engine.StaticGL.glDeleteTextures;
+import static android.opengl.GLES20.*;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
+
+import com.ltj.android.engine.AndroidRenderer;
+import com.ltj.shared.engine.RenderObject;
 
 import android.content.Context;
 import android.content.res.AssetManager;
@@ -29,114 +19,133 @@ import android.opengl.GLUtils;
 public class AndroidTextureHelper {
 	private static int texCount;
 	private static HashMap<String, int[]> textureMap = new HashMap<String,int[]>();
+	private static HashMap<String, Bitmap> dataMap = new HashMap<String, Bitmap>();
 	private AndroidTextureHelper(){
-		
-	}
-	
-	public static int loadTexture(Context context, int resId){
-		
-		
-		
-		final int[] textureHandle = new int[1];
-		 
-	    glGenTextures(1, textureHandle, 0);
-	 
-	    if (textureHandle[0] != 0)
-	    {
-	        final BitmapFactory.Options options = new BitmapFactory.Options();
-	        options.inScaled = false;   // No pre-scaling
-	 
-	        // Read in the resource
-	        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), resId, options);
-	        
-	        // Bind to the texture in OpenGL
-	        glBindTexture(GL_TEXTURE_2D, textureHandle[0]);
-	 
-	        // Set filtering
-	        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	 
-	        // Load the bitmap into the bound texture.
-	        GLUtils.texImage2D(GL_TEXTURE_2D, 0, bitmap, 0);
-	 
-	        // Recycle the bitmap, since its data has been loaded into OpenGL.
-	        bitmap.recycle();
-	    }
-	 
-	    if (textureHandle[0] == 0)
-	    {
-	        throw new RuntimeException("Error loading texture.");
-	    }
-	 
-	    return textureHandle[0];
-		
-		
 		
 	}
 	
 	public static int[] loadTexture(Context context,String path){
 		if (textureMap.containsKey(path)){
+			textureMap.get(path)[2]++;
 			return textureMap.get(path);
-		}
+		} 
 
-		final int[] textureHandle = new int[2];
+		final BitmapFactory.Options options = new BitmapFactory.Options();
+		options.inScaled = false;   // No pre-scaling
 
+
+		// Read in the resource
+		Bitmap bitmap = getBitmapFromAsset(context, path);
+
+		
+	 
+		/*
+		 * This array will hold: 
+		 * 1. the textureObjectHandle.
+		 * 2. the unique value of the hashmap.
+		 * 3. the number of times the texture has been loaded.
+		 */
+		int[] textureHandle = new int[3];
 		textureHandle[1] = texCount;
-
-		texCount++;
-
+		textureHandle[2] = 1;
+		
 		glGenTextures(1, textureHandle, 0);
 
-		if (textureHandle[0] != 0)
-		{
-			final BitmapFactory.Options options = new BitmapFactory.Options();
-			options.inScaled = false;   // No pre-scaling
 
+		// Bind to the texture in OpenGL
+		glBindTexture(GL_TEXTURE_2D, textureHandle[0]);
 
-			// Read in the resource
-			Bitmap bitmap = getBitmapFromAsset(context, path);
+		// Load the bitmap into the bound texture.
+		GLUtils.texImage2D(GL_TEXTURE_2D, 0, bitmap, 0);
 
-			// Bind to the texture in OpenGL
-			glBindTexture(GL_TEXTURE_2D, textureHandle[0]);
+		//Generate mipmaps
+		glGenerateMipmap(GL_TEXTURE_2D);
+		// Set filtering
+		glTexParameteri(GL_TEXTURE_2D, GLES11Ext.GL_TEXTURE_MAX_ANISOTROPY_EXT, 16);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
-	        // Load the bitmap into the bound texture.
-	        GLUtils.texImage2D(GL_TEXTURE_2D, 0, bitmap, 0);
-	        
-	        //Generate mipmaps
-	        glGenerateMipmap(GL_TEXTURE_2D);
-	        // Set filtering
-	        glTexParameteri(GL_TEXTURE_2D, GLES11Ext.GL_TEXTURE_MAX_ANISOTROPY_EXT, 16);
-	        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-	        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	 
-	        // Recycle the bitmap, since its data has been loaded into OpenGL.
-	        bitmap.recycle();
-	    }
-	 
-	    if (textureHandle[0] == 0)
-	    {
-	        throw new RuntimeException("Error loading texture.");
-	    }
-	 
-	    textureMap.put(path, textureHandle);
+		// Recycle the bitmap, since its data has been loaded into OpenGL.
+		bitmap.recycle();
+
+		textureMap.put(path, textureHandle);
+
+		//next texture
+		texCount++;
+		
 	    
 	    return textureHandle;
 	}
-	private static Bitmap getBitmapFromAsset(Context context, String filePath) {
-	    AssetManager assetManager = context.getAssets();
+	public static void loadTextureAsync(final String path, final RenderObject obj) {
+		if (textureMap.containsKey(path)){
+			textureMap.get(path)[2]++;
+			obj.setLoaded(true);
+			return;
+		} 
+		new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				final BitmapFactory.Options options = new BitmapFactory.Options();
+				options.inScaled = false;   // No pre-scaling
 
-	    InputStream istream;
-	    Bitmap bitmap = null;
-	    try {
-	        istream = assetManager.open(filePath);
-	        bitmap = BitmapFactory.decodeStream(istream);
-	    } catch (IOException e) {
-	        // handle exception
-	    }
 
-	    return bitmap;
+				// Read in the resource
+				Bitmap bitmap = getBitmapFromAsset(AndroidRenderer.context, path);
+				dataMap.put(path,bitmap);
+				obj.setLoaded(true);
+			}
+		}).start();
+		
+	}
+
+	public static int[] finishLoading(String path) {
+		if (textureMap.containsKey(path)){
+			textureMap.get(path)[2]++;
+			return textureMap.get(path);
+		} 
+		
+
+		/*
+		 * This array will hold: 
+		 * 1. the textureObjectHandle.
+		 * 2. the unique value of the hashmap.
+		 * 3. the number of times the texture has been loaded.
+		 */
+		int[] textureHandle = new int[3];
+		textureHandle[1] = texCount;
+		textureHandle[2] = 1;
+		
+		glGenTextures(1, textureHandle, 0);
+
+
+		// Bind to the texture in OpenGL
+		glBindTexture(GL_TEXTURE_2D, textureHandle[0]);
+
+		// Load the bitmap into the bound texture.
+		GLUtils.texImage2D(GL_TEXTURE_2D, 0, dataMap.get(path), 0);
+
+		//Generate mipmaps
+		glGenerateMipmap(GL_TEXTURE_2D);
+		// Set filtering
+		glTexParameteri(GL_TEXTURE_2D, GLES11Ext.GL_TEXTURE_MAX_ANISOTROPY_EXT, 16);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+		// Recycle the bitmap, since its data has been loaded into OpenGL.
+		dataMap.remove(path).recycle();
+
+		textureMap.put(path, textureHandle);
+
+		//next texture
+		texCount++;
+		
+	    
+	    return textureHandle;
 	}
 
 	public static void deleteTexture(String path) {
@@ -147,5 +156,20 @@ public class AndroidTextureHelper {
 			textureMap.remove(path);
 		}
 		
+	}
+
+	private static Bitmap getBitmapFromAsset(Context context, String filePath) {
+	    AssetManager assetManager = context.getAssets();
+	
+	    InputStream istream;
+	    Bitmap bitmap = null;
+	    try {
+	        istream = assetManager.open(filePath);
+	        bitmap = BitmapFactory.decodeStream(istream);
+	    } catch (IOException e) {
+	        // handle exception
+	    }
+	
+	    return bitmap;
 	}
 }
