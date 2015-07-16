@@ -2,7 +2,7 @@ package com.ltj.shared.engine;
 
 import com.ltj.shared.engine.primitives.Rectangle;
 
-public class Area  {
+public class Area {
 
 	private EmptyObject root;
 	public Area(float width,float height){
@@ -60,9 +60,9 @@ public class Area  {
 		}
 	}
 	
-	public void deactivate(){
+	public void setInactive(boolean inactive){
 		for (Sprite g : root.getChildList()){
-			g.setInactive(true);
+			g.setInactive(inactive);
 		}
 	}
 	

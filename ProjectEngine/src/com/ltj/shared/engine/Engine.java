@@ -6,7 +6,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map.Entry;
 
+import com.ltj.shared.engine.primitives.Position;
 import com.ltj.shared.engine.primitives.Rectangle;
 import com.ltj.shared.engine.primitives.SpatialHashMap;
 
@@ -30,9 +32,9 @@ public abstract class Engine {
 	private static boolean started;
 	private static boolean zoneChanged;
 	
-	static int[] currentArea = new int[2];
-	static HashMap<int[], Area> areas = new HashMap<int[], Area>();
-	static float areaWidth, areaHeight;
+	private static Position currentArea;
+	private static HashMap<Position, Area> areas = new HashMap<Position, Area>();
+	private static float areaWidth, areaHeight;
 
 	
 	
@@ -120,6 +122,8 @@ public abstract class Engine {
 				}
 			}
 		}
+		checkArea();
+		
 		
 		if (zoneChanged){
 			zoneChanged = false;
@@ -138,7 +142,6 @@ public abstract class Engine {
 		
 	}
 	private static void checkCollisions() {
-		
 		shMap.clear();
 		for (RenderObject r: allObjects.values()){
 			shMap.insert(r);
@@ -177,16 +180,24 @@ public abstract class Engine {
 	
 	public static void start(){
 		started = true;
+		for (Entry<Position,Area> e : areas.entrySet()){
+			Position pos = e.getKey();
+			e.getValue().translate(pos.getX() * areaWidth, pos.getY() * areaHeight);
+		}
+		
 		for (RenderObject r : allObjects.values()){
 			r.start();
 		}
 		shMap = new SpatialHashMap(5,5,collisionZone.getWidth(),collisionZone.getHeight(),collisionZone.getX(),collisionZone.getY());
+		
 		if (!dynamicObjects.isEmpty()){
 			for (RenderObject r: dynamicObjects){
 				addRenderableDynamic(r);
 			}
 			dynamicObjects.clear();
 		}
+		
+		
 		
 	}
 
@@ -201,50 +212,57 @@ public abstract class Engine {
 		}
 	}
 	
-	static void checkArea(){
+	private static void checkArea(){
 		if (!cameraInArea(areas.get(currentArea))){
-			int[] nextPosition = new int[2];
-			for (int i = currentArea[0] - 1; i < currentArea[0] + 2; i++){
-				for (int j = currentArea[1] - 1; j < currentArea[1] + 2; j++){
-					nextPosition[0] = i;
-					nextPosition[1] = j;
+
+			Position nextPosition = new Position(0,0);
+			for (int i = currentArea.getX() - 1; i < currentArea.getX() + 2; i++){
+				for (int j = currentArea.getY() - 1; j < currentArea.getY() + 2; j++){
+					nextPosition.setX(i);
+					nextPosition.setY(j);
 					Area next = areas.get(nextPosition);
-					if (next != null && cameraInArea(next)){
-						currentArea = nextPosition;
-						areas.get(currentArea).setCollisionZone();
-						return;
+					if (next != null){
+						//System.out.println("Area: " + next.getY());
+						if( cameraInArea(next)){
+							currentArea = nextPosition;
+							areas.get(currentArea).setCollisionZone();
+							zoneChanged = true;
+							return;
+						}
 					}
 				}
 			}
 		}
 	}
 	
-	static boolean cameraInArea(Area a){
+	private static boolean cameraInArea(Area a){
+		//System.out.println("Cam: " + Camera.getLookAt()[0] + "/" + Camera.getLookAt()[1]);
 		return a.isInArea(Camera.getLookAt()[0],Camera.getLookAt()[1]);
 	}
 	
-	static void setAreaSize(float width, float height){
+	public static void setAreaSize(float width, float height){
 		areaWidth = width;
 		areaHeight = height;
 	}
 	
-	static void addArea(int x, int y){
+	public static void setCurrentArea(int x , int y){
+		currentArea = new Position(x, y);
+		areas.get(currentArea).setCollisionZone();
+	}
+	
+	public static void addArea(int x, int y){
 		Area a = new Area(areaWidth, areaHeight);
-		a.translate(areaWidth*x + areaWidth/2, areaHeight * y + areaHeight/2);
-		int[] pos = new int[2];
-		pos[0] = x;
-		pos[1] = y;
-		areas.put(pos,a);
+		
+		
+		areas.put(new Position(x, y),a);
 	}
-	static Area getArea(int x, int y){
-		int[] pos = new int[2];
-		pos[0] = x;
-		pos[1] = y;
-		return areas.get(pos);
+	public static Area getArea(int x, int y){
+		
+		return areas.get(new Position(x, y));
 	}
 	
 	
-	static void loadArea(int x, int y){
+	public static void loadArea(int x, int y){
 		//TODO
 	}
 	
