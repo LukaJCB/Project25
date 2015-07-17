@@ -17,6 +17,10 @@ public abstract class Engine {
 
 	public static final int DESKTOP = 0;
 	public static final int ANDROID = 1;
+	
+	public static final int AREA_MODE_NONE = 0;
+	public static final int AREA_MODE_HIDE = 1;
+	public static final int AREA_MODE_DYNAMIC_LOAD = 2;
 	private static int platform;
 	
 	private static Rectangle collisionZone;
@@ -35,6 +39,7 @@ public abstract class Engine {
 	private static Position currentArea;
 	private static HashMap<Position, Area> areas = new HashMap<Position, Area>();
 	private static float areaWidth, areaHeight;
+	private static int areaMode;
 
 	
 	
@@ -122,13 +127,15 @@ public abstract class Engine {
 				}
 			}
 		}
-		checkArea();
-		
-		
-		if (zoneChanged){
-			zoneChanged = false;
-			shMap.clear();
-			shMap = new SpatialHashMap(5,5,collisionZone.getWidth(),collisionZone.getHeight(),collisionZone.getX(),collisionZone.getY());
+		if (areaMode != AREA_MODE_NONE){
+			checkArea();
+
+
+			if (zoneChanged){
+				zoneChanged = false;
+				shMap.clear();
+				shMap = new SpatialHashMap(5,5,collisionZone.getWidth(),collisionZone.getHeight(),collisionZone.getX(),collisionZone.getY());
+			}
 		}
 	}
 	
@@ -183,6 +190,22 @@ public abstract class Engine {
 		for (Entry<Position,Area> e : areas.entrySet()){
 			Position pos = e.getKey();
 			e.getValue().translate(pos.getX() * areaWidth, pos.getY() * areaHeight);
+			if (areaMode == AREA_MODE_HIDE){
+				e.getValue().setInactive(true);
+			}
+		}
+		
+		if (areaMode == AREA_MODE_HIDE){
+			Position pos = new Position(0,0);
+			for (int i = -1; i < 2;i++){
+				pos.setX(currentArea.getX() +i);
+				for (int j = -1; j < 2;j++){
+					pos.setY(currentArea.getY()+j);
+					if (areas.get(pos) != null){
+						areas.get(pos).setInactive(false);
+					}
+				}
+			}
 		}
 		
 		for (RenderObject r : allObjects.values()){
@@ -222,10 +245,11 @@ public abstract class Engine {
 					nextPosition.setY(j);
 					Area next = areas.get(nextPosition);
 					if (next != null){
-						//System.out.println("Area: " + next.getY());
-						if( cameraInArea(next)){
+						if(cameraInArea(next)){
+							int dx = nextPosition.getX() - currentArea.getX();
+							int dy = nextPosition.getY() - currentArea.getY();
 							currentArea = nextPosition;
-							areas.get(currentArea).setCollisionZone();
+							changeArea(dx, dy);
 							zoneChanged = true;
 							return;
 						}
@@ -234,9 +258,65 @@ public abstract class Engine {
 			}
 		}
 	}
+	/**
+	 * @param dx the direction 
+	 * @param dy
+	 */
+	private static void changeArea(int dx, int dy){
+		areas.get(currentArea).setCollisionZone();
+		Position pos = new Position(0, 0);
+		if (dy != 0){
+			//unload or destroy in Y Direction
+			for (int i = currentArea.getX()- (dx +1);i < currentArea.getX() +2 -dx;i++){
+				pos.setY(currentArea.getY() - dy *2);
+				pos.setX(i);
+				if (areas.get(pos) != null){
+					if (areaMode == AREA_MODE_HIDE){
+						areas.get(pos).setInactive(true);
+					} else if (areaMode == AREA_MODE_DYNAMIC_LOAD){
+						areas.get(pos).destroy();
+					}
+				}
+				
+				//activate or load next areas
+				pos.setY(currentArea.getY()+ dy);
+				if (areas.get(pos) != null){
+					if (areaMode == AREA_MODE_HIDE){
+						areas.get(pos).setInactive(false);
+					} else if (areaMode == AREA_MODE_DYNAMIC_LOAD){
+						loadArea(pos.getX(), pos.getY());
+					}
+				}
+			}
+		}
+		if (dx != 0){
+			//unload or destroy in X direction
+			for (int j = currentArea.getY() - (dy +1); j < currentArea.getY()+2 - dy;j++){
+				pos.setX(currentArea.getX() - dx * 2);
+				pos.setY(j);
+				if (areas.get(pos) != null){
+					if (areaMode == AREA_MODE_HIDE){
+						areas.get(pos).setInactive(true);
+					} else if (areaMode == AREA_MODE_DYNAMIC_LOAD){
+						areas.get(pos).destroy();
+					}
+				}
+				//activate or load next areas
+				pos.setX(currentArea.getX()+ dx);
+				if (areas.get(pos) != null){
+					if (areaMode == AREA_MODE_HIDE){
+						areas.get(pos).setInactive(false);
+					} else if (areaMode == AREA_MODE_DYNAMIC_LOAD){
+						loadArea(pos.getX(), pos.getY());
+					}
+				}
+			}
+		}
+
+		
+	}
 	
 	private static boolean cameraInArea(Area a){
-		//System.out.println("Cam: " + Camera.getLookAt()[0] + "/" + Camera.getLookAt()[1]);
 		return a.isInArea(Camera.getLookAt()[0],Camera.getLookAt()[1]);
 	}
 	
@@ -249,7 +329,7 @@ public abstract class Engine {
 		currentArea = new Position(x, y);
 		areas.get(currentArea).setCollisionZone();
 	}
-	
+
 	public static void addArea(int x, int y){
 		Area a = new Area(areaWidth, areaHeight);
 		
@@ -266,6 +346,9 @@ public abstract class Engine {
 		//TODO
 	}
 	
+	public static void setAreaMode(int mode){
+		areaMode = mode;
+	}
 
 	
 	public static HeadsUpDisplay getHud(){

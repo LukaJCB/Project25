@@ -5,8 +5,8 @@ import java.util.Map.Entry;
 
 import com.ltj.shared.engine.RenderObject;
 
-public class Globals {
-	private Globals(){}
+public class RunTimeGlobals {
+	private RunTimeGlobals(){}
 
 	private static HashMap<String,Boolean> boolMap = new HashMap<String,Boolean>();
 	private static HashMap<String,Float> floatMap = new HashMap<String,Float>();
@@ -92,19 +92,19 @@ public class Globals {
 		return globalsJSON;
 	}
 	
-	private static String concatHashMapToJSON(String globalsJSON, HashMap<String, ?> map){
+	private static String concatHashMapToJSON(String json, HashMap<String, ?> map){
 		if (map.isEmpty()){
-			globalsJSON += "\"null\",";
-			return globalsJSON;
+			json += "\"null\",";
+			return json;
 		}
 		
-		globalsJSON += "[";
+		json += "[";
 		for (Entry<String,?> entry : map.entrySet()){
-			globalsJSON += "{\"name\":\""+  entry.getKey()+ "\",\"value\":" +  entry.getValue() + "},";
+			json += "{\"name\":\""+  entry.getKey()+ "\",\"value\":" +  entry.getValue() + "},";
 		}
-		globalsJSON = globalsJSON.substring(0,globalsJSON.length()-1);
-		globalsJSON += "],";
-		return globalsJSON;
+		json = json.substring(0,json.length()-1);
+		json += "],";
+		return json;
 		
 	}
 
