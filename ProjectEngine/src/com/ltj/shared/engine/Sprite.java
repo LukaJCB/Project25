@@ -24,6 +24,7 @@ public interface Sprite {
 	Collider getCollider(int index);
 	void setZ(float z);
 	float getZ();
+	int getId();
 	void setModeSevenEnabled(boolean modeSEnabled);
 	void addChild(Sprite child);
 	void setScale(float width, float height);

@@ -189,7 +189,7 @@ public abstract class Engine {
 		started = true;
 		for (Entry<Position,Area> e : areas.entrySet()){
 			Position pos = e.getKey();
-			e.getValue().translate(pos.getX() * areaWidth, pos.getY() * areaHeight);
+			//e.getValue().setPosition(pos.getX() * areaWidth, pos.getY() * areaHeight);
 			if (areaMode == AREA_MODE_HIDE){
 				e.getValue().setInactive(true);
 			}
@@ -206,11 +206,13 @@ public abstract class Engine {
 					}
 				}
 			}
+			areas.get(currentArea).setCollisionZone();
 		}
 		
 		for (RenderObject r : allObjects.values()){
 			r.start();
 		}
+		
 		shMap = new SpatialHashMap(5,5,collisionZone.getWidth(),collisionZone.getHeight(),collisionZone.getX(),collisionZone.getY());
 		
 		if (!dynamicObjects.isEmpty()){
@@ -258,11 +260,9 @@ public abstract class Engine {
 			}
 		}
 	}
-	/**
-	 * @param dx the direction 
-	 * @param dy
-	 */
+	
 	private static void changeArea(int dx, int dy){
+		
 		areas.get(currentArea).setCollisionZone();
 		Position pos = new Position(0, 0);
 		if (dy != 0){
@@ -330,11 +330,12 @@ public abstract class Engine {
 		areas.get(currentArea).setCollisionZone();
 	}
 
-	public static void addArea(int x, int y){
+	public static Area addArea(int x, int y){
 		Area a = new Area(areaWidth, areaHeight);
-		
-		
+
+		a.translate(areaWidth*x, areaHeight*y);
 		areas.put(new Position(x, y),a);
+		return a;
 	}
 	public static Area getArea(int x, int y){
 		
@@ -357,6 +358,22 @@ public abstract class Engine {
 
 	public static int getPlatform(){
 		return platform;
+	}
+
+	public static HashMap<Position, Area> getAreas() {
+		return areas;
+	}
+
+	public static Position getCurrentArea() {
+		return currentArea;
+	}
+
+	public static int getAreaMode() {
+		return areaMode;
+	}
+
+	public static String getAreaSizeJSON() {
+		return "[" + areaWidth + "," + areaHeight + "]";
 	}
 	
 

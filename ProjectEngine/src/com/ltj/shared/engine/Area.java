@@ -51,6 +51,11 @@ public class Area {
 	}
 	
 	public void addObject(Sprite child){
+		child.translate(getX(), getY());
+		root.addChild(child);
+	}
+	
+	public void addObjectWorldSpace(Sprite child){
 		root.addChild(child);
 	}
 	
@@ -64,6 +69,17 @@ public class Area {
 		for (Sprite g : root.getChildList()){
 			g.setInactive(inactive);
 		}
+	}
+	
+	public String toJSON(){
+		String json = "[";
+		for (Sprite r:root.getChildList()){
+			json += r.getId() + ",";
+		}
+		json = json.substring(0, json.length() - 1);
+		json += "]";
+		return json;
+		
 	}
 	
 	
