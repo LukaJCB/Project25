@@ -32,4 +32,5 @@ public interface SpriteRenderer {
 	void setModeSevenEnabled(boolean modeSEnabled);
 	String toJSON();
 	void finishLoading(String path);
+	void setLooping(String name, boolean looping);
 }

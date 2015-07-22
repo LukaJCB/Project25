@@ -33,4 +33,5 @@ public interface Sprite {
 	void setMirroring(boolean x, boolean y);
 	List<ParticleEmitter> getParticleEmitterList();
 	void addParticleEmitter(ParticleEmitter pe);
+	void animationSetLooping(String name, boolean looping);
 }

@@ -116,6 +116,11 @@ public abstract class AbstractSprite implements RenderObject,SingleSprite,Sprite
 		controller.addCollider(c);
 	}
 
+	@Override
+	public void animationSetLooping(String name, boolean looping) {
+		renderer.setLooping(name, looping);
+	}
+
 	public Collider getCollider(int index) {
 		return controller.getCollider(index);
 	}

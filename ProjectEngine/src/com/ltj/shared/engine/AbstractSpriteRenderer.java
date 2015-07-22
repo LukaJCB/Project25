@@ -78,6 +78,11 @@ public abstract class AbstractSpriteRenderer implements SpriteRenderer {
 	public void stopAnimation() {
 		animator.stopAnimation();
 	}
+	
+	@Override
+	public void setLooping(String name, boolean looping){
+		animator.setLooping(name,looping);
+	}
 
 	public void translate(float dx, float dy){
 		x += dx;

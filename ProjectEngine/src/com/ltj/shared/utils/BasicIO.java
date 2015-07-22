@@ -237,6 +237,9 @@ public class BasicIO {
 			
 		} else if (Engine.getAreaMode() == Engine.AREA_MODE_HIDE){
 			
+			//save area size
+			json+= ",\"AreaSize\":" + Engine.getAreaSizeJSON();
+			
 			//save all Areas by reference
 			json += ",\"Areas\":[";
 

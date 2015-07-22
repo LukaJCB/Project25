@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map.Entry;
 
 import com.ltj.shared.engine.primitives.Position;
 import com.ltj.shared.engine.primitives.Rectangle;
@@ -187,15 +186,14 @@ public abstract class Engine {
 	
 	public static void start(){
 		started = true;
-		for (Entry<Position,Area> e : areas.entrySet()){
-			Position pos = e.getKey();
-			//e.getValue().setPosition(pos.getX() * areaWidth, pos.getY() * areaHeight);
-			if (areaMode == AREA_MODE_HIDE){
-				e.getValue().setInactive(true);
-			}
-		}
+	
 		
 		if (areaMode == AREA_MODE_HIDE){
+			//deactivate all areas
+			for (Area a : areas.values()){
+					a.setInactive(true);
+			}
+			//reactivate the areas where the cam is in.
 			Position pos = new Position(0,0);
 			for (int i = -1; i < 2;i++){
 				pos.setX(currentArea.getX() +i);

@@ -43,4 +43,8 @@ public class Animator {
 		return animJSON;
 		
 	}
+
+	public void setLooping(String name, boolean looping) {
+		animations.get(name).setLooping(looping);
+	}
 }

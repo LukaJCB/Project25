@@ -188,4 +188,9 @@ public class EmptyRenderer implements SpriteRenderer {
 	public void finishLoading(String path) {
 	}
 
+	@Override
+	public void setLooping(String name, boolean looping) {
+		
+	}
+
 }
