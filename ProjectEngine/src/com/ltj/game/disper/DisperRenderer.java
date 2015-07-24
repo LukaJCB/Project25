@@ -17,7 +17,6 @@ import com.ltj.shared.engine.primitives.RunTimeGlobals;
 public class DisperRenderer extends JoglRenderer {
 
 
-	private JoglSprite player;
 
 	@Override
 	public void init(GLAutoDrawable drawable) {
@@ -48,7 +47,7 @@ public class DisperRenderer extends JoglRenderer {
 		playerWorm.addAnimation("walk", 5, 0, true, 5);
 		Engine.addRenderable(playerWorm);
 		
-		player = new JoglSprite("assets/pic/player_run.png",4,1);
+		JoglSprite player = new JoglSprite("assets/pic/player_run.png",4,1);
 		player.setTexture(0, 0);
 		PlayerController b2 = new PlayerController();
 		player.addCollider(new BoxCollider());
@@ -63,6 +62,19 @@ public class DisperRenderer extends JoglRenderer {
 		player.translate(42, -32.125f);
 		player.setInactive(true);
 		Engine.addRenderable(player);
+		
+		
+		EmptyObject trigger = new EmptyObject();
+		trigger.setTag("trigger");
+		trigger.scale(1, 1);
+		trigger.addCollider(new BoxCollider());
+		trigger.translate(42, -32.125f);
+		Engine.addRenderable(trigger);
+		
+		trigger.addChild(player);
+		TriggerBehaviour tb = new TriggerBehaviour();
+		tb.allocateObject(trigger);
+		trigger.addBehaviour(tb);
 		
 		
 		init00();
@@ -459,19 +471,7 @@ public class DisperRenderer extends JoglRenderer {
 		ground5.translate(-8, -3.125f);
 		a.addObject(ground5);
 		Engine.addRenderable(ground5);
-		
-		EmptyObject trigger = new EmptyObject();
-		trigger.setTag("trigger");
-		trigger.scale(1, 1);
-		trigger.addCollider(new BoxCollider());
-		trigger.translate(-8, -2.125f);
-		a.addObject(trigger);
-		Engine.addRenderable(trigger);
-		
-		trigger.addChild(player);
-		TriggerBehaviour tb = new TriggerBehaviour();
-		tb.allocateObject(trigger);
-		trigger.addBehaviour(tb);
+	
 		
 		
 	}
