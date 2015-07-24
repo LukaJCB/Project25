@@ -491,10 +491,15 @@ public abstract class AbstractSprite implements RenderObject,SingleSprite,Sprite
 		if (childList != null){
 			for (Sprite o : childList){
 				o.setInactive(inactive);
-				((RenderObject) o).setInactiveOnLoad(inactive);
+				if (inactive){
+					o.setInactiveOnLoad(inactive);
+				}
 			}
 		}
-		setInactiveOnLoad(inactive);
+		if (inactive){
+			setInactiveOnLoad(inactive);
+		}
+		
 	}
 
 	public boolean isInactiveOnLoad() {
