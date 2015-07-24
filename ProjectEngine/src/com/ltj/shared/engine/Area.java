@@ -47,7 +47,7 @@ public class Area {
 	}
 	
 	public void setCollisionZone(){
-		Engine.setCollisionZone(new Rectangle(root.getX(), root.getY(), root.getWidth()*3, root.getHeight()*3));
+		Engine.setCollisionZone(new Rectangle(root.getX(), root.getY(), root.getWidth()*3.1f, root.getHeight()*3.1f));
 	}
 	
 	public void addObject(Sprite child){
@@ -60,14 +60,25 @@ public class Area {
 	}
 	
 	public void destroy(){
-		for (Sprite g : root.getChildList()){
-			g.destroy();
+		if (root.getChildList() != null){
+			for (Sprite g : root.getChildList()){
+				g.destroy();
+			}
 		}
 	}
 	
 	public void setInactive(boolean inactive){
-		for (Sprite g : root.getChildList()){
-			g.setInactive(inactive);
+		if (root.getChildList() != null){
+			for (Sprite g : root.getChildList()){
+			
+				if (g.isInactiveOnLoad()){
+					g.setInactive(inactive);
+				} else {
+					g.setInactive(inactive);
+					g.setInactiveOnLoad(!inactive);
+				}
+						
+			}
 		}
 	}
 	

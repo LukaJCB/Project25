@@ -33,8 +33,6 @@ public abstract class Engine {
 	private static SpatialHashMap shMap;
 	private static HeadsUpDisplay hud = new HeadsUpDisplay();
 	private static boolean started;
-	private static boolean zoneChanged;
-	
 	private static Position currentArea;
 	private static HashMap<Position, Area> areas = new HashMap<Position, Area>();
 	private static float areaWidth, areaHeight;
@@ -128,13 +126,6 @@ public abstract class Engine {
 		}
 		if (areaMode != AREA_MODE_NONE){
 			checkArea();
-
-
-			if (zoneChanged){
-				zoneChanged = false;
-				shMap.clear();
-				shMap = new SpatialHashMap(5,5,collisionZone.getWidth(),collisionZone.getHeight(),collisionZone.getX(),collisionZone.getY());
-			}
 		}
 	}
 	
@@ -230,9 +221,6 @@ public abstract class Engine {
 
 	public static void setCollisionZone(Rectangle collisionZone) {
 		Engine.collisionZone = collisionZone;
-		if (started){
-			zoneChanged = true;
-		}
 	}
 	
 	private static void checkArea(){
@@ -250,7 +238,6 @@ public abstract class Engine {
 							int dy = nextPosition.getY() - currentArea.getY();
 							currentArea = nextPosition;
 							changeArea(dx, dy);
-							zoneChanged = true;
 							return;
 						}
 					}
@@ -310,6 +297,9 @@ public abstract class Engine {
 				}
 			}
 		}
+		
+		shMap.clear();
+		shMap = new SpatialHashMap(5,5,collisionZone.getWidth(),collisionZone.getHeight(),collisionZone.getX(),collisionZone.getY());
 
 		
 	}

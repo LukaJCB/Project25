@@ -1,16 +1,13 @@
 package com.ltj.game.projectPlatform;
 
-import com.ltj.java.engine.JoglParticleEmitter;
 import com.ltj.shared.engine.Behaviour;
 import com.ltj.shared.engine.Sprite;
 import com.ltj.shared.engine.SpriteSheet;
-import com.ltj.shared.engine.primitives.Globals;
+import com.ltj.shared.engine.primitives.RunTimeGlobals;
 
 public class EnemyBehaviour extends Behaviour<SpriteSheet> {
 
-	private float left,right;
 	private boolean movingRight;
-	private float startPosX;
 	private boolean grounded,jumping;
 	private float upSpeed,gravity;
 	private float speed;
@@ -22,13 +19,10 @@ public class EnemyBehaviour extends Behaviour<SpriteSheet> {
 	
 	@Override
 	public void start() {
-		startPosX = gameObject.getX();
-		left = -5;
-		right = 5;
 		speed = 0.06f;
 		gameObject.setTexture(1, 3);
 		
-		gravity = Globals.getFloat("gravity");
+		gravity = RunTimeGlobals.getFloat("gravity");
 	}
 
 	@Override
@@ -69,18 +63,9 @@ public class EnemyBehaviour extends Behaviour<SpriteSheet> {
 			if (movingRight){
 				gameObject.translate(speed, upSpeed);
 				
-				if (gameObject.getX() > startPosX + right){
-					movingRight = false;
-					gameObject.getChildList().get(0).translate(-gameObject.getChildList().get(0).getWidth(), 0);
-				}
 			} else {
-				
 				gameObject.translate(-speed, 0);
-				if (gameObject.getX() < startPosX + left){
-					movingRight = true;
-					
-					gameObject.getChildList().get(0).translate(gameObject.getChildList().get(0).getWidth(), 0);
-				}
+				
 			}
 		}
 		
@@ -102,7 +87,16 @@ public class EnemyBehaviour extends Behaviour<SpriteSheet> {
 				gameObject.setPosition(gameObject.getX(), collider.getY()+collider.getHeight()/2 +gameObject.getHeight()/2);
 			
 			} 
-		} 
+		} else if (collider.compareTag("changeDirection")){
+			if (movingRight){
+				movingRight = false;
+				gameObject.getChildList().get(0).translate(-gameObject.getChildList().get(0).getWidth(), 0);
+			} else {
+				movingRight = true;
+				
+				gameObject.getChildList().get(0).translate(gameObject.getChildList().get(0).getWidth(), 0);
+			}
+		}
 	}
 	
 	

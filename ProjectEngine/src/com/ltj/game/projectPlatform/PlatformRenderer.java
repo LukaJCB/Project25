@@ -7,17 +7,16 @@ import com.jogamp.opengl.GLAutoDrawable;
 import com.ltj.java.engine.JoglParticleEmitter;
 import com.ltj.java.engine.JoglRenderer;
 import com.ltj.java.engine.JoglSprite;
+import com.ltj.shared.engine.Area;
 import com.ltj.shared.engine.Behaviour;
-import com.ltj.shared.engine.Camera;
 import com.ltj.shared.engine.EmptyObject;
 import com.ltj.shared.engine.Engine;
 import com.ltj.shared.engine.HudElement;
 import com.ltj.shared.engine.OrthoRenderObject;
-import com.ltj.shared.engine.Skybox;
 import com.ltj.shared.engine.Sprite;
 import com.ltj.shared.engine.json.JSONException;
 import com.ltj.shared.engine.primitives.BoxCollider;
-import com.ltj.shared.engine.primitives.Globals;
+import com.ltj.shared.engine.primitives.RunTimeGlobals;
 import com.ltj.shared.engine.primitives.Rectangle;
 import com.ltj.shared.engine.primitives.Scene;
 
@@ -27,16 +26,15 @@ public class PlatformRenderer extends JoglRenderer {
 	public void init(GLAutoDrawable drawable) {
 		super.init(drawable);
 		boolean load = true;
-		if (!load){
+		if (load){
 			EmptyObject background = new EmptyObject();
 			background.scale(10, 10);
 
-			Camera.addSkyBox(new Skybox( "assets/img/skyboxtop.png","assets/img/skyboxbottom.png","assets/img/skyboxfront.png",
-					"assets/img/skyboxback.png","assets/img/skyboxright.png","assets/img/skyboxleft.png",Engine.DESKTOP));
+			
 
 			Engine.setCollisionZone(new Rectangle(background.getX(), background.getY(), background.getWidth(), background.getHeight()));
 			//background
-			OrthoRenderObject o = new OrthoRenderObject("assets/img/skyboxtop.png",Engine.DESKTOP);
+			OrthoRenderObject o = new OrthoRenderObject("assets/img/skyboxback.png",Engine.DESKTOP);
 			Engine.addOrthoRenderObject(o);
 
 			JoglSprite star1 = new JoglSprite( "assets/img/star.png", 1, 1);
@@ -50,6 +48,7 @@ public class PlatformRenderer extends JoglRenderer {
 			star2.setZ(-88);
 			Engine.addRenderable(star2);
 
+			
 			JoglSprite star3 = new JoglSprite( "assets/img/star.png", 1, 1);
 			star3.translate(30, 27);
 			star3.scale(10, 10);
@@ -74,7 +73,7 @@ public class PlatformRenderer extends JoglRenderer {
 			moon3.setZ(-58);
 			Engine.addRenderable(moon3);
 
-			Globals.add("gravity", 0.013f);
+			RunTimeGlobals.add("gravity", 0.013f);
 
 			//hero 
 			JoglSprite hero = new JoglSprite( "assets/img/player_run.png",4,1);
@@ -94,7 +93,7 @@ public class PlatformRenderer extends JoglRenderer {
 			JoglParticleEmitter jpe = new JoglParticleEmitter(100, 1000, 0.1f, 0.9f, 0.1f);
 			Engine.addParticleEmitter(jpe);
 			hero.addParticleEmitter(jpe);
-			Globals.add("bullet", bullet);
+			RunTimeGlobals.add("bullet", bullet);
 
 			bullet.scale(0.3f, 0.6f);
 			hero.scale(0.5f, 0.5f);
@@ -104,7 +103,7 @@ public class PlatformRenderer extends JoglRenderer {
 			hero.addAnimation("walk_left", 10, 2, true, 4);
 			hero.addAnimation("walk", 10, 0, true, 4);
 
-			Globals.createPool("bullets", "bullet", 20);
+			RunTimeGlobals.createPool("bullets", "bullet", 20);
 			Engine.addRenderable(hero);
 
 			
@@ -157,7 +156,7 @@ public class PlatformRenderer extends JoglRenderer {
 	
 	private void setupMiddle(){
 		
-		
+		Area mid = new Area(25, 15);
 		//platforms
 		JoglSprite platform = new JoglSprite("assets/img/tile_t.png", 1, 1);
 		platform.setTag("ground");
@@ -214,6 +213,17 @@ public class PlatformRenderer extends JoglRenderer {
 		spikes.translate(15.7f, 0);
 		Engine.addRenderable(spikes);
 		
+		JoglSprite cd = new JoglSprite("assets/img/spike.png", 1, 1);
+		cd.translate(5, 0);
+		cd.setTag("changeDirection");
+		cd.addCollider(new BoxCollider());
+		Engine.addRenderable(cd);
+		
+		JoglSprite cd2 = new JoglSprite("assets/img/spike.png", 1, 1);
+		cd2.translate(15, 0);
+		cd2.setTag("changeDirection");
+		cd2.addCollider(new BoxCollider());
+		Engine.addRenderable(cd2);
 		
 	}
 	

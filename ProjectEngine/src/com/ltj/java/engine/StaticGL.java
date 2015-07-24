@@ -40,8 +40,6 @@ public abstract class StaticGL {
 		StaticGL.gl = gl;
 	}
 	
-	
-
 	public static boolean isGL() {
 		return gl.isGL();
 	}
@@ -153,6 +151,7 @@ public abstract class StaticGL {
 	public static GL4 getGL4() throws GLException {
 		return gl.getGL4();
 	}
+	
 
 	public static GL3bc getGL3bc() throws GLException {
 		return gl.getGL3bc();

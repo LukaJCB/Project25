@@ -6,6 +6,7 @@ import com.jogamp.opengl.GLCapabilities;
 import com.jogamp.opengl.GLProfile;
 import com.jogamp.opengl.awt.GLCanvas;
 import com.jogamp.opengl.util.Animator;
+import com.ltj.game.disper.DisperRenderer;
 import com.ltj.game.projectPlatform.PlatformRenderer;
 import com.ltj.java.engine.JoglRenderer;
 
@@ -21,7 +22,7 @@ public class JoglView{
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		Animator anim = new Animator(canvas);
 		anim.setRunAsFastAsPossible(true);
-		JoglRenderer r = new PlatformRenderer();
+		JoglRenderer r = new DisperRenderer();
 		canvas.addGLEventListener(r);
 		frame.add(canvas);
 		frame.addKeyListener(r);

@@ -1,15 +1,6 @@
 package com.ltj.java.utils;
 
-import static com.jogamp.opengl.GL.GL_LINEAR;
-import static com.jogamp.opengl.GL.GL_LINEAR_MIPMAP_LINEAR;
-import static com.jogamp.opengl.GL.GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT;
-import static com.jogamp.opengl.GL.GL_REPEAT;
-import static com.jogamp.opengl.GL.GL_TEXTURE_2D;
-import static com.jogamp.opengl.GL.GL_TEXTURE_MAG_FILTER;
-import static com.jogamp.opengl.GL.GL_TEXTURE_MAX_ANISOTROPY_EXT;
-import static com.jogamp.opengl.GL.GL_TEXTURE_MIN_FILTER;
-import static com.jogamp.opengl.GL.GL_TEXTURE_WRAP_S;
-import static com.jogamp.opengl.GL.GL_TEXTURE_WRAP_T;
+import static com.jogamp.opengl.GL.*;
 import static com.ltj.java.engine.StaticGL.*;
 
 import java.awt.Color;
@@ -107,7 +98,7 @@ public class JoglTextureHelper {
 	    glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, aniso, 0);
 	    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, aniso[0]);
 	    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-	    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	 

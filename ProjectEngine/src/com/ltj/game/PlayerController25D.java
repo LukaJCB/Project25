@@ -6,7 +6,7 @@ import com.ltj.android.engine.MotionInput;
 import com.ltj.shared.engine.Behaviour;
 import com.ltj.shared.engine.Camera;
 import com.ltj.shared.engine.Sprite;
-import com.ltj.shared.engine.primitives.Globals;
+import com.ltj.shared.engine.primitives.RunTimeGlobals;
 public class PlayerController25D extends Behaviour<Sprite> {
 
 	private float xMovement,yMovement;
@@ -27,7 +27,7 @@ public class PlayerController25D extends Behaviour<Sprite> {
 		if (MotionInput.isActive()){
 			
 			gameObject.rotate((lastX - MotionInput.getX())*0.01f);
-			Globals.add("rotation", gameObject.getRotation());
+			RunTimeGlobals.add("rotation", gameObject.getRotation());
 
 			float speed = lastY - MotionInput.getY();
 			setMovement(speed * (float)-Math.sin(Math.toRadians(gameObject.getRotation())), 

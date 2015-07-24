@@ -34,6 +34,7 @@ public class SpatialHashMap {
 
 				int left = clampX((int) ((c.getLeft(sprite.getX(), sprite.getWidth())-gridX)/cellWidth));
 				int right = clampX((int) ((c.getRight(sprite.getX(), sprite.getWidth())-gridX)/cellWidth));	
+				
 				boolean rightLeft = (right == left); 
 
 				if (rightLeft){

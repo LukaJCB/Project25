@@ -8,9 +8,7 @@ public class Animation {
 	private boolean playing,looping;
 	private int numCols;
 	
-	public void setNumCols(int numCols) {
-		this.numCols = numCols;
-	}
+	
 
 	public boolean isPlaying() {
 		return playing;
@@ -24,9 +22,7 @@ public class Animation {
 		this.looping = looping;
 	}
 
-	public void setTexRow(int texRow) {
-		this.texRow = texRow;
-	}
+	
 
 	public void play(SpriteRenderer renderer){
 		counter++;

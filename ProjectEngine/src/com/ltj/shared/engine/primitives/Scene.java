@@ -3,10 +3,8 @@ package com.ltj.shared.engine.primitives;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 
-
-import android.annotation.SuppressLint;
 
 import com.ltj.java.utils.JoglTextResourceReader;
 import com.ltj.shared.engine.Behaviour;
@@ -21,32 +19,28 @@ import com.ltj.shared.engine.Sprite;
 import com.ltj.shared.engine.json.JSONArray;
 import com.ltj.shared.engine.json.JSONException;
 import com.ltj.shared.engine.json.JSONObject;
+import com.ltj.shared.utils.StringEncoder;
 
 
 
-@SuppressLint("UseSparseArrays") 
 public class Scene {
 
-	private static ArrayList<RenderObject>  allObjects;
 	
-	private static HashMap<Integer,ArrayList<RenderObject>> parentsToAdd;
-	private static HashMap<Integer,RenderObject> childrenToAdd;
-	public void start(){
+	private static LinkedHashMap<Integer,ArrayList<RenderObject>> parentsToAdd;
+	private static LinkedHashMap<Integer,RenderObject> childrenToAdd;
 	
-	}
 
-	public void init(){
-		Engine.flush(allObjects);
-		Camera.flush();
-	}
 	
 	public static void load() throws ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchMethodException, SecurityException, IllegalArgumentException, InvocationTargetException, JSONException{
-		allObjects = new ArrayList<RenderObject>();
-		parentsToAdd = new HashMap<Integer, ArrayList<RenderObject>>();
-		childrenToAdd = new HashMap<Integer, RenderObject>();
+	
+		parentsToAdd = new LinkedHashMap<Integer, ArrayList<RenderObject>>();
+		childrenToAdd = new LinkedHashMap<Integer, RenderObject>();
 		
 		//load json
-		JSONObject json = new JSONObject(JoglTextResourceReader.readTextFileFromResource("res/raw/test.json"));
+		String file = JoglTextResourceReader.readTextFileFromResource("res/raw/scene1.sav");
+		String decoded = StringEncoder.getInstance().decrypt(file);
+		System.out.println(decoded);
+		JSONObject json = new JSONObject(decoded);
 		
 		JSONObject cam = json.getJSONObject("Camera");
 		Camera.setDistance(cam.getFloat("distance"));
@@ -79,7 +73,7 @@ public class Scene {
 		if (booleans != null){
 			for (int i = 0; i < booleans.length(); i++){
 				JSONObject bool = booleans.getJSONObject(i);
-				Globals.add(bool.getString("name"), bool.getBoolean("value"));
+				RunTimeGlobals.add(bool.getString("name"), bool.getBoolean("value"));
 			}
 		}
 		
@@ -87,7 +81,7 @@ public class Scene {
 		if (floats != null){
 			for (int i = 0; i < floats.length(); i++){
 				JSONObject f = floats.getJSONObject(i);
-				Globals.add(f.getString("name"), f.getFloat("value"));
+				RunTimeGlobals.add(f.getString("name"), f.getFloat("value"));
 			}
 		}
 		
@@ -95,7 +89,7 @@ public class Scene {
 		if (ints != null){
 			for (int i = 0; i < ints.length(); i++){
 				JSONObject in = ints.getJSONObject(i);
-				Globals.add(in.getString("name"), in.getInt("value"));
+				RunTimeGlobals.add(in.getString("name"), in.getInt("value"));
 			}
 		}
 		
@@ -103,7 +97,7 @@ public class Scene {
 		if (objects != null){
 			for (int i = 0; i < objects.length(); i++){
 				JSONObject obj = objects.getJSONObject(i);
-				Globals.add(obj.getString("name"), Engine.getAllObjects().get(obj.getInt("value")));
+				RunTimeGlobals.add(obj.getString("name"), Engine.getAllObjects().get(obj.getInt("value")));
 			}
 		}
 		
@@ -112,7 +106,7 @@ public class Scene {
 			for (int i = 0; i < pools.length(); i++){
 				JSONObject pool = pools.getJSONObject(i);
 				ObjectPool op = new ObjectPool(pool.getInt("id"), pool.getInt("count"));
-				Globals.add(pool.getString("name"), op);
+				RunTimeGlobals.add(pool.getString("name"), op);
 			}
 		}
 		

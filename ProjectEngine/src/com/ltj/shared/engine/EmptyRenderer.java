@@ -189,8 +189,10 @@ public class EmptyRenderer implements SpriteRenderer {
 	}
 
 	@Override
-	public void setLooping(String name, boolean looping) {
-		
+	public Animation getAnimation(String name) {
+		// TODO Auto-generated method stub
+		return null;
 	}
+
 
 }

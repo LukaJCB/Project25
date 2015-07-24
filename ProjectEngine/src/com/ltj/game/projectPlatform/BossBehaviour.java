@@ -4,7 +4,7 @@ import com.ltj.java.engine.JoglParticleEmitter;
 import com.ltj.shared.engine.Behaviour;
 import com.ltj.shared.engine.Sprite;
 import com.ltj.shared.engine.SpriteSheet;
-import com.ltj.shared.engine.primitives.Globals;
+import com.ltj.shared.engine.primitives.RunTimeGlobals;
 
 public class BossBehaviour extends Behaviour<SpriteSheet> {
 
@@ -32,7 +32,7 @@ public class BossBehaviour extends Behaviour<SpriteSheet> {
 		speed = 0.12f;
 		gameObject.setTexture(1, 3);
 		
-		gravity = Globals.getFloat("gravity");
+		gravity = RunTimeGlobals.getFloat("gravity");
 	}
 
 	@Override

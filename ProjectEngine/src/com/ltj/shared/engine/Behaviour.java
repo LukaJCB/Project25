@@ -57,6 +57,7 @@ public abstract class Behaviour<T extends Sprite> {
 	}
 
 	
+	
 	public final HudElement getHudElementByID(String id){
 		return HeadsUpDisplay.get(id);
 	}
@@ -111,6 +112,8 @@ public abstract class Behaviour<T extends Sprite> {
 	public void onKeyRelease(KeyEvent e){
 		
 	}
+	
+	
 
 	
 }

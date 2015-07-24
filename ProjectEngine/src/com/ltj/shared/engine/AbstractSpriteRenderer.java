@@ -69,6 +69,8 @@ public abstract class AbstractSpriteRenderer implements SpriteRenderer {
 	}
 	
 	
+	
+	
 	@Override
 	public void startAnimation(String name) {
 		animator.startAnimation(name);
@@ -80,8 +82,8 @@ public abstract class AbstractSpriteRenderer implements SpriteRenderer {
 	}
 	
 	@Override
-	public void setLooping(String name, boolean looping){
-		animator.setLooping(name,looping);
+	public Animation getAnimation(String name){
+		return animator.getAnimation(name);
 	}
 
 	public void translate(float dx, float dy){

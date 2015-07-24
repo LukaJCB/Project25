@@ -17,7 +17,7 @@ public abstract class AbstractSprite implements RenderObject,SingleSprite,Sprite
 	private ArrayList<Sprite> childList;
 	private ArrayList<ParticleEmitter> emitterList;
 	private String tag = "";
-	private boolean destroyed, inactive;
+	private boolean destroyed, inactive, inactiveOnLoad;
 	protected SpriteRenderer renderer;
 	protected String path;
 	private boolean mirroredX, mirroredY;
@@ -117,8 +117,8 @@ public abstract class AbstractSprite implements RenderObject,SingleSprite,Sprite
 	}
 
 	@Override
-	public void animationSetLooping(String name, boolean looping) {
-		renderer.setLooping(name, looping);
+	public Animation getAnimation(String name){
+		return renderer.getAnimation(name);
 	}
 
 	public Collider getCollider(int index) {
@@ -256,12 +256,6 @@ public abstract class AbstractSprite implements RenderObject,SingleSprite,Sprite
 	@Override
 	public void setScale(float width, float height){
 		renderer.setScale(width, height);
-		//scale children as well
-		if (childList != null){
-			for (Sprite r : childList){
-				r.setScale(width,height);
-			}
-		}
 	}
 	
 	
@@ -497,8 +491,18 @@ public abstract class AbstractSprite implements RenderObject,SingleSprite,Sprite
 		if (childList != null){
 			for (Sprite o : childList){
 				o.setInactive(inactive);
+				((RenderObject) o).setInactiveOnLoad(inactive);
 			}
 		}
+		setInactiveOnLoad(inactive);
+	}
+
+	public boolean isInactiveOnLoad() {
+		return inactiveOnLoad;
+	}
+
+	public void setInactiveOnLoad(boolean inactiveOnLoad) {
+		this.inactiveOnLoad = inactiveOnLoad;
 	}
 
 	@Override
@@ -539,6 +543,8 @@ public abstract class AbstractSprite implements RenderObject,SingleSprite,Sprite
 		s+=  "}";
 		return s;
 	}
+
+	
 
 	
 

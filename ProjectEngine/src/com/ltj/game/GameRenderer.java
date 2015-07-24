@@ -18,7 +18,7 @@ import com.ltj.shared.engine.HudElement;
 import com.ltj.shared.engine.Skybox;
 import com.ltj.shared.engine.SoundManager;
 import com.ltj.shared.engine.primitives.BoxCollider;
-import com.ltj.shared.engine.primitives.Globals;
+import com.ltj.shared.engine.primitives.RunTimeGlobals;
 import com.ltj.shared.engine.primitives.Rectangle;
 
 public class GameRenderer extends AndroidRenderer {
@@ -94,7 +94,7 @@ public class GameRenderer extends AndroidRenderer {
 
 			@Override
 			public void update() {
-				gameObject.setRotation(Globals.getFloat("rotation"));
+				gameObject.setRotation(RunTimeGlobals.getFloat("rotation"));
 					
 			}
 
@@ -116,7 +116,7 @@ public class GameRenderer extends AndroidRenderer {
 
 			@Override
 			public void update() {
-				gameObject.setRotation(Globals.getFloat("rotation"));
+				gameObject.setRotation(RunTimeGlobals.getFloat("rotation"));
 					
 			}
 

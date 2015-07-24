@@ -13,12 +13,12 @@ import javax.tools.StandardJavaFileManager;
 import javax.tools.ToolProvider;
 
 import com.ltj.shared.engine.Behaviour;
-import com.ltj.shared.engine.RenderObject;
+import com.ltj.shared.engine.Sprite;
 
 public class BehaviourLoader {
 
 	@SuppressWarnings("unchecked")
-	public static Behaviour<? extends RenderObject> loadBehaviour(String fileName, String path) throws ClassNotFoundException, IOException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
+	public static Behaviour<? extends Sprite> loadBehaviour(String fileName, String path) throws ClassNotFoundException, IOException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
 		
 		String[] fileToCompile = new String[1];
 		fileToCompile[0] =  path + "Scripts/" + fileName + ".java";
@@ -41,7 +41,7 @@ public class BehaviourLoader {
 				//get default constructor
 				Constructor<?> cons = c.getConstructors()[0];
 				//return behaviour
-				return (Behaviour<? extends RenderObject>) cons.newInstance((Object[])null);
+				return (Behaviour<? extends Sprite>) cons.newInstance((Object[])null);
 		}
 		return null;
 	}

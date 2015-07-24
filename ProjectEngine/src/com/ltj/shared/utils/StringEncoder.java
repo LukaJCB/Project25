@@ -16,10 +16,17 @@ public class StringEncoder {
 
 	private Cipher ecipher;
 	private SecretKey key;
+	private static StringEncoder encoder;
 	
+	public static StringEncoder getInstance(){
+		if (encoder == null){
+			encoder = new StringEncoder();
+		}
+		return encoder;
+	}
 
 	@SuppressLint("TrulyRandom") 
-	public StringEncoder(){
+	private StringEncoder(){
 		try {
 			ecipher = Cipher.getInstance("AES");
 			KeyGenerator keyGen = KeyGenerator.getInstance("AES");
@@ -57,9 +64,13 @@ public class StringEncoder {
 
 			return new String(utf8, "UTF8");
 		} catch (javax.crypto.BadPaddingException e) {
+			e.printStackTrace();
 		} catch (IllegalBlockSizeException e) {
+			e.printStackTrace();
 		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
 		} catch (java.io.IOException e) {
+			e.printStackTrace();
 		} catch (InvalidKeyException e) {
 			e.printStackTrace();
 		}

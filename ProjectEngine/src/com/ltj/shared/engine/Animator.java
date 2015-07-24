@@ -19,6 +19,10 @@ public class Animator {
 		}
 	}
 	
+	public Animation getAnimation(String name){
+		return animations.get(name);
+	}
+	
 	public void stopAnimation(){
 		currentAnimation = null;
 	}
@@ -44,7 +48,5 @@ public class Animator {
 		
 	}
 
-	public void setLooping(String name, boolean looping) {
-		animations.get(name).setLooping(looping);
-	}
+	
 }
