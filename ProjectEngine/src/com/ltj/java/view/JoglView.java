@@ -7,7 +7,6 @@ import com.jogamp.opengl.GLProfile;
 import com.jogamp.opengl.awt.GLCanvas;
 import com.jogamp.opengl.util.Animator;
 import com.ltj.game.disper.DisperRenderer;
-import com.ltj.game.projectPlatform.PlatformRenderer;
 import com.ltj.java.engine.JoglRenderer;
 
 public class JoglView{
@@ -18,7 +17,6 @@ public class JoglView{
 
 		JFrame frame = new JFrame("AWT Window Test");
 		frame.setSize(1280,720);
-		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		Animator anim = new Animator(canvas);
 		anim.setRunAsFastAsPossible(true);
@@ -26,6 +24,7 @@ public class JoglView{
 		canvas.addGLEventListener(r);
 		frame.add(canvas);
 		frame.addKeyListener(r);
+		frame.setVisible(true);
 		anim.start();
 		
 	}
