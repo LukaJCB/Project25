@@ -12,6 +12,7 @@ import java.util.Map.Entry;
 
 import com.ltj.java.utils.JoglTextResourceReader;
 import com.ltj.shared.engine.Area;
+import com.ltj.shared.engine.AreaMode;
 import com.ltj.shared.engine.Behaviour;
 import com.ltj.shared.engine.Camera;
 import com.ltj.shared.engine.Engine;
@@ -140,10 +141,26 @@ public class BasicIO {
 			}
 		}
 		
-		int areaMode = json.getInt("AreaMode");
+		int areaModeInt = json.getInt("AreaMode");
+		AreaMode areaMode;
+		switch (areaModeInt){
+		
+		case 0:
+			areaMode = AreaMode.NONE;
+			break;
+		case 1:
+			areaMode = AreaMode.HIDE;
+			break;
+		case 2:
+			areaMode = AreaMode.DYNAMIC_LOAD;
+			break;
+		default: 
+			areaMode = AreaMode.HIDE;
+		}
+		
 		Engine.setAreaMode(areaMode);
 		
-		if (areaMode == Engine.AREA_MODE_HIDE){
+		if (areaMode == AreaMode.HIDE){
 			
 			JSONArray areaSize = json.getJSONArray("AreaSize");
 			Engine.setAreaSize(areaSize.getInt(0), areaSize.getInt(1));
@@ -162,7 +179,7 @@ public class BasicIO {
 			//set current area
 			JSONArray currentArea = json.getJSONArray("CurrentArea");
 			Engine.setCurrentArea(currentArea.getInt(0),currentArea.getInt(1));
-		} else if (areaMode == Engine.AREA_MODE_DYNAMIC_LOAD){
+		} else if (areaMode == AreaMode.DYNAMIC_LOAD){
 			//TODO
 		}
 		
@@ -212,7 +229,7 @@ public class BasicIO {
 		json += "],\"Constants\":" + SaveStateConstants.toJSON();
 		json += ",\"Globals\":" + RunTimeGlobals.toJSON();
 		json += ",\"AreaMode\":" + Engine.getAreaMode();
-		if (Engine.getAreaMode() == Engine.AREA_MODE_DYNAMIC_LOAD){
+		if (Engine.getAreaMode() == AreaMode.DYNAMIC_LOAD){
 			
 			//save area size
 			json+= ",\"AreaSize\":" + Engine.getAreaSizeJSON();
@@ -235,7 +252,7 @@ public class BasicIO {
 			
 			//TODO add all areas with full data somehow.
 			
-		} else if (Engine.getAreaMode() == Engine.AREA_MODE_HIDE){
+		} else if (Engine.getAreaMode() == AreaMode.HIDE){
 			
 			//save area size
 			json+= ",\"AreaSize\":" + Engine.getAreaSizeJSON();

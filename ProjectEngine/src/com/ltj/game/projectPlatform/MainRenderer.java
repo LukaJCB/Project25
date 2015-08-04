@@ -6,6 +6,7 @@ import com.ltj.java.engine.JoglParticleEmitter;
 import com.ltj.java.engine.JoglRenderer;
 import com.ltj.java.engine.JoglSprite;
 import com.ltj.shared.engine.Area;
+import com.ltj.shared.engine.AreaMode;
 import com.ltj.shared.engine.Behaviour;
 import com.ltj.shared.engine.EmptyObject;
 import com.ltj.shared.engine.Engine;
@@ -68,7 +69,7 @@ public class MainRenderer extends JoglRenderer {
 		initTopFarRight();
 		
 
-		Engine.setAreaMode(Engine.AREA_MODE_HIDE);
+		Engine.setAreaMode(AreaMode.HIDE);
 	
 	}
 	

@@ -6,6 +6,7 @@ import com.ltj.java.engine.JoglParticleEmitter;
 import com.ltj.java.engine.JoglRenderer;
 import com.ltj.java.engine.JoglSprite;
 import com.ltj.shared.engine.Area;
+import com.ltj.shared.engine.AreaMode;
 import com.ltj.shared.engine.BehaviourManipulator;
 import com.ltj.shared.engine.EmptyObject;
 import com.ltj.shared.engine.Engine;
@@ -22,7 +23,7 @@ public class DisperRenderer extends JoglRenderer {
 	public void init(GLAutoDrawable drawable) {
 		super.init(drawable);
 		Engine.setAreaSize(25, 15);
-		Engine.setAreaMode(Engine.AREA_MODE_HIDE);
+		Engine.setAreaMode(AreaMode.HIDE);
 		RunTimeGlobals.add("gravity", 0.013f);
 		SoundManager.initSoundManager(false);
 		SoundManager.addSoundClip("assets/song.wav");

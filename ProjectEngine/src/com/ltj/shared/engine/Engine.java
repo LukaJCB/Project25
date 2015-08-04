@@ -1,6 +1,7 @@
 package com.ltj.shared.engine;
 
 import java.awt.event.KeyEvent;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -12,10 +13,13 @@ import com.ltj.shared.engine.primitives.Rectangle;
 import com.ltj.shared.engine.primitives.SpatialHashMap;
 
 
+
 public abstract class Engine {
 
 	public static final int DESKTOP = 0;
 	public static final int ANDROID = 1;
+	
+	
 	
 	public static final int AREA_MODE_NONE = 0;
 	public static final int AREA_MODE_HIDE = 1;
@@ -36,7 +40,7 @@ public abstract class Engine {
 	private static Position currentArea;
 	private static HashMap<Position, Area> areas = new HashMap<Position, Area>();
 	private static float areaWidth, areaHeight;
-	private static int areaMode;
+	private static AreaMode areaMode;
 
 	
 	
@@ -124,7 +128,7 @@ public abstract class Engine {
 				}
 			}
 		}
-		if (areaMode != AREA_MODE_NONE){
+		if (areaMode != AreaMode.NONE){
 			checkArea();
 		}
 	}
@@ -179,7 +183,7 @@ public abstract class Engine {
 		started = true;
 	
 		
-		if (areaMode == AREA_MODE_HIDE){
+		if (areaMode == AreaMode.HIDE){
 			//deactivate all areas
 			for (Area a : areas.values()){
 					a.setInactive(true);
@@ -256,9 +260,9 @@ public abstract class Engine {
 				pos.setY(currentArea.getY() - dy *2);
 				pos.setX(i);
 				if (areas.get(pos) != null){
-					if (areaMode == AREA_MODE_HIDE){
+					if (areaMode == AreaMode.HIDE){
 						areas.get(pos).setInactive(true);
-					} else if (areaMode == AREA_MODE_DYNAMIC_LOAD){
+					} else if (areaMode == AreaMode.DYNAMIC_LOAD){
 						areas.get(pos).destroy();
 					}
 				}
@@ -266,9 +270,9 @@ public abstract class Engine {
 				//activate or load next areas
 				pos.setY(currentArea.getY()+ dy);
 				if (areas.get(pos) != null){
-					if (areaMode == AREA_MODE_HIDE){
+					if (areaMode == AreaMode.HIDE){
 						areas.get(pos).setInactive(false);
-					} else if (areaMode == AREA_MODE_DYNAMIC_LOAD){
+					} else if (areaMode == AreaMode.DYNAMIC_LOAD){
 						loadArea(pos.getX(), pos.getY());
 					}
 				}
@@ -280,18 +284,18 @@ public abstract class Engine {
 				pos.setX(currentArea.getX() - dx * 2);
 				pos.setY(j);
 				if (areas.get(pos) != null){
-					if (areaMode == AREA_MODE_HIDE){
+					if (areaMode == AreaMode.HIDE){
 						areas.get(pos).setInactive(true);
-					} else if (areaMode == AREA_MODE_DYNAMIC_LOAD){
+					} else if (areaMode == AreaMode.DYNAMIC_LOAD){
 						areas.get(pos).destroy();
 					}
 				}
 				//activate or load next areas
 				pos.setX(currentArea.getX()+ dx);
 				if (areas.get(pos) != null){
-					if (areaMode == AREA_MODE_HIDE){
+					if (areaMode == AreaMode.HIDE){
 						areas.get(pos).setInactive(false);
-					} else if (areaMode == AREA_MODE_DYNAMIC_LOAD){
+					} else if (areaMode == AreaMode.DYNAMIC_LOAD){
 						loadArea(pos.getX(), pos.getY());
 					}
 				}
@@ -335,7 +339,7 @@ public abstract class Engine {
 		//TODO
 	}
 	
-	public static void setAreaMode(int mode){
+	public static void setAreaMode(AreaMode mode){
 		areaMode = mode;
 	}
 
@@ -356,7 +360,7 @@ public abstract class Engine {
 		return currentArea;
 	}
 
-	public static int getAreaMode() {
+	public static AreaMode getAreaMode() {
 		return areaMode;
 	}
 
