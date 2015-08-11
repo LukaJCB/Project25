@@ -6,7 +6,6 @@ import com.ltj.java.engine.JoglParticleEmitter;
 import com.ltj.java.engine.JoglRenderer;
 import com.ltj.java.engine.JoglSprite;
 import com.ltj.shared.engine.Area;
-import com.ltj.shared.engine.AreaMode;
 import com.ltj.shared.engine.BehaviourManipulator;
 import com.ltj.shared.engine.EmptyObject;
 import com.ltj.shared.engine.Engine;
@@ -23,8 +22,8 @@ public class DisperRenderer extends JoglRenderer {
 	public void init(GLAutoDrawable drawable) {
 		super.init(drawable);
 		Engine.setAreaSize(25, 15);
-		Engine.setAreaMode(AreaMode.HIDE);
-		RunTimeGlobals.add("gravity", 0.013f);
+		Engine.setAreaMode(Engine.AREA_MODE_HIDE);
+		RunTimeGlobals.add("gravity", 0.016f);
 		SoundManager.initSoundManager(false);
 		SoundManager.addSoundClip("assets/song.wav");
 		//SoundManager.setLooping(true);
@@ -37,13 +36,14 @@ public class DisperRenderer extends JoglRenderer {
 		playerWorm.setTexture(0, 0);
 		PlayerWormController b = new PlayerWormController();
 		playerWorm.addCollider(new BoxCollider());
+		playerWorm.translate(42,-30);
 		playerWorm.addBehaviour(b);
 		b.allocateObject(playerWorm);
 		JoglParticleEmitter jpe = new JoglParticleEmitter(100, 1000, 0.1f, 0.9f, 0.1f);
 		Engine.addParticleEmitter(jpe);
 		playerWorm.addParticleEmitter(jpe);
 
-		playerWorm.scale(0.5f, 0.5f);
+		playerWorm.scale(0.3f, 0.3f);
 		playerWorm.setTag("player");
 		playerWorm.addAnimation("walk", 5, 0, true, 5);
 		Engine.addRenderable(playerWorm);
@@ -60,6 +60,7 @@ public class DisperRenderer extends JoglRenderer {
 
 		player.setTag("player");
 		player.addAnimation("walk", 4, 0, true, 4);
+		player.scale(0.6f, 0.6f);
 		player.translate(42, -32.125f);
 		player.setInactive(true);
 		Engine.addRenderable(player);
@@ -85,8 +86,10 @@ public class DisperRenderer extends JoglRenderer {
 		init0_2();
 		init1_2();
 		init2_2();
+		init3_2();
+		init3_1();
 
-		Engine.setCurrentArea(1, 0);
+		Engine.setCurrentArea(2, -2);
 		
 		Engine.start();
 
@@ -405,6 +408,7 @@ public class DisperRenderer extends JoglRenderer {
 		ground.setTag("ground");
 		ground.scale(8, 1);
 		ground.translate(-8, -6.125f);
+		ground.addCollider(new BoxCollider());
 		a.addObject(ground);
 		Engine.addRenderable(ground);
 		
@@ -477,4 +481,37 @@ public class DisperRenderer extends JoglRenderer {
 		
 	}
 
+	private void init3_2(){
+		Area a = Engine.addArea(3, -2);
+		
+		JoglSprite ground = new JoglSprite("assets/pic/layout_dark.png", 1, 1);
+		ground.setTag("ground");
+		ground.scale(25, 1);
+		ground.addCollider(new BoxCollider());
+		ground.translate(0, -7.125f);
+		a.addObject(ground);
+		Engine.addRenderable(ground);
+	
+		JoglSprite wall = new JoglSprite("assets/pic/layout_dark.png", 1, 1);
+		wall.setTag("ground");
+		wall.scale(1, 14);
+		wall.addCollider(new BoxCollider());
+		wall.translate(12, 0.375f);
+		a.addObject(wall);
+		Engine.addRenderable(wall);
+	}
+	
+	private void init3_1(){
+		Area a = Engine.addArea(3, -1);
+		
+		JoglSprite ground = new JoglSprite("assets/pic/layout_dark.png", 1, 1);
+		ground.setTag("ground");
+		ground.scale(21, 1);
+		ground.addCollider(new BoxCollider());
+		ground.translate(-2, -7);
+		a.addObject(ground);
+		Engine.addRenderable(ground);
+		
+		
+	}
 }
