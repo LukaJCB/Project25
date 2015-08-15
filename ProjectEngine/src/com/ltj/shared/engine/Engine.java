@@ -20,10 +20,6 @@ public abstract class Engine {
 	public static final int ANDROID = 1;
 	
 	
-	
-	public static final int AREA_MODE_NONE = 0;
-	public static final int AREA_MODE_HIDE = 1;
-	public static final int AREA_MODE_DYNAMIC_LOAD = 2;
 	private static int platform;
 	
 	private static Rectangle collisionZone;

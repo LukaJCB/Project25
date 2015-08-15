@@ -56,7 +56,9 @@ public class BasicIO {
 			@Override
 			public void run() {
 				StringEncoder enc = StringEncoder.getInstance();
-				String encoded = enc.encrypt(getJSON());
+				
+				String json = "{\"Constants\":" + SaveStateConstants.toJSON() + "}";
+				String encoded = enc.encrypt(json);
 				writeToPath(encoded,path + name + ".sav");
 			}
 
@@ -226,8 +228,7 @@ public class BasicIO {
 			json = json.substring(0, json.length() - 1);
 		}
 
-		json += "],\"Constants\":" + SaveStateConstants.toJSON();
-		json += ",\"Globals\":" + RunTimeGlobals.toJSON();
+		json += "],\"Globals\":" + RunTimeGlobals.toJSON();
 		json += ",\"AreaMode\":" + Engine.getAreaMode();
 		if (Engine.getAreaMode() == AreaMode.DYNAMIC_LOAD){
 			
