@@ -112,7 +112,6 @@ public abstract class Engine {
 			r.animate();
 		}
 		
-		Camera.calcPVMatrix();
 		//add objects that try to get inserted this frame
 		if (!dynamicObjects.isEmpty()){
 			for (int i = dynamicObjects.size()-1;i > -1;i--){
@@ -363,6 +362,10 @@ public abstract class Engine {
 	public static String getAreaSizeJSON() {
 		return "[" + areaWidth + "," + areaHeight + "]";
 	}
-	
+
+	public static boolean isStarted() {
+		return started;
+	}
+
 
 }
