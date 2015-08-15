@@ -37,7 +37,7 @@ public class BehaviourLoader {
 				URLClassLoader loader = new URLClassLoader(classURL);
 				//load class
 				Class<?> c  =loader.loadClass("Scripts." + fileName);
-				loader.close();
+				
 				//get default constructor
 				Constructor<?> cons = c.getConstructors()[0];
 				//return behaviour

@@ -1,10 +1,10 @@
 package com.ltj.game.disper;
 
 import com.ltj.shared.engine.Behaviour;
-import com.ltj.shared.engine.SingleSprite;
 import com.ltj.shared.engine.Sprite;
+import com.ltj.shared.engine.SpriteSheet;
 
-public class RaisingPlatform extends Behaviour<SingleSprite> {
+public class AnimatedRaisingPlatform extends Behaviour<SpriteSheet> {
 
 	private float raiseSpeed;
 	private boolean raising;
@@ -15,6 +15,7 @@ public class RaisingPlatform extends Behaviour<SingleSprite> {
 	@Override
 	public void start() {
 		raiseSpeed = 0.05f;
+		gameObject.startAnimation("idle");
 	}
 
 	@Override
@@ -46,5 +47,7 @@ public class RaisingPlatform extends Behaviour<SingleSprite> {
 			}
 		}
 	}
+	
+	
 
 }
