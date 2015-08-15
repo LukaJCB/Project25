@@ -6,6 +6,7 @@ import com.ltj.java.engine.JoglParticleEmitter;
 import com.ltj.java.engine.JoglRenderer;
 import com.ltj.java.engine.JoglSprite;
 import com.ltj.shared.engine.Area;
+import com.ltj.shared.engine.AreaMode;
 import com.ltj.shared.engine.BehaviourManipulator;
 import com.ltj.shared.engine.EmptyObject;
 import com.ltj.shared.engine.Engine;
@@ -22,7 +23,7 @@ public class DisperRenderer extends JoglRenderer {
 	public void init(GLAutoDrawable drawable) {
 		super.init(drawable);
 		Engine.setAreaSize(25, 15);
-		Engine.setAreaMode(Engine.AREA_MODE_HIDE);
+		Engine.setAreaMode(AreaMode.HIDE);
 		RunTimeGlobals.add("gravity", 0.016f);
 		SoundManager.initSoundManager(false);
 		SoundManager.addSoundClip("assets/song.wav");
@@ -47,6 +48,8 @@ public class DisperRenderer extends JoglRenderer {
 		playerWorm.setTag("player");
 		playerWorm.addAnimation("walk", 5, 0, true, 5);
 		Engine.addRenderable(playerWorm);
+		playerWorm.setInactive(true);
+		
 		
 		JoglSprite player = new JoglSprite("assets/pic/player_run.png",4,1);
 		player.setTexture(0, 0);
@@ -62,7 +65,8 @@ public class DisperRenderer extends JoglRenderer {
 		player.addAnimation("walk", 4, 0, true, 4);
 		player.scale(0.6f, 0.6f);
 		player.translate(42, -32.125f);
-		player.setInactive(true);
+		//player.setInactive(true);
+		player.setPosition(75, -11);
 		Engine.addRenderable(player);
 		
 		
@@ -71,7 +75,7 @@ public class DisperRenderer extends JoglRenderer {
 		trigger.scale(1, 1);
 		trigger.addCollider(new BoxCollider());
 		trigger.translate(42, -32.125f);
-		Engine.addRenderable(trigger);
+		//Engine.addRenderable(trigger);
 		
 		trigger.addChild(player);
 		TriggerBehaviour tb = new TriggerBehaviour();
@@ -88,6 +92,8 @@ public class DisperRenderer extends JoglRenderer {
 		init2_2();
 		init3_2();
 		init3_1();
+		init30();
+		init2_1();
 
 		Engine.setCurrentArea(2, -2);
 		
@@ -262,10 +268,11 @@ public class DisperRenderer extends JoglRenderer {
 		raising.addAnimation("idle", 15, 0, true, 4);
 		raising.addCollider(new BoxCollider());
 		raising.scale(2.5f,2);
-		RaisingPlatform rp = new RaisingPlatform();
+		AnimatedRaisingPlatform rp = new AnimatedRaisingPlatform();
 		rp.allocateObject(raising);
 		raising.addBehaviour(rp);
 		raising.translate(-1, -4.5f);
+		BehaviourManipulator.manipulateField(rp, "delay", 60);
 		a.addObject(raising);
 		Engine.addRenderable(raising);
 		
@@ -494,24 +501,302 @@ public class DisperRenderer extends JoglRenderer {
 	
 		JoglSprite wall = new JoglSprite("assets/pic/layout_dark.png", 1, 1);
 		wall.setTag("ground");
-		wall.scale(1, 14);
+		wall.scale(1, 14.125f);
 		wall.addCollider(new BoxCollider());
-		wall.translate(12, 0.375f);
+		wall.translate(12, 0.4375f);
 		a.addObject(wall);
 		Engine.addRenderable(wall);
+		
+
+		JoglSprite wall2 = new JoglSprite("assets/pic/layout_dark.png", 1, 1);
+		wall2.setTag("ground");
+		wall2.scale(0.5f, 8);
+		wall2.addCollider(new BoxCollider());
+		wall2.translate(-12.25f, 3.5f);
+		a.addObject(wall2);
+		Engine.addRenderable(wall2);
+	
+		JoglSprite platform1 = new JoglSprite("assets/pic/layout_dark.png", 1, 1);
+		platform1.setTag("ground");
+		platform1.scale(2, 0.2f);
+		platform1.addCollider(new BoxCollider());
+		platform1.translate(-11, -5.75f);
+		a.addObject(platform1);
+		Engine.addRenderable(platform1);
+		
+		JoglSprite platform2 = new JoglSprite("assets/pic/layout_dark.png", 1, 1);
+		platform2.setTag("ground");
+		platform2.scale(2, 0.2f);
+		platform2.addCollider(new BoxCollider());
+		platform2.translate(-8, -4f);
+		a.addObject(platform2);
+		Engine.addRenderable(platform2);
+		
+		JoglSprite platform3 = new JoglSprite("assets/pic/layout_dark.png", 1, 1);
+		platform3.setTag("ground");
+		platform3.scale(2, 0.2f);
+		platform3.addCollider(new BoxCollider());
+		platform3.translate(-11, -2.25f);
+		a.addObject(platform3);
+		Engine.addRenderable(platform3);
+		
+		JoglSprite platform4 = new JoglSprite("assets/pic/layout_dark.png", 1, 1);
+		platform4.setTag("ground");
+		platform4.scale(2, 0.2f);
+		platform4.addCollider(new BoxCollider());
+		platform4.translate(-8, -0.5f);
+		a.addObject(platform4);
+		Engine.addRenderable(platform4);
+		
+		JoglSprite platform5 = new JoglSprite("assets/pic/layout_dark.png", 1, 1);
+		platform5.setTag("ground");
+		platform5.scale(2, 0.2f);
+		platform5.addCollider(new BoxCollider());
+		platform5.translate(-11, 1.25f);
+		a.addObject(platform5);
+		Engine.addRenderable(platform5);
+		
+		JoglSprite platform6 = new JoglSprite("assets/pic/layout_dark.png", 1, 1);
+		platform6.setTag("ground");
+		platform6.scale(2, 0.2f);
+		platform6.addCollider(new BoxCollider());
+		platform6.translate(-8, 3f);
+		a.addObject(platform6);
+		Engine.addRenderable(platform6);
+		
+		JoglSprite platform7 = new JoglSprite("assets/pic/layout_dark.png", 1, 1);
+		platform7.setTag("ground");
+		platform7.scale(2, 0.2f);
+		platform7.addCollider(new BoxCollider());
+		platform7.translate(-11, 4.75f);
+		a.addObject(platform7);
+		Engine.addRenderable(platform7);
+		
+		JoglSprite platform8 = new JoglSprite("assets/pic/layout_dark.png", 1, 1);
+		platform8.setTag("ground");
+		platform8.scale(1, 0.2f);
+		platform8.addCollider(new BoxCollider());
+		platform8.translate(-11.5f, 6.5f);
+		a.addObject(platform8);
+		Engine.addRenderable(platform8);
+		
 	}
 	
 	private void init3_1(){
 		Area a = Engine.addArea(3, -1);
 		
+		JoglSprite activatedPlatform = new JoglSprite("assets/pic/layout_dark.png", 1, 1);
+		activatedPlatform.setTag("raising");
+		activatedPlatform.scale(2.8f, 1);
+		activatedPlatform.addCollider(new BoxCollider());
+		activatedPlatform.translate(10, -7);
+		ActivatedRaisingPlatform ar = new ActivatedRaisingPlatform();
+		ar.allocateObject(activatedPlatform);
+		activatedPlatform.addBehaviour(ar);
+		BehaviourManipulator.manipulateField(ar, "delay", 30);
+		BehaviourManipulator.manipulateField(ar, "identifier", "Platform3_1");
+		a.addObject(activatedPlatform);
+		Engine.addRenderable(activatedPlatform);
+		
+		EmptyObject activator = new EmptyObject();
+		activator.translate(10, -6f);
+		activator.addCollider(new BoxCollider());
+		activator.setParent(activatedPlatform);
+		a.addObject(activator);
+		Engine.addRenderable(activator);
+		
+		EmptyObject cd = new EmptyObject();
+		cd.addCollider(new BoxCollider());
+		cd.translate(10	, -22);
+		cd.setTag("changeDirection");
+		a.addObject(cd);
+		Engine.addRenderable(cd);
+		
+		EmptyObject cd2 = new EmptyObject();
+		cd2.addCollider(new BoxCollider());
+		cd2.translate(10 , 9);
+		cd2.setTag("changeDirection");
+		a.addObject(cd2);
+		Engine.addRenderable(cd2);
+		
+		
+		
 		JoglSprite ground = new JoglSprite("assets/pic/layout_dark.png", 1, 1);
 		ground.setTag("ground");
-		ground.scale(21, 1);
+		ground.scale(19, 1);
 		ground.addCollider(new BoxCollider());
-		ground.translate(-2, -7);
+		ground.translate(-1, -7);
 		a.addObject(ground);
 		Engine.addRenderable(ground);
 		
+		JoglSprite wall = new JoglSprite("assets/pic/layout_dark.png", 1, 1);
+		wall.setTag("ground");
+		wall.scale(1, 15);
+		wall.addCollider(new BoxCollider());
+		wall.translate(12, 0);
+		a.addObject(wall);
+		Engine.addRenderable(wall);
 		
+
+		JoglSprite wall2 = new JoglSprite("assets/pic/layout_dark.png", 1, 1);
+		wall2.setTag("ground");
+		wall2.scale(0.5f, 5);
+		wall2.addCollider(new BoxCollider());
+		wall2.translate(-12.25f, -5f);
+		a.addObject(wall2);
+		Engine.addRenderable(wall2);
+		
+		JoglSprite wall9 = new JoglSprite("assets/pic/layout_dark.png", 1, 1);
+		wall9.setTag("ground");
+		wall9.scale(0.5f, 5);
+		wall9.addCollider(new BoxCollider());
+		wall9.translate(-12.25f, 3);
+		a.addObject(wall9);
+		Engine.addRenderable(wall9);
+		
+		
+		JoglSprite spikes = new JoglSprite("assets/pic/spikes.png",1,1);
+		spikes.setTag("hazard");
+		spikes.scale(5, 0.25f);
+		spikes.setRepeat(5,1);
+		spikes.addCollider(new BoxCollider());
+		spikes.rotate(-90);
+		spikes.translate(-3, -1);
+		a.addObject(spikes);
+		Engine.addRenderable(spikes);
+		
+		JoglSprite spikes2 = new JoglSprite("assets/pic/spikes.png",1,1);
+		spikes2.setTag("hazard");
+		spikes2.scale(5, 0.25f);
+		spikes2.setRepeat(5,1);
+		spikes2.addCollider(new BoxCollider());
+		spikes2.rotate(90);
+		spikes2.translate(-1, -4);
+		a.addObject(spikes2);
+		Engine.addRenderable(spikes2);
+		
+		
+		JoglSprite wall3 = new JoglSprite("assets/pic/layout_dark.png", 1, 1);
+		wall3.scale(0.75f, 5);
+		wall3.translate(-0.5f, -4);
+		a.addObject(wall3);
+		Engine.addRenderable(wall3);
+		
+		JoglSprite spikes6 = new JoglSprite("assets/pic/spikes.png",1,1);
+		spikes6.setTag("hazard");
+		spikes6.scale(0.75f, 0.25f);
+		spikes6.setRepeat(0.75f,1);
+		spikes6.addCollider(new BoxCollider());
+		spikes6.translate(-0.5f, -1.375f);
+		a.addObject(spikes6);
+		Engine.addRenderable(spikes6);
+		
+		JoglSprite spikes3 = new JoglSprite("assets/pic/spikes.png",1,1);
+		spikes3.setTag("hazard");
+		spikes3.scale(5, 0.25f);
+		spikes3.setRepeat(5,1);
+		spikes3.addCollider(new BoxCollider());
+		spikes3.rotate(-90);
+		spikes3.translate(0, -4);
+		a.addObject(spikes3);
+		Engine.addRenderable(spikes3);
+		
+		JoglSprite wall5 = new JoglSprite("assets/pic/layout_dark.png", 1, 1);
+		wall5.scale(0.5f, 5.625f);
+		wall5.setTag("ground");
+		wall5.addCollider(new BoxCollider());
+		wall5.translate(2.375f,-0.725f);
+		a.addObject(wall5);
+		Engine.addRenderable(wall5);
+		
+		JoglSprite spikes4 = new JoglSprite("assets/pic/spikes.png",1,1);
+		spikes4.setTag("hazard");
+		spikes4.scale(5, 0.25f);
+		spikes4.setRepeat(5,1);
+		spikes4.addCollider(new BoxCollider());
+		spikes4.rotate(90);
+		spikes4.translate(2, -1);
+		a.addObject(spikes4);
+		Engine.addRenderable(spikes4);
+		
+		JoglSprite wall4 = new JoglSprite("assets/pic/layout_dark.png", 1, 1);
+		wall4.scale(5.5f, 0.5f);
+		wall4.setTag("ground");
+		wall4.addCollider(new BoxCollider());
+		wall4.translate(-0.5f, 1.825f);
+		a.addObject(wall4);
+		Engine.addRenderable(wall4);
+		
+		JoglSprite spikes5 = new JoglSprite("assets/pic/spikes.png",1,1);
+		spikes5.setTag("hazard");
+		spikes5.scale(4.5f, 0.25f);
+		spikes5.setRepeat(4.5f,1);
+		spikes5.addCollider(new BoxCollider());
+		spikes5.rotate(180);
+		spikes5.translate(-0.5f, 1.5f);
+		a.addObject(spikes5);
+		Engine.addRenderable(spikes5);
+		
+	
+		JoglSprite wall6 = new JoglSprite("assets/pic/layout_dark.png", 1, 1);
+		wall6.scale(0.5f, 5.625f);
+		wall6.setTag("ground");
+		wall6.addCollider(new BoxCollider());
+		wall6.translate(-3.375f,-0.725f);
+		a.addObject(wall6);
+		Engine.addRenderable(wall6);
+		
+		JoglSprite platform = new JoglSprite("assets/pic/layout_dark.png", 1, 1);
+		platform.scale(1, 0.2f);
+		platform.translate(-2f, -3);
+		platform.addCollider(new BoxCollider());
+		platform.setTag("raising");
+		RaisingPlatform b = new RaisingPlatform();
+		b.allocateObject(platform);
+		platform.addBehaviour(b);
+		a.addObject(platform);
+		Engine.addRenderable(platform);
+		
+		EmptyObject directionChanger1 = new EmptyObject();
+		directionChanger1.translate(-2, -6.9f);
+		directionChanger1.addCollider(new BoxCollider());
+		directionChanger1.setTag("changeDirection");
+		a.addObject(directionChanger1);
+		Engine.addRenderable(directionChanger1);
+		
+		EmptyObject directionChanger2 = new EmptyObject();
+		directionChanger2.translate(-2, 2);
+		directionChanger2.addCollider(new BoxCollider());
+		directionChanger2.setTag("changeDirection");
+		a.addObject(directionChanger2);
+		Engine.addRenderable(directionChanger2);
+		
+		JoglSprite platform2 = new JoglSprite("assets/pic/layout_dark.png", 1, 1);
+		platform2.scale(1, 0.2f);
+		platform2.translate(5f, 3);
+		platform2.addCollider(new BoxCollider());
+		platform2.setTag("ground");
+		a.addObject(platform2);
+		Engine.addRenderable(platform2);
+
+		JoglSprite platform3 = new JoglSprite("assets/pic/layout_dark.png", 1, 1);
+		platform3.scale(1, 0.2f);
+		platform3.translate(-8f, -1);
+		platform3.addCollider(new BoxCollider());
+		platform3.setTag("ground");
+		a.addObject(platform3);
+		Engine.addRenderable(platform3);
+	
+		
+	
+	}
+	
+	private void init2_1(){
+		Area a = Engine.addArea(2, -1);
+	}
+	
+	private void init30(){
+		Area a = Engine.addArea(3, 0);
 	}
 }
+
