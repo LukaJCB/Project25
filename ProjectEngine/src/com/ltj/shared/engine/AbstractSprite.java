@@ -22,6 +22,7 @@ public abstract class AbstractSprite implements RenderObject,SingleSprite,Sprite
 	protected String path;
 	private boolean mirroredX, mirroredY;
 	private int id;
+	private String name = "";
 	private boolean loading;
 	
 	public int getNumCols() {
@@ -547,6 +548,15 @@ public abstract class AbstractSprite implements RenderObject,SingleSprite,Sprite
 		}
 		s+=  "}";
 		return s;
+	}
+
+	public String toString() {
+		return name;
+	}
+
+	@Override
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	

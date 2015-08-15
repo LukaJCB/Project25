@@ -40,6 +40,7 @@ public interface RenderObject extends Sprite {
 	void setTexture(int col, int row);
 	void finishLoading();
 	void setLoaded(boolean b);
+	void setName(String name);
 	
 	
 	
