@@ -59,13 +59,9 @@ public abstract class Camera {
 		lookAt[1] = y;
 		
 		eyePos[0] = x;
-		eyePos[1] = y-sevenY;
+		eyePos[1] = y;
 		
-		// Camera matrix
-		MatrixHelper.setLookAtM(viewMatrix, 
-				eyePos[0],eyePos[1],eyePos[2]-sevenZ, 
-				x,y,0, 
-				0,1,0); 
+		calcMatrix();
 	}
 	
 	public static void setRotateAround(float x, float y,float rotation){
@@ -101,11 +97,20 @@ public abstract class Camera {
 	public static void setModeSeven() {
 		sevenY = 1.5f;
 		sevenZ = 1.5f;
+		calcMatrix();
+	}
+	
+	private static void calcMatrix(){
+		MatrixHelper.setLookAtM(viewMatrix, 
+				eyePos[0],eyePos[1]-sevenY,eyePos[2]-sevenZ, 
+				lookAt[0],lookAt[1],0, 
+				0,1,0); 
 	}
 	
 	public static void setNormalMode(){
 		sevenY = 0;
 		sevenZ = 0;
+		calcMatrix();
 	}
 
 	public static void renderSkybox() {
