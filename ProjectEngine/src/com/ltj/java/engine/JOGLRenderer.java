@@ -224,6 +224,7 @@ public class JoglRenderer implements GLEventListener, KeyListener {
 		glClear(GL_DEPTH_BUFFER_BIT);
 	
 		Engine.getHud().render();
+		
 		long timeDiff = System.currentTimeMillis() - time;
 		if (timeDiff < renderTime){
 			try {

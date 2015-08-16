@@ -10,6 +10,7 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JTextField;
 
 import com.jogamp.opengl.awt.GLCanvas;
@@ -25,8 +26,10 @@ public class CreateSpriteDialog extends JDialog {
 	private GLCanvas canvas;
 	private DefaultListModel<RenderObject> listModel;
 
-	public CreateSpriteDialog(JFrame mainFrame, GLCanvas canvas, DefaultListModel<RenderObject> listModel) {
+	public CreateSpriteDialog(JFrame mainFrame, GLCanvas canvas, DefaultListModel<RenderObject> listModel,
+			JList<RenderObject> list, InspectorPanel inspector) {
 		super(mainFrame);
+		
 		this.canvas = canvas;
 		this.listModel = listModel;
 		setPreferredSize(new Dimension(270,140));
@@ -35,10 +38,10 @@ public class CreateSpriteDialog extends JDialog {
         setLocationRelativeTo(mainFrame);
         pack();
 		
-        prepareDialog();
+        prepareDialog(list, inspector);
 	}
 	
-	private void prepareDialog() {
+	private void prepareDialog(final JList<RenderObject> list, final InspectorPanel inspector) {
 		JLabel cols = new JLabel("Columns");
 		add(cols);
 		final JTextField colText = new JTextField();
@@ -72,6 +75,10 @@ public class CreateSpriteDialog extends JDialog {
 				listModel.addElement(sp);
 			
 				canvas.display();
+
+				list.setSelectedIndex(listModel.getSize()-1);
+				
+				inspector.openInspector(list.getSelectedIndex());
 				dispose();
 			}
 		});
