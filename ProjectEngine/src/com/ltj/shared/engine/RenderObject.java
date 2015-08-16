@@ -41,6 +41,7 @@ public interface RenderObject extends Sprite {
 	void finishLoading();
 	void setLoaded(boolean b);
 	void setName(String name);
+	boolean isModeSevenEnabled();
 	
 	
 	

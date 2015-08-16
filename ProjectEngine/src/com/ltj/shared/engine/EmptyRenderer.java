@@ -194,5 +194,11 @@ public class EmptyRenderer implements SpriteRenderer {
 		return null;
 	}
 
+	@Override
+	public boolean isModeSevenEnabled() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 
 }

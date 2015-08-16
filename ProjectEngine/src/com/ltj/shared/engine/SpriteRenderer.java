@@ -33,4 +33,5 @@ public interface SpriteRenderer {
 	String toJSON();
 	void finishLoading(String path);
 	Animation getAnimation(String name);
+	boolean isModeSevenEnabled();
 }

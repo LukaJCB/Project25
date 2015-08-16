@@ -331,6 +331,11 @@ public abstract class AbstractSprite implements RenderObject,SingleSprite,Sprite
 	}
 
 	@Override
+	public boolean isModeSevenEnabled() {
+		return renderer.isModeSevenEnabled();
+	}
+
+	@Override
 	public boolean isLoaded() {
 		return !loading;
 	}

@@ -112,6 +112,7 @@ public abstract class AbstractSpriteRenderer implements SpriteRenderer {
 	public void setScale(float x, float y) {
 		width = x;
 		height = y;
+		calcMatrix();
 	}
 
 
@@ -137,7 +138,13 @@ public abstract class AbstractSpriteRenderer implements SpriteRenderer {
 	}
 
 	@Override
+	public boolean isModeSevenEnabled() {
+		return modeSEnabled;
+	}
+
+	@Override
 	public void setModeSevenEnabled(boolean modeSEnabled) {
+
 		this.modeSEnabled = modeSEnabled;
 	}
 
