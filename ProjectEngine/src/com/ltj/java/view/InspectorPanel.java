@@ -14,6 +14,7 @@ import javax.swing.event.ChangeListener;
 import javax.swing.text.JTextComponent;
 
 import com.jogamp.opengl.awt.GLCanvas;
+import com.ltj.java.engine.JoglRenderer;
 import com.ltj.shared.engine.EmptyObject;
 import com.ltj.shared.engine.Engine;
 import com.ltj.shared.engine.RenderObject;
@@ -28,8 +29,7 @@ public class InspectorPanel extends JPanel {
 	private int currentId;
 	private GLCanvas canvas;
 
-	public InspectorPanel(GLCanvas canvas){
-		
+	public InspectorPanel(final GLCanvas canvas, final JoglRenderer renderer){
 		this.canvas = canvas;
 		setPreferredSize(new Dimension(200,500));
 		mainPanel = new JPanel();
@@ -126,7 +126,7 @@ public class InspectorPanel extends JPanel {
 					RenderObject o = Engine.getAllObjects().get(currentId);
 					o.setScale(o.getWidth(),Float.parseFloat(height.getText()));
 				}
-
+				
 				canvas.display();
 			}
 		}

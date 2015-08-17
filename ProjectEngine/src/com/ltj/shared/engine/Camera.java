@@ -14,6 +14,7 @@ public abstract class Camera {
 	private static float[] eyePos = new float[4];
 	private static float[] lookAt = new float[2];
 	private static Skybox skybox;
+	private static boolean modeSeven;
 	
 	
 	public static void addSkyBox(Skybox box){
@@ -33,10 +34,14 @@ public abstract class Camera {
 	
 	public static void setDistance(float distance){
 		eyePos[2] = distance;
+		calcDistanceParams();
+		calcViewMatrix();
 	}
 	
 	public static void zoom(float zoomFactor){
 		eyePos[2] /= zoomFactor;
+		calcDistanceParams();
+		calcViewMatrix();
 	}
 	
 	public static void createOrthographic(int height, int width){
@@ -61,7 +66,7 @@ public abstract class Camera {
 		eyePos[0] = x;
 		eyePos[1] = y;
 		
-		calcMatrix();
+		calcViewMatrix();
 	}
 	
 	public static void setRotateAround(float x, float y,float rotation){
@@ -95,22 +100,33 @@ public abstract class Camera {
 	}
 
 	public static void setModeSeven() {
-		sevenY = 1.5f;
-		sevenZ = 1.5f;
-		calcMatrix();
+		modeSeven = true;
+		calcDistanceParams();
+		calcViewMatrix();
 	}
 	
-	private static void calcMatrix(){
+	public static void setNormalMode(){
+		modeSeven = false;
+		calcDistanceParams();
+		calcViewMatrix();
+	}
+
+	private static void calcViewMatrix(){
+		
 		MatrixHelper.setLookAtM(viewMatrix, 
 				eyePos[0],eyePos[1]-sevenY,eyePos[2]-sevenZ, 
 				lookAt[0],lookAt[1],0, 
 				0,1,0); 
 	}
 	
-	public static void setNormalMode(){
-		sevenY = 0;
-		sevenZ = 0;
-		calcMatrix();
+	private static void calcDistanceParams(){
+		if (modeSeven){
+			sevenY = 0.75f*eyePos[2];
+			sevenZ = 0.75f*eyePos[2];
+		} else {
+			sevenY = 0;
+			sevenZ = 0;
+		}
 	}
 
 	public static void renderSkybox() {
