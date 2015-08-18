@@ -38,9 +38,11 @@ public abstract class Engine {
 	private static HashMap<Position, Area> areas = new HashMap<Position, Area>();
 	private static float areaWidth, areaHeight;
 	private static AreaMode areaMode;
+	private static boolean modeSeven;
 
 	
 	
+
 	public static ArrayList<OrthoRenderObject> getAllOrthoRenderObjects() {
 		return allOrthoRenderObjects;
 	}
@@ -367,6 +369,18 @@ public abstract class Engine {
 	public static boolean isStarted() {
 		return started;
 	}
+
+	public static void setModeSeven(boolean b) {
+		modeSeven = b;
+		
+	}
+	
+
+	public static boolean isModeSeven() {
+		return modeSeven;
+	}
+	
+	
 
 
 }

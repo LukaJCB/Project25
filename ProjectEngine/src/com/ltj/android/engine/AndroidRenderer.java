@@ -212,6 +212,7 @@ public abstract class AndroidRenderer implements Renderer{
 			s.setNormalMode();
 		}
 		modeSeven = false;
+		Engine.setModeSeven(false);
 	}
 
 
@@ -228,5 +229,6 @@ public abstract class AndroidRenderer implements Renderer{
 			s.setModeSeven();
 		}
 		modeSeven = true;
+		Engine.setModeSeven(true);
 	}
 }

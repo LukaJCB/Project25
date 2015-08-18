@@ -135,6 +135,7 @@ public class JoglRenderer implements GLEventListener, KeyListener {
 			g.setNormalMode();
 		}
 		modeSeven = false;
+		Engine.setModeSeven(false);
 	}
 
 	private void setModeSeven() {
@@ -148,6 +149,7 @@ public class JoglRenderer implements GLEventListener, KeyListener {
 			g.setModeSeven();
 		}
 		modeSeven = true;
+		Engine.setModeSeven(true);
 	}
 
 	public void reshape(GLAutoDrawable drawable, int x, int y, int width,
