@@ -3,6 +3,7 @@ package com.ltj.shared.engine;
 
 import com.ltj.shared.utils.MatrixHelper;
 
+
 public abstract class Camera {
 
 	private Camera() {}
@@ -10,6 +11,7 @@ public abstract class Camera {
 	private static float[] perspectiveProjectionMatrix = new float[16];
 	private static float[] orthoProjectionMatrix = new float[16];
 	private static float[] projectionViewMatrix = new float[16];
+	private static float[] invertedProjectionViewMatrix = new float[16];
 	private static float sevenY,sevenZ;
 	private static float[] eyePos = new float[4];
 	private static float[] lookAt = new float[2];
@@ -148,6 +150,38 @@ public abstract class Camera {
 		return perspectiveProjectionMatrix;
 	}
 	
+	public static void calcInvertedMatrix(){
+		MatrixHelper.invertM(invertedProjectionViewMatrix,projectionViewMatrix);
+	}
+	
+	public static float[] getInvertedProjectionViewMatrix(){
+		return invertedProjectionViewMatrix;
+	}
+	
+	public static Line normalized2DCoordsToLine(float x, float y){
+		
+		final float[] nearPoint = {x, y, -1, 1};
+		final float[] farPoint = {x, y, 1, 1};
+		
+		final float[] nearPointWorld = new float[4];
+		final float[] farPointWorld = new float[4];
+		
+		MatrixHelper.multiplyMV(nearPointWorld, invertedProjectionViewMatrix, nearPoint);
+		MatrixHelper.multiplyMV(farPointWorld, invertedProjectionViewMatrix, farPoint);
+		
+		perspectiveDevide(nearPointWorld);
+		perspectiveDevide(farPointWorld);
+		
+		return new Line(nearPointWorld,farPointWorld);
+	}
+	
+	private static void perspectiveDevide(float[] vector) {
+		vector[0] /= vector[3];
+		vector[1] /= vector[3];
+		vector[2] /= vector[3];
+		
+	}
+
 	public static String toJSON(){
 		String json = "{ \"distance\":" + eyePos[2]+ ",\"x\":" + lookAt[0] + ",\"y\":" + lookAt[1] + ",\"skybox\":";
 		if (skybox != null){
