@@ -6,14 +6,18 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
+
 import javax.swing.DefaultListModel;
 import javax.swing.JCheckBox;
 import javax.swing.JDialog;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
@@ -39,6 +43,7 @@ public class EditorView {
 	private JoglRenderer renderer;
 	private JoglSprite selection;
 	private ListSelectionListener selectionListener;
+	private String projectPath;
 	
 	public EditorView(){
 		prepareGUI();
@@ -63,7 +68,7 @@ public class EditorView {
 	}
 
 	private void prepareGUI(){
-		mainFrame = new JFrame("Java SWING Examples");
+		mainFrame = new JFrame("Project Engine");
 		mainFrame.setSize(900,600);
 		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		mainFrame.setLayout(new BorderLayout(5, 5));
@@ -76,8 +81,13 @@ public class EditorView {
 		
 		JMenu file = new JMenu("File");
 		
+
+		JMenuItem newFile = new JMenuItem("New...");
+		file.add(newFile);
+		
 		JMenuItem fileSave = new JMenuItem("Save");
 		file.add(fileSave);
+		
 		
 		menuBar.add(file);
 		
@@ -114,7 +124,7 @@ public class EditorView {
 		
 		menuBar.add(object);
 		
-		JCheckBox modeS = new JCheckBox("ModeSeven");
+		JCheckBox modeS = new JCheckBox("ModeSeven Preview");
 		modeS.addActionListener(new ActionListener() {
 			
 			@Override
@@ -125,6 +135,29 @@ public class EditorView {
 		});
 		menuBar.add(modeS);
 		
+		
+		newFile.addActionListener(new ActionListener() {
+			
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String name = JOptionPane.showInputDialog(mainFrame, "Choose a name for your Project.");
+				
+				JFileChooser chooser = new JFileChooser();
+			    chooser.setDialogTitle("Choose Directory");
+			    chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+			    chooser.setAcceptAllFileFilterUsed(false);
+			    
+			    int state = chooser.showOpenDialog(mainFrame);
+			    if (state == JFileChooser.APPROVE_OPTION){
+			    	File projectFolder = new File(chooser.getSelectedFile().toString()+ File.separatorChar + name);
+			    	projectFolder.mkdir();
+			    	projectPath = projectFolder.toString();
+			    	mainFrame.setTitle(mainFrame.getTitle() +  " - "  + name);
+			    }
+				
+			}
+		});
 		mainFrame.setJMenuBar(menuBar);
 		
 	}
