@@ -61,7 +61,7 @@ public class CreateSpriteDialog extends JDialog {
 		add(pathText);
 		
 		final JFileChooser chooser = new JFileChooser("assets");
-		chooser.addChoosableFileFilter(new FileNameExtensionFilter("PNG", "png"));
+		chooser.setFileFilter(new FileNameExtensionFilter("PNG", "png"));
 		
 		
 

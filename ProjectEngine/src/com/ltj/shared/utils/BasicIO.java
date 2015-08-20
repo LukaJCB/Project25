@@ -1,5 +1,6 @@
 package com.ltj.shared.utils;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -41,11 +42,11 @@ public class BasicIO {
 
 
 
-	public static void parseToPDE(final String path, final String name){
+	public static void parseToDME(final String path, final String name){
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				writeToPath(getJSON(),path + name + ".pde");
+				writeToPath(getJSON(),path + File.separator + name + ".dme");
 			}
 
 		}).start();
@@ -65,13 +66,13 @@ public class BasicIO {
 		}).start();
 	}
 	
-	public static void loadFromPDE(String path, String name) throws ClassNotFoundException, JSONException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException{
+	public static void loadFromDME(String path, String name) throws ClassNotFoundException, JSONException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException{
 	
 		parentsToAdd = new LinkedHashMap<Integer, ArrayList<RenderObject>>();
 		childrenToAdd = new LinkedHashMap<Integer, RenderObject>();
 		
 		//load json
-		String file = JoglTextResourceReader.readTextFileFromResource("res/raw/scene2.pde");
+		String file = JoglTextResourceReader.readTextFileFromResource(path + File.separator + name);
 	
 		JSONObject json = new JSONObject(file);
 		
@@ -143,23 +144,9 @@ public class BasicIO {
 			}
 		}
 		
-		int areaModeInt = json.getInt("AreaMode");
-		AreaMode areaMode;
-		switch (areaModeInt){
-		
-		case 0:
-			areaMode = AreaMode.NONE;
-			break;
-		case 1:
-			areaMode = AreaMode.HIDE;
-			break;
-		case 2:
-			areaMode = AreaMode.DYNAMIC_LOAD;
-			break;
-		default: 
-			areaMode = AreaMode.HIDE;
-		}
-		
+		String areaModeString = json.getString("AreaMode");
+		AreaMode areaMode = AreaMode.valueOf(areaModeString);
+
 		Engine.setAreaMode(areaMode);
 		
 		if (areaMode == AreaMode.HIDE){
@@ -229,7 +216,12 @@ public class BasicIO {
 		}
 
 		json += "],\"Globals\":" + RunTimeGlobals.toJSON();
-		json += ",\"AreaMode\":" + Engine.getAreaMode();
+		json += ",\"AreaMode\":";
+		if (Engine.getAreaMode() == null){
+			json += AreaMode.NONE;
+		} else {
+			json += Engine.getAreaMode();
+		}
 		if (Engine.getAreaMode() == AreaMode.DYNAMIC_LOAD){
 			
 			//save area size

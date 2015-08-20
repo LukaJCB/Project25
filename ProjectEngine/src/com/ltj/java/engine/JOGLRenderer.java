@@ -45,7 +45,7 @@ public class JoglRenderer implements GLEventListener, KeyListener {
 
 	private boolean modeSeven, changeMode;
 
-
+	private JoglSprite selectionSprite;
 
 	protected GL3 gl;
 
@@ -227,6 +227,10 @@ public class JoglRenderer implements GLEventListener, KeyListener {
 	
 		Engine.getHud().render();
 		
+		if (selectionSprite != null){
+			selectionSprite.render();
+		}
+		
 		long timeDiff = System.currentTimeMillis() - time;
 		if (timeDiff < renderTime){
 			try {
@@ -235,6 +239,10 @@ public class JoglRenderer implements GLEventListener, KeyListener {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	public void setSelectionSprite(JoglSprite selection) {
+		this.selectionSprite = selection;
 	}
 
 	public static GLContext getContext() {

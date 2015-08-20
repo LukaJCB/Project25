@@ -272,13 +272,22 @@ public abstract class AbstractSprite implements RenderObject,SingleSprite,Sprite
 	}
 
 	@Override
-	public void mirrorX(){
+	public boolean isMirroredX() {
+		return mirroredX;
+	}
+
+	@Override
+	public boolean isMirroredY() {
+		return mirroredY;
+	}
+
+	private void mirrorX(){
 		mirroredX = !mirroredX;
 		setScale(-renderer.getWidth(),getHeight());
 	}
 	
-	@Override
-	public void mirrorY(){
+	
+	private void mirrorY(){
 		mirroredY = !mirroredY;
 		setScale(getWidth(),-renderer.getHeight());
 	}

@@ -27,7 +27,7 @@ public class CanvasMouseListener implements MouseInputListener, MouseWheelListen
 	private float scrollSpeed;
 	private JList<RenderObject> list;
 	private float[] lastCoordsWorld;
-	private EnumSet<Border> scalingMode;
+	private EnumSet<Border> scalingMode = EnumSet.noneOf(Border.class);
 	private ListSelectionListener selectionListener;
 
 	public CanvasMouseListener(GLCanvas canvas,JList<RenderObject> list, ListSelectionListener selectionListener) {
@@ -127,15 +127,13 @@ public class CanvasMouseListener implements MouseInputListener, MouseWheelListen
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		if (SwingUtilities.isRightMouseButton(e)){
-			Camera.setLookAt(Camera.getLookAt()[0] - scrollSpeed*(e.getX() - lastX),
-					Camera.getLookAt()[1] + scrollSpeed*(e.getY() - lastY));
-		} else {
-			Line mouseDrag = getLineFromMouse(e);
-			mouseDrag.intersectXYPlane();
+		Line mouseDrag = getLineFromMouse(e);
 
-			RenderObject o = list.getSelectedValue();
+		RenderObject o = list.getSelectedValue();
 
+		if (list.getSelectedValue() != null && mouseDrag.intersectsWith(o)){
+			
+			
 			if (!scalingMode.isEmpty()){
 				scaleObjectInDirection(scalingMode,o,mouseDrag.getIntersection());
 			} else {
@@ -145,8 +143,11 @@ public class CanvasMouseListener implements MouseInputListener, MouseWheelListen
 
 			selectionListener.valueChanged(null);
 			lastCoordsWorld = mouseDrag.getIntersection();
-		}
-
+			
+		} else if (SwingUtilities.isRightMouseButton(e)){
+			Camera.setLookAt(Camera.getLookAt()[0] - scrollSpeed*(e.getX() - lastX),
+					Camera.getLookAt()[1] + scrollSpeed*(e.getY() - lastY));
+		} 
 
 		canvas.display();
 		lastX = e.getX();

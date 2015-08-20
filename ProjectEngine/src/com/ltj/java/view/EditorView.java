@@ -7,7 +7,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
-
 import javax.swing.DefaultListModel;
 import javax.swing.JCheckBox;
 import javax.swing.JDialog;
@@ -23,6 +22,7 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import com.jogamp.opengl.GLCapabilities;
 import com.jogamp.opengl.GLProfile;
@@ -32,6 +32,8 @@ import com.ltj.java.engine.JoglSprite;
 import com.ltj.shared.engine.EmptyObject;
 import com.ltj.shared.engine.Engine;
 import com.ltj.shared.engine.RenderObject;
+import com.ltj.shared.engine.primitives.Rectangle;
+import com.ltj.shared.utils.BasicIO;
 
 public class EditorView {
 
@@ -88,6 +90,9 @@ public class EditorView {
 		JMenuItem fileSave = new JMenuItem("Save");
 		file.add(fileSave);
 		
+		JMenuItem fileLoad = new JMenuItem("Load");
+		file.add(fileLoad);
+		
 		
 		menuBar.add(file);
 		
@@ -102,9 +107,7 @@ public class EditorView {
 			public void actionPerformed(ActionEvent e) {
 				CreateSpriteDialog dialog = new CreateSpriteDialog(mainFrame,canvas,listModel,list,inspector);
 				dialog.setVisible(true);
-				if (selection == null){
-					selection = new JoglSprite("selection.png", 1, 1);
-				}
+				
 			}
 		});
 		JMenuItem addEmpty = new JMenuItem("Add EmptyObject");
@@ -158,6 +161,43 @@ public class EditorView {
 				
 			}
 		});
+		
+		fileSave.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				BasicIO.parseToDME(projectPath, "Scene");
+				
+			}
+		});
+		
+		fileLoad.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JFileChooser chooser = new JFileChooser();
+				chooser.setFileFilter(new FileNameExtensionFilter("DME", "dme"));
+				int result = chooser.showOpenDialog(mainFrame);
+				
+				if (result == JFileChooser.APPROVE_OPTION){
+					try {
+						BasicIO.loadFromDME(chooser.getCurrentDirectory().getPath(), chooser.getSelectedFile().getName());
+						projectPath = chooser.getCurrentDirectory().getPath();
+						for (RenderObject o : Engine.getAllObjects().values()){
+							if (o.toString().isEmpty()){
+								o.setName("Object");
+							}
+							listModel.addElement(o);
+						}
+						canvas.display();
+					} catch (Exception ex){
+						ex.printStackTrace();
+					}
+				
+				}
+			}
+		});
+		
 		mainFrame.setJMenuBar(menuBar);
 		
 	}
@@ -201,7 +241,6 @@ public class EditorView {
 				Engine.getAllObjects().remove(index);
 				list.clearSelection();
 				
-				canvas.display();
 			}
 		});
 		popupMenu.add(delete);
@@ -222,13 +261,19 @@ public class EditorView {
 			
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
-				
+				if (list.getSelectedIndex() < 1){
+					return;
+				}
 				inspector.openInspector(list.getSelectedIndex());
 				RenderObject o = list.getSelectedValue();
+				if (selection == null){
+					selection = new JoglSprite("selection.png", 1, 1);
+					renderer.setSelectionSprite(selection);
+				}
 				selection.setPosition(o.getX(),o.getY());
 				selection.setScale(o.getWidth(), o.getHeight());
 				selection.setRotation(o.getRotation());
-				selection.render();
+				canvas.display();
 			}
 		};
 		list.addListSelectionListener(selectionListener);
@@ -257,6 +302,7 @@ public class EditorView {
 		CanvasMouseListener cmListener = new CanvasMouseListener(canvas,list,selectionListener);
 		cmListener.registerListener();
 		
+		Engine.setCollisionZone(new Rectangle(0, 0, 30, 25));
 		
 	}
 }
