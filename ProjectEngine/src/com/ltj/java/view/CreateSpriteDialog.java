@@ -8,10 +8,12 @@ import java.awt.event.ActionListener;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JTextField;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import com.jogamp.opengl.awt.GLCanvas;
 import com.ltj.java.engine.JoglSprite;
@@ -54,18 +56,34 @@ public class CreateSpriteDialog extends JDialog {
 		rowText.setPreferredSize(new Dimension(70, 10));
 		add(rowText);
 		
-		JLabel path = new JLabel("Path");
-		add(path);
-		final JTextField pathText = new JTextField();
+		final JTextField pathText = new JTextField("Image");
 		pathText.setPreferredSize(new Dimension(70, 10));
 		add(pathText);
+		
+		final JFileChooser chooser = new JFileChooser("assets");
+		chooser.addChoosableFileFilter(new FileNameExtensionFilter("PNG", "png"));
+		
+		
+
+		JButton openChooser = new JButton("Browse...");
+		add(openChooser);
+		openChooser.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int state = chooser.showOpenDialog(CreateSpriteDialog.this);
+				if (state == JFileChooser.APPROVE_OPTION){
+					pathText.setText("assets" +chooser.getSelectedFile().getPath().split("assets")[1]);
+				}
+			}
+		});
 		
 		
 		
 		
 		JButton submit = new JButton("Submit");
 		submit.addActionListener(new ActionListener() {
-			
+				
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				JoglSprite sp = new JoglSprite(pathText.getText(), 
@@ -77,8 +95,7 @@ public class CreateSpriteDialog extends JDialog {
 				canvas.display();
 
 				list.setSelectedIndex(listModel.getSize()-1);
-				
-				inspector.openInspector(list.getSelectedIndex());
+
 				dispose();
 			}
 		});

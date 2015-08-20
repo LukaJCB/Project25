@@ -6,7 +6,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
 import javax.swing.DefaultListModel;
 import javax.swing.JCheckBox;
 import javax.swing.JDialog;
@@ -18,10 +17,14 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+
 import com.jogamp.opengl.GLCapabilities;
 import com.jogamp.opengl.GLProfile;
 import com.jogamp.opengl.awt.GLCanvas;
 import com.ltj.java.engine.JoglRenderer;
+import com.ltj.java.engine.JoglSprite;
 import com.ltj.shared.engine.EmptyObject;
 import com.ltj.shared.engine.Engine;
 import com.ltj.shared.engine.RenderObject;
@@ -34,19 +37,22 @@ public class EditorView {
 	private JList<RenderObject> list;
 	private InspectorPanel inspector;
 	private JoglRenderer renderer;
+	private JoglSprite selection;
+	private ListSelectionListener selectionListener;
 	
 	public EditorView(){
 		prepareGUI();
 		prepareList();
-		//prepareEventDemo();
 		prepareMenuBar();
 		prepareGLView();
 		prepareInspector();
+
 	}
 	
 	public void start(){
 
 		mainFrame.setVisible(true);  
+
 	}
 
 
@@ -86,7 +92,9 @@ public class EditorView {
 			public void actionPerformed(ActionEvent e) {
 				CreateSpriteDialog dialog = new CreateSpriteDialog(mainFrame,canvas,listModel,list,inspector);
 				dialog.setVisible(true);
-				
+				if (selection == null){
+					selection = new JoglSprite("selection.png", 1, 1);
+				}
 			}
 		});
 		JMenuItem addEmpty = new JMenuItem("Add EmptyObject");
@@ -100,7 +108,6 @@ public class EditorView {
 				listModel.addElement(eo);
 				list.setSelectedIndex(listModel.getSize()-1);
 				
-				inspector.openInspector(list.getSelectedIndex());
 			}
 		});
 		object.add(addEmpty);
@@ -123,7 +130,7 @@ public class EditorView {
 	}
 	
 	private void prepareInspector() {
-		inspector = new InspectorPanel(canvas);
+		inspector = new InspectorPanel(canvas,renderer);
 		mainFrame.add(inspector, BorderLayout.LINE_END);
 		
 		
@@ -174,10 +181,25 @@ public class EditorView {
 				if (SwingUtilities.isRightMouseButton(me)) {
 					popupMenu.show(list, me.getX(), me.getY());
 				} 
-				
-				inspector.openInspector(list.getSelectedIndex());
+			
 			}
 		});
+		
+		selectionListener = new ListSelectionListener() {
+			
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+				
+				inspector.openInspector(list.getSelectedIndex());
+				RenderObject o = list.getSelectedValue();
+				selection.setPosition(o.getX(),o.getY());
+				selection.setScale(o.getWidth(), o.getHeight());
+				selection.setRotation(o.getRotation());
+				selection.render();
+			}
+		};
+		list.addListSelectionListener(selectionListener);
+				
 	
 	
 		JScrollPane listScroller = new JScrollPane(list);
@@ -199,9 +221,9 @@ public class EditorView {
 		canvas.reshape(canvas.getX(), canvas.getY(), canvas.getWidth(), canvas.getHeight());
 		mainFrame.add(canvas,BorderLayout.CENTER);
 		
+		CanvasMouseListener cmListener = new CanvasMouseListener(canvas,list,selectionListener);
+		cmListener.registerListener();
+		
+		
 	}
-	
-	
-
-	
 }
