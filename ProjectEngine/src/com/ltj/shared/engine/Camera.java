@@ -119,6 +119,7 @@ public abstract class Camera {
 				eyePos[0],eyePos[1]-sevenY,eyePos[2]-sevenZ, 
 				lookAt[0],lookAt[1],0, 
 				0,1,0); 
+		
 	}
 	
 	private static void calcDistanceParams(){
@@ -150,8 +151,9 @@ public abstract class Camera {
 		return perspectiveProjectionMatrix;
 	}
 	
-	public static void calcInvertedMatrix(){
+	private static void calcInvertedMatrix(){
 		MatrixHelper.invertM(invertedProjectionViewMatrix,projectionViewMatrix);
+		
 	}
 	
 	public static float[] getInvertedProjectionViewMatrix(){
@@ -160,26 +162,28 @@ public abstract class Camera {
 	
 	public static Line normalized2DCoordsToLine(float x, float y){
 		
-		final float[] nearPoint = {x, y, -1, 1};
-		final float[] farPoint = {x, y, 1, 1};
+		calcInvertedMatrix();
 		
-		final float[] nearPointWorld = new float[4];
-		final float[] farPointWorld = new float[4];
+		float[] nearPoint = {x, y, -1, 1};
+		float[] farPoint = {x, y, 1, 1};
 		
-		MatrixHelper.multiplyMV(nearPointWorld, invertedProjectionViewMatrix, nearPoint);
-		MatrixHelper.multiplyMV(farPointWorld, invertedProjectionViewMatrix, farPoint);
+		float[] nearPointWorldSpace = new float[4];
+		float[] farPointWorldSpace = new float[4];
 		
-		perspectiveDevide(nearPointWorld);
-		perspectiveDevide(farPointWorld);
+		MatrixHelper.multiplyMV(nearPointWorldSpace, invertedProjectionViewMatrix, nearPoint);
+		MatrixHelper.multiplyMV(farPointWorldSpace, invertedProjectionViewMatrix, farPoint);
 		
-		return new Line(nearPointWorld,farPointWorld);
+		perspectiveDevide(nearPointWorldSpace);
+		perspectiveDevide(farPointWorldSpace);
+		
+		return new Line(nearPointWorldSpace,farPointWorldSpace);
 	}
 	
 	private static void perspectiveDevide(float[] vector) {
 		vector[0] /= vector[3];
 		vector[1] /= vector[3];
 		vector[2] /= vector[3];
-		
+		vector[3] = 1;
 	}
 
 	public static String toJSON(){

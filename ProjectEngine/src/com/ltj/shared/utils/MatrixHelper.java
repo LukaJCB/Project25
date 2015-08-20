@@ -429,5 +429,9 @@ public class MatrixHelper {
 	}
 
 
+	public static float normalizeCoordiantes(float coordinate, float dimension){
+		return (coordinate/dimension)*2-1;
+	}
+
 
 }
