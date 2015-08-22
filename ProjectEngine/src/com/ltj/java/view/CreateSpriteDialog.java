@@ -86,9 +86,16 @@ public class CreateSpriteDialog extends JDialog {
 				
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				JoglSprite sp = new JoglSprite(pathText.getText(), 
-						Integer.parseInt(colText.getText()), Integer.parseInt(rowText.getText()));
-				sp.setName("Sprite");
+				int cols = Integer.parseInt(colText.getText());
+				int rows = Integer.parseInt(rowText.getText());
+				JoglSprite sp = new JoglSprite(pathText.getText(), cols,rows);
+				if (cols > 1 || rows > 1){
+					sp.setName("SpriteSheet");
+					sp.setTexture(0, 0);
+				} else {
+					sp.setName("SingleSprite");
+				}
+				
 				Engine.addRenderable(sp);
 				listModel.addElement(sp);
 			

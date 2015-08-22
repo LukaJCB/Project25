@@ -57,9 +57,9 @@ public class CanvasMouseListener implements MouseInputListener, MouseWheelListen
 					selectedObject = o;
 				}
 			}
-
+			
 			if (selectedObject != null){
-				list.setSelectedIndex(selectedObject.getId());
+				list.setSelectedValue(selectedObject, true);
 				lastCoordsWorld = mouseClick.getIntersection();
 
 				scalingMode = pointNearEdgeOf(lastCoordsWorld, selectedObject);
@@ -128,15 +128,15 @@ public class CanvasMouseListener implements MouseInputListener, MouseWheelListen
 	@Override
 	public void mouseDragged(MouseEvent e) {
 		Line mouseDrag = getLineFromMouse(e);
-
 		RenderObject o = list.getSelectedValue();
 
-		if (list.getSelectedValue() != null && mouseDrag.intersectsWith(o)){
-			
+		if (o != null){
+
+			mouseDrag.intersectXYPlane();
 			
 			if (!scalingMode.isEmpty()){
 				scaleObjectInDirection(scalingMode,o,mouseDrag.getIntersection());
-			} else {
+			} else if (mouseDrag.intersectsWith(o)) {
 				o.translate(mouseDrag.getIntersection()[0] - lastCoordsWorld[0]
 						,mouseDrag.getIntersection()[1] - lastCoordsWorld[1]);
 			}
