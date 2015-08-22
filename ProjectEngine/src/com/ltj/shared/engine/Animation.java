@@ -52,6 +52,30 @@ public class Animation {
 		texCol = 0;
 	}
 
+	public int getTexRow() {
+		return texRow;
+	}
+
+	public void setTexRow(int texRow) {
+		this.texRow = texRow;
+	}
+
+	public int getNumCols() {
+		return numCols;
+	}
+
+	public void setNumCols(int numCols) {
+		this.numCols = numCols;
+	}
+
+	public int getAnimationTime() {
+		return animationTime;
+	}
+
+	public boolean isLooping() {
+		return looping;
+	}
+
 	public void start() {
 		playing = true;
 		reset();
