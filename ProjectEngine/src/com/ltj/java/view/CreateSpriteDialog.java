@@ -93,7 +93,7 @@ public class CreateSpriteDialog extends JDialog {
 					sp.setName("SpriteSheet");
 					sp.setTexture(0, 0);
 				} else {
-					sp.setName("SingleSprite");
+					sp.setName("Sprite");
 				}
 				
 				Engine.addRenderable(sp);

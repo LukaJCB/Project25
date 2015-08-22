@@ -39,7 +39,7 @@ public class InspectorPanel extends JPanel {
 
 
 	public InspectorPanel(final GLCanvas canvas, final JoglRenderer renderer){
-		setPreferredSize(new Dimension(200,500));
+		setPreferredSize(new Dimension(230,500));
 		tabbedPane = new JTabbedPane();
 
 		mainPanel = new MainInspector(canvas);
@@ -65,7 +65,7 @@ public class InspectorPanel extends JPanel {
 		final JList<Entry<String,Animation>> animationList = new JList<Entry<String,Animation>>(animations);
 		
 		JScrollPane scrollPane = new JScrollPane(animationList);
-		scrollPane.setPreferredSize(new Dimension(100,200));
+		scrollPane.setPreferredSize(new Dimension(180,200));
 		animationPanel.add(scrollPane);
 		addAnimationButton.addActionListener(new ActionListener() {
 			
@@ -79,6 +79,21 @@ public class InspectorPanel extends JPanel {
 					animations.addElement(entry);
 				}
 				animationList.setSelectedIndex(animations.size()-1);
+			}
+		});
+		
+		final AnimationInspector animInspector = new AnimationInspector();
+		animInspector.setPreferredSize(new Dimension(tabbedPane.getPreferredSize().width
+				,tabbedPane.getPreferredSize().height/2));
+		animationPanel.add(animInspector);
+		
+		animationList.addListSelectionListener(new ListSelectionListener() {
+			
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+				if (animationList.getSelectedValue() != null){
+					animInspector.openInspector(animationList.getSelectedValue().getValue());
+				}
 			}
 		});
 	}
@@ -129,6 +144,8 @@ public class InspectorPanel extends JPanel {
 	public void openInspector(int selectedIndex) {
 		tabbedPane.setVisible(true);
 		tabbedPane.setSelectedIndex(0);
+		
+		currentId = selectedIndex;
 		
 		mainPanel.openInspector(selectedIndex);
 		

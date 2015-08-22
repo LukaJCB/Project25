@@ -107,7 +107,30 @@ public class EditorView {
 		
 		JMenu object = new JMenu("GameObject");
 		
-		JMenuItem addObject = new JMenuItem("Add GameObject");
+		JMenuItem addSingle = new JMenuItem("Add SingleSprite");
+		object.add(addSingle);
+		addSingle.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				final JFileChooser chooser = new JFileChooser("assets");
+				chooser.setFileFilter(new FileNameExtensionFilter("PNG", "png"));
+				
+				int result = chooser.showOpenDialog(mainFrame);
+				if (result == JFileChooser.APPROVE_OPTION){
+					String path =("assets" +chooser.getSelectedFile().getPath().split("assets")[1]);
+					JoglSprite o = new JoglSprite(path, 1, 1);
+					o.setName("SingleSprite");
+					Engine.addRenderable(o);
+					listModel.addElement(o);
+					canvas.display();
+
+					list.setSelectedIndex(listModel.getSize()-1);
+				}
+			}
+		});
+		
+		JMenuItem addObject = new JMenuItem("Add SpriteSheet");
 		object.add(addObject);
 		addObject.addActionListener(new ActionListener() {
 			
