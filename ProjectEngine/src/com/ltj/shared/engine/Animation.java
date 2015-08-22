@@ -63,4 +63,7 @@ public class Animation {
 		
 	}
 	
+	public String toString(){
+		return "Row #" + texRow;
+	}
 }

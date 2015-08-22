@@ -8,6 +8,26 @@ public class BoxCollider implements Collider {
 	private float xOffset, yOffset;
 	
 	@Override
+	public float getxScaling() {
+		return xScaling;
+	}
+
+	@Override
+	public float getyScaling() {
+		return yScaling;
+	}
+
+	@Override
+	public float getxOffset() {
+		return xOffset;
+	}
+
+	@Override
+	public float getyOffset() {
+		return yOffset;
+	}
+
+	@Override
 	public void setScaling(float x, float y){
 		xScaling = x;
 		yScaling = y;
@@ -51,6 +71,11 @@ public class BoxCollider implements Collider {
 	public String toJSON() {
 		return "\"xScaling\":" + xScaling + ",\"yScaling\":" + yScaling 
 				+ ",\"xOffset\":" + xOffset + ",\"yOffset\":" + yOffset;
+	}
+
+	@Override
+	public String toString() {
+		return "BoxCollider";
 	}
 
 

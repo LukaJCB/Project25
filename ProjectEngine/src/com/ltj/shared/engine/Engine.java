@@ -25,8 +25,8 @@ public abstract class Engine {
 	private static Rectangle collisionZone;
 
 
-	private static int gameObjectIds = 1;
-	private static int emitterIds = 1;
+	private static int gameObjectIds;
+	private static int emitterIds;
 	private static LinkedHashMap<Integer,RenderObject> allObjects = new LinkedHashMap<Integer,RenderObject>();
 	private static LinkedHashMap<Integer,ParticleEmitter> allParticleEmitters = new LinkedHashMap<Integer,ParticleEmitter>();
 	private static ArrayList<OrthoRenderObject> allOrthoRenderObjects = new ArrayList<OrthoRenderObject>();

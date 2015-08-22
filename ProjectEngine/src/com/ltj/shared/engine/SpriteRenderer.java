@@ -1,5 +1,8 @@
 package com.ltj.shared.engine;
 
+import java.util.Map.Entry;
+import java.util.Set;
+
 public interface SpriteRenderer {
 	void render();
 	void translate(float dx, float dy);
@@ -34,4 +37,9 @@ public interface SpriteRenderer {
 	void finishLoading(String path);
 	Animation getAnimation(String name);
 	boolean isModeSevenEnabled();
+	float getRepeatX();
+	float getRepeatY();
+	int getTextureRow();
+	int getTextureCol();
+	Set<Entry<String, Animation>> getAllAnimations();
 }

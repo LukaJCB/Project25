@@ -2,6 +2,8 @@ package com.ltj.shared.engine;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map.Entry;
+import java.util.Set;
 
 
 /**
@@ -25,12 +27,35 @@ public abstract class AbstractSprite implements RenderObject,SingleSprite,Sprite
 	private String name = "";
 	private boolean loading;
 	
+	@Override
 	public int getNumCols() {
 		return renderer.getNumCols();
 	}
 
+	@Override
 	public int getNumRows() {
 		return renderer.getNumRows();
+	}
+
+	@Override
+	public int getTextureRow() {
+		return renderer.getTextureRow();
+	}
+
+	@Override
+	public int getTextureColumn() {
+		return renderer.getTextureCol();
+	}
+
+	@Override
+	public float getRepeatY() {
+		return renderer.getRepeatY();
+	}
+
+	
+	@Override
+	public float getRepeatX() {
+		return renderer.getRepeatX();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -118,6 +143,11 @@ public abstract class AbstractSprite implements RenderObject,SingleSprite,Sprite
 	}
 
 	@Override
+	public Set<Entry<String, Animation>> getAllAnimations() {
+		return renderer.getAllAnimations();
+	}
+
+	@Override
 	public Animation getAnimation(String name){
 		return renderer.getAnimation(name);
 	}
@@ -160,10 +190,7 @@ public abstract class AbstractSprite implements RenderObject,SingleSprite,Sprite
 		return controller.getBehaviourName();
 	}
 
-	public boolean equals(Object obj) {
-		return controller.equals(obj);
-	}
-
+	
 	public void translate(float dx, float dy) {
 		renderer.translate(dx, dy);
 		//translate children as well

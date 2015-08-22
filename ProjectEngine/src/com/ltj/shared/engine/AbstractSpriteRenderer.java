@@ -1,6 +1,9 @@
 package com.ltj.shared.engine;
 
 
+import java.util.Map.Entry;
+import java.util.Set;
+
 import com.ltj.shared.utils.MatrixHelper;
 
 public abstract class AbstractSpriteRenderer implements SpriteRenderer {
@@ -70,7 +73,11 @@ public abstract class AbstractSpriteRenderer implements SpriteRenderer {
 	
 	
 	
-	
+	@Override
+	public Set<Entry<String, Animation>> getAllAnimations() {
+		return animator.getAllAnimations();
+	}
+
 	@Override
 	public void startAnimation(String name) {
 		animator.startAnimation(name);
@@ -184,6 +191,24 @@ public abstract class AbstractSpriteRenderer implements SpriteRenderer {
 		MatrixHelper.rotateM(getModelMatrix(),  rotationX, 1, 0, 0);
 		MatrixHelper.scaleM(getModelMatrix(),  getWidth(), getHeight(), 1);
 
+	}
+
+	
+	@Override
+	public float getRepeatX() {
+		return repeatX;
+	}
+	@Override
+	public float getRepeatY() {
+		return repeatY;
+	}
+	@Override
+	public int getTextureRow() {
+		return textureRow;
+	}
+	@Override
+	public int getTextureCol() {
+		return textureCol;
 	}
 
 	protected float[] getModelMatrix() {
