@@ -168,7 +168,12 @@ public class InspectorPanel extends JTabbedPane {
 			for (Collider c : o.getColliders()){
 				colliders.addElement(c);
 			}
-
+		}
+		animations.clear();
+		if (o.getAllAnimations() != null){
+			for (Entry<String, Animation> e : o.getAllAnimations()){
+				animations.addElement(e);
+			}
 		}
 		boolean full = (o.getClass() != EmptyObject.class);
 		if (full){

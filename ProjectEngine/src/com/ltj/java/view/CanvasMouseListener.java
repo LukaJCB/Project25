@@ -21,23 +21,18 @@ import com.ltj.shared.utils.MatrixHelper;
 public class CanvasMouseListener implements MouseInputListener, MouseWheelListener {
 
 	private static final float BORDER_LENGTH = 0.4f;
-	private float lastX;
-	private float lastY;
 	private GLCanvas canvas;
-	private float scrollSpeed;
 	private JList<RenderObject> list;
 	private float[] lastCoordsWorld;
 	private EnumSet<Border> scalingMode = EnumSet.noneOf(Border.class);
 	private ListSelectionListener selectionListener;
+	private boolean translateMode;
 
-	public CanvasMouseListener(GLCanvas canvas,JList<RenderObject> list, ListSelectionListener selectionListener) {
-		this(canvas,list,selectionListener,0.01f);
-	}
+	
 
-	public CanvasMouseListener(GLCanvas canvas, JList<RenderObject> list,ListSelectionListener selectionListener,float scrollSpeed) {
+	public CanvasMouseListener(GLCanvas canvas, JList<RenderObject> list,ListSelectionListener selectionListener) {
 		this.canvas = canvas;
 		this.list = list;
-		this.scrollSpeed = scrollSpeed;
 		this.selectionListener = selectionListener;
 	}
 
@@ -47,9 +42,15 @@ public class CanvasMouseListener implements MouseInputListener, MouseWheelListen
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		if (!SwingUtilities.isRightMouseButton(e)){
+		
 			
 			Line mouseClick = getLineFromMouse(e);
+			
+		if (SwingUtilities.isRightMouseButton(e)){	
+			
+			mouseClick.intersectXYPlane();
+			
+		} else {
 			
 			RenderObject selectedObject = null;
 			for (RenderObject o : Engine.getAllObjects().values()){
@@ -59,16 +60,21 @@ public class CanvasMouseListener implements MouseInputListener, MouseWheelListen
 			}
 			
 			if (selectedObject != null){
-				list.setSelectedValue(selectedObject, true);
-				lastCoordsWorld = mouseClick.getIntersection();
-
-				scalingMode = pointNearEdgeOf(lastCoordsWorld, selectedObject);
-
+				//check if selection has changed
+				if (list.getSelectedValue() == selectedObject){
+					//only allow translation and scaling if selection hasn't changed
+					scalingMode = pointNearEdgeOf(lastCoordsWorld, selectedObject);
+					if (scalingMode.isEmpty()){
+						translateMode = true;
+					}
+				} else {
+					list.setSelectedValue(selectedObject, true);
+				}
+				
 			}
 		}
-
-		lastX = e.getX();
-		lastY = e.getY();
+		
+		lastCoordsWorld = mouseClick.getIntersection();
 
 	}
 
@@ -76,6 +82,7 @@ public class CanvasMouseListener implements MouseInputListener, MouseWheelListen
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		scalingMode.clear();
+		translateMode = false;
 		canvas.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 	}
 
@@ -127,31 +134,33 @@ public class CanvasMouseListener implements MouseInputListener, MouseWheelListen
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
+		
 		Line mouseDrag = getLineFromMouse(e);
-		RenderObject o = list.getSelectedValue();
-
-		if (o != null){
-
+		
+		if (SwingUtilities.isRightMouseButton(e)){
 			mouseDrag.intersectXYPlane();
-			
-			if (!scalingMode.isEmpty()){
-				scaleObjectInDirection(scalingMode,o,mouseDrag.getIntersection());
-			} else if (mouseDrag.intersectsWith(o)) {
-				o.translate(mouseDrag.getIntersection()[0] - lastCoordsWorld[0]
-						,mouseDrag.getIntersection()[1] - lastCoordsWorld[1]);
-			}
+			Camera.setLookAt(Camera.getLookAt()[0] - (mouseDrag.getIntersection()[0] - lastCoordsWorld[0]),
+					Camera.getLookAt()[1] - (mouseDrag.getIntersection()[1] - lastCoordsWorld[1]));
+		} else {
+			RenderObject o = list.getSelectedValue();
 
-			selectionListener.valueChanged(null);
-			lastCoordsWorld = mouseDrag.getIntersection();
-			
-		} else if (SwingUtilities.isRightMouseButton(e)){
-			Camera.setLookAt(Camera.getLookAt()[0] - scrollSpeed*(e.getX() - lastX),
-					Camera.getLookAt()[1] + scrollSpeed*(e.getY() - lastY));
-		} 
+			if (o != null){
 
+				mouseDrag.intersectXYPlane();
+
+				if (!scalingMode.isEmpty()){
+					scaleObjectInDirection(scalingMode,o,mouseDrag.getIntersection());
+				} else if(translateMode) {
+					o.translate(mouseDrag.getIntersection()[0] - lastCoordsWorld[0]
+							,mouseDrag.getIntersection()[1] - lastCoordsWorld[1]);
+				}
+
+				selectionListener.valueChanged(null);
+				lastCoordsWorld = mouseDrag.getIntersection();
+
+			} 
+		}
 		canvas.display();
-		lastX = e.getX();
-		lastY = e.getY();
 	}
 
 	private void scaleObjectInDirection(EnumSet<Border> scalingMode, RenderObject o, float[] intersection) {
