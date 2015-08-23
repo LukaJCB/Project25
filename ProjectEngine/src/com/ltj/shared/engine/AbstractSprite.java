@@ -549,7 +549,7 @@ public abstract class AbstractSprite implements RenderObject,SingleSprite,Sprite
 		String s ="{ \"type\":\"" + getClass().getName() + "\", " 
 		 +  "\"id\":" + id + "," + renderer.toJSON() + "\"tag\":\"" + tag  + "\",\"inactiveOnLoad\":" 
 				+ inactiveOnLoad + ",\"inactive\":" + inactive + ",\"mirroredX\":" + mirroredX 
-				+ ",\"mirroredY\":" + mirroredY + controller.toJSON() + "\"children\":";
+				+ ",\"mirroredY\":" + mirroredY +",\"name\":" + name + controller.toJSON() + "\"children\":";
 		if (childList != null){
 			s+= "[";
 			for (Sprite sprite : childList){

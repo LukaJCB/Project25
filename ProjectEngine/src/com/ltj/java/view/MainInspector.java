@@ -26,6 +26,7 @@ public class MainInspector extends JPanel {
 	private JCheckBox modeS,mirrorX,mirrorY;
 	private int currentId;
 	private GLCanvas canvas;
+	private JCheckBox inactiveOnLoad;
 	
 	public MainInspector(GLCanvas cnv){
 		canvas = cnv;
@@ -114,9 +115,8 @@ public class MainInspector extends JPanel {
 		modeS.addChangeListener(new ChangeListener() {
 
 			public void stateChanged(ChangeEvent e) {
-				JCheckBox cb =(JCheckBox) e.getSource();
 				RenderObject o = Engine.getAllObjects().get(currentId);
-				o.setModeSevenEnabled(cb.isSelected());
+				o.setModeSevenEnabled(modeS.isSelected());
 				canvas.display();
 			}
 		});
@@ -149,7 +149,17 @@ public class MainInspector extends JPanel {
 		textureRow.addKeyListener(listener);
 
 
-
+		add(new JLabel("Inactive on Load?"));
+		inactiveOnLoad = new JCheckBox();
+		inactiveOnLoad.addChangeListener(new ChangeListener() {
+			
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				RenderObject o = Engine.getAllObjects().get(currentId);
+				o.setInactiveOnLoad(inactiveOnLoad.isSelected());
+			}
+		});
+		add(inactiveOnLoad);
 
 	}
 	
@@ -162,6 +172,7 @@ public class MainInspector extends JPanel {
 		height.setText(""+o.getHeight());
 		rotation.setText("" + o.getRotation());
 		tag.setText(o.getTag());
+		inactiveOnLoad.setSelected(o.isInactiveOnLoad());
 		
 		boolean full = (o.getClass() != EmptyObject.class);
 		setupEmptyInspector(full);

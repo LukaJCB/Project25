@@ -44,7 +44,7 @@ public class CanvasMouseListener implements MouseInputListener, MouseWheelListen
 	public void mousePressed(MouseEvent e) {
 		
 			
-			Line mouseClick = getLineFromMouse(e);
+		Line mouseClick = getLineFromMouse(e);
 			
 		if (SwingUtilities.isRightMouseButton(e)){	
 			
@@ -63,7 +63,7 @@ public class CanvasMouseListener implements MouseInputListener, MouseWheelListen
 				//check if selection has changed
 				if (list.getSelectedValue() == selectedObject){
 					//only allow translation and scaling if selection hasn't changed
-					scalingMode = pointNearEdgeOf(lastCoordsWorld, selectedObject);
+					scalingMode = pointNearEdgeOf(mouseClick.getIntersection(), selectedObject);
 					if (scalingMode.isEmpty()){
 						translateMode = true;
 					}
@@ -168,22 +168,22 @@ public class CanvasMouseListener implements MouseInputListener, MouseWheelListen
 		float deltaX = 2*(intersection[0] - lastCoordsWorld[0]);
 		float deltaY = 2*(intersection[1] - lastCoordsWorld[1]);
 		
-		float scalingX = 1;
-		float scalingY = 1;
+		float scalingX = o.getWidth();
+		float scalingY = o.getHeight();
 		
 		if (scalingMode.contains(Border.NORTH)){
-			scalingY = 1 + deltaY;
+			scalingY += deltaY;
 		} else if (scalingMode.contains(Border.SOUTH)){
-			scalingY = 1 - deltaY;
+			scalingY -= deltaY;
 		}
 
 		if (scalingMode.contains(Border.EAST)){
-			scalingX = 1 + deltaX;
+			scalingX += deltaX;
 		} else if (scalingMode.contains(Border.WEST)){
-			scalingX = 1 - deltaX;
+			scalingX -= deltaX;
 		}
 		
-		o.scale(scalingX, scalingY);
+		o.setScale(scalingX, scalingY);
 		
 	}
 

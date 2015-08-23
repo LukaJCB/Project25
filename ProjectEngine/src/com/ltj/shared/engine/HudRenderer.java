@@ -16,4 +16,5 @@ public interface HudRenderer {
 	float getWidth();
 	float getRotation();
 	String toJSON();
+	String getPath();
 }

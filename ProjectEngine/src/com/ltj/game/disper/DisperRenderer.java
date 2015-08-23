@@ -51,6 +51,7 @@ public class DisperRenderer extends JoglRenderer {
 		playerWorm.addAnimation("walk", 5, 0, true, 5);
 		Engine.addRenderable(playerWorm);
 		
+		
 		JoglSprite player = new JoglSprite("assets/pic/player_run.png",4,1);
 		player.setTexture(0, 0);
 		PlayerController b2 = new PlayerController();

@@ -15,6 +15,7 @@ import javax.swing.JTextField;
 
 import com.ltj.shared.engine.AreaMode;
 import com.ltj.shared.engine.Engine;
+import com.ltj.shared.engine.primitives.Rectangle;
 
 @SuppressWarnings("serial")
 public class SettingsMenu extends JMenu {
@@ -50,6 +51,14 @@ public class SettingsMenu extends JMenu {
 		JMenuItem collisionArea = new JMenuItem("Collision Area");
 		
 		collisions.add(collisionArea);
+		collisionArea.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				createCollisionZoneDialog();
+				
+			}
+		});
 	}
 
 	private void setupAreaSettings() {
@@ -94,19 +103,56 @@ public class SettingsMenu extends JMenu {
 		JTextField height = new JTextField(5);
 		height.setText("" +  Engine.getAreaHeight());
 
-		JPanel myPanel = new JPanel();
-		myPanel.add(new JLabel("Width:"));
-		myPanel.add(width);
-		myPanel.add(Box.createHorizontalStrut(15)); 
-		myPanel.add(new JLabel("Height:"));
-		myPanel.add(height);
+		JPanel dialog = new JPanel();
+		dialog.add(new JLabel("Width:"));
+		dialog.add(width);
+		dialog.add(Box.createHorizontalStrut(12)); 
+		dialog.add(new JLabel("Height:"));
+		dialog.add(height);
 
-		int result = JOptionPane.showConfirmDialog(null, myPanel, 
+		int result = JOptionPane.showConfirmDialog(null, dialog, 
 				"Area size", JOptionPane.OK_CANCEL_OPTION);
 		if (result == JOptionPane.OK_OPTION) {
 			Engine.setAreaSize(Float.parseFloat(width.getText()), Float.parseFloat(height.getText()));
 		}
 	}
+	
+
+	private void createCollisionZoneDialog(){
+		JTextField x = new JTextField(5);
+		JTextField y = new JTextField(5);
+		JTextField width = new JTextField(5);
+		JTextField height = new JTextField(5);
+		
+
+		Rectangle r = Engine.getCollisionZone();
+		if (r != null){
+			x.setText(""+r.getX());
+			y.setText("" + r.getY());
+
+			width.setText(""+r.getWidth());
+			height.setText("" + r.getHeight());
+		}
+		
+		JPanel dialog = new JPanel();
+		dialog.add(new JLabel("X: "));
+		dialog.add(x);
+		dialog.add(new JLabel("Y:"));
+		dialog.add(y);
+		dialog.add(new JLabel("Width:"));
+		dialog.add(width);
+		dialog.add(new JLabel("Height:"));
+		dialog.add(height);
+
+		int result = JOptionPane.showConfirmDialog(null, dialog, 
+				"Collision zone", JOptionPane.OK_CANCEL_OPTION);
+		if (result == JOptionPane.OK_OPTION) {
+			Rectangle newRect = new Rectangle(Float.parseFloat(x.getText()),Float.parseFloat(y.getText()),
+					Float.parseFloat(width.getText()), Float.parseFloat(height.getText()));
+			Engine.setCollisionZone(newRect);
+		}
+	}
+	
 	
 	private class AreaSettingsListener implements ActionListener{
 

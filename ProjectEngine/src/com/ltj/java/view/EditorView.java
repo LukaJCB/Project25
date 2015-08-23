@@ -7,12 +7,16 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.io.IOException;
 
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -22,6 +26,7 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
+import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -53,6 +58,7 @@ public class EditorView {
 	private String projectPath;
 	private JTabbedPane tabbedPane;
 	private SettingsMenu options;
+	private DefaultListModel<OrthoRenderObject> orthoListModel;
 
 	public EditorView(){
 		prepareGUI();
@@ -63,12 +69,12 @@ public class EditorView {
 		prepareInspector();
 		prepareOrthoList();
 		prepareConsole();
+		prepareAreaList();
 	}
 
 	public void start(){
 
-		mainFrame.setVisible(true);  
-
+		mainFrame.setVisible(true); 
 	}
 
 
@@ -129,7 +135,7 @@ public class EditorView {
 		options = new SettingsMenu();
 		menuBar.add(options);
 		options.setAreaMode(AreaMode.NONE);
-
+		//options.setVisible(false);
 	}
 
 	private void addObjectMenu(JMenuBar menuBar) {
@@ -146,13 +152,19 @@ public class EditorView {
 
 				int result = chooser.showOpenDialog(mainFrame);
 				if (result == JFileChooser.APPROVE_OPTION){
-					String path =("assets" +chooser.getSelectedFile().getPath().split("assets")[1]);
+					File dst = new File(projectPath + File.separator + chooser.getSelectedFile().getName());
+					try {
+						BasicIO.copy(chooser.getSelectedFile(), dst);
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
+					String path =(dst.getPath());
 					JoglSprite o = new JoglSprite(path, 1, 1);
 					o.setName("SingleSprite");
 					Engine.addRenderable(o);
 					listModel.addElement(o);
 					canvas.display();
-
+					
 					list.setSelectedIndex(listModel.getSize()-1);
 				}
 			}
@@ -198,6 +210,7 @@ public class EditorView {
 					String path =("assets" +chooser.getSelectedFile().getPath().split("assets")[1]);
 					OrthoRenderObject oro = new OrthoRenderObject(path, Engine.getPlatform());
 					Engine.addOrthoRenderObject(oro);
+					orthoListModel.addElement(oro);
 					canvas.display();
 				}
 
@@ -205,6 +218,7 @@ public class EditorView {
 		});
 
 		object.add(addOrtho);
+		//object.setVisible(false);
 
 		menuBar.add(object);
 	}
@@ -276,6 +290,9 @@ public class EditorView {
 								o.setName("Object");
 							}
 							listModel.addElement(o);
+						}
+						for (OrthoRenderObject o : Engine.getAllOrthoRenderObjects()){
+							orthoListModel.addElement(o);
 						}
 						canvas.display();
 					} catch (Exception ex){
@@ -378,15 +395,36 @@ public class EditorView {
 		mainFrame.add(tabbedPane,BorderLayout.LINE_START);
 
 	}
+	
+	private void prepareAreaList(){
+		JPanel jp = new JPanel();
+		jp.setLayout(new BoxLayout(jp, BoxLayout.Y_AXIS));
+		Box box = new Box(BoxLayout.X_AXIS);
+		box.setMaximumSize(new Dimension(200, 30));
+		JTextField x = new JTextField(4);
+		JTextField y = new JTextField(4);
+		box.add(new JLabel("x "));
+		box.add(x);
+		box.add(new JLabel(" y "));
+		box.add(y);
+		jp.add(box);
+		DefaultListModel<RenderObject> areaListModel = new DefaultListModel<RenderObject>();
+		JList<RenderObject> areaList = new JList<RenderObject>(areaListModel);
+		JScrollPane scroller = new JScrollPane(areaList);
+		jp.add(scroller);
+		
+		tabbedPane.addTab("Areas", jp);
+	}
 
 	private void prepareOrthoList(){
-		JList<OrthoRenderObject> orthoList = new JList<OrthoRenderObject>();
+		orthoListModel = new DefaultListModel<>();
+		JList<OrthoRenderObject> orthoList = new JList<>(orthoListModel);
 		JScrollPane listScroller = new JScrollPane(orthoList);
 		tabbedPane.addTab("Ortho", listScroller);
 	}
 
 	private void prepareConsole(){
-		JPanel console = new JPanel();
+		ConsolePanel console = new ConsolePanel(projectPath);
 		mainFrame.add(console,BorderLayout.PAGE_END);
 		console.setPreferredSize(new Dimension(700,180));
 	}
