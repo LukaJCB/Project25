@@ -365,6 +365,15 @@ public abstract class Engine {
 	public static String getAreaSizeJSON() {
 		return "[" + areaWidth + "," + areaHeight + "]";
 	}
+	
+
+	public static float getAreaWidth() {
+		return areaWidth;
+	}
+
+	public static float getAreaHeight() {
+		return areaHeight;
+	}
 
 	public static boolean isStarted() {
 		return started;

@@ -14,6 +14,7 @@ import com.ltj.shared.engine.OrthoRenderObject;
 import com.ltj.shared.engine.SoundManager;
 import com.ltj.shared.engine.primitives.BoxCollider;
 import com.ltj.shared.engine.primitives.RunTimeGlobals;
+import com.ltj.shared.utils.BasicIO;
 
 public class DisperRenderer extends JoglRenderer {
 
@@ -93,7 +94,7 @@ public class DisperRenderer extends JoglRenderer {
 		Engine.setCurrentArea(2, -2);
 		
 		Engine.start();
-
+		BasicIO.parseToDME("", "test");
 		
 	}
 

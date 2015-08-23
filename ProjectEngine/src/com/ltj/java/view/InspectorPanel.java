@@ -24,34 +24,36 @@ import com.ltj.shared.engine.RenderObject;
 import com.ltj.shared.engine.primitives.BoxCollider;
 
 @SuppressWarnings("serial")
-public class InspectorPanel extends JPanel {
+public class InspectorPanel extends JTabbedPane {
 
 	private MainInspector mainPanel;
 
 	private JButton addAnimationButton;
 	private int currentId;
-	private JTabbedPane tabbedPane;
 	private JPanel animationPanel,collisionPanel;
+	private JPanel behaviourPanel;
+
 	private JButton addColliderButton;
+	private JButton addBehaviourButton;
+
 	private DefaultListModel<Collider> colliders;
 
 	private DefaultListModel<Entry<String, Animation>> animations;
 
-
 	public InspectorPanel(final GLCanvas canvas, final JoglRenderer renderer){
 		setPreferredSize(new Dimension(230,500));
-		tabbedPane = new JTabbedPane();
 
 		mainPanel = new MainInspector(canvas);
 
-		tabbedPane.addTab("Main", mainPanel);
-		tabbedPane.setVisible(false);
-		add(tabbedPane);
+		addTab("Main", mainPanel);
+		setVisible(false);
 
 
 		setupAnimationTab();
 
 		setupCollisionTab();
+		
+		setupBehaviourTab();
 	}
 
 	private void setupAnimationTab() {
@@ -83,8 +85,8 @@ public class InspectorPanel extends JPanel {
 		});
 		
 		final AnimationInspector animInspector = new AnimationInspector();
-		animInspector.setPreferredSize(new Dimension(tabbedPane.getPreferredSize().width
-				,tabbedPane.getPreferredSize().height/2));
+		animInspector.setPreferredSize(new Dimension(getPreferredSize().width
+				,getPreferredSize().height/2));
 		animationPanel.add(animInspector);
 		
 		animationList.addListSelectionListener(new ListSelectionListener() {
@@ -125,8 +127,8 @@ public class InspectorPanel extends JPanel {
 		collisionPanel.add(scrollPane);
 		
 		final ColliderInspector colliderInspector = new ColliderInspector();
-		colliderInspector.setPreferredSize(new Dimension(tabbedPane.getPreferredSize().width
-				,tabbedPane.getPreferredSize().height/2));
+		colliderInspector.setPreferredSize(new Dimension(getPreferredSize().width
+				,getPreferredSize().height/2));
 		collisionPanel.add(colliderInspector);
 		
 		colliderList.addListSelectionListener(new ListSelectionListener() {
@@ -138,12 +140,23 @@ public class InspectorPanel extends JPanel {
 				}
 			}
 		});
-		tabbedPane.addTab("Collider", collisionPanel);
+		addTab("Collider", collisionPanel);
+	}
+	
+	private void setupBehaviourTab(){
+		behaviourPanel = new JPanel();
+		behaviourPanel.setLayout(new BoxLayout(behaviourPanel, BoxLayout.Y_AXIS));
+
+		addBehaviourButton = new JButton("Add Behaviour");
+		behaviourPanel.add(addBehaviourButton);
+		addTab("Behaviour", behaviourPanel);
+		
+		
 	}
 
 	public void openInspector(int selectedIndex) {
-		tabbedPane.setVisible(true);
-		tabbedPane.setSelectedIndex(0);
+		setVisible(true);
+		setSelectedIndex(0);
 		
 		currentId = selectedIndex;
 		
@@ -161,9 +174,9 @@ public class InspectorPanel extends JPanel {
 		if (full){
 
 			if (o.getNumCols() > 1 || o.getNumRows() > 1){
-				tabbedPane.addTab("Animation", animationPanel);
+				addTab("Animation", animationPanel);
 			} else {
-				tabbedPane.remove(animationPanel);
+				remove(animationPanel);
 
 			}
 
