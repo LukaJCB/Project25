@@ -11,6 +11,7 @@ import com.ltj.shared.engine.BehaviourManipulator;
 import com.ltj.shared.engine.EmptyObject;
 import com.ltj.shared.engine.Engine;
 import com.ltj.shared.engine.OrthoRenderObject;
+import com.ltj.shared.engine.RenderObject;
 import com.ltj.shared.engine.SoundManager;
 import com.ltj.shared.engine.primitives.BoxCollider;
 import com.ltj.shared.engine.primitives.RunTimeGlobals;
@@ -94,7 +95,10 @@ public class DisperRenderer extends JoglRenderer {
 		Engine.setCurrentArea(2, -2);
 		
 		Engine.start();
-		BasicIO.parseToDME("", "test");
+		for(RenderObject o : Engine.getAllObjects().values()){
+			o.setInactive(false);
+		}
+		BasicIO.parseToDME("C:\\Users\\Luka\\Documents\\test", "test");
 		
 	}
 

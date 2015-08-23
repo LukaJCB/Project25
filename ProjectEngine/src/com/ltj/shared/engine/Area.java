@@ -70,14 +70,7 @@ public class Area {
 	public void setInactive(boolean inactive){
 		if (root.getChildList() != null){
 			for (Sprite g : root.getChildList()){
-			
-				if (g.isInactiveOnLoad()){
-					g.setInactive(inactive);
-				} else {
-					g.setInactive(inactive);
-					g.setInactiveOnLoad(!inactive);
-				}
-						
+				g.setInactive(true);	
 			}
 		}
 	}

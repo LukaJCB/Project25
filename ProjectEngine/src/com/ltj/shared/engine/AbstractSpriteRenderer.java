@@ -52,7 +52,7 @@ public abstract class AbstractSpriteRenderer implements SpriteRenderer {
 		this.path = path;
 		
 	}
-	
+
 	@Override
 	public void animate(){
 		if (animator != null){
@@ -60,9 +60,9 @@ public abstract class AbstractSpriteRenderer implements SpriteRenderer {
 		}
 	}
 
-	
-	
-	
+
+
+
 	@Override
 	public void addAnimation(String name, int animationTime, int texRow, boolean looping, int numCols){
 		if (animator == null){
@@ -70,12 +70,15 @@ public abstract class AbstractSpriteRenderer implements SpriteRenderer {
 		}
 		animator.addAnimation(name, new Animation(animationTime, texRow, looping, numCols));
 	}
-	
-	
-	
+
+
+
 	@Override
 	public Set<Entry<String, Animation>> getAllAnimations() {
-		return animator.getAllAnimations();
+		if (animator != null){
+			return animator.getAllAnimations();
+		}
+		return null;
 	}
 
 	@Override

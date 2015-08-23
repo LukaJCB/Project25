@@ -216,12 +216,13 @@ public class BasicIO {
 		}
 
 		json += "],\"Globals\":" + RunTimeGlobals.toJSON();
-		json += ",\"AreaMode\":";
+		json += ",\"AreaMode\":\"";
 		if (Engine.getAreaMode() == null){
 			json += AreaMode.NONE;
 		} else {
 			json += Engine.getAreaMode();
 		}
+		json += "\"";
 		if (Engine.getAreaMode() == AreaMode.DYNAMIC_LOAD){
 			
 			//save area size
@@ -366,6 +367,7 @@ public class BasicIO {
 		r.setModeSevenEnabled(obj.getBoolean("modeSEnabled"));
 		r.setTag(obj.getString("tag"));
 		r.setInactive(obj.getBoolean("inactive"));
+		r.setInactiveOnLoad(obj.getBoolean("inactiveOnLoad"));
 		r.setControllerDisabled(obj.getBoolean("controller_disabled"));
 		if (obj.getFloat("repeatX") != 1 || obj.getFloat("repeatY") != 1){
 			r.setRepeat(obj.getFloat("repeatX"), obj.getFloat("repeatY"));

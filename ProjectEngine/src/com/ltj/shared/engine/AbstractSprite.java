@@ -413,11 +413,6 @@ public abstract class AbstractSprite implements RenderObject,SingleSprite,Sprite
 	@Override
 	public void render() {
 		renderer.render();
-		if (emitterList != null){
-			for (ParticleEmitter pe : emitterList){
-				pe.render();
-			}
-		}
 	}
 
 	@Override
@@ -530,18 +525,6 @@ public abstract class AbstractSprite implements RenderObject,SingleSprite,Sprite
 		this.inactive = inactive;
 		renderer.setDisabled(inactive);
 		controller.setDisabled(inactive);
-		if (childList != null){
-			for (Sprite o : childList){
-				o.setInactive(inactive);
-				if (inactive){
-					o.setInactiveOnLoad(inactive);
-				}
-			}
-		}
-		if (inactive){
-			setInactiveOnLoad(inactive);
-		}
-		
 	}
 
 	public boolean isInactiveOnLoad() {
@@ -564,8 +547,9 @@ public abstract class AbstractSprite implements RenderObject,SingleSprite,Sprite
 
 	public String toJSON() {
 		String s ="{ \"type\":\"" + getClass().getName() + "\", " 
-		 +  "\"id\":" + id + "," + renderer.toJSON() + "\"tag\":\"" + tag  + "\",\"inactive\":" + inactive 
-				+ ",\"mirroredX\":" + mirroredX + ",\"mirroredY\":" + mirroredY + controller.toJSON() + "\"children\":";
+		 +  "\"id\":" + id + "," + renderer.toJSON() + "\"tag\":\"" + tag  + "\",\"inactiveOnLoad\":" 
+				+ inactiveOnLoad + ",\"inactive\":" + inactive + ",\"mirroredX\":" + mirroredX 
+				+ ",\"mirroredY\":" + mirroredY + controller.toJSON() + "\"children\":";
 		if (childList != null){
 			s+= "[";
 			for (Sprite sprite : childList){
