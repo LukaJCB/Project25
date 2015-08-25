@@ -229,17 +229,17 @@ public class JoglRenderer implements GLEventListener, KeyListener {
 		
 		if (selectionSprite != null){
 			selectionSprite.render();
-		} else {
+		} 
 
-			long timeDiff = System.currentTimeMillis() - time;
-			if (timeDiff < renderTime){
-				try {
-					Thread.sleep(renderTime - timeDiff);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
+		long timeDiff = System.currentTimeMillis() - time;
+		if (timeDiff < renderTime){
+			try {
+				Thread.sleep(renderTime - timeDiff);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
 			}
 		}
+
 	}
 
 	public void setSelectionSprite(JoglSprite selection) {

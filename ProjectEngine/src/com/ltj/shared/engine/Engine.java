@@ -328,8 +328,12 @@ public abstract class Engine {
 		return a;
 	}
 	public static Area getArea(int x, int y){
-		
-		return areas.get(new Position(x, y));
+		Area a = areas.get(new Position(x, y));
+		if (a != null){
+			return a;
+		} else {
+			return addArea(x,y);
+		}
 	}
 	
 	

@@ -9,25 +9,22 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 
-import javax.swing.Box;
-import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
-import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -35,6 +32,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import com.jogamp.opengl.GLCapabilities;
 import com.jogamp.opengl.GLProfile;
 import com.jogamp.opengl.awt.GLCanvas;
+import com.jogamp.opengl.util.Animator;
 import com.ltj.java.engine.JoglRenderer;
 import com.ltj.java.engine.JoglSprite;
 import com.ltj.shared.engine.AreaMode;
@@ -44,6 +42,7 @@ import com.ltj.shared.engine.OrthoRenderObject;
 import com.ltj.shared.engine.RenderObject;
 import com.ltj.shared.engine.primitives.Rectangle;
 import com.ltj.shared.utils.BasicIO;
+
 
 public class EditorView {
 
@@ -59,6 +58,9 @@ public class EditorView {
 	private JTabbedPane tabbedPane;
 	private SettingsMenu options;
 	private DefaultListModel<OrthoRenderObject> orthoListModel;
+	private Animator animator;
+	private CanvasMouseListener cmListener;
+	private JScrollPane listScroller;
 
 	public EditorView(){
 		prepareGUI();
@@ -123,7 +125,8 @@ public class EditorView {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				new JoglView().start();
+				Engine.start();
+				animator.start();
 			}
 		});
 
@@ -294,6 +297,7 @@ public class EditorView {
 						for (OrthoRenderObject o : Engine.getAllOrthoRenderObjects()){
 							orthoListModel.addElement(o);
 						}
+						options.setAreaMode(Engine.getAreaMode());
 						canvas.display();
 					} catch (Exception ex){
 						ex.printStackTrace();
@@ -365,55 +369,61 @@ public class EditorView {
 			}
 		});
 
-		selectionListener = new ListSelectionListener() {
-
-			@Override
-			public void valueChanged(ListSelectionEvent e) {
-				if (list.getSelectedIndex() < 0){
-					return;
-				}
-				RenderObject o = list.getSelectedValue();
-				inspector.openInspector(o.getId());
-				if (selection == null){
-					selection = new JoglSprite("selection.png", 1, 1);
-					renderer.setSelectionSprite(selection);
-				}
-				selection.setPosition(o.getX(),o.getY());
-				selection.setScale(o.getWidth(), o.getHeight());
-				selection.setRotation(o.getRotation());
-				canvas.display();
-			}
-		};
+		selectionListener = new ObjectListListener(list);
 		list.addListSelectionListener(selectionListener);
 
 
 
-		JScrollPane listScroller = new JScrollPane(list);
+		listScroller = new JScrollPane(list);
 		listScroller.setPreferredSize(new Dimension(200, 500));
 
-		tabbedPane.add(listScroller,"GameObjects");
+		tabbedPane.addTab("GameObjects",listScroller);
 		mainFrame.add(tabbedPane,BorderLayout.LINE_START);
 
 	}
 	
-	private void prepareAreaList(){
-		JPanel jp = new JPanel();
-		jp.setLayout(new BoxLayout(jp, BoxLayout.Y_AXIS));
-		Box box = new Box(BoxLayout.X_AXIS);
-		box.setMaximumSize(new Dimension(200, 30));
-		JTextField x = new JTextField(4);
-		JTextField y = new JTextField(4);
-		box.add(new JLabel("x "));
-		box.add(x);
-		box.add(new JLabel(" y "));
-		box.add(y);
-		jp.add(box);
-		DefaultListModel<RenderObject> areaListModel = new DefaultListModel<RenderObject>();
-		JList<RenderObject> areaList = new JList<RenderObject>(areaListModel);
-		JScrollPane scroller = new JScrollPane(areaList);
-		jp.add(scroller);
+	private class ObjectListListener implements ListSelectionListener {
 		
-		tabbedPane.addTab("Areas", jp);
+		private JList<RenderObject> list;
+		
+		public ObjectListListener(JList<RenderObject> list){
+			this.list = list;
+		}
+		
+		@Override
+		public void valueChanged(ListSelectionEvent e) {
+			if (list.getSelectedIndex() < 0){
+				return;
+			}
+			RenderObject o = list.getSelectedValue();
+			inspector.openInspector(o.getId());
+			if (selection == null){
+				selection = new JoglSprite("selection.png", 1, 1);
+				renderer.setSelectionSprite(selection);
+			}
+			selection.setPosition(o.getX(),o.getY());
+			selection.setScale(o.getWidth(), o.getHeight());
+			selection.setRotation(o.getRotation());
+			canvas.display();
+		}
+	}
+	
+	private void prepareAreaList(){
+		final AreaList al = new AreaList(canvas);
+		
+		tabbedPane.addTab("Areas", al);
+		tabbedPane.addChangeListener(new ChangeListener() {
+			
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				if (tabbedPane.getSelectedComponent() == al){
+					cmListener.setList(al.getList());
+				} else if (tabbedPane.getSelectedComponent() == listScroller){
+					cmListener.setList(list);
+				}
+			}
+		});
+		al.getList().addListSelectionListener(new ObjectListListener(al.getList()));
 	}
 
 	private void prepareOrthoList(){
@@ -438,14 +448,20 @@ public class EditorView {
 		renderer = new JoglRenderer();
 		canvas.addGLEventListener(renderer);
 		canvas.reshape(canvas.getX(), canvas.getY(), canvas.getWidth(), canvas.getHeight());
+		canvas.addKeyListener(renderer);
 		mainFrame.add(canvas,BorderLayout.CENTER);
+		animator = new Animator(canvas);
+		animator.setRunAsFastAsPossible(true);
 
-		CanvasMouseListener cmListener = new CanvasMouseListener(canvas,list,selectionListener);
+		
+		cmListener = new CanvasMouseListener(canvas,list,selectionListener);
 		cmListener.registerListener();
 
 		Engine.setCollisionZone(new Rectangle(0, 0, 30, 25));
 
 	}
+	
+	
 
 	
 }

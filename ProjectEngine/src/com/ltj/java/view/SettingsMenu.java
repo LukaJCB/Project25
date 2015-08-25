@@ -94,7 +94,6 @@ public class SettingsMenu extends JMenu {
 		} else {
 			dynamicLoad.setSelected(true);
 		}
-		Engine.setAreaMode(a);
 	}
 	
 	private void createAreaSizeDialog(){

@@ -35,6 +35,11 @@ public class CanvasMouseListener implements MouseInputListener, MouseWheelListen
 		this.list = list;
 		this.selectionListener = selectionListener;
 	}
+	
+	public void setList(JList<RenderObject> list){
+		this.list = list;
+		selectionListener = list.getListSelectionListeners()[0];
+	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {

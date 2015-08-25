@@ -1,5 +1,7 @@
 package com.ltj.shared.engine;
 
+import java.util.ArrayList;
+
 import com.ltj.shared.engine.primitives.Rectangle;
 
 public class Area {
@@ -84,6 +86,9 @@ public class Area {
 		json += "]";
 		return json;
 		
+	}
+	public ArrayList<Sprite> getObjectList() {
+		return root.getChildList();
 	}
 	
 	
