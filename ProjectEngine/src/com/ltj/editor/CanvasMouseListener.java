@@ -68,7 +68,7 @@ public class CanvasMouseListener implements MouseInputListener, MouseWheelListen
 			
 			areaChangedListener.onAreaChange(selectedArea);
 			
-		} else {
+		} else if (!SwingUtilities.isRightMouseButton(e)) {
 			leftMousePressed(mouseClick);
 		}
 		

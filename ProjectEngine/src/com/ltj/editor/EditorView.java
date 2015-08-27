@@ -291,10 +291,14 @@ public class EditorView {
 						BasicIO.loadFromDME(chooser.getCurrentDirectory().getPath(), chooser.getSelectedFile().getName());
 						projectPath = chooser.getCurrentDirectory().getPath();
 						for (RenderObject o : Engine.getAllObjects().values()){
+							o.setInactive(false);
 							if (o.toString().isEmpty()){
 								o.setName("Object");
 							}
-							listModel.addElement(o);
+							if (!o.isPartOfArea()){
+								listModel.addElement(o);
+							}
+							
 						}
 						for (OrthoRenderObject o : Engine.getAllOrthoRenderObjects()){
 							orthoListModel.addElement(o);

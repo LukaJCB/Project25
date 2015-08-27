@@ -26,6 +26,7 @@ public abstract class AbstractSprite implements RenderObject,SingleSprite,Sprite
 	private int id;
 	private String name = "";
 	private boolean loading;
+	private boolean partOfArea;
 	
 	@Override
 	public int getNumCols() {
@@ -449,6 +450,17 @@ public abstract class AbstractSprite implements RenderObject,SingleSprite,Sprite
 	}
 
 	@Override
+	public void setPartOfArea(boolean poa) {
+		this.partOfArea = poa;
+		
+	}
+
+	@Override
+	public boolean isPartOfArea() {
+		return partOfArea;
+	}
+
+	@Override
 	public boolean compareTag(String string) {
 		return this.tag != null && tag.equals(string);
 	}
@@ -548,8 +560,8 @@ public abstract class AbstractSprite implements RenderObject,SingleSprite,Sprite
 	public String toJSON() {
 		String s ="{ \"type\":\"" + getClass().getName() + "\", " 
 		 +  "\"id\":" + id + "," + renderer.toJSON() + "\"tag\":\"" + tag  + "\",\"inactiveOnLoad\":" 
-				+ inactiveOnLoad + ",\"inactive\":" + inactive + ",\"mirroredX\":" + mirroredX 
-				+ ",\"mirroredY\":" + mirroredY +",\"name\":" + name + controller.toJSON() + "\"children\":";
+				+ inactiveOnLoad + ",\"inactive\":" + inactive +  ",\"partOfArea\":" + partOfArea + ",\"mirroredX\":" + mirroredX 
+				+ ",\"mirroredY\":" + mirroredY +",\"name\":\"" + name + "\"" + controller.toJSON() + "\"children\":";
 		if (childList != null){
 			s+= "[";
 			for (Sprite sprite : childList){

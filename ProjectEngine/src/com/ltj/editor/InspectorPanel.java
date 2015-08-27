@@ -163,6 +163,7 @@ public class InspectorPanel extends JTabbedPane {
 		mainPanel.openInspector(selectedIndex);
 		
 		RenderObject o = Engine.getAllObjects().get(selectedIndex);
+		System.out.println(o.isRendererDisabled());
 		colliders.clear();
 		if (o.getColliders()!= null){
 			for (Collider c : o.getColliders()){

@@ -52,12 +52,14 @@ public class Area {
 		Engine.setCollisionZone(new Rectangle(root.getX(), root.getY(), root.getWidth()*3.1f, root.getHeight()*3.1f));
 	}
 	
-	public void addObject(Sprite child){
+	public void addObject(RenderObject child){
 		child.translate(getX(), getY());
+		child.setPartOfArea(true);
 		root.addChild(child);
 	}
 	
-	public void addObjectWorldSpace(Sprite child){
+	public void addObjectWorldSpace(RenderObject child){
+		child.setPartOfArea(true);
 		root.addChild(child);
 	}
 	
@@ -79,10 +81,12 @@ public class Area {
 	
 	public String toJSON(){
 		String json = "[";
-		for (Sprite r:root.getChildList()){
-			json += r.getId() + ",";
+		if (root.getChildList() != null){
+			for (Sprite r:root.getChildList()){
+				json += r.getId() + ",";
+			}
+			json = json.substring(0, json.length() - 1);
 		}
-		json = json.substring(0, json.length() - 1);
 		json += "]";
 		return json;
 		

@@ -51,6 +51,8 @@ public interface RenderObject extends Sprite {
 	float getRepeatY();
 	float getRepeatX();
 	Set<Entry<String, Animation>> getAllAnimations();
+	void setPartOfArea(boolean b);
+	boolean isPartOfArea();
 	
 	
 	
