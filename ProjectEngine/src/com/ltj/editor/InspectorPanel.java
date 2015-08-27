@@ -191,7 +191,13 @@ public class InspectorPanel extends JTabbedPane {
 			}
 		}
 		
-		openBehaviourTab(o);
+		try {
+			openBehaviourTab(o);
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		}
 		
 		boolean full = (o.getClass() != EmptyObject.class);
 		if (full){
@@ -206,7 +212,7 @@ public class InspectorPanel extends JTabbedPane {
 		}
 	}
 
-	private void openBehaviourTab(final RenderObject o) {
+	private void openBehaviourTab(final RenderObject o) throws IllegalArgumentException, IllegalAccessException {
 		behaviourFields.clear();
 		behaviourPanel.removeAll();
 		if (o.getBehaviour() != null){
@@ -219,6 +225,7 @@ public class InspectorPanel extends JTabbedPane {
 				box.add(new JLabel(f.getName()));
 				if (f.getType() == Boolean.TYPE){
 					final JCheckBox checkBox = new JCheckBox();
+					checkBox.setSelected(f.getBoolean(o.getBehaviour()));
 					checkBox.addActionListener(new ActionListener() {
 						
 						@Override
@@ -231,6 +238,7 @@ public class InspectorPanel extends JTabbedPane {
 					
 				} else {
 					final JTextField text = new JTextField();
+					text.setText(""+f.get(o.getBehaviour()));
 					text.addKeyListener(new BehaviourKeyListener(f, o.getBehaviour(), text));
 					box.add(text);
 				} 
@@ -268,6 +276,8 @@ public class InspectorPanel extends JTabbedPane {
 				BehaviourManipulator.manipulateField(behaviour, name, Integer.parseInt(textField.getText()));
 			} else if (type == Float.TYPE){
 				BehaviourManipulator.manipulateField(behaviour, name, Float.parseFloat(textField.getText()));
+			} else if (type == String.class){
+				BehaviourManipulator.manipulateField(behaviour, name, textField.getText());
 			}
 		}
 		
