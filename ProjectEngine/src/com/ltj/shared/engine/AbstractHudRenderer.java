@@ -29,6 +29,9 @@ public abstract class AbstractHudRenderer implements HudRenderer {
 	private float rotation;
 	private float height,width;
 	private String path;
+
+
+
 	public AbstractHudRenderer(String path){
 		this.path = path;
 
@@ -39,6 +42,11 @@ public abstract class AbstractHudRenderer implements HudRenderer {
 		height = 1;
 		width = 1;
 
+	}
+	
+	@Override
+	public String getPath() {
+		return path;
 	}
 
 
