@@ -30,7 +30,7 @@ public class PlayerController extends Behaviour<SpriteSheet> {
 
 			jumping = false;
 			grounded = false;
-			upSpeed = 0.22f;
+			upSpeed = 0.27f;
 		}
 		if (grounded){
 			upSpeed = -gravity*4;
