@@ -16,7 +16,7 @@ public class JoglView{
 		GLCanvas canvas = new GLCanvas(caps);
 
 		JFrame frame = new JFrame("AWT Window Test");
-		frame.setSize(720,480);
+		frame.setSize(1280,720);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		Animator anim = new Animator(canvas);
 		anim.setRunAsFastAsPossible(true);
