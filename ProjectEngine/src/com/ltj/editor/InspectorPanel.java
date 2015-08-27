@@ -3,20 +3,30 @@ package com.ltj.editor;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Map.Entry;
 
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
+import javax.swing.JTextField;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import com.jogamp.opengl.awt.GLCanvas;
 import com.ltj.java.engine.JoglRenderer;
 import com.ltj.shared.engine.Animation;
+import com.ltj.shared.engine.Behaviour;
+import com.ltj.shared.engine.BehaviourManipulator;
 import com.ltj.shared.engine.Collider;
 import com.ltj.shared.engine.EmptyObject;
 import com.ltj.shared.engine.Engine;
@@ -39,6 +49,8 @@ public class InspectorPanel extends JTabbedPane {
 	private DefaultListModel<Collider> colliders;
 
 	private DefaultListModel<Entry<String, Animation>> animations;
+	
+	private ArrayList<Field> behaviourFields;
 
 	public InspectorPanel(final GLCanvas canvas, final JoglRenderer renderer){
 		setPreferredSize(new Dimension(230,500));
@@ -144,14 +156,17 @@ public class InspectorPanel extends JTabbedPane {
 	}
 	
 	private void setupBehaviourTab(){
+		JPanel mainBehaviourTab = new JPanel();
+		mainBehaviourTab.setLayout(new BoxLayout(mainBehaviourTab, BoxLayout.Y_AXIS));
 		behaviourPanel = new JPanel();
 		behaviourPanel.setLayout(new BoxLayout(behaviourPanel, BoxLayout.Y_AXIS));
 
 		addBehaviourButton = new JButton("Add Behaviour");
-		behaviourPanel.add(addBehaviourButton);
-		addTab("Behaviour", behaviourPanel);
+		mainBehaviourTab.add(addBehaviourButton);
+		mainBehaviourTab.add(behaviourPanel);
+		addTab("Behaviour", mainBehaviourTab);
 		
-		
+		behaviourFields = new ArrayList<Field>();
 	}
 
 	public void openInspector(int selectedIndex) {
@@ -162,8 +177,7 @@ public class InspectorPanel extends JTabbedPane {
 		
 		mainPanel.openInspector(selectedIndex);
 		
-		RenderObject o = Engine.getAllObjects().get(selectedIndex);
-		System.out.println(o.isRendererDisabled());
+		final RenderObject o = Engine.getAllObjects().get(selectedIndex);
 		colliders.clear();
 		if (o.getColliders()!= null){
 			for (Collider c : o.getColliders()){
@@ -176,6 +190,9 @@ public class InspectorPanel extends JTabbedPane {
 				animations.addElement(e);
 			}
 		}
+		
+		openBehaviourTab(o);
+		
 		boolean full = (o.getClass() != EmptyObject.class);
 		if (full){
 
@@ -187,6 +204,73 @@ public class InspectorPanel extends JTabbedPane {
 			}
 
 		}
+	}
+
+	private void openBehaviourTab(final RenderObject o) {
+		behaviourFields.clear();
+		behaviourPanel.removeAll();
+		if (o.getBehaviour() != null){
+			for (final Field f : BehaviourManipulator.getFields(o.getBehaviour())){
+				
+				behaviourFields.add(f);
+				
+				Box box = new Box(BoxLayout.X_AXIS);
+				box.setMaximumSize(new Dimension(200, 30));
+				box.add(new JLabel(f.getName()));
+				if (f.getType() == Boolean.TYPE){
+					final JCheckBox checkBox = new JCheckBox();
+					checkBox.addActionListener(new ActionListener() {
+						
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							BehaviourManipulator.manipulateField(o.getBehaviour(), f.getName(), checkBox.isSelected());
+							
+						}
+					});
+					box.add(checkBox);
+					
+				} else {
+					final JTextField text = new JTextField();
+					text.addKeyListener(new BehaviourKeyListener(f, o.getBehaviour(), text));
+					box.add(text);
+				} 
+				behaviourPanel.add(box);
+				behaviourPanel.revalidate();
+			}
+		}
+	}
+	
+	class BehaviourKeyListener implements KeyListener {
+
+		private Class<?> type;
+		private Behaviour<?> behaviour;
+		private String name;
+		private JTextField textField;
+
+		public BehaviourKeyListener(Field field, Behaviour<?> behaviour,JTextField textField){
+			type = field.getType();
+			name = field.getName();
+			this.behaviour = behaviour;
+			this.textField = textField;
+		}
+		
+		@Override
+		public void keyTyped(KeyEvent e) {
+		}
+
+		@Override
+		public void keyPressed(KeyEvent e) {
+		}
+
+		@Override
+		public void keyReleased(KeyEvent e) {
+			if (type == Integer.TYPE){
+				BehaviourManipulator.manipulateField(behaviour, name, Integer.parseInt(textField.getText()));
+			} else if (type == Float.TYPE){
+				BehaviourManipulator.manipulateField(behaviour, name, Float.parseFloat(textField.getText()));
+			}
+		}
+		
 	}
 
 	
