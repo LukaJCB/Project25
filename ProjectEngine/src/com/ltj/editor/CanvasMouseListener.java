@@ -1,6 +1,8 @@
-package com.ltj.java.view;
+package com.ltj.editor;
 
 import java.awt.Cursor;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
@@ -12,13 +14,14 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.event.MouseInputListener;
 
 import com.jogamp.opengl.awt.GLCanvas;
+import com.ltj.shared.engine.Area;
 import com.ltj.shared.engine.Camera;
 import com.ltj.shared.engine.Engine;
 import com.ltj.shared.engine.Line;
 import com.ltj.shared.engine.RenderObject;
 import com.ltj.shared.utils.MatrixHelper;
 
-public class CanvasMouseListener implements MouseInputListener, MouseWheelListener {
+public class CanvasMouseListener implements MouseInputListener, MouseWheelListener, KeyListener {
 
 	private static final float BORDER_LENGTH = 0.4f;
 	private GLCanvas canvas;
@@ -26,7 +29,9 @@ public class CanvasMouseListener implements MouseInputListener, MouseWheelListen
 	private float[] lastCoordsWorld;
 	private EnumSet<Border> scalingMode = EnumSet.noneOf(Border.class);
 	private ListSelectionListener selectionListener;
+	private AreaChangedListener areaChangedListener;
 	private boolean translateMode;
+	private boolean changeAreaMode;
 
 	
 
@@ -41,6 +46,10 @@ public class CanvasMouseListener implements MouseInputListener, MouseWheelListen
 		selectionListener = list.getListSelectionListeners()[0];
 	}
 
+	public void setAreaChangedListener(AreaChangedListener areaChangedListener) {
+		this.areaChangedListener = areaChangedListener;
+	}
+
 	@Override
 	public void mouseClicked(MouseEvent e) {
 	}
@@ -50,37 +59,45 @@ public class CanvasMouseListener implements MouseInputListener, MouseWheelListen
 		
 			
 		Line mouseClick = getLineFromMouse(e);
+		mouseClick.intersectXYPlane();	
+		
+		if (changeAreaMode){
 			
-		if (SwingUtilities.isRightMouseButton(e)){	
+			Area selectedArea = Engine.getArea((int)(mouseClick.getIntersection()[0] / Engine.getAreaWidth()), 
+					(int)(mouseClick.getIntersection()[1] / Engine.getAreaHeight()));
 			
-			mouseClick.intersectXYPlane();
+			areaChangedListener.onAreaChange(selectedArea);
 			
 		} else {
-			
-			RenderObject selectedObject = null;
-			for (RenderObject o : Engine.getAllObjects().values()){
-				if (mouseClick.intersectsWith(o)){
-					selectedObject = o;
-				}
-			}
-			
-			if (selectedObject != null){
-				//check if selection has changed
-				if (list.getSelectedValue() == selectedObject){
-					//only allow translation and scaling if selection hasn't changed
-					scalingMode = pointNearEdgeOf(mouseClick.getIntersection(), selectedObject);
-					if (scalingMode.isEmpty()){
-						translateMode = true;
-					}
-				} else {
-					list.setSelectedValue(selectedObject, true);
-				}
-				
-			}
+			leftMousePressed(mouseClick);
 		}
 		
 		lastCoordsWorld = mouseClick.getIntersection();
 
+	}
+
+	private void leftMousePressed(Line mouseClick) {
+		
+		RenderObject selectedObject = null;
+		for (RenderObject o : Engine.getAllObjects().values()){
+			if (mouseClick.intersectsWith(o)){
+				selectedObject = o;
+			}
+		}
+		
+		if (selectedObject != null){
+			//check if selection has changed
+			if (list.getSelectedValue() == selectedObject){
+				//only allow translation and scaling if selection hasn't changed
+				scalingMode = pointNearEdgeOf(mouseClick.getIntersection(), selectedObject);
+				if (scalingMode.isEmpty()){
+					translateMode = true;
+				}
+			} else {
+				list.setSelectedValue(selectedObject, true);
+			}
+			
+		}
 	}
 
 
@@ -217,6 +234,7 @@ public class CanvasMouseListener implements MouseInputListener, MouseWheelListen
 		canvas.addMouseListener(this);
 		canvas.addMouseMotionListener(this);
 		canvas.addMouseWheelListener(this);
+		canvas.addKeyListener(this);
 	}
 
 	private EnumSet<Border> pointNearEdgeOf(float[] point, RenderObject object) {
@@ -239,6 +257,25 @@ public class CanvasMouseListener implements MouseInputListener, MouseWheelListen
 	
 	private static enum Border{
 		NORTH, EAST, SOUTH, WEST;
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+		
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		if (e.getKeyCode() == KeyEvent.VK_CONTROL){
+			changeAreaMode = true;
+		}
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		if (e.getKeyCode() == KeyEvent.VK_CONTROL){
+			changeAreaMode = false;
+		}
 	}
 
 

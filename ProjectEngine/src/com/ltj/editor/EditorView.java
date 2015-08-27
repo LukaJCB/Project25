@@ -1,4 +1,4 @@
-package com.ltj.java.view;
+package com.ltj.editor;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -35,6 +35,7 @@ import com.jogamp.opengl.awt.GLCanvas;
 import com.jogamp.opengl.util.Animator;
 import com.ltj.java.engine.JoglRenderer;
 import com.ltj.java.engine.JoglSprite;
+import com.ltj.shared.engine.Area;
 import com.ltj.shared.engine.AreaMode;
 import com.ltj.shared.engine.EmptyObject;
 import com.ltj.shared.engine.Engine;
@@ -61,6 +62,7 @@ public class EditorView {
 	private Animator animator;
 	private CanvasMouseListener cmListener;
 	private JScrollPane listScroller;
+	private AreaList areaList;
 
 	public EditorView(){
 		prepareGUI();
@@ -399,7 +401,7 @@ public class EditorView {
 			inspector.openInspector(o.getId());
 			if (selection == null){
 				selection = new JoglSprite("selection.png", 1, 1);
-				renderer.setSelectionSprite(selection);
+				JoglRenderer.setSelectionSprite(selection);
 			}
 			selection.setPosition(o.getX(),o.getY());
 			selection.setScale(o.getWidth(), o.getHeight());
@@ -409,26 +411,26 @@ public class EditorView {
 	}
 	
 	private void prepareAreaList(){
-		final AreaList al = new AreaList(canvas);
+		areaList = new AreaList(canvas);
 		
-		tabbedPane.addTab("Areas", al);
+		tabbedPane.addTab("Areas", areaList);
 		tabbedPane.addChangeListener(new ChangeListener() {
 			
 			@Override
 			public void stateChanged(ChangeEvent e) {
-				if (tabbedPane.getSelectedComponent() == al){
-					cmListener.setList(al.getList());
+				if (tabbedPane.getSelectedComponent() == areaList){
+					cmListener.setList(areaList.getList());
 				} else if (tabbedPane.getSelectedComponent() == listScroller){
 					cmListener.setList(list);
 				}
 			}
 		});
-		al.getList().addListSelectionListener(new ObjectListListener(al.getList()));
+		areaList.getList().addListSelectionListener(new ObjectListListener(areaList.getList()));
 	}
 
 	private void prepareOrthoList(){
-		orthoListModel = new DefaultListModel<>();
-		JList<OrthoRenderObject> orthoList = new JList<>(orthoListModel);
+		orthoListModel = new DefaultListModel<OrthoRenderObject>();
+		JList<OrthoRenderObject> orthoList = new JList<OrthoRenderObject>(orthoListModel);
 		JScrollPane listScroller = new JScrollPane(orthoList);
 		tabbedPane.addTab("Ortho", listScroller);
 	}
@@ -456,6 +458,15 @@ public class EditorView {
 		
 		cmListener = new CanvasMouseListener(canvas,list,selectionListener);
 		cmListener.registerListener();
+		cmListener.setAreaChangedListener(new AreaChangedListener() {
+			
+			@Override
+			public void onAreaChange(Area newArea) {
+				cmListener.setList(areaList.getList());
+				areaList.displayAreaList(newArea);
+				tabbedPane.setSelectedIndex(2);
+			}
+		});
 
 		Engine.setCollisionZone(new Rectangle(0, 0, 30, 25));
 

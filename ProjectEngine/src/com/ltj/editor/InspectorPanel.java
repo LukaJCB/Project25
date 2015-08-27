@@ -1,4 +1,4 @@
-package com.ltj.java.view;
+package com.ltj.editor;
 
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;

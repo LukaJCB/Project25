@@ -1,4 +1,4 @@
-package com.ltj.java.view;
+package com.ltj.editor;
 
 import javax.swing.JPanel;
 

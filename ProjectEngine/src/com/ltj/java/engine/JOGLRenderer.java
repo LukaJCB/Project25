@@ -45,7 +45,7 @@ public class JoglRenderer implements GLEventListener, KeyListener {
 
 	private boolean modeSeven, changeMode;
 
-	private JoglSprite selectionSprite;
+	private static JoglSprite selectionSprite;
 
 	protected GL3 gl;
 
@@ -242,8 +242,12 @@ public class JoglRenderer implements GLEventListener, KeyListener {
 
 	}
 
-	public void setSelectionSprite(JoglSprite selection) {
-		this.selectionSprite = selection;
+	public static JoglSprite getSelectionSprite() {
+		return selectionSprite;
+	}
+
+	public static void setSelectionSprite(JoglSprite selection) {
+		selectionSprite = selection;
 	}
 
 	public static GLContext getContext() {

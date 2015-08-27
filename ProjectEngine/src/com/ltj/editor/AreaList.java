@@ -1,4 +1,4 @@
-package com.ltj.java.view;
+package com.ltj.editor;
 
 import java.awt.Dimension;
 import java.awt.event.KeyEvent;
@@ -14,6 +14,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
 import com.jogamp.opengl.awt.GLCanvas;
+import com.ltj.java.engine.JoglRenderer;
+import com.ltj.java.engine.JoglSprite;
 import com.ltj.shared.engine.Area;
 import com.ltj.shared.engine.Camera;
 import com.ltj.shared.engine.Engine;
@@ -58,18 +60,32 @@ public class AreaList extends JPanel {
 		return areaList;
 	}
 	
-	private void openAreaList(){
+	
+	public void displayAreaList(Area area){
+		currentArea = area;
+		x.setText("" + (int)(currentArea.getX() / Engine.getAreaWidth()));
+		y.setText("" + (int)(currentArea.getY() / Engine.getAreaHeight()));
+		openAreaList(area);
+	}
+	
+	
+	private void openAreaList(Area area) {
 		areaListModel.clear();
-		Camera.setLookAt(currentArea.getX(),currentArea.getY());
-		if (currentArea.getObjectList()!= null){
-			for (Sprite o : currentArea.getObjectList()){
+		Camera.setLookAt(area.getX(),area.getY());
+		if (area.getObjectList()!= null){
+			for (Sprite o : area.getObjectList()){
 				areaListModel.addElement((RenderObject) o);
 			}
 		}
+		
+		JoglSprite selection = JoglRenderer.getSelectionSprite();
+		selection.setScale(Engine.getAreaWidth(),Engine.getAreaHeight());
+		selection.setPosition(area.getX(), area.getY());
+		
 		canvas.display();
 	}
 	
-private class AreaKeyListener implements KeyListener {
+	private class AreaKeyListener implements KeyListener {
 		
 		@Override
 		public void keyTyped(KeyEvent e) {
@@ -88,7 +104,7 @@ private class AreaKeyListener implements KeyListener {
 			} else if (field == y){
 				currentArea = Engine.getArea(Engine.getCurrentArea().getX(),value);
 			}
-			openAreaList();
+			openAreaList(currentArea);
 		}
 		
 		@Override
