@@ -2,7 +2,6 @@ package com.ltj.shared.engine;
 
 import java.util.HashMap;
 import java.util.Map.Entry;
-import java.util.Set;
 
 
 public class Animator {
@@ -36,13 +35,7 @@ public class Animator {
 				currentAnimation = null;
 			}
 		}
-	
 	}
-	
-	public Set<Entry<String, Animation>> getAllAnimations(){
-		return animations.entrySet();
-	}
-	
 	
 	public String toJSON(){
 		String animJSON = "[";

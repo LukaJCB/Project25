@@ -37,7 +37,6 @@ import com.ltj.shared.engine.Engine;
 import com.ltj.shared.engine.HeadsUpDisplay;
 import com.ltj.shared.engine.HudElement;
 import com.ltj.shared.engine.OrthoRenderObject;
-import com.ltj.shared.engine.ParticleEmitter;
 import com.ltj.shared.engine.RenderObject;
 
 
@@ -172,14 +171,6 @@ public abstract class AndroidRenderer implements Renderer{
 			r.render();
 		}
 		
-		glUseProgram(particleProgramId);
-		
-		for (ParticleEmitter pe : Engine.getAllParticleEmitters().values()){
-			pe.render();
-		}
-		
-		glUseProgram(programId);
-		
 		//clear framebuffer and draw hud
 		glClear(GL_DEPTH_BUFFER_BIT);
 		hud.render();
@@ -221,7 +212,6 @@ public abstract class AndroidRenderer implements Renderer{
 			s.setNormalMode();
 		}
 		modeSeven = false;
-		Engine.setModeSeven(false);
 	}
 
 
@@ -238,6 +228,5 @@ public abstract class AndroidRenderer implements Renderer{
 			s.setModeSeven();
 		}
 		modeSeven = true;
-		Engine.setModeSeven(true);
 	}
 }
