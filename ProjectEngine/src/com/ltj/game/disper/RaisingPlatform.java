@@ -1,27 +1,27 @@
 package com.ltj.game.disper;
 
 import com.ltj.shared.engine.Behaviour;
-import com.ltj.shared.engine.SingleSprite;
 import com.ltj.shared.engine.Sprite;
+import com.ltj.shared.engine.SpriteSheet;
 
-public class RaisingPlatform extends Behaviour<SingleSprite> {
+public class RaisingPlatform extends Behaviour<SpriteSheet> {
 
 	private float raiseSpeed;
 	private boolean raising;
 	private int counter;
 	private boolean changeDirection;
-	public int delay;
 	
 	@Override
 	public void start() {
 		raiseSpeed = 0.05f;
+		gameObject.startAnimation("idle");
 	}
 
 	@Override
 	public void update() {
 		if (changeDirection){
 			counter++;
-			if (counter > delay){
+			if (counter > 60){
 				changeDirection = false;
 				counter = 0;
 			}
@@ -46,5 +46,7 @@ public class RaisingPlatform extends Behaviour<SingleSprite> {
 			}
 		}
 	}
+	
+	
 
 }

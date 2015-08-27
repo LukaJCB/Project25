@@ -1,6 +1,9 @@
 package com.ltj.shared.engine;
 
 
+import java.util.Map.Entry;
+import java.util.Set;
+
 import com.ltj.shared.utils.MatrixHelper;
 
 public abstract class AbstractSpriteRenderer implements SpriteRenderer {
@@ -49,7 +52,7 @@ public abstract class AbstractSpriteRenderer implements SpriteRenderer {
 		this.path = path;
 		
 	}
-	
+
 	@Override
 	public void animate(){
 		if (animator != null){
@@ -57,9 +60,9 @@ public abstract class AbstractSpriteRenderer implements SpriteRenderer {
 		}
 	}
 
-	
-	
-	
+
+
+
 	@Override
 	public void addAnimation(String name, int animationTime, int texRow, boolean looping, int numCols){
 		if (animator == null){
@@ -67,10 +70,17 @@ public abstract class AbstractSpriteRenderer implements SpriteRenderer {
 		}
 		animator.addAnimation(name, new Animation(animationTime, texRow, looping, numCols));
 	}
-	
-	
-	
-	
+
+
+
+	@Override
+	public Set<Entry<String, Animation>> getAllAnimations() {
+		if (animator != null){
+			return animator.getAllAnimations();
+		}
+		return null;
+	}
+
 	@Override
 	public void startAnimation(String name) {
 		animator.startAnimation(name);
@@ -112,6 +122,7 @@ public abstract class AbstractSpriteRenderer implements SpriteRenderer {
 	public void setScale(float x, float y) {
 		width = x;
 		height = y;
+		calcMatrix();
 	}
 
 
@@ -137,7 +148,13 @@ public abstract class AbstractSpriteRenderer implements SpriteRenderer {
 	}
 
 	@Override
+	public boolean isModeSevenEnabled() {
+		return modeSEnabled;
+	}
+
+	@Override
 	public void setModeSevenEnabled(boolean modeSEnabled) {
+
 		this.modeSEnabled = modeSEnabled;
 	}
 
@@ -177,6 +194,24 @@ public abstract class AbstractSpriteRenderer implements SpriteRenderer {
 		MatrixHelper.rotateM(getModelMatrix(),  rotationX, 1, 0, 0);
 		MatrixHelper.scaleM(getModelMatrix(),  getWidth(), getHeight(), 1);
 
+	}
+
+	
+	@Override
+	public float getRepeatX() {
+		return repeatX;
+	}
+	@Override
+	public float getRepeatY() {
+		return repeatY;
+	}
+	@Override
+	public int getTextureRow() {
+		return textureRow;
+	}
+	@Override
+	public int getTextureCol() {
+		return textureCol;
 	}
 
 	protected float[] getModelMatrix() {
