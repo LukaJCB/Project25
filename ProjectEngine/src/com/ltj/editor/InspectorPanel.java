@@ -6,7 +6,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.Map.Entry;
 
 import javax.swing.Box;
@@ -50,7 +49,6 @@ public class InspectorPanel extends JTabbedPane {
 
 	private DefaultListModel<Entry<String, Animation>> animations;
 	
-	private ArrayList<Field> behaviourFields;
 
 	public InspectorPanel(final GLCanvas canvas, final JoglRenderer renderer){
 		setPreferredSize(new Dimension(230,500));
@@ -161,12 +159,13 @@ public class InspectorPanel extends JTabbedPane {
 		behaviourPanel = new JPanel();
 		behaviourPanel.setLayout(new BoxLayout(behaviourPanel, BoxLayout.Y_AXIS));
 
+		JScrollPane scrollPane = new JScrollPane(behaviourPanel);
+
 		addBehaviourButton = new JButton("Add Behaviour");
 		mainBehaviourTab.add(addBehaviourButton);
-		mainBehaviourTab.add(behaviourPanel);
+		mainBehaviourTab.add(scrollPane);
 		addTab("Behaviour", mainBehaviourTab);
 		
-		behaviourFields = new ArrayList<Field>();
 	}
 
 	public void openInspector(int selectedIndex) {
@@ -213,15 +212,14 @@ public class InspectorPanel extends JTabbedPane {
 	}
 
 	private void openBehaviourTab(final RenderObject o) throws IllegalArgumentException, IllegalAccessException {
-		behaviourFields.clear();
+		
 		behaviourPanel.removeAll();
 		if (o.getBehaviour() != null){
 			for (final Field f : BehaviourManipulator.getFields(o.getBehaviour())){
 				
-				behaviourFields.add(f);
 				
 				Box box = new Box(BoxLayout.X_AXIS);
-				box.setMaximumSize(new Dimension(200, 30));
+				box.setMaximumSize(new Dimension(180, 30));
 				box.add(new JLabel(f.getName()));
 				if (f.getType() == Boolean.TYPE){
 					final JCheckBox checkBox = new JCheckBox();
