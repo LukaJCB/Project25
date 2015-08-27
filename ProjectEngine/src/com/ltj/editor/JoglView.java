@@ -1,4 +1,4 @@
-package com.ltj.java.view;
+package com.ltj.editor;
 
 import javax.swing.JFrame;
 
@@ -10,22 +10,33 @@ import com.ltj.game.disper.DisperRenderer;
 import com.ltj.java.engine.JoglRenderer;
 
 public class JoglView{
-	public static void main(String[] args){
+	private JFrame frame;
+	private Animator anim;
+
+	public JoglView(){
 		GLProfile glp = GLProfile.getDefault();
 		GLCapabilities caps = new GLCapabilities(glp);
 		GLCanvas canvas = new GLCanvas(caps);
 
-		JFrame frame = new JFrame("AWT Window Test");
+		frame = new JFrame("Dimension Engine");
 		frame.setSize(1280,720);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		Animator anim = new Animator(canvas);
+		anim = new Animator(canvas);
 		anim.setRunAsFastAsPossible(true);
 		JoglRenderer r = new DisperRenderer();
 		canvas.addGLEventListener(r);
 		frame.add(canvas);
 		frame.addKeyListener(r);
+	}
+	
+	public void start(){
 		frame.setVisible(true);
 		anim.start();
+	}
+	
+	public static void main(String[] args){
+		new JoglView().start();
+		
 		
 	}
 	
