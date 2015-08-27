@@ -2,8 +2,6 @@ package com.ltj.shared.engine;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map.Entry;
-import java.util.Set;
 
 
 /**
@@ -24,38 +22,14 @@ public abstract class AbstractSprite implements RenderObject,SingleSprite,Sprite
 	protected String path;
 	private boolean mirroredX, mirroredY;
 	private int id;
-	private String name = "";
 	private boolean loading;
 	
-	@Override
 	public int getNumCols() {
 		return renderer.getNumCols();
 	}
 
-	@Override
 	public int getNumRows() {
 		return renderer.getNumRows();
-	}
-
-	@Override
-	public int getTextureRow() {
-		return renderer.getTextureRow();
-	}
-
-	@Override
-	public int getTextureColumn() {
-		return renderer.getTextureCol();
-	}
-
-	@Override
-	public float getRepeatY() {
-		return renderer.getRepeatY();
-	}
-
-	
-	@Override
-	public float getRepeatX() {
-		return renderer.getRepeatX();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -143,11 +117,6 @@ public abstract class AbstractSprite implements RenderObject,SingleSprite,Sprite
 	}
 
 	@Override
-	public Set<Entry<String, Animation>> getAllAnimations() {
-		return renderer.getAllAnimations();
-	}
-
-	@Override
 	public Animation getAnimation(String name){
 		return renderer.getAnimation(name);
 	}
@@ -190,7 +159,10 @@ public abstract class AbstractSprite implements RenderObject,SingleSprite,Sprite
 		return controller.getBehaviourName();
 	}
 
-	
+	public boolean equals(Object obj) {
+		return controller.equals(obj);
+	}
+
 	public void translate(float dx, float dy) {
 		renderer.translate(dx, dy);
 		//translate children as well
@@ -299,22 +271,13 @@ public abstract class AbstractSprite implements RenderObject,SingleSprite,Sprite
 	}
 
 	@Override
-	public boolean isMirroredX() {
-		return mirroredX;
-	}
-
-	@Override
-	public boolean isMirroredY() {
-		return mirroredY;
-	}
-
-	private void mirrorX(){
+	public void mirrorX(){
 		mirroredX = !mirroredX;
 		setScale(-renderer.getWidth(),getHeight());
 	}
 	
-	
-	private void mirrorY(){
+	@Override
+	public void mirrorY(){
 		mirroredY = !mirroredY;
 		setScale(getWidth(),-renderer.getHeight());
 	}
@@ -367,11 +330,6 @@ public abstract class AbstractSprite implements RenderObject,SingleSprite,Sprite
 	}
 
 	@Override
-	public boolean isModeSevenEnabled() {
-		return renderer.isModeSevenEnabled();
-	}
-
-	@Override
 	public boolean isLoaded() {
 		return !loading;
 	}
@@ -413,6 +371,11 @@ public abstract class AbstractSprite implements RenderObject,SingleSprite,Sprite
 	@Override
 	public void render() {
 		renderer.render();
+		if (emitterList != null){
+			for (ParticleEmitter pe : emitterList){
+				pe.render();
+			}
+		}
 	}
 
 	@Override
@@ -525,6 +488,18 @@ public abstract class AbstractSprite implements RenderObject,SingleSprite,Sprite
 		this.inactive = inactive;
 		renderer.setDisabled(inactive);
 		controller.setDisabled(inactive);
+		if (childList != null){
+			for (Sprite o : childList){
+				o.setInactive(inactive);
+				if (inactive){
+					o.setInactiveOnLoad(inactive);
+				}
+			}
+		}
+		if (inactive){
+			setInactiveOnLoad(inactive);
+		}
+		
 	}
 
 	public boolean isInactiveOnLoad() {
@@ -547,9 +522,8 @@ public abstract class AbstractSprite implements RenderObject,SingleSprite,Sprite
 
 	public String toJSON() {
 		String s ="{ \"type\":\"" + getClass().getName() + "\", " 
-		 +  "\"id\":" + id + "," + renderer.toJSON() + "\"tag\":\"" + tag  + "\",\"inactiveOnLoad\":" 
-				+ inactiveOnLoad + ",\"inactive\":" + inactive + ",\"mirroredX\":" + mirroredX 
-				+ ",\"mirroredY\":" + mirroredY +",\"name\":" + name + controller.toJSON() + "\"children\":";
+		 +  "\"id\":" + id + "," + renderer.toJSON() + "\"tag\":\"" + tag  + "\",\"inactive\":" + inactive 
+				+ ",\"mirroredX\":" + mirroredX + ",\"mirroredY\":" + mirroredY + controller.toJSON() + "\"children\":";
 		if (childList != null){
 			s+= "[";
 			for (Sprite sprite : childList){
@@ -573,15 +547,6 @@ public abstract class AbstractSprite implements RenderObject,SingleSprite,Sprite
 		}
 		s+=  "}";
 		return s;
-	}
-
-	public String toString() {
-		return name;
-	}
-
-	@Override
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	
