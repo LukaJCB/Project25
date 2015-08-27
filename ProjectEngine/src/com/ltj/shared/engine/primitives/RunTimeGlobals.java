@@ -75,8 +75,9 @@ public class RunTimeGlobals {
 				globalsJSON += "{\"name\":\""+  entry.getKey()+ "\",\"value\":" +  entry.getValue().getId() + "},";
 			}
 			globalsJSON = globalsJSON.substring(0,globalsJSON.length()-1);
+			globalsJSON += "]";
 		}
-		globalsJSON += "],\"ObjectPool\":";
+		globalsJSON += ",\"ObjectPool\":";
 
 		if (poolMap.isEmpty()){
 			globalsJSON += "\"null\"";
@@ -86,9 +87,10 @@ public class RunTimeGlobals {
 				globalsJSON += "{\"name\":\""+  entry.getKey()+ "\"," +  entry.getValue().toJSON() + "},";
 			}
 			globalsJSON = globalsJSON.substring(0,globalsJSON.length()-1);
+			globalsJSON += "]";
 		}
 
-		globalsJSON += "]}";
+		globalsJSON += "}";
 		return globalsJSON;
 	}
 	

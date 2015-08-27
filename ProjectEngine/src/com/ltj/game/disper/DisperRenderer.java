@@ -11,9 +11,11 @@ import com.ltj.shared.engine.BehaviourManipulator;
 import com.ltj.shared.engine.EmptyObject;
 import com.ltj.shared.engine.Engine;
 import com.ltj.shared.engine.OrthoRenderObject;
+import com.ltj.shared.engine.RenderObject;
 import com.ltj.shared.engine.SoundManager;
 import com.ltj.shared.engine.primitives.BoxCollider;
 import com.ltj.shared.engine.primitives.RunTimeGlobals;
+import com.ltj.shared.utils.BasicIO;
 
 public class DisperRenderer extends JoglRenderer {
 
@@ -49,6 +51,7 @@ public class DisperRenderer extends JoglRenderer {
 		playerWorm.addAnimation("walk", 5, 0, true, 5);
 		Engine.addRenderable(playerWorm);
 		playerWorm.setInactive(true);
+		
 		
 		
 		JoglSprite player = new JoglSprite("assets/pic/player_run.png",4,1);
@@ -98,7 +101,10 @@ public class DisperRenderer extends JoglRenderer {
 		Engine.setCurrentArea(2, -2);
 		
 		Engine.start();
-
+		for(RenderObject o : Engine.getAllObjects().values()){
+			o.setInactive(false);
+		}
+		BasicIO.parseToDME("C:\\Users\\Luka\\Documents\\test", "test");
 		
 	}
 

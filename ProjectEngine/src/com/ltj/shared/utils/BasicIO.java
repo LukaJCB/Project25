@@ -1,8 +1,12 @@
 package com.ltj.shared.utils;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -41,35 +45,41 @@ public class BasicIO {
 
 
 
-	public static void parseToPDE(final String path, final String name){
+	public static void parseToDME(final String path, final String name){
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				writeToPath(getJSON(),path + name + ".pde");
+				writeToPath(getJSON(),path + File.separator + name + ".dme");
 			}
 
 		}).start();
 	}
 	
+	public static void parseToDMO(RenderObject o, String path,String name){
+		writeToPath(o.toJSON(),path+ File.separator + name + ".dmo");
+	}
+
 	public static void parseToSave(final String path, final String name){
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
 				StringEncoder enc = StringEncoder.getInstance();
-				String encoded = enc.encrypt(getJSON());
+				
+				String json = "{\"Constants\":" + SaveStateConstants.toJSON() + "}";
+				String encoded = enc.encrypt(json);
 				writeToPath(encoded,path + name + ".sav");
 			}
 
 		}).start();
 	}
 	
-	public static void loadFromPDE(String path, String name) throws ClassNotFoundException, JSONException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException{
+	public static void loadFromDME(String path, String name) throws ClassNotFoundException, JSONException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException{
 	
 		parentsToAdd = new LinkedHashMap<Integer, ArrayList<RenderObject>>();
 		childrenToAdd = new LinkedHashMap<Integer, RenderObject>();
 		
 		//load json
-		String file = JoglTextResourceReader.readTextFileFromResource("res/raw/scene2.pde");
+		String file = JoglTextResourceReader.readTextFileFromResource(path + File.separator + name);
 	
 		JSONObject json = new JSONObject(file);
 		
@@ -141,23 +151,9 @@ public class BasicIO {
 			}
 		}
 		
-		int areaModeInt = json.getInt("AreaMode");
-		AreaMode areaMode;
-		switch (areaModeInt){
-		
-		case 0:
-			areaMode = AreaMode.NONE;
-			break;
-		case 1:
-			areaMode = AreaMode.HIDE;
-			break;
-		case 2:
-			areaMode = AreaMode.DYNAMIC_LOAD;
-			break;
-		default: 
-			areaMode = AreaMode.HIDE;
-		}
-		
+		String areaModeString = json.getString("AreaMode");
+		AreaMode areaMode = AreaMode.valueOf(areaModeString);
+
 		Engine.setAreaMode(areaMode);
 		
 		if (areaMode == AreaMode.HIDE){
@@ -205,6 +201,14 @@ public class BasicIO {
 		Engine.setCollisionZone(new Rectangle(zone.getFloat("x"), zone.getFloat("y"), zone.getFloat("width"),zone.getFloat("height")));
 		
 	}
+	
+	public static RenderObject loadFromDMO(String path,String name) throws ClassNotFoundException, JSONException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException{
+		String file = JoglTextResourceReader.readTextFileFromResource(path + File.separator + name);
+		
+		JSONObject json = new JSONObject(file);
+		
+		return reconstructObject(json);
+	}
 
 	private static String getJSON(){
 		String json = "{\"Camera\":" + Camera.toJSON()
@@ -226,9 +230,14 @@ public class BasicIO {
 			json = json.substring(0, json.length() - 1);
 		}
 
-		json += "],\"Constants\":" + SaveStateConstants.toJSON();
-		json += ",\"Globals\":" + RunTimeGlobals.toJSON();
-		json += ",\"AreaMode\":" + Engine.getAreaMode();
+		json += "],\"Globals\":" + RunTimeGlobals.toJSON();
+		json += ",\"AreaMode\":\"";
+		if (Engine.getAreaMode() == null){
+			json += AreaMode.NONE;
+		} else {
+			json += Engine.getAreaMode();
+		}
+		json += "\"";
 		if (Engine.getAreaMode() == AreaMode.DYNAMIC_LOAD){
 			
 			//save area size
@@ -373,6 +382,8 @@ public class BasicIO {
 		r.setModeSevenEnabled(obj.getBoolean("modeSEnabled"));
 		r.setTag(obj.getString("tag"));
 		r.setInactive(obj.getBoolean("inactive"));
+		r.setInactiveOnLoad(obj.getBoolean("inactiveOnLoad"));
+		r.setName(obj.getString("name"));
 		r.setControllerDisabled(obj.getBoolean("controller_disabled"));
 		if (obj.getFloat("repeatX") != 1 || obj.getFloat("repeatY") != 1){
 			r.setRepeat(obj.getFloat("repeatX"), obj.getFloat("repeatY"));
@@ -447,5 +458,19 @@ public class BasicIO {
 		}
 		
 		return r;
+	}
+	
+	public static void copy(File src, File dst) throws IOException {
+	    InputStream in = new FileInputStream(src);
+	    OutputStream out = new FileOutputStream(dst);
+
+	    // Transfer bytes from in to out
+	    byte[] buf = new byte[1024];
+	    int len;
+	    while ((len = in.read(buf)) > 0) {
+	        out.write(buf, 0, len);
+	    }
+	    in.close();
+	    out.close();
 	}
 }

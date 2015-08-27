@@ -12,6 +12,8 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 
+import com.ltj.java.engine.JoglRenderer;
+
 public class JoglBufferHelper {
 	private JoglBufferHelper(){}
 	
@@ -22,6 +24,7 @@ public class JoglBufferHelper {
 	}
 	
 	public static int[] arrayToBufferId(float[] arr){
+		JoglRenderer.getContext().makeCurrent();
 		// allocate an array of one element
 		int[] idArray = new int[1];
 		// let's generate

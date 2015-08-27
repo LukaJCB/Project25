@@ -2,6 +2,8 @@ package com.ltj.shared.engine;
 
 
 import java.util.ArrayList;
+import java.util.Map.Entry;
+import java.util.Set;
 
 
 public interface RenderObject extends Sprite {
@@ -40,6 +42,15 @@ public interface RenderObject extends Sprite {
 	void setTexture(int col, int row);
 	void finishLoading();
 	void setLoaded(boolean b);
+	void setName(String name);
+	boolean isModeSevenEnabled();
+	int getNumRows();
+	int getNumCols();
+	int getTextureRow();
+	int getTextureColumn();
+	float getRepeatY();
+	float getRepeatX();
+	Set<Entry<String, Animation>> getAllAnimations();
 	
 	
 	

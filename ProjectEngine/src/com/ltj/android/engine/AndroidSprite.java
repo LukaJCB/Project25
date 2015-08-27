@@ -1,6 +1,5 @@
 package com.ltj.android.engine;
 
-import com.ltj.java.engine.JoglSpriteRenderer;
 import com.ltj.shared.engine.AbstractSprite;
 import com.ltj.shared.engine.RenderObject;
 

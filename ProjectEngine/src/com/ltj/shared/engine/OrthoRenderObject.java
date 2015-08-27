@@ -57,6 +57,10 @@ public class OrthoRenderObject {
 	public String toJSON(){
 		return "{" +  renderer.toJSON() + "\"type\":\"" + getClass().getName() + "\",\"platform\":"+ platform  + "}";
 	}
+
+	public String toString() {
+		return renderer.getPath();
+	}
 	
 	
 	

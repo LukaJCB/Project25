@@ -23,6 +23,7 @@ import java.awt.event.KeyListener;
 
 import com.jogamp.opengl.GL3;
 import com.jogamp.opengl.GLAutoDrawable;
+import com.jogamp.opengl.GLContext;
 import com.jogamp.opengl.GLEventListener;
 import com.ltj.java.utils.JoglShaderHelper;
 import com.ltj.java.utils.JoglTextResourceReader;
@@ -32,7 +33,7 @@ import com.ltj.shared.engine.OrthoRenderObject;
 import com.ltj.shared.engine.ParticleEmitter;
 import com.ltj.shared.engine.RenderObject;
 
-public abstract class JoglRenderer implements GLEventListener, KeyListener {
+public class JoglRenderer implements GLEventListener, KeyListener {
 
 	public static int programId;
 
@@ -44,7 +45,7 @@ public abstract class JoglRenderer implements GLEventListener, KeyListener {
 
 	private boolean modeSeven, changeMode;
 
-
+	private static JoglSprite selectionSprite;
 
 	protected GL3 gl;
 
@@ -56,6 +57,8 @@ public abstract class JoglRenderer implements GLEventListener, KeyListener {
 
 	private float pointSize;
 
+	private static GLContext context;
+
 
 	
 	
@@ -66,6 +69,8 @@ public abstract class JoglRenderer implements GLEventListener, KeyListener {
 			gl = drawable.getGL().getGL3();
 		}
 		StaticGL.insertGL(gl);
+
+		context = drawable.getContext();
 
 		updater = new JoglUpdater(true);
 		
@@ -101,12 +106,14 @@ public abstract class JoglRenderer implements GLEventListener, KeyListener {
 		uMatrixLocation = gl.glGetUniformLocation(programId, "uMatrix");
 		
 		
-		Camera.setLookAt(0, 0);
+		
 	
 		pointSize = 5;
 		glPointSize(pointSize);
 		
 		Camera.setDistance(2);
+		Camera.setLookAt(0, 0);
+		
 	}
 
 	public void addRenderable(RenderObject r) {
@@ -128,6 +135,7 @@ public abstract class JoglRenderer implements GLEventListener, KeyListener {
 			g.setNormalMode();
 		}
 		modeSeven = false;
+		Engine.setModeSeven(false);
 	}
 
 	private void setModeSeven() {
@@ -141,60 +149,7 @@ public abstract class JoglRenderer implements GLEventListener, KeyListener {
 			g.setModeSeven();
 		}
 		modeSeven = true;
-	}
-
-	public void display(GLAutoDrawable drawable) {
-		
-		long time = System.currentTimeMillis();
-		if (changeMode){
-			if (modeSeven){
-				setNormal();
-			} else {
-				setModeSeven();
-			}
-			changeMode = false;
-		}
-		
-		Engine.update();
-		
-		glUseProgram(programId);
-		
-		//clear framebuffer
-		if (modeSeven){
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-			if (Camera.activeSkybox()){
-				Camera.renderSkybox();
-				glClear(GL_DEPTH_BUFFER_BIT);
-			}
-		} else {
-			glClear(GL_COLOR_BUFFER_BIT);
-			for (OrthoRenderObject r : Engine.getAllOrthoRenderObjects()){
-				r.render();
-			}
-		}
-
-		for(RenderObject r : Engine.getAllObjects().values()){
-			r.render();
-		}
-		
-		glUseProgram(particleProgramId);
-		
-		for (ParticleEmitter pe : Engine.getAllParticleEmitters().values()){
-			pe.render();
-		}
-		glUseProgram(programId);
-		
-		glClear(GL_DEPTH_BUFFER_BIT);
-
-		Engine.getHud().render();
-		long timeDiff = System.currentTimeMillis() - time;
-		if (timeDiff < renderTime){
-			try {
-				Thread.sleep(renderTime - timeDiff);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
+		Engine.setModeSeven(true);
 	}
 
 	public void reshape(GLAutoDrawable drawable, int x, int y, int width,
@@ -221,6 +176,82 @@ public abstract class JoglRenderer implements GLEventListener, KeyListener {
 
 	public void dispose(GLAutoDrawable drawable) {
 	
+	}
+
+	public void display(GLAutoDrawable drawable) {
+		long time = System.currentTimeMillis();
+		if (changeMode){
+			if (modeSeven){
+				setNormal();
+			} else {
+				setModeSeven();
+			}
+			changeMode = false;
+		}
+		if (Engine.isStarted()){
+			Engine.update();
+		}
+		
+
+		Camera.calcPVMatrix();
+		
+		glUseProgram(programId);
+		
+		//clear framebuffer
+		if (modeSeven){
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			if (Camera.activeSkybox()){
+				Camera.renderSkybox();
+				glClear(GL_DEPTH_BUFFER_BIT);
+			}
+		} else {
+			glClear(GL_COLOR_BUFFER_BIT);
+			for (OrthoRenderObject r : Engine.getAllOrthoRenderObjects()){
+				r.render();
+			}
+		}
+
+	
+		for(RenderObject r : Engine.getAllObjects().values()){
+			r.render();
+		}
+		
+		glUseProgram(particleProgramId);
+		
+		for (ParticleEmitter pe : Engine.getAllParticleEmitters().values()){
+			pe.render();
+		}
+		glUseProgram(programId);
+		
+		glClear(GL_DEPTH_BUFFER_BIT);
+	
+		Engine.getHud().render();
+		
+		if (selectionSprite != null){
+			selectionSprite.render();
+		} 
+
+		long timeDiff = System.currentTimeMillis() - time;
+		if (timeDiff < renderTime){
+			try {
+				Thread.sleep(renderTime - timeDiff);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+
+	}
+
+	public static JoglSprite getSelectionSprite() {
+		return selectionSprite;
+	}
+
+	public static void setSelectionSprite(JoglSprite selection) {
+		selectionSprite = selection;
+	}
+
+	public static GLContext getContext() {
+		return context;
 	}
 	
 }

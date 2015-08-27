@@ -3,6 +3,7 @@ package com.ltj.shared.engine;
 
 import com.ltj.shared.utils.MatrixHelper;
 
+
 public abstract class Camera {
 
 	private Camera() {}
@@ -10,10 +11,12 @@ public abstract class Camera {
 	private static float[] perspectiveProjectionMatrix = new float[16];
 	private static float[] orthoProjectionMatrix = new float[16];
 	private static float[] projectionViewMatrix = new float[16];
+	private static float[] invertedProjectionViewMatrix = new float[16];
 	private static float sevenY,sevenZ;
 	private static float[] eyePos = new float[4];
 	private static float[] lookAt = new float[2];
 	private static Skybox skybox;
+	private static boolean modeSeven;
 	
 	
 	public static void addSkyBox(Skybox box){
@@ -33,10 +36,14 @@ public abstract class Camera {
 	
 	public static void setDistance(float distance){
 		eyePos[2] = distance;
+		calcDistanceParams();
+		calcViewMatrix();
 	}
 	
 	public static void zoom(float zoomFactor){
 		eyePos[2] /= zoomFactor;
+		calcDistanceParams();
+		calcViewMatrix();
 	}
 	
 	public static void createOrthographic(int height, int width){
@@ -59,13 +66,9 @@ public abstract class Camera {
 		lookAt[1] = y;
 		
 		eyePos[0] = x;
-		eyePos[1] = y-sevenY;
+		eyePos[1] = y;
 		
-		// Camera matrix
-		MatrixHelper.setLookAtM(viewMatrix, 
-				eyePos[0],eyePos[1],eyePos[2]-sevenZ, 
-				x,y,0, 
-				0,1,0); 
+		calcViewMatrix();
 	}
 	
 	public static void setRotateAround(float x, float y,float rotation){
@@ -99,13 +102,34 @@ public abstract class Camera {
 	}
 
 	public static void setModeSeven() {
-		sevenY = 1.5f;
-		sevenZ = 1.5f;
+		modeSeven = true;
+		calcDistanceParams();
+		calcViewMatrix();
 	}
 	
 	public static void setNormalMode(){
-		sevenY = 0;
-		sevenZ = 0;
+		modeSeven = false;
+		calcDistanceParams();
+		calcViewMatrix();
+	}
+
+	private static void calcViewMatrix(){
+		
+		MatrixHelper.setLookAtM(viewMatrix, 
+				eyePos[0],eyePos[1]-sevenY,eyePos[2]-sevenZ, 
+				lookAt[0],lookAt[1],0, 
+				0,1,0); 
+		
+	}
+	
+	private static void calcDistanceParams(){
+		if (modeSeven){
+			sevenY = 0.75f*eyePos[2];
+			sevenZ = 0.75f*eyePos[2];
+		} else {
+			sevenY = 0;
+			sevenZ = 0;
+		}
 	}
 
 	public static void renderSkybox() {
@@ -127,6 +151,41 @@ public abstract class Camera {
 		return perspectiveProjectionMatrix;
 	}
 	
+	private static void calcInvertedMatrix(){
+		MatrixHelper.invertM(invertedProjectionViewMatrix,projectionViewMatrix);
+		
+	}
+	
+	public static float[] getInvertedProjectionViewMatrix(){
+		return invertedProjectionViewMatrix;
+	}
+	
+	public static Line normalized2DCoordsToLine(float x, float y){
+		
+		calcInvertedMatrix();
+		
+		float[] nearPoint = {x, y, -1, 1};
+		float[] farPoint = {x, y, 1, 1};
+		
+		float[] nearPointWorldSpace = new float[4];
+		float[] farPointWorldSpace = new float[4];
+		
+		MatrixHelper.multiplyMV(nearPointWorldSpace, invertedProjectionViewMatrix, nearPoint);
+		MatrixHelper.multiplyMV(farPointWorldSpace, invertedProjectionViewMatrix, farPoint);
+		
+		perspectiveDevide(nearPointWorldSpace);
+		perspectiveDevide(farPointWorldSpace);
+		
+		return new Line(nearPointWorldSpace,farPointWorldSpace);
+	}
+	
+	private static void perspectiveDevide(float[] vector) {
+		vector[0] /= vector[3];
+		vector[1] /= vector[3];
+		vector[2] /= vector[3];
+		vector[3] = 1;
+	}
+
 	public static String toJSON(){
 		String json = "{ \"distance\":" + eyePos[2]+ ",\"x\":" + lookAt[0] + ",\"y\":" + lookAt[1] + ",\"skybox\":";
 		if (skybox != null){

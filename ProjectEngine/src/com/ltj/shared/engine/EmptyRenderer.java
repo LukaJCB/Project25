@@ -1,5 +1,8 @@
 package com.ltj.shared.engine;
 
+import java.util.Map.Entry;
+import java.util.Set;
+
 public class EmptyRenderer implements SpriteRenderer {
 
 	private float x,y;
@@ -190,7 +193,42 @@ public class EmptyRenderer implements SpriteRenderer {
 
 	@Override
 	public Animation getAnimation(String name) {
-		// TODO Auto-generated method stub
+		 
+		return null;
+	}
+
+	@Override
+	public boolean isModeSevenEnabled() {
+		 
+		return false;
+	}
+
+	@Override
+	public float getRepeatX() {
+		 
+		return 0;
+	}
+
+	@Override
+	public float getRepeatY() {
+		 
+		return 0;
+	}
+
+	@Override
+	public int getTextureRow() {
+		 
+		return 0;
+	}
+
+	@Override
+	public int getTextureCol() {
+		 
+		return 0;
+	}
+
+	@Override
+	public Set<Entry<String, Animation>> getAllAnimations() {
 		return null;
 	}
 

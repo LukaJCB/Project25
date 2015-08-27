@@ -20,16 +20,13 @@ public abstract class Engine {
 	public static final int ANDROID = 1;
 	
 	
-	
-	public static final int AREA_MODE_NONE = 0;
-	public static final int AREA_MODE_HIDE = 1;
-	public static final int AREA_MODE_DYNAMIC_LOAD = 2;
 	private static int platform;
 	
 	private static Rectangle collisionZone;
 
 
-	private static int gameObjectIds,emitterIds;
+	private static int gameObjectIds;
+	private static int emitterIds;
 	private static LinkedHashMap<Integer,RenderObject> allObjects = new LinkedHashMap<Integer,RenderObject>();
 	private static LinkedHashMap<Integer,ParticleEmitter> allParticleEmitters = new LinkedHashMap<Integer,ParticleEmitter>();
 	private static ArrayList<OrthoRenderObject> allOrthoRenderObjects = new ArrayList<OrthoRenderObject>();
@@ -41,9 +38,11 @@ public abstract class Engine {
 	private static HashMap<Position, Area> areas = new HashMap<Position, Area>();
 	private static float areaWidth, areaHeight;
 	private static AreaMode areaMode;
+	private static boolean modeSeven;
 
 	
 	
+
 	public static ArrayList<OrthoRenderObject> getAllOrthoRenderObjects() {
 		return allOrthoRenderObjects;
 	}
@@ -116,7 +115,6 @@ public abstract class Engine {
 			r.animate();
 		}
 		
-		Camera.calcPVMatrix();
 		//add objects that try to get inserted this frame
 		if (!dynamicObjects.isEmpty()){
 			for (int i = dynamicObjects.size()-1;i > -1;i--){
@@ -330,8 +328,12 @@ public abstract class Engine {
 		return a;
 	}
 	public static Area getArea(int x, int y){
-		
-		return areas.get(new Position(x, y));
+		Area a = areas.get(new Position(x, y));
+		if (a != null){
+			return a;
+		} else {
+			return addArea(x,y);
+		}
 	}
 	
 	
@@ -368,5 +370,30 @@ public abstract class Engine {
 		return "[" + areaWidth + "," + areaHeight + "]";
 	}
 	
+
+	public static float getAreaWidth() {
+		return areaWidth;
+	}
+
+	public static float getAreaHeight() {
+		return areaHeight;
+	}
+
+	public static boolean isStarted() {
+		return started;
+	}
+
+	public static void setModeSeven(boolean b) {
+		modeSeven = b;
+		
+	}
+	
+
+	public static boolean isModeSeven() {
+		return modeSeven;
+	}
+	
+	
+
 
 }

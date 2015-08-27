@@ -28,12 +28,12 @@ public interface Sprite {
 	void setModeSevenEnabled(boolean modeSEnabled);
 	void addChild(Sprite child);
 	void setScale(float width, float height);
-	void mirrorX();
-	void mirrorY();
 	void setMirroring(boolean x, boolean y);
 	List<ParticleEmitter> getParticleEmitterList();
 	void addParticleEmitter(ParticleEmitter pe);
 	Animation getAnimation(String name);
 	boolean isInactiveOnLoad();
 	void setInactiveOnLoad(boolean inactive);
+	boolean isMirroredY();
+	boolean isMirroredX();
 }
