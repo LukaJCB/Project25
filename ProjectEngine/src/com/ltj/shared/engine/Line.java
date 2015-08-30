@@ -25,24 +25,22 @@ public class Line {
 	}
 	
 	public boolean intersectsWith(RenderObject o){
-		if (Engine.isModeSeven()){
-			if (o.isModeSevenEnabled()){
-				//TODO
-			} else {
-				//TODO
-			}
-		} else {
-			
-			//2d Mode is enabled
+		
+		if (o.isModeSevenEnabled()){
+			//TODO
 			intersectXYPlane();
 			return (intersectionPoint[1] < o.getY() + o.getHeight()/2 &&
 					intersectionPoint[1] > o.getY() - o.getHeight()/2 &&
 					intersectionPoint[0] < o.getX() + o.getWidth()/2 &&
-					intersectionPoint[0] > o.getX() - o.getHeight()/2);
-				
-			
+					intersectionPoint[0] > o.getX() - o.getWidth()/2);
+		} else {
+			intersectXYPlane();
+			return (intersectionPoint[1] < o.getY() + o.getHeight()/2 &&
+					intersectionPoint[1] > o.getY() - o.getHeight()/2 &&
+					intersectionPoint[0] < o.getX() + o.getWidth()/2 &&
+					intersectionPoint[0] > o.getX() - o.getWidth()/2);
 		}
-		return false;
+
 	}
 
 	

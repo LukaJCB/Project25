@@ -63,8 +63,8 @@ public class CanvasMouseListener implements MouseInputListener, MouseWheelListen
 		
 		if (changeAreaMode){
 			
-			Area selectedArea = Engine.getArea((int)(mouseClick.getIntersection()[0] / Engine.getAreaWidth()), 
-					(int)(mouseClick.getIntersection()[1] / Engine.getAreaHeight()));
+			Area selectedArea = Engine.getArea((int)Math.round((mouseClick.getIntersection()[0] / Engine.getAreaWidth())), 
+					(int)Math.round(mouseClick.getIntersection()[1] / Engine.getAreaHeight()));
 			
 			areaChangedListener.onAreaChange(selectedArea);
 			
