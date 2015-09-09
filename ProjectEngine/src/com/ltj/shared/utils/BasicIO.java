@@ -18,6 +18,7 @@ import com.ltj.java.utils.JoglTextResourceReader;
 import com.ltj.shared.engine.Area;
 import com.ltj.shared.engine.AreaMode;
 import com.ltj.shared.engine.Behaviour;
+import com.ltj.shared.engine.BehaviourManipulator;
 import com.ltj.shared.engine.Camera;
 import com.ltj.shared.engine.Engine;
 import com.ltj.shared.engine.HudElement;
@@ -393,11 +394,27 @@ public class BasicIO {
 		
 		
 		//set up behaviour
-		if (!obj.getString("behaviour").equals("null")){
-			Class<?> behaviourClass = Class.forName(obj.getString("behaviour"));
+		if (obj.getJSONObject("behaviour").length() != 0){
+			JSONObject jsonBehaviour = obj.getJSONObject("behaviour");
+
+			Class<?> behaviourClass = Class.forName(jsonBehaviour.getString("name"));
 			Behaviour<Sprite> behaviour = (Behaviour<Sprite>) behaviourClass.newInstance();
 			r.addBehaviour(behaviour);
 			behaviour.allocateObject(r);
+			
+			for (String field: JSONObject.getNames(jsonBehaviour)){
+				if (field.equals("name")){
+					continue;
+				}
+				if (jsonBehaviour.get(field).getClass() != Double.class){
+					BehaviourManipulator.manipulateField(behaviour, field, jsonBehaviour.get(field));
+				} else {
+					BehaviourManipulator.manipulateField(behaviour, field, ((Double) jsonBehaviour.get(field)).floatValue());
+				}
+				
+			}
+			
+			
 		}
 		
 		//set up colliders

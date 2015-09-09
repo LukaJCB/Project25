@@ -104,7 +104,7 @@ public class DisperRenderer extends JoglRenderer {
 		for(RenderObject o : Engine.getAllObjects().values()){
 			o.setInactive(false);
 		}
-		BasicIO.parseToDME("C:\\Users\\Luka\\Documents\\test", "test");
+		BasicIO.parseToDME("C:\\Users\\Luka\\Documents\\test", "test2");
 		
 	}
 

@@ -2,18 +2,19 @@ package com.ltj.shared.engine;
 
 
 import java.awt.event.KeyEvent;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.HashMap;
 
 @SuppressWarnings("unchecked")
 public abstract class Behaviour<T extends Sprite> {
 	
-	private static HashMap<String, Behaviour<? extends Sprite>> behaviours = new HashMap<String,Behaviour<? extends Sprite>>();
+//	private static HashMap<String, Behaviour<? extends Sprite>> behaviours = new HashMap<String,Behaviour<? extends Sprite>>();
+//	
+//	public static void addBehaviour(String name, Behaviour<? extends Sprite> b){
+//		behaviours.put(name, b);
+//	}
 	
-	public static void addBehaviour(String name, Behaviour<? extends Sprite> b){
-		behaviours.put(name, b);
-	}
 	
 	protected T gameObject;
 	
@@ -111,6 +112,23 @@ public abstract class Behaviour<T extends Sprite> {
 	
 	public void onKeyRelease(KeyEvent e){
 		
+	}
+	
+	final String toJSON(){
+		String json = "{\"name\": \"" + getClass().getName() + "\"";
+		for (Field f :BehaviourManipulator.getFields(this)){
+			try {
+				if (f.getType() == String.class){
+					json += ",\"" + f.getName() + "\":\"" + f.get(this) + "\"";
+				} else {
+					json += ",\"" + f.getName() + "\":" + f.get(this);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}  
+		}
+		json += '}';
+		return json;
 	}
 	
 	

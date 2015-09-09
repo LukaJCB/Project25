@@ -63,11 +63,11 @@ public class GameObjectController {
 		return behaviour;
 	}
 
-	public String getBehaviourName() {
+	public String getBehaviourJSON() {
 		if (behaviour != null){
-			return behaviour.getClass().getName();
+			return behaviour.toJSON();
 		}
-		return "null";
+		return "{}";
 	}
 
 
@@ -177,7 +177,7 @@ public class GameObjectController {
 			p = "-1";
 		}
 		String json = ",\"controller_disabled\":" + disabled + ",\"parent\":" + p
-				+ ",\"behaviour\":\"" + getBehaviourName()+ "\",\"colliders\":";
+				+ ",\"behaviour\":" + getBehaviourJSON()+ ",\"colliders\":";
 		if (colliders != null){
 			json += "[";
 			for (Collider c: colliders){

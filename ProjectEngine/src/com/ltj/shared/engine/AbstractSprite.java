@@ -188,7 +188,7 @@ public abstract class AbstractSprite implements RenderObject,SingleSprite,Sprite
 
 
 	public String getBehaviourName() {
-		return controller.getBehaviourName();
+		return controller.getBehaviourJSON();
 	}
 
 	
