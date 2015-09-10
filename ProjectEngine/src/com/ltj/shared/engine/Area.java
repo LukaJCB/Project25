@@ -74,7 +74,7 @@ public class Area {
 	public void setInactive(boolean inactive){
 		if (root.getChildList() != null){
 			for (Sprite g : root.getChildList()){
-				g.setInactive(true);	
+				g.setInactive(inactive);	
 			}
 		}
 	}

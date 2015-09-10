@@ -184,7 +184,7 @@ public abstract class Engine {
 		if (areaMode == AreaMode.HIDE){
 			//deactivate all areas
 			for (Area a : areas.values()){
-					a.setInactive(true);
+				a.setInactive(true);
 			}
 			//reactivate the areas where the cam is in.
 			Position pos = new Position(0,0);
