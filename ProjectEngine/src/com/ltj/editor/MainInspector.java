@@ -257,6 +257,8 @@ public class MainInspector extends JPanel {
 					o.setRotation(Float.parseFloat(rotation.getText()));
 				} else if (e.getSource() == z){
 					o.setZ(Float.parseFloat(z.getText()));
+				} else if (e.getSource() == tag){
+					o.setTag(tag.getText());
 				} else if (e.getSource() == textureCol){
 					o.setTexture(Integer.parseInt(textureCol.getText()), o.getTextureRow());
 				} else if (e.getSource() == textureRow){
