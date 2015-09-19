@@ -22,6 +22,7 @@ import com.ltj.shared.engine.Engine;
 import com.ltj.shared.engine.RenderObject;
 import com.ltj.shared.engine.Sprite;
 
+
 @SuppressWarnings("serial")
 public class AreaList extends JPanel {
 

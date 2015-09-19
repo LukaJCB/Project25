@@ -1,8 +1,6 @@
 package com.ltj.editor;
 
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.lang.reflect.Field;
@@ -19,8 +17,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import com.jogamp.opengl.awt.GLCanvas;
 import com.ltj.java.engine.JoglRenderer;
 import com.ltj.shared.engine.Animation;
@@ -79,34 +75,28 @@ public class InspectorPanel extends JTabbedPane {
 		JScrollPane scrollPane = new JScrollPane(animationList);
 		scrollPane.setPreferredSize(new Dimension(180,200));
 		animationPanel.add(scrollPane);
-		addAnimationButton.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO add animation
-				RenderObject o = Engine.getAllObjects().get(currentId);
-				o.addAnimation("Hello", 1, 1, true, 2);
-				for (Entry<String,Animation> entry : o.getAllAnimations()){
+		addAnimationButton.addActionListener(ae -> {
+			// TODO add animation
+			RenderObject o = Engine.getAllObjects().get(currentId);
+			o.addAnimation("Hello", 1, 1, true, 2);
+			for (Entry<String,Animation> entry : o.getAllAnimations()){
 
-					animations.addElement(entry);
-				}
-				animationList.setSelectedIndex(animations.size()-1);
+				animations.addElement(entry);
 			}
+			animationList.setSelectedIndex(animations.size()-1);
+
 		});
 		
 		final AnimationInspector animInspector = new AnimationInspector();
 		animInspector.setPreferredSize(new Dimension(getPreferredSize().width
 				,getPreferredSize().height/2));
 		animationPanel.add(animInspector);
-		
-		animationList.addListSelectionListener(new ListSelectionListener() {
-			
-			@Override
-			public void valueChanged(ListSelectionEvent e) {
-				if (animationList.getSelectedValue() != null){
-					animInspector.openInspector(animationList.getSelectedValue().getValue());
-				}
+
+		animationList.addListSelectionListener(lse -> {
+			if (animationList.getSelectedValue() != null){
+				animInspector.openInspector(animationList.getSelectedValue().getValue());
 			}
+
 		});
 	}
 
@@ -122,16 +112,12 @@ public class InspectorPanel extends JTabbedPane {
 		final JList<Collider> colliderList = new JList<Collider>(colliders);
 		JScrollPane scrollPane = new JScrollPane(colliderList);
 		scrollPane.setPreferredSize(new Dimension(180, 200));
-		addColliderButton.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				RenderObject o = Engine.getAllObjects().get(currentId);
-				BoxCollider collider = new BoxCollider();
-				o.addCollider(collider);
-				colliders.addElement(collider);
-				colliderList.setSelectedIndex(colliders.size()-1);
-			}
+		addColliderButton.addActionListener(ae -> {
+			RenderObject o = Engine.getAllObjects().get(currentId);
+			BoxCollider collider = new BoxCollider();
+			o.addCollider(collider);
+			colliders.addElement(collider);
+			colliderList.setSelectedIndex(colliders.size()-1);
 		});
 		
 		collisionPanel.add(scrollPane);
@@ -141,13 +127,9 @@ public class InspectorPanel extends JTabbedPane {
 				,getPreferredSize().height/2));
 		collisionPanel.add(colliderInspector);
 		
-		colliderList.addListSelectionListener(new ListSelectionListener() {
-			
-			@Override
-			public void valueChanged(ListSelectionEvent e) {
-				if (colliderList.getSelectedValue() != null){
-					colliderInspector.openInspector(colliderList.getSelectedValue());
-				}
+		colliderList.addListSelectionListener(lse -> {
+			if (colliderList.getSelectedValue() != null){
+				colliderInspector.openInspector(colliderList.getSelectedValue());
 			}
 		});
 		addTab("Collider", collisionPanel);
@@ -224,13 +206,8 @@ public class InspectorPanel extends JTabbedPane {
 				if (f.getType() == Boolean.TYPE){
 					final JCheckBox checkBox = new JCheckBox();
 					checkBox.setSelected(f.getBoolean(o.getBehaviour()));
-					checkBox.addActionListener(new ActionListener() {
-						
-						@Override
-						public void actionPerformed(ActionEvent e) {
-							BehaviourManipulator.manipulateField(o.getBehaviour(), f.getName(), checkBox.isSelected());
-							
-						}
+					checkBox.addActionListener(ae -> {
+						BehaviourManipulator.manipulateField(o.getBehaviour(), f.getName(), checkBox.isSelected());
 					});
 					box.add(checkBox);
 					

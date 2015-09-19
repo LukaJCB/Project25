@@ -2,8 +2,6 @@ package com.ltj.editor;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
@@ -37,6 +35,7 @@ import com.ltj.java.engine.JoglRenderer;
 import com.ltj.java.engine.JoglSprite;
 import com.ltj.shared.engine.Area;
 import com.ltj.shared.engine.AreaMode;
+import com.ltj.shared.engine.Camera;
 import com.ltj.shared.engine.EmptyObject;
 import com.ltj.shared.engine.Engine;
 import com.ltj.shared.engine.OrthoRenderObject;
@@ -112,33 +111,26 @@ public class EditorView {
 
 
 		JCheckBox modeS = new JCheckBox("ModeSeven Preview");
-		modeS.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				renderer.changeMode();
-				canvas.display();
-			}
+		modeS.addActionListener(ae ->{
+			renderer.changeMode();
+			canvas.display();
 		});
 		menuBar.add(modeS);
 
 		final JButton play = new JButton("Play");
 		menuBar.add(play);
-		play.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (Engine.isStarted()){
-					animator.stop();
-					loadScene();
-					play.setText("Play");
-				} else {
-					saveScene();
-					Engine.start();
-					animator.start();
-					play.setText("Stop");
-				}
+		play.addActionListener(ae -> {
+			if (Engine.isStarted()){
+				animator.stop();
+				loadScene();
+				play.setText("Play");
+			} else {
+				saveScene();
+				Engine.start();
+				animator.start();
+				play.setText("Stop");
 			}
+
 		});
 
 		mainFrame.setJMenuBar(menuBar);
@@ -157,16 +149,13 @@ public class EditorView {
 
 		JMenuItem addSingle = new JMenuItem("Add SingleSprite");
 		object.add(addSingle);
-		addSingle.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
+		addSingle.addActionListener(ae -> {
 				final JFileChooser chooser = new JFileChooser("assets");
 				chooser.setFileFilter(new FileNameExtensionFilter("PNG", "png"));
 
 				int result = chooser.showOpenDialog(mainFrame);
 				if (result == JFileChooser.APPROVE_OPTION){
-					File dst = new File(projectPath + File.separator + chooser.getSelectedFile().getName());
+					File dst = new File(projectPath + File.separator + "images" + File.separator +  chooser.getSelectedFile().getName());
 					try {
 						BasicIO.copy(chooser.getSelectedFile(), dst);
 					} catch (IOException e1) {
@@ -175,61 +164,47 @@ public class EditorView {
 					String path =(dst.getPath());
 					JoglSprite o = new JoglSprite(path, 1, 1);
 					o.setName("SingleSprite");
+					o.setPosition(Camera.getLookAt()[0],Camera.getLookAt()[1]);
 					Engine.addRenderable(o);
 					listModel.addElement(o);
 					canvas.display();
 					
 					list.setSelectedIndex(listModel.getSize()-1);
 				}
-			}
 		});
 
 		JMenuItem addObject = new JMenuItem("Add SpriteSheet");
 		object.add(addObject);
-		addObject.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				CreateSpriteDialog dialog = new CreateSpriteDialog(mainFrame,canvas,listModel,list,inspector);
-				dialog.setVisible(true);
-
-			}
+		addObject.addActionListener(ae -> {
+			CreateSpriteDialog dialog = new CreateSpriteDialog(mainFrame,canvas,listModel,list,inspector);
+			dialog.setVisible(true);
 		});
 		
 		JMenuItem addEmpty = new JMenuItem("Add EmptyObject");
-		addEmpty.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				EmptyObject eo = new EmptyObject();
-				eo.setName("EmptyObject");
-				Engine.addRenderable(eo);
-				listModel.addElement(eo);
-				list.setSelectedIndex(listModel.getSize()-1);
-
-			}
+		addEmpty.addActionListener(ae -> {
+			EmptyObject eo = new EmptyObject();
+			eo.setName("EmptyObject");
+			Engine.addRenderable(eo);
+			listModel.addElement(eo);
+			list.setSelectedIndex(listModel.getSize()-1);
 		});
 		object.add(addEmpty);
 
 
 		JMenuItem addOrtho = new JMenuItem("Add OrthoObject");
-		addOrtho.addActionListener(new ActionListener() {
+		addOrtho.addActionListener(ae -> {
+			final JFileChooser chooser = new JFileChooser("assets");
+			chooser.setFileFilter(new FileNameExtensionFilter("PNG", "png"));
 
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				final JFileChooser chooser = new JFileChooser("assets");
-				chooser.setFileFilter(new FileNameExtensionFilter("PNG", "png"));
-
-				int result = chooser.showOpenDialog(mainFrame);
-				if (result == JFileChooser.APPROVE_OPTION){
-					String path =("assets" +chooser.getSelectedFile().getPath().split("assets")[1]);
-					OrthoRenderObject oro = new OrthoRenderObject(path, Engine.getPlatform());
-					Engine.addOrthoRenderObject(oro);
-					orthoListModel.addElement(oro);
-					canvas.display();
-				}
-
+			int result = chooser.showOpenDialog(mainFrame);
+			if (result == JFileChooser.APPROVE_OPTION){
+				String path =("assets" +chooser.getSelectedFile().getPath().split("assets")[1]);
+				OrthoRenderObject oro = new OrthoRenderObject(path, Engine.getPlatform());
+				Engine.addOrthoRenderObject(oro);
+				orthoListModel.addElement(oro);
+				canvas.display();
 			}
+
 		});
 
 		object.add(addOrtho);
@@ -256,41 +231,27 @@ public class EditorView {
 
 
 
-		newFile.addActionListener(new ActionListener() {
+		newFile.addActionListener(ae -> {
+			String name = JOptionPane.showInputDialog(mainFrame, "Choose a name for your Project.");
 
+			JFileChooser chooser = new JFileChooser();
+			chooser.setDialogTitle("Choose Directory");
+			chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+			chooser.setAcceptAllFileFilterUsed(false);
 
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				String name = JOptionPane.showInputDialog(mainFrame, "Choose a name for your Project.");
-
-				JFileChooser chooser = new JFileChooser();
-				chooser.setDialogTitle("Choose Directory");
-				chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-				chooser.setAcceptAllFileFilterUsed(false);
-
-				int state = chooser.showOpenDialog(mainFrame);
-				if (state == JFileChooser.APPROVE_OPTION){
-					File projectFolder = new File(chooser.getSelectedFile().toString()+ File.separatorChar + name);
-					projectFolder.mkdir();
-					projectPath = projectFolder.toString();
-					mainFrame.setTitle(mainFrame.getTitle() +  " - "  + name);
-				}
-
+			int state = chooser.showOpenDialog(mainFrame);
+			if (state == JFileChooser.APPROVE_OPTION){
+				File projectFolder = new File(chooser.getSelectedFile().toString()+ File.separatorChar + name);
+				projectFolder.mkdir();
+				projectPath = projectFolder.toString();
+				mainFrame.setTitle(mainFrame.getTitle() +  " - "  + name);
 			}
 		});
 
-		fileSave.addActionListener(new ActionListener() {
+		
+		fileSave.addActionListener(ae -> {saveScene();});
 
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				saveScene();
-			}
-		});
-
-		fileLoad.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
+		fileLoad.addActionListener(ae -> {
 				JFileChooser chooser = new JFileChooser();
 				chooser.setFileFilter(new FileNameExtensionFilter("DME", "dme"));
 				int result = chooser.showOpenDialog(mainFrame);
@@ -301,7 +262,7 @@ public class EditorView {
 					currentScene = chooser.getSelectedFile().getName().split(".dme")[0];
 					loadScene();
 				}
-			}
+			
 		});
 	}
 
@@ -324,16 +285,13 @@ public class EditorView {
 		final JPopupMenu popupMenu = new JPopupMenu();
 		JMenuItem rename = new JMenuItem("Rename");
 		rename.setActionCommand("Rename");
-		rename.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				String newName = JOptionPane.showInputDialog(mainFrame, "Rename", list.getSelectedValue());
-				if (newName != null){
-					list.getSelectedValue().setName(newName);
-					list.updateUI();
-				}
+		rename.addActionListener(ae -> {
+			String newName = JOptionPane.showInputDialog(mainFrame, "Rename", list.getSelectedValue());
+			if (newName != null){
+				list.getSelectedValue().setName(newName);
+				list.updateUI();
 			}
+
 		});
 		popupMenu.add(rename);
 
@@ -341,16 +299,13 @@ public class EditorView {
 
 		JMenuItem delete = new JMenuItem("Delete");
 		delete.setActionCommand("Delete");
-		delete.addActionListener(new ActionListener() {
+		delete.addActionListener(ae -> {
+			Engine.getAllObjects().remove(list.getSelectedValue().getId());
+			int index = list.getSelectedIndex();
+			listModel.remove(index);
+			list.clearSelection();
+			canvas.display();
 
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				Engine.getAllObjects().remove(list.getSelectedValue().getId());
-				int index = list.getSelectedIndex();
-				listModel.remove(index);
-				list.clearSelection();
-				canvas.display();
-			}
 		});
 		popupMenu.add(delete);
 

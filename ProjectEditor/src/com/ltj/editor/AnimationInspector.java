@@ -9,6 +9,7 @@ import javax.swing.JTextField;
 
 import com.ltj.shared.engine.Animation;
 
+
 @SuppressWarnings("serial")
 public class AnimationInspector extends JPanel {
 	private JTextField animationTime;

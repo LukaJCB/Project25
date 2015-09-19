@@ -105,7 +105,7 @@ public class BasicIO {
 		JSONArray gameObjects = json.getJSONArray("gameObjects");
 		for (int i = 0; i < gameObjects.length(); i++){
 			JSONObject renderObject = gameObjects.getJSONObject(i);
-			Engine.addRenderable(reconstructObject(renderObject));
+			Engine.addRenderable(reconstructObject(path,renderObject));
 		}
 		
 		
@@ -185,7 +185,7 @@ public class BasicIO {
 		if (orthos != null){
 			for (int i = 0; i < orthos.length(); i++){
 				JSONObject ortho = orthos.getJSONObject(i);
-				Engine.addOrthoRenderObject(reconstructOrtho(ortho));
+				Engine.addOrthoRenderObject(reconstructOrtho(path,ortho));
 			}
 		}
 		
@@ -193,7 +193,7 @@ public class BasicIO {
 		if (huds != null){
 			for (int i = 0; i < huds.length(); i++){
 				JSONObject hud = huds.getJSONObject(i);
-				Engine.getHud().addHudElement(hud.getString("name"), reconstructHudElement(hud.getJSONObject("value")));
+				Engine.getHud().addHudElement(hud.getString("name"), reconstructHudElement(path,hud.getJSONObject("value")));
 			}
 		}
 	
@@ -204,11 +204,11 @@ public class BasicIO {
 	}
 	
 	public static RenderObject loadFromDMO(String path,String name) throws ClassNotFoundException, JSONException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException{
-		String file = JoglTextResourceReader.readTextFileFromResource(path + File.separator + name);
+		String file = JoglTextResourceReader.readTextFileFromResource(path + File.separator + "assets" + File.separator + name);
 		
 		JSONObject json = new JSONObject(file);
 		
-		return reconstructObject(json);
+		return reconstructObject(path,json);
 	}
 
 	private static String getJSON(){
@@ -327,8 +327,8 @@ public class BasicIO {
 		return emitter;
 	}
 	
-	private static OrthoRenderObject reconstructOrtho(JSONObject obj){
-		OrthoRenderObject o = new OrthoRenderObject(obj.getString("path"), obj.getInt("platform"));
+	private static OrthoRenderObject reconstructOrtho(String projectPath,JSONObject obj){
+		OrthoRenderObject o = new OrthoRenderObject(projectPath + File.separator + obj.getString("path"), obj.getInt("platform"));
 		o.setPosition(obj.getFloat("x"), obj.getFloat("y"));
 		o.setRotation(obj.getFloat("rotation"));
 		o.setScaling(obj.getFloat("width"), obj.getFloat("height"));
@@ -336,8 +336,8 @@ public class BasicIO {
 		return o;
 	}
 	
-	private static HudElement reconstructHudElement(JSONObject obj){
-		HudElement e = new HudElement(obj.getString("path"), obj.getInt("platform"));
+	private static HudElement reconstructHudElement(String projectPath,JSONObject obj){
+		HudElement e = new HudElement(projectPath + File.separator + obj.getString("path"), obj.getInt("platform"));
 		e.setPosition(obj.getFloat("x"), obj.getFloat("y"));
 		e.setRotation(obj.getFloat("rotation"));
 		e.setScaling(obj.getFloat("width"), obj.getFloat("height"));
@@ -346,7 +346,7 @@ public class BasicIO {
 	}
 
 	@SuppressWarnings("unchecked")
-	private static RenderObject reconstructObject(JSONObject obj) throws ClassNotFoundException, JSONException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException{
+	private static RenderObject reconstructObject(String projectPath,JSONObject obj) throws ClassNotFoundException, JSONException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException{
 		RenderObject r;
 		//get class
 		Class<?> c = Class.forName(obj.getString("type"));
@@ -355,7 +355,7 @@ public class BasicIO {
 			r = (RenderObject) c.newInstance(); 
 		} else {
 			Constructor<?> t = c.getConstructor(String.class, int.class, int.class);
-			r = (RenderObject) t.newInstance(obj.getString("path"), obj.getInt("columns"),obj.getInt("rows"));
+			r = (RenderObject) t.newInstance(projectPath + File.separator + obj.getString("path"), obj.getInt("columns"),obj.getInt("rows"));
 		}
 		
 		r.setId(obj.getInt("id"));
