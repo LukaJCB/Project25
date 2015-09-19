@@ -134,7 +134,7 @@ public class EditorView {
 				Engine.start();
 				animator.start();
 				play.setText("Stop");
-				canvas.requestFocus();
+				canvas.requestFocusInWindow();
 			}
 
 		});
@@ -161,11 +161,14 @@ public class EditorView {
 
 			int result = chooser.showOpenDialog(mainFrame);
 			if (result == JFileChooser.APPROVE_OPTION){
+				
 				File dst = new File(projectPath + File.separator + "images" + File.separator +  chooser.getSelectedFile().getName());
-				try {
-					BasicIO.copy(chooser.getSelectedFile(), dst);
-				} catch (IOException e1) {
-					e1.printStackTrace();
+				if (!dst.exists()){
+					try {
+						BasicIO.copy(chooser.getSelectedFile(), dst);
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
 				}
 				String path =(dst.getPath());
 				JoglSprite o = new JoglSprite(path, 1, 1);
