@@ -22,6 +22,7 @@ public class PlayerController extends Behaviour<SpriteSheet> {
 		gravity = RunTimeGlobals.getFloat("gravity");
 		Camera.setDistance(7f);
 		maxSpeed = -0.31f;
+		
 	}
 
 	@Override
@@ -40,7 +41,6 @@ public class PlayerController extends Behaviour<SpriteSheet> {
 				upSpeed -= gravity;
 			}
 		}
-	
 		gameObject.translate(speed, upSpeed);
 		Camera.setLookAt(gameObject.getX(), gameObject.getY()+0.4f);
 		grounded = false;

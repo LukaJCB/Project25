@@ -101,10 +101,11 @@ public class AreaList extends JPanel {
 			}
 			int value = Integer.parseInt(field.getText());
 			if (field == x){
-				currentArea = Engine.getArea(value,Engine.getCurrentArea().getY());
+				currentArea = Engine.getArea(value, (int)(currentArea.getY() / Engine.getAreaHeight()));
 			} else if (field == y){
-				currentArea = Engine.getArea(Engine.getCurrentArea().getX(),value);
+				currentArea = Engine.getArea((int)(currentArea.getX() / Engine.getAreaWidth()),value);
 			}
+			
 			openAreaList(currentArea);
 		}
 		

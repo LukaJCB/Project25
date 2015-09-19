@@ -66,15 +66,18 @@ public class EditorView {
 	private AreaList areaList;
 
 	public EditorView(){
+
 		prepareGUI();
+
 		prepareRenderList();
-		prepareAreaList();
-		prepareOrthoList();
-		prepareGLView();
 
 		prepareMenuBar();
+
+		prepareGLView();
 		prepareInspector();
-		
+
+		prepareAreaList();
+		prepareOrthoList();
 		prepareConsole();
 	}
 
@@ -125,11 +128,13 @@ public class EditorView {
 				animator.stop();
 				loadScene();
 				play.setText("Play");
+				
 			} else {
 				saveScene();
 				Engine.start();
 				animator.start();
 				play.setText("Stop");
+				canvas.requestFocus();
 			}
 
 		});
@@ -395,6 +400,7 @@ public class EditorView {
 		canvas.addGLEventListener(renderer);
 		canvas.reshape(canvas.getX(), canvas.getY(), canvas.getWidth(), canvas.getHeight());
 		canvas.addKeyListener(renderer);
+		canvas.addKeyListener(new KeyListListener());
 		mainFrame.add(canvas,BorderLayout.CENTER);
 		animator = new Animator(canvas);
 		animator.setRunAsFastAsPossible(true);
@@ -406,7 +412,7 @@ public class EditorView {
 
 			cmListener.setList(areaList.getList());
 			areaList.displayAreaList(newArea);
-			tabbedPane.setSelectedIndex(2);
+			tabbedPane.setSelectedIndex(1);
 
 		});
 
@@ -479,7 +485,7 @@ public class EditorView {
 		public void keyPressed(KeyEvent e) {
 			if (e.getKeyCode() == KeyEvent.VK_DELETE){
 				removeObject();
-			} else if (e.isAltDown() && e.isShiftDown() && e.getKeyCode() == KeyEvent.VK_R){
+			} else if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_R){
 				renameObject();
 			}
 			

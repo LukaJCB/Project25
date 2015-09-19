@@ -182,7 +182,7 @@ public class PlayerWormController extends Behaviour<SpriteSheet> {
 	}
 	
 	public void die(){
-		gameObject.getParticleEmitterList().get(0).addParticleExplosion(90,0.01f);
+		//gameObject.getParticleEmitterList().get(0).addParticleExplosion(90,0.01f);
 		gameObject.setInactive(true);
 	}
 
