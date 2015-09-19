@@ -21,8 +21,6 @@ import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -33,7 +31,6 @@ import com.jogamp.opengl.awt.GLCanvas;
 import com.jogamp.opengl.util.Animator;
 import com.ltj.java.engine.JoglRenderer;
 import com.ltj.java.engine.JoglSprite;
-import com.ltj.shared.engine.Area;
 import com.ltj.shared.engine.AreaMode;
 import com.ltj.shared.engine.Camera;
 import com.ltj.shared.engine.EmptyObject;
@@ -364,16 +361,13 @@ public class EditorView {
 		areaList = new AreaList(canvas);
 		
 		tabbedPane.addTab("Areas", areaList);
-		tabbedPane.addChangeListener(new ChangeListener() {
-			
-			@Override
-			public void stateChanged(ChangeEvent e) {
-				if (tabbedPane.getSelectedComponent() == areaList){
-					cmListener.setList(areaList.getList());
-				} else if (tabbedPane.getSelectedComponent() == listScroller){
-					cmListener.setList(list);
-				}
+		tabbedPane.addChangeListener(ce -> {
+			if (tabbedPane.getSelectedComponent() == areaList){
+				cmListener.setList(areaList.getList());
+			} else if (tabbedPane.getSelectedComponent() == listScroller){
+				cmListener.setList(list);
 			}
+
 		});
 		areaList.getList().addListSelectionListener(new ObjectListListener(areaList.getList()));
 	}
@@ -408,14 +402,12 @@ public class EditorView {
 		
 		cmListener = new CanvasMouseListener(canvas,list,selectionListener);
 		cmListener.registerListener();
-		cmListener.setAreaChangedListener(new AreaChangedListener() {
-			
-			@Override
-			public void onAreaChange(Area newArea) {
-				cmListener.setList(areaList.getList());
-				areaList.displayAreaList(newArea);
-				tabbedPane.setSelectedIndex(2);
-			}
+		cmListener.setAreaChangedListener(newArea ->{
+
+			cmListener.setList(areaList.getList());
+			areaList.displayAreaList(newArea);
+			tabbedPane.setSelectedIndex(2);
+
 		});
 
 		Engine.setCollisionZone(new Rectangle(0, 0, 30, 25));
