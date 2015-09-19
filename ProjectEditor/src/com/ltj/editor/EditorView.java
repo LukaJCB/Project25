@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.swing.DefaultListModel;
+import javax.swing.DropMode;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
@@ -65,6 +66,7 @@ public class EditorView {
 	private String currentScene;
 	private AreaList areaList;
 	private boolean areaListActive;
+	private ConsolePanel console;
 
 	public EditorView(){
 
@@ -300,7 +302,8 @@ public class EditorView {
 
 		listModel = new DefaultListModel<RenderObject>();
 		list = new JList<RenderObject>(listModel);
-		
+		list.setDragEnabled(true);
+		list.setDropMode(DropMode.ON);
 
 		final JPopupMenu popupMenu = new JPopupMenu();
 		JMenuItem rename = new JMenuItem("Rename");
@@ -374,7 +377,7 @@ public class EditorView {
 			listModel.addElement(o);
 			list.setSelectedIndex(listModel.getSize()-1);
 		}
-		
+		console.updateList();
 		canvas.display();
 	}
 
@@ -422,7 +425,7 @@ public class EditorView {
 	}
 
 	private void prepareConsole(){
-		ConsolePanel console = new ConsolePanel(projectPath);
+		console = new ConsolePanel(projectPath);
 		mainFrame.add(console,BorderLayout.PAGE_END);
 		console.setPreferredSize(new Dimension(700,180));
 	}
@@ -438,6 +441,7 @@ public class EditorView {
 		canvas.reshape(canvas.getX(), canvas.getY(), canvas.getWidth(), canvas.getHeight());
 		canvas.addKeyListener(renderer);
 		canvas.addKeyListener(new KeyListListener());
+		
 		mainFrame.add(canvas,BorderLayout.CENTER);
 		animator = new Animator(canvas);
 		animator.setRunAsFastAsPossible(true);
@@ -477,6 +481,8 @@ public class EditorView {
 			}
 			options.setAreaMode(Engine.getAreaMode());
 			canvas.display();
+			console.setPath(projectPath);
+			console.updateList();
 		} catch (Exception ex){
 			ex.printStackTrace();
 		}
