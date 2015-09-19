@@ -2,48 +2,35 @@ package com.ltj.editor;
 
 import java.awt.Dimension;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import com.jogamp.opengl.awt.GLCanvas;
 import com.ltj.java.engine.JoglSprite;
-import com.ltj.shared.engine.Engine;
-import com.ltj.shared.engine.RenderObject;
 
 
 
 @SuppressWarnings("serial")
 public class CreateSpriteDialog extends JDialog {
 
-	private GLCanvas canvas;
-	private DefaultListModel<RenderObject> listModel;
 
-	public CreateSpriteDialog(JFrame mainFrame, GLCanvas canvas, DefaultListModel<RenderObject> listModel,
-			JList<RenderObject> list, InspectorPanel inspector) {
-		super(mainFrame);
+	public CreateSpriteDialog(EditorView editorView) {
+		super(editorView.getMainFrame());
 		
-		this.canvas = canvas;
-		this.listModel = listModel;
 		setPreferredSize(new Dimension(270,140));
 		setLayout(new GridLayout(4,2));
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-        setLocationRelativeTo(mainFrame);
+        setLocationRelativeTo(editorView.getMainFrame());
         pack();
 		
-        prepareDialog(list, inspector);
+        prepareDialog(editorView);
 	}
 	
-	private void prepareDialog(final JList<RenderObject> list, final InspectorPanel inspector) {
+	private void prepareDialog(EditorView editorView) {
 		JLabel cols = new JLabel("Columns");
 		add(cols);
 		final JTextField colText = new JTextField();
@@ -67,14 +54,10 @@ public class CreateSpriteDialog extends JDialog {
 
 		JButton openChooser = new JButton("Browse...");
 		add(openChooser);
-		openChooser.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				int state = chooser.showOpenDialog(CreateSpriteDialog.this);
-				if (state == JFileChooser.APPROVE_OPTION){
-					pathText.setText("assets" +chooser.getSelectedFile().getPath().split("assets")[1]);
-				}
+		openChooser.addActionListener(ae -> {
+			int state = chooser.showOpenDialog(CreateSpriteDialog.this);
+			if (state == JFileChooser.APPROVE_OPTION){
+				pathText.setText(chooser.getSelectedFile().getName());
 			}
 		});
 		
@@ -82,29 +65,23 @@ public class CreateSpriteDialog extends JDialog {
 		
 		
 		JButton submit = new JButton("Submit");
-		submit.addActionListener(new ActionListener() {
-				
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				int cols = Integer.parseInt(colText.getText());
-				int rows = Integer.parseInt(rowText.getText());
-				JoglSprite sp = new JoglSprite(pathText.getText(), cols,rows);
-				if (cols > 1 || rows > 1){
-					sp.setName("SpriteSheet");
-					sp.setTexture(0, 0);
-				} else {
-					sp.setName("Sprite");
-				}
-				
-				Engine.addRenderable(sp);
-				listModel.addElement(sp);
-			
-				canvas.display();
-
-				list.setSelectedIndex(listModel.getSize()-1);
-
-				dispose();
+		submit.addActionListener(ae -> {
+			int c = Integer.parseInt(colText.getText());
+			int r = Integer.parseInt(rowText.getText());
+			String path = editorView.copyToProjectFolder(chooser);
+			JoglSprite sp = new JoglSprite(path, c,r);
+			if (c > 1 || r > 1){
+				sp.setName("SpriteSheet");
+				sp.setTexture(0, 0);
+			} else {
+				sp.setName("Sprite");
 			}
+
+			editorView.addObject(sp, sp.toString());
+
+
+			dispose();
+
 		});
 		add(submit);
 		

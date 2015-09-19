@@ -59,7 +59,7 @@ public class OrthoRenderObject {
 	}
 
 	public String toString() {
-		return renderer.getPath();
+		return renderer.getPath().substring(0, 10);
 	}
 	
 	
