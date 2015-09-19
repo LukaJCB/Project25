@@ -265,7 +265,7 @@ public abstract class AbstractSpriteRenderer implements SpriteRenderer {
 		String basics = "\"x\":" + x + ",\"y\":" + y + ",\"z\":" + z + ",\"rotation\":" + rotation 
 				+ ",\"width\":" + width + ",\"height\":" + height + ",\"repeatX\":" + repeatX + ",\"repeatY\":" + repeatY
 				+",\"renderer_disabled\":" + disabled + ",\"textureRow\":" + textureRow + ",\"textureCol\":" + textureCol
-				+ ",\"path\":\"" + path.replace("\\", "/") + "\",\"columns\":" + getNumCols() + ",\"rows\":" + getNumRows() 
+				+ ",\"path\":\"" + "images/" + path.replace("\\", "/").split("images/")[1] + "\",\"columns\":" + getNumCols() + ",\"rows\":" + getNumRows() 
 				+ ",\"modeSEnabled\":" + modeSEnabled + ",\"animator\":";
 		if (animator != null){
 			basics += animator.toJSON();

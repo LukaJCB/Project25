@@ -145,7 +145,7 @@ public abstract class AbstractHudRenderer implements HudRenderer {
 				
 		return "\"x\":" + x + ",\"y\":" + y + ",\"rotation\":" + rotation 
 				+ ",\"width\":" + width + ",\"height\":" + height 
-				+ ",\"path\":\"" + path + "\",";
+				+ ",\"path\":\"" + "images/" + path.replace("\\", "/").split("images/")[1] + "\",";
 				
 	}
 
