@@ -8,8 +8,8 @@ import static com.jogamp.opengl.GL.GL_TRIANGLE_STRIP;
 import static com.ltj.java.engine.StaticGL.glActiveTexture;
 import static com.ltj.java.engine.StaticGL.glBindBuffer;
 import static com.ltj.java.engine.StaticGL.glBindTexture;
-import static com.ltj.java.engine.StaticGL.glDeleteBuffers;
 import static com.ltj.java.engine.StaticGL.glDeleteTextures;
+import static com.ltj.java.engine.StaticGL.glDeleteBuffers;
 import static com.ltj.java.engine.StaticGL.glDrawArrays;
 import static com.ltj.java.engine.StaticGL.glEnableVertexAttribArray;
 import static com.ltj.java.engine.StaticGL.glGetAttribLocation;
@@ -67,10 +67,15 @@ public class JoglHudRenderer extends AbstractHudRenderer {
 	@Override
 	public void clear() {
 		glDeleteTextures(1, mTextureDataHandle, 0);
-		glDeleteBuffers(1, positionVBO, 0);
-		glDeleteBuffers(1, textureVBO, 0);
 	}
 
+	
+	public static void flush(){
+		glDeleteBuffers(1, positionVBO, 0);
+		glDeleteBuffers(1, textureVBO, 0);
+		positionVBO = null;
+		textureVBO = null;
+	}
 	
 	@Override
 	public void render() {

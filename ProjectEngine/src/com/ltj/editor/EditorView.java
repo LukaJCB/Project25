@@ -62,6 +62,7 @@ public class EditorView {
 	private Animator animator;
 	private CanvasMouseListener cmListener;
 	private JScrollPane listScroller;
+	private String currentScene;
 	private AreaList areaList;
 
 	public EditorView(){
@@ -121,14 +122,22 @@ public class EditorView {
 		});
 		menuBar.add(modeS);
 
-		JButton play = new JButton("Play");
+		final JButton play = new JButton("Play");
 		menuBar.add(play);
 		play.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Engine.start();
-				animator.start();
+				if (Engine.isStarted()){
+					animator.stop();
+					loadScene();
+					play.setText("Play");
+				} else {
+					saveScene();
+					Engine.start();
+					animator.start();
+					play.setText("Stop");
+				}
 			}
 		});
 
@@ -186,6 +195,7 @@ public class EditorView {
 
 			}
 		});
+		
 		JMenuItem addEmpty = new JMenuItem("Add EmptyObject");
 		addEmpty.addActionListener(new ActionListener() {
 
@@ -273,8 +283,7 @@ public class EditorView {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				BasicIO.parseToDME(projectPath, "Scene");
-
+				saveScene();
 			}
 		});
 
@@ -286,29 +295,11 @@ public class EditorView {
 				chooser.setFileFilter(new FileNameExtensionFilter("DME", "dme"));
 				int result = chooser.showOpenDialog(mainFrame);
 
+				
 				if (result == JFileChooser.APPROVE_OPTION){
-					try {
-						BasicIO.loadFromDME(chooser.getCurrentDirectory().getPath(), chooser.getSelectedFile().getName());
-						projectPath = chooser.getCurrentDirectory().getPath();
-						for (RenderObject o : Engine.getAllObjects().values()){
-							o.setInactive(false);
-							if (o.toString().isEmpty()){
-								o.setName("Object");
-							}
-							if (!o.isPartOfArea()){
-								listModel.addElement(o);
-							}
-							
-						}
-						for (OrthoRenderObject o : Engine.getAllOrthoRenderObjects()){
-							orthoListModel.addElement(o);
-						}
-						options.setAreaMode(Engine.getAreaMode());
-						canvas.display();
-					} catch (Exception ex){
-						ex.printStackTrace();
-					}
-
+					projectPath = chooser.getCurrentDirectory().getPath();
+					currentScene = chooser.getSelectedFile().getName().split(".dme")[0];
+					loadScene();
 				}
 			}
 		});
@@ -474,6 +465,35 @@ public class EditorView {
 
 		Engine.setCollisionZone(new Rectangle(0, 0, 30, 25));
 
+	}
+
+	private void loadScene() {
+		try {
+			Engine.flush();
+			listModel.clear();
+			BasicIO.loadFromDME(projectPath,currentScene + ".dme");
+			for (RenderObject o : Engine.getAllObjects().values()){
+				o.setInactive(false);
+				if (o.toString().isEmpty()){
+					o.setName("Object");
+				}
+				if (!o.isPartOfArea()){
+					listModel.addElement(o);
+				}
+				
+			}
+			for (OrthoRenderObject o : Engine.getAllOrthoRenderObjects()){
+				orthoListModel.addElement(o);
+			}
+			options.setAreaMode(Engine.getAreaMode());
+			canvas.display();
+		} catch (Exception ex){
+			ex.printStackTrace();
+		}
+	}
+
+	private void saveScene() {
+		BasicIO.parseToDME(projectPath,currentScene);
 	}
 	
 	

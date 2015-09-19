@@ -47,12 +47,31 @@ public abstract class Engine {
 		return allOrthoRenderObjects;
 	}
 
-	public static void flush(LinkedHashMap<Integer,RenderObject> objects) {
+	public static void flush() {
 		for (RenderObject r: allObjects.values()){
 			r.clear();
 		}
+		allObjects.clear();
+		for (OrthoRenderObject or: allOrthoRenderObjects){
+			or.clear();
+		}
+		allOrthoRenderObjects.clear();
+		
+		for (RenderObject r: dynamicObjects){
+			r.clear();
+		}
+		dynamicObjects.clear();
+		
+		allParticleEmitters.clear();
+		
+		hud.flush();
+		
+		gameObjectIds = 0;
+		emitterIds = 0;
+		areas.clear();
+		modeSeven = false;
+		started = false;
 		Camera.flush();
-		allObjects = objects;
 	}
 
 	

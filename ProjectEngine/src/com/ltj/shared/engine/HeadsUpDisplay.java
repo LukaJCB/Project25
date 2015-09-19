@@ -4,6 +4,7 @@ import java.util.LinkedHashMap;
 import java.util.Map.Entry;
 
 
+
 public class HeadsUpDisplay {
 
 	private static LinkedHashMap<String,HudElement> hudElements = new LinkedHashMap<String,HudElement>();
@@ -33,6 +34,7 @@ public class HeadsUpDisplay {
 		for (HudElement r : hudElements.values()){
 			r.clear();
 		}
+		hudElements.clear();
 	}
 	
 	public String toJSON(){
