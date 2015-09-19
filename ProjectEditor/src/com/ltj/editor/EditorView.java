@@ -2,6 +2,8 @@ package com.ltj.editor;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
@@ -20,6 +22,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
+import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -39,6 +42,7 @@ import com.ltj.shared.engine.OrthoRenderObject;
 import com.ltj.shared.engine.RenderObject;
 import com.ltj.shared.engine.primitives.Rectangle;
 import com.ltj.shared.utils.BasicIO;
+
 
 
 public class EditorView {
@@ -64,13 +68,14 @@ public class EditorView {
 	public EditorView(){
 		prepareGUI();
 		prepareRenderList();
+		prepareAreaList();
+		prepareOrthoList();
 		prepareGLView();
 
 		prepareMenuBar();
 		prepareInspector();
-		prepareOrthoList();
+		
 		prepareConsole();
-		prepareAreaList();
 	}
 
 	public void start(){
@@ -92,7 +97,6 @@ public class EditorView {
 		mainFrame.setLayout(new BorderLayout(5, 5));
 
 		tabbedPane = new JTabbedPane();
-
 	}
 
 	private void prepareMenuBar(){
@@ -147,27 +151,27 @@ public class EditorView {
 		JMenuItem addSingle = new JMenuItem("Add SingleSprite");
 		object.add(addSingle);
 		addSingle.addActionListener(ae -> {
-				final JFileChooser chooser = new JFileChooser("assets");
-				chooser.setFileFilter(new FileNameExtensionFilter("PNG", "png"));
+			final JFileChooser chooser = new JFileChooser("assets");
+			chooser.setFileFilter(new FileNameExtensionFilter("PNG", "png"));
 
-				int result = chooser.showOpenDialog(mainFrame);
-				if (result == JFileChooser.APPROVE_OPTION){
-					File dst = new File(projectPath + File.separator + "images" + File.separator +  chooser.getSelectedFile().getName());
-					try {
-						BasicIO.copy(chooser.getSelectedFile(), dst);
-					} catch (IOException e1) {
-						e1.printStackTrace();
-					}
-					String path =(dst.getPath());
-					JoglSprite o = new JoglSprite(path, 1, 1);
-					o.setName("SingleSprite");
-					o.setPosition(Camera.getLookAt()[0],Camera.getLookAt()[1]);
-					Engine.addRenderable(o);
-					listModel.addElement(o);
-					canvas.display();
-					
-					list.setSelectedIndex(listModel.getSize()-1);
+			int result = chooser.showOpenDialog(mainFrame);
+			if (result == JFileChooser.APPROVE_OPTION){
+				File dst = new File(projectPath + File.separator + "images" + File.separator +  chooser.getSelectedFile().getName());
+				try {
+					BasicIO.copy(chooser.getSelectedFile(), dst);
+				} catch (IOException e1) {
+					e1.printStackTrace();
 				}
+				String path =(dst.getPath());
+				JoglSprite o = new JoglSprite(path, 1, 1);
+				o.setName("SingleSprite");
+				o.setPosition(Camera.getLookAt()[0],Camera.getLookAt()[1]);
+				Engine.addRenderable(o);
+				listModel.addElement(o);
+				canvas.display();
+
+				list.setSelectedIndex(listModel.getSize()-1);
+			}
 		});
 
 		JMenuItem addObject = new JMenuItem("Add SpriteSheet");
@@ -176,7 +180,7 @@ public class EditorView {
 			CreateSpriteDialog dialog = new CreateSpriteDialog(mainFrame,canvas,listModel,list,inspector);
 			dialog.setVisible(true);
 		});
-		
+
 		JMenuItem addEmpty = new JMenuItem("Add EmptyObject");
 		addEmpty.addActionListener(ae -> {
 			EmptyObject eo = new EmptyObject();
@@ -241,25 +245,35 @@ public class EditorView {
 				File projectFolder = new File(chooser.getSelectedFile().toString()+ File.separatorChar + name);
 				projectFolder.mkdir();
 				projectPath = projectFolder.toString();
+
+				File imageFolder = new File(projectPath + File.separatorChar + "images");
+				imageFolder.mkdir();
+
+				File assetFolder = new File(projectPath + File.separatorChar + "assets");
+				assetFolder.mkdir();
+
+				File scriptFolder = new File(projectPath + File.separatorChar + "scripts");
+				scriptFolder.mkdir();
+
 				mainFrame.setTitle(mainFrame.getTitle() +  " - "  + name);
 			}
 		});
 
-		
+
 		fileSave.addActionListener(ae -> {saveScene();});
 
 		fileLoad.addActionListener(ae -> {
-				JFileChooser chooser = new JFileChooser();
-				chooser.setFileFilter(new FileNameExtensionFilter("DME", "dme"));
-				int result = chooser.showOpenDialog(mainFrame);
+			JFileChooser chooser = new JFileChooser();
+			chooser.setFileFilter(new FileNameExtensionFilter("DME", "dme"));
+			int result = chooser.showOpenDialog(mainFrame);
 
-				
-				if (result == JFileChooser.APPROVE_OPTION){
-					projectPath = chooser.getCurrentDirectory().getPath();
-					currentScene = chooser.getSelectedFile().getName().split(".dme")[0];
-					loadScene();
-				}
-			
+
+			if (result == JFileChooser.APPROVE_OPTION){
+				projectPath = chooser.getCurrentDirectory().getPath();
+				currentScene = chooser.getSelectedFile().getName().split(".dme")[0];
+				loadScene();
+			}
+
 		});
 	}
 
@@ -278,32 +292,26 @@ public class EditorView {
 
 		listModel = new DefaultListModel<RenderObject>();
 		list = new JList<RenderObject>(listModel);
+		
 
 		final JPopupMenu popupMenu = new JPopupMenu();
 		JMenuItem rename = new JMenuItem("Rename");
 		rename.setActionCommand("Rename");
 		rename.addActionListener(ae -> {
-			String newName = JOptionPane.showInputDialog(mainFrame, "Rename", list.getSelectedValue());
-			if (newName != null){
-				list.getSelectedValue().setName(newName);
-				list.updateUI();
-			}
-
+			renameObject();
 		});
 		popupMenu.add(rename);
-
 		popupMenu.add(new JPopupMenu.Separator());
-
+		
+		
 		JMenuItem delete = new JMenuItem("Delete");
 		delete.setActionCommand("Delete");
 		delete.addActionListener(ae -> {
-			Engine.getAllObjects().remove(list.getSelectedValue().getId());
-			int index = list.getSelectedIndex();
-			listModel.remove(index);
-			list.clearSelection();
-			canvas.display();
-
+			removeObject();
 		});
+
+		delete.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_DELETE,0));
+		
 		popupMenu.add(delete);
 
 		list.addMouseListener(new MouseAdapter() {
@@ -317,6 +325,8 @@ public class EditorView {
 
 			}
 		});
+		
+		list.addKeyListener(new KeyListListener());
 
 		selectionListener = new ObjectListListener(list);
 		list.addListSelectionListener(selectionListener);
@@ -330,36 +340,26 @@ public class EditorView {
 		mainFrame.add(tabbedPane,BorderLayout.LINE_START);
 
 	}
-	
-	private class ObjectListListener implements ListSelectionListener {
-		
-		private JList<RenderObject> list;
-		
-		public ObjectListListener(JList<RenderObject> list){
-			this.list = list;
-		}
-		
-		@Override
-		public void valueChanged(ListSelectionEvent e) {
-			if (list.getSelectedIndex() < 0){
-				return;
-			}
-			RenderObject o = list.getSelectedValue();
-			inspector.openInspector(o.getId());
-			if (selection == null){
-				selection = new JoglSprite("selection.png", 1, 1);
-				JoglRenderer.setSelectionSprite(selection);
-			}
-			selection.setPosition(o.getX(),o.getY());
-			selection.setScale(o.getWidth(), o.getHeight());
-			selection.setRotation(o.getRotation());
-			canvas.display();
+
+	private void renameObject() {
+		String newName = JOptionPane.showInputDialog(mainFrame, "Rename", list.getSelectedValue());
+		if (newName != null){
+			list.getSelectedValue().setName(newName);
+			list.revalidate();
 		}
 	}
-	
+
+	private void removeObject() {
+		Engine.getAllObjects().remove(list.getSelectedValue().getId());
+		int index = list.getSelectedIndex();
+		listModel.remove(index);
+		list.clearSelection();
+		canvas.display();
+	}
+
 	private void prepareAreaList(){
 		areaList = new AreaList(canvas);
-		
+
 		tabbedPane.addTab("Areas", areaList);
 		tabbedPane.addChangeListener(ce -> {
 			if (tabbedPane.getSelectedComponent() == areaList){
@@ -399,7 +399,7 @@ public class EditorView {
 		animator = new Animator(canvas);
 		animator.setRunAsFastAsPossible(true);
 
-		
+
 		cmListener = new CanvasMouseListener(canvas,list,selectionListener);
 		cmListener.registerListener();
 		cmListener.setAreaChangedListener(newArea ->{
@@ -427,7 +427,7 @@ public class EditorView {
 				if (!o.isPartOfArea()){
 					listModel.addElement(o);
 				}
-				
+
 			}
 			for (OrthoRenderObject o : Engine.getAllOrthoRenderObjects()){
 				orthoListModel.addElement(o);
@@ -442,8 +442,56 @@ public class EditorView {
 	private void saveScene() {
 		BasicIO.parseToDME(projectPath,currentScene);
 	}
-	
-	
 
+	private class ObjectListListener implements ListSelectionListener {
 	
+		private JList<RenderObject> list;
+	
+		public ObjectListListener(JList<RenderObject> list){
+			this.list = list;
+		}
+	
+		@Override
+		public void valueChanged(ListSelectionEvent e) {
+			if (list.getSelectedIndex() < 0){
+				return;
+			}
+			RenderObject o = list.getSelectedValue();
+			inspector.openInspector(o.getId());
+			if (selection == null){
+				selection = new JoglSprite("selection.png", 1, 1);
+				JoglRenderer.setSelectionSprite(selection);
+			}
+			selection.setPosition(o.getX(),o.getY());
+			selection.setScale(o.getWidth(), o.getHeight());
+			selection.setRotation(o.getRotation());
+			canvas.display();
+		}
+	}
+	
+	private class KeyListListener implements KeyListener {
+
+		@Override
+		public void keyTyped(KeyEvent e) {
+		}
+
+		@Override
+		public void keyPressed(KeyEvent e) {
+			if (e.getKeyCode() == KeyEvent.VK_DELETE){
+				removeObject();
+			} else if (e.isAltDown() && e.isShiftDown() && e.getKeyCode() == KeyEvent.VK_R){
+				renameObject();
+			}
+			
+		}
+
+		@Override
+		public void keyReleased(KeyEvent e) {
+		}
+		
+	}
+
+
+
+
 }
