@@ -543,6 +543,11 @@ public abstract class AbstractSprite implements RenderObject,SingleSprite,Sprite
 		return inactiveOnLoad;
 	}
 
+	@Override
+	public void setSheetDimensions(int cols, int rows) {
+		renderer.setSheetDimensions(cols, rows);
+	}
+
 	public void setInactiveOnLoad(boolean inactiveOnLoad) {
 		this.inactiveOnLoad = inactiveOnLoad;
 	}

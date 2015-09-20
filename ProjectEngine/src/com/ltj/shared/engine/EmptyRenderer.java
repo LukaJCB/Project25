@@ -232,5 +232,11 @@ public class EmptyRenderer implements SpriteRenderer {
 		return null;
 	}
 
+	@Override
+	public void setSheetDimensions(int cols, int rows) {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 }

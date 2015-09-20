@@ -178,12 +178,12 @@ public abstract class AbstractSpriteRenderer implements SpriteRenderer {
 		return z;
 	}
 	
-	private void setSheetDimensions(int cols, int rows){
+	@Override
+	public void setSheetDimensions(int cols, int rows){
 		columnSize = 1.0f / cols;
 		rowSize = 1.0f / rows;
 	}
-	
-	
+
 
 
 	private void calcMatrix(){

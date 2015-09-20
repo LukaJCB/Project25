@@ -53,6 +53,7 @@ public interface RenderObject extends Sprite {
 	Set<Entry<String, Animation>> getAllAnimations();
 	void setPartOfArea(boolean b);
 	boolean isPartOfArea();
+	void setSheetDimensions(int cols, int rows);
 	
 	
 	

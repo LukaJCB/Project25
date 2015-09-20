@@ -42,4 +42,5 @@ public interface SpriteRenderer {
 	int getTextureRow();
 	int getTextureCol();
 	Set<Entry<String, Animation>> getAllAnimations();
+	void setSheetDimensions(int cols, int rows);
 }
