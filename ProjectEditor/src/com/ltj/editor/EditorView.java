@@ -272,7 +272,8 @@ public class EditorView {
 		});
 
 
-		fileSave.addActionListener(ae -> {saveScene();});
+		fileSave.addActionListener(ae -> saveScene());
+		fileSave.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK));
 
 		fileLoad.addActionListener(ae -> {
 			JFileChooser chooser = new JFileChooser();
