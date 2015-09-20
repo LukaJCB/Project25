@@ -5,8 +5,10 @@ import java.awt.GridLayout;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+import javax.swing.Box;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
@@ -27,6 +29,7 @@ public class MainInspector extends JPanel {
 	private int currentId;
 	private GLCanvas canvas;
 	private JCheckBox inactiveOnLoad;
+	private JCheckBox typeToggle;
 	
 	public MainInspector(GLCanvas cnv){
 		canvas = cnv;
@@ -35,7 +38,46 @@ public class MainInspector extends JPanel {
 		setPreferredSize(new Dimension(180,500));
 
 		KeyChangeListener listener = new KeyChangeListener();
-		JLabel	labelX = new JLabel("X");
+		
+		JLabel type = new JLabel("Type");
+		add(type);
+		
+		typeToggle = new JCheckBox();
+		add(typeToggle);
+		typeToggle.addActionListener(ae -> {
+			RenderObject o = Engine.getAllObjects().get(currentId);
+			if (o.getNumCols() > 1 || o.getNumRows() > 1){
+				o.setSheetDimensions(1, 1);
+				o.setRepeat(1, 1);
+			} else {
+				JTextField columns = new JTextField(5);
+				width.setText(""+Engine.getAreaWidth());
+				JTextField rows = new JTextField(5);
+				height.setText("" +  Engine.getAreaHeight());
+
+				JPanel dialog = new JPanel();
+				dialog.add(new JLabel("Columns:"));
+				dialog.add(columns);
+				dialog.add(Box.createHorizontalStrut(12)); 
+				dialog.add(new JLabel("Rows:"));
+				dialog.add(rows);
+
+				int result = JOptionPane.showConfirmDialog(null, dialog, 
+						"Texture Dimensions", JOptionPane.OK_CANCEL_OPTION);
+				if (result == JOptionPane.OK_OPTION) {
+					o.setSheetDimensions(Integer.parseInt(columns.getText()), Integer.parseInt(rows.getText()));
+					o.setRepeat(1, 1);
+					o.setTexture(0, 0);
+				}
+			}
+			openInspector(currentId);
+			canvas.display();
+		});
+		
+		add(Box.createHorizontalStrut(100));
+		add(Box.createHorizontalStrut(100));
+		
+		JLabel labelX = new JLabel("X");
 		add(labelX);
 		x = new JTextField();
 		x.addKeyListener(listener);
@@ -177,8 +219,12 @@ public class MainInspector extends JPanel {
 		boolean full = (o.getClass() != EmptyObject.class);
 		setupEmptyInspector(full);
 		if (full){
+			
+			
 
 			if (o.getNumCols() > 1 || o.getNumRows() > 1){
+				typeToggle.setText("Sprite Sheet");
+				
 				labelRepeatX.setVisible(false);
 				labelRepeatY.setVisible(false);
 				repeatX.setVisible(false);
@@ -187,6 +233,8 @@ public class MainInspector extends JPanel {
 				textureCol.setText("" + o.getTextureColumn());
 				textureRow.setText("" + o.getTextureRow());
 			} else {
+				typeToggle.setText("Single Sprite");
+				
 				labelTextureCol.setVisible(false);
 				labelTextureRow.setVisible(false);
 				textureCol.setVisible(false);
@@ -197,10 +245,14 @@ public class MainInspector extends JPanel {
 			}
 
 
+			typeToggle.setEnabled(true);
 			modeS.setSelected(o.isModeSevenEnabled());
 			mirrorX.setSelected(o.isMirroredX());
 			mirrorY.setSelected(o.isMirroredY());
 			z.setText("" + o.getZ());
+		} else {
+			typeToggle.setText("Empty");
+			typeToggle.setEnabled(false);
 		}
 	}
 

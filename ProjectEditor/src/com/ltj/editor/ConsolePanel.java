@@ -36,10 +36,14 @@ public class ConsolePanel extends JPanel implements DragGestureListener{
 		model = new DefaultListModel<>();
 		list = new JList<ImageEntry>(model);
 		list.setCellRenderer(new ImageCellRenderer());
-		list.setLayoutOrientation(JList.VERTICAL_WRAP);
+		list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
 		list.setVisibleRowCount(-1);
-		list.setPreferredSize(new Dimension(1000,170));
+		list.setPreferredSize(new Dimension(1280,170));
+		list.setMaximumSize(new Dimension(3820,400));
 		JScrollPane pane = new JScrollPane(list);
+		pane.createVerticalScrollBar();
+		pane.createHorizontalScrollBar();
+		pane.setWheelScrollingEnabled(true);
 		add(pane);
 
 

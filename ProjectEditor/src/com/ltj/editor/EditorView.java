@@ -10,7 +10,6 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.swing.DefaultListModel;
-import javax.swing.DropMode;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
@@ -191,22 +190,22 @@ public class EditorView {
 
 		JMenuItem addOrtho = new JMenuItem("Add OrthoObject");
 		addOrtho.addActionListener(ae -> {
-			final JFileChooser chooser = new JFileChooser("assets");
+			final JFileChooser chooser = new JFileChooser();
 			chooser.setFileFilter(new FileNameExtensionFilter("PNG", "png"));
 
 			int result = chooser.showOpenDialog(mainFrame);
 			if (result == JFileChooser.APPROVE_OPTION){
-				String path =("assets" +chooser.getSelectedFile().getPath().split("assets")[1]);
+				String path = copyToProjectFolder(chooser);
 				OrthoRenderObject oro = new OrthoRenderObject(path, Engine.getPlatform());
 				Engine.addOrthoRenderObject(oro);
 				orthoListModel.addElement(oro);
+				canvas.reshape(canvas.getX(), canvas.getY(), canvas.getWidth(), canvas.getHeight());
 				canvas.display();
 			}
 
 		});
 
 		object.add(addOrtho);
-		//object.setVisible(false);
 
 		menuBar.add(object);
 	}
@@ -216,12 +215,13 @@ public class EditorView {
 		if (!dst.exists()){
 			try {
 				BasicIO.copy(chooser.getSelectedFile(), dst);
+				console.updateList();
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
 		}
-		String path =(dst.getPath());
-		return path;
+		
+		return dst.getPath();
 	}
 
 	private void addFileMenu(JMenuBar menuBar) {
@@ -266,6 +266,8 @@ public class EditorView {
 				scriptFolder.mkdir();
 
 				mainFrame.setTitle(mainFrame.getTitle() +  " - "  + name);
+
+				console.setPath(projectPath);
 			}
 		});
 
@@ -302,8 +304,6 @@ public class EditorView {
 
 		listModel = new DefaultListModel<RenderObject>();
 		list = new JList<RenderObject>(listModel);
-		list.setDragEnabled(true);
-		list.setDropMode(DropMode.ON);
 
 		final JPopupMenu popupMenu = new JPopupMenu();
 		JMenuItem rename = new JMenuItem("Rename");
@@ -395,12 +395,13 @@ public class EditorView {
 			jlist = list;
 			jlistModel = listModel;
 		}
-		
-		Engine.getAllObjects().remove(jlist.getSelectedValue().getId());
-		int index = jlist.getSelectedIndex();
-		jlistModel.remove(index);
-		jlist.clearSelection();
-		canvas.display();
+		if (jlist.getSelectedValue()!= null){
+			Engine.getAllObjects().remove(jlist.getSelectedValue().getId());
+			int index = jlist.getSelectedIndex();
+			jlistModel.remove(index);
+			jlist.clearSelection();
+			canvas.display();
+		}
 	}
 
 	private void prepareAreaList(){
@@ -446,6 +447,7 @@ public class EditorView {
 		canvas.addKeyListener(renderer);
 		canvas.addKeyListener(new KeyListListener());
 		
+		
 		mainFrame.add(canvas,BorderLayout.CENTER);
 		animator = new Animator(canvas);
 		animator.setRunAsFastAsPossible(true);
@@ -480,10 +482,12 @@ public class EditorView {
 				}
 
 			}
+			orthoListModel.clear();
 			for (OrthoRenderObject o : Engine.getAllOrthoRenderObjects()){
 				orthoListModel.addElement(o);
 			}
 			options.setAreaMode(Engine.getAreaMode());
+			canvas.reshape(canvas.getX(), canvas.getY(), canvas.getWidth(), canvas.getHeight());
 			canvas.display();
 			console.setPath(projectPath);
 			console.updateList();
