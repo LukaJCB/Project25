@@ -298,7 +298,7 @@ public class BasicIO {
 		return json;
 	}
 
-	private static void writeToPath(String source, String path){
+	public static void writeToPath(String source, String path){
 		PrintStream out = null;
 		FileOutputStream fileOut = null;
 		try {

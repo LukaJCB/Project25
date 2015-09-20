@@ -22,6 +22,8 @@ public abstract class AbstractSprite implements RenderObject,SingleSprite,Sprite
 	private boolean destroyed, inactive, inactiveOnLoad;
 	protected SpriteRenderer renderer;
 	protected String path;
+	
+
 	private boolean mirroredX, mirroredY;
 	private int id;
 	private String name = "";
@@ -59,6 +61,10 @@ public abstract class AbstractSprite implements RenderObject,SingleSprite,Sprite
 		return renderer.getRepeatX();
 	}
 
+	public String getPath() {
+		return path;
+	}
+	
 	@SuppressWarnings("unchecked")
 	protected void finishClone(AbstractSprite o){
 		if (this.getColliders() != null){

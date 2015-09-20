@@ -19,7 +19,7 @@ public class CanvasDropTargetListener extends DropTargetAdapter {
 	private GLCanvas canvas;
 	private EditorView editor;
 
-	public CanvasDropTargetListener(ConsolePanel consolePanel, GLCanvas canvas,EditorView editor) {
+	public CanvasDropTargetListener(GLCanvas canvas,EditorView editor) {
 		this.canvas = canvas;
 		this.editor = editor;
 		new DropTarget(canvas, DnDConstants.ACTION_COPY, this, true);
@@ -28,9 +28,9 @@ public class CanvasDropTargetListener extends DropTargetAdapter {
 	@Override
 	public void drop(DropTargetDropEvent event) {
 		try {
-			String path = (String) event.getTransferable().getTransferData(DataFlavor.stringFlavor);
 			if (event.isDataFlavorSupported(DataFlavor.stringFlavor)) {
 				event.acceptDrop(DnDConstants.ACTION_COPY);
+				String path = (String) event.getTransferable().getTransferData(DataFlavor.stringFlavor);
 				Point pos = event.getLocation();
 				float normalX = MatrixHelper.normalizeCoordiantes((float)pos.getX(),canvas.getWidth());
 				float normalY = -MatrixHelper.normalizeCoordiantes((float)pos.getY(), canvas.getHeight());

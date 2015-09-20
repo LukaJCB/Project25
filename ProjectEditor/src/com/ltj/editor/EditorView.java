@@ -65,7 +65,8 @@ public class EditorView {
 	private String currentScene;
 	private AreaList areaList;
 	private boolean areaListActive;
-	private ConsolePanel console;
+	private ImagePanel imagePanel;
+	private AssetConsole assetPanel;
 
 	public EditorView(){
 
@@ -215,14 +216,15 @@ public class EditorView {
 		if (!dst.exists()){
 			try {
 				BasicIO.copy(chooser.getSelectedFile(), dst);
-				console.updateList();
-			} catch (IOException e1) {
-				e1.printStackTrace();
+				imagePanel.updateList();
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
 		}
 		
 		return dst.getPath();
 	}
+
 
 	private void addFileMenu(JMenuBar menuBar) {
 		JMenu file = new JMenu("File");
@@ -267,7 +269,7 @@ public class EditorView {
 
 				mainFrame.setTitle(mainFrame.getTitle() +  " - "  + name);
 
-				console.setPath(projectPath);
+				imagePanel.setPath(projectPath);
 			}
 		});
 
@@ -339,10 +341,10 @@ public class EditorView {
 		});
 		
 		list.addKeyListener(new KeyListListener());
-
+		
 		selectionListener = new ObjectListListener(list);
 		list.addListSelectionListener(selectionListener);
-
+		new RenderableDragGestureListener(list);
 
 
 		listScroller = new JScrollPane(list);
@@ -382,7 +384,7 @@ public class EditorView {
 			listModel.addElement(o);
 			list.setSelectedIndex(listModel.getSize()-1);
 		}
-		console.updateList();
+		imagePanel.updateList();
 		canvas.display();
 	}
 
@@ -431,9 +433,13 @@ public class EditorView {
 	}
 
 	private void prepareConsole(){
-		console = new ConsolePanel(projectPath,canvas,this);
-		mainFrame.add(console,BorderLayout.PAGE_END);
-		console.setPreferredSize(new Dimension(700,180));
+		JTabbedPane consoleTabs = new JTabbedPane();
+		imagePanel = new ImagePanel(projectPath,canvas,this);
+		assetPanel = new AssetConsole(projectPath);
+		consoleTabs.addTab("Images", imagePanel.getPane());
+		consoleTabs.addTab("Assets", assetPanel.getPane());
+		mainFrame.add(consoleTabs,BorderLayout.PAGE_END);
+		consoleTabs.setPreferredSize(new Dimension(700,220));
 	}
 
 	private void prepareGLView(){
@@ -490,8 +496,10 @@ public class EditorView {
 			options.setAreaMode(Engine.getAreaMode());
 			canvas.reshape(canvas.getX(), canvas.getY(), canvas.getWidth(), canvas.getHeight());
 			canvas.display();
-			console.setPath(projectPath);
-			console.updateList();
+			imagePanel.setPath(projectPath);
+			assetPanel.setPath(projectPath);
+			imagePanel.updateList();
+			assetPanel.updateList();
 		} catch (Exception ex){
 			ex.printStackTrace();
 		}

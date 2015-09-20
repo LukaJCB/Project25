@@ -66,6 +66,7 @@ public class AreaList extends JPanel {
 	private void prepareList(EditorView editorView) {
 		areaListModel = new DefaultListModel<RenderObject>();
 		areaList = new JList<RenderObject>(areaListModel);
+		new RenderableDragGestureListener(areaList);
 		
 		final JPopupMenu popupMenu = new JPopupMenu();
 		JMenuItem rename = new JMenuItem("Rename");

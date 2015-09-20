@@ -220,11 +220,10 @@ public class MainInspector extends JPanel {
 		setupEmptyInspector(full);
 		if (full){
 			
-			
-
+			typeToggle.setText("is Sheet?");
+			typeToggle.setEnabled(true);
 			if (o.getNumCols() > 1 || o.getNumRows() > 1){
-				typeToggle.setText("Sprite Sheet");
-				
+				typeToggle.setSelected(true);
 				labelRepeatX.setVisible(false);
 				labelRepeatY.setVisible(false);
 				repeatX.setVisible(false);
@@ -233,8 +232,7 @@ public class MainInspector extends JPanel {
 				textureCol.setText("" + o.getTextureColumn());
 				textureRow.setText("" + o.getTextureRow());
 			} else {
-				typeToggle.setText("Single Sprite");
-				
+				typeToggle.setSelected(false);
 				labelTextureCol.setVisible(false);
 				labelTextureRow.setVisible(false);
 				textureCol.setVisible(false);
@@ -244,8 +242,7 @@ public class MainInspector extends JPanel {
 				repeatY.setText(""+ o.getRepeatY());
 			}
 
-
-			typeToggle.setEnabled(true);
+			
 			modeS.setSelected(o.isModeSevenEnabled());
 			mirrorX.setSelected(o.isMirroredX());
 			mirrorY.setSelected(o.isMirroredY());
