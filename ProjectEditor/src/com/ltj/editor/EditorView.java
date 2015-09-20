@@ -367,8 +367,12 @@ public class EditorView {
 	}
 
 	public void addObject(RenderObject o,String name) {
+		addObject(o, name, Camera.getLookAt()[0], Camera.getLookAt()[1]);
+	}
+	
+	public void addObject(RenderObject o,String name,float x, float y){
 		o.setName(name);
-		o.setPosition(Camera.getLookAt()[0],Camera.getLookAt()[1]);
+		o.setPosition(x,y);
 		Engine.addRenderable(o);
 		if (areaListActive){
 			areaList.addElement(o);
@@ -425,7 +429,7 @@ public class EditorView {
 	}
 
 	private void prepareConsole(){
-		console = new ConsolePanel(projectPath);
+		console = new ConsolePanel(projectPath,canvas,this);
 		mainFrame.add(console,BorderLayout.PAGE_END);
 		console.setPreferredSize(new Dimension(700,180));
 	}

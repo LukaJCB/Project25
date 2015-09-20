@@ -50,8 +50,7 @@ public class AreaList extends JPanel {
 		box.add(new JLabel(" y "));
 		box.add(y);
 		add(box);
-		areaListModel = new DefaultListModel<RenderObject>();
-		areaList = new JList<RenderObject>(areaListModel);
+		
 		prepareList(editorView);
 		JScrollPane scroller = new JScrollPane(areaList);
 		add(scroller);
@@ -65,6 +64,9 @@ public class AreaList extends JPanel {
 	}
 
 	private void prepareList(EditorView editorView) {
+		areaListModel = new DefaultListModel<RenderObject>();
+		areaList = new JList<RenderObject>(areaListModel);
+		
 		final JPopupMenu popupMenu = new JPopupMenu();
 		JMenuItem rename = new JMenuItem("Rename");
 		rename.setActionCommand("Rename");
