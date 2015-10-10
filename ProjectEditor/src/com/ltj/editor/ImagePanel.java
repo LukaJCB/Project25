@@ -1,6 +1,8 @@
 package com.ltj.editor;
 
+import java.awt.Cursor;
 import java.awt.dnd.DnDConstants;
+import java.awt.dnd.DragGestureEvent;
 import java.awt.dnd.DragSource;
 import java.io.File;
 
@@ -20,6 +22,16 @@ public class ImagePanel extends AbstractConsolePanel{
 		DragSource ds = new DragSource();
 		ds.createDefaultDragGestureRecognizer(list, DnDConstants.ACTION_COPY, this);
 
+	}
+	
+	@Override
+	public void dragGestureRecognized(DragGestureEvent event) {
+		Cursor cursor = null;
+		
+		if (event.getDragAction() == DnDConstants.ACTION_COPY) {
+			cursor = DragSource.DefaultCopyDrop;
+		}
+		event.startDrag(cursor, list.getSelectedValue().getPath());
 	}
 
 	public void updateList(){

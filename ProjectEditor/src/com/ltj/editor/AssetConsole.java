@@ -1,14 +1,14 @@
 package com.ltj.editor;
 
+import java.awt.Cursor;
+import java.awt.datatransfer.StringSelection;
 import java.awt.dnd.DnDConstants;
+import java.awt.dnd.DragGestureEvent;
 import java.awt.dnd.DragSource;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 
-import javax.swing.DefaultListModel;
-import javax.swing.JList;
-import javax.swing.JScrollPane;
 
 import com.ltj.shared.engine.json.JSONObject;
 
@@ -17,17 +17,22 @@ public class AssetConsole extends AbstractConsolePanel {
 
 	public AssetConsole(String projectPath) {
 		super(projectPath);
-		model = new DefaultListModel<>();
-		list = new JList<ImageEntry>(model);
-		list.setCellRenderer(new ImageCellRenderer());
-		list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
-		list.setVisibleRowCount(-1);
-		pane = new JScrollPane(list);
 		
 		new AssetsDropTargetListener(this);
 		
 		DragSource ds = new DragSource();
 		ds.createDefaultDragGestureRecognizer(list, DnDConstants.ACTION_COPY, this);
+	}
+	
+	@Override
+	public void dragGestureRecognized(DragGestureEvent event) {
+		Cursor cursor = null;
+		
+		if (event.getDragAction() == DnDConstants.ACTION_COPY) {
+			cursor = DragSource.DefaultCopyDrop;
+		}
+		//TODO
+		event.startDrag(cursor, new StringSelection(list.getSelectedValue().toString() + ".dmo"));
 	}
 
 	@Override
@@ -56,6 +61,7 @@ public class AssetConsole extends AbstractConsolePanel {
 	
 	public ImageEntry addEntryFromJson(String json){
 		JSONObject jsonObject = new JSONObject(json);
+		
 		String name = jsonObject.getString("name");
 		String imagePath = getProjectPath() + File.separatorChar + jsonObject.getString("path");
 		ImageEntry entry = new ImageEntry(name, imagePath);

@@ -12,6 +12,7 @@ import com.ltj.java.engine.JoglSprite;
 import com.ltj.shared.engine.Camera;
 import com.ltj.shared.engine.Line;
 import com.ltj.shared.engine.RenderObject;
+import com.ltj.shared.utils.BasicIO;
 import com.ltj.shared.utils.MatrixHelper;
 
 public class CanvasDropTargetListener extends DropTargetAdapter {
@@ -31,6 +32,7 @@ public class CanvasDropTargetListener extends DropTargetAdapter {
 			if (event.isDataFlavorSupported(DataFlavor.stringFlavor)) {
 				event.acceptDrop(DnDConstants.ACTION_COPY);
 				String path = (String) event.getTransferable().getTransferData(DataFlavor.stringFlavor);
+				
 				Point pos = event.getLocation();
 				float normalX = MatrixHelper.normalizeCoordiantes((float)pos.getX(),canvas.getWidth());
 				float normalY = -MatrixHelper.normalizeCoordiantes((float)pos.getY(), canvas.getHeight());
@@ -38,17 +40,27 @@ public class CanvasDropTargetListener extends DropTargetAdapter {
 				mouseDrop.intersectXYPlane();
 				float[] worldPos = mouseDrop.getIntersection();
 				
-				RenderObject o = new JoglSprite(path, 1, 1);
-				editor.addObject(o, "SingleSprite",worldPos[0],worldPos[1]);
-				
+				if (isDMO(path)){
+					RenderObject o = BasicIO.loadFromDMO(editor.getProjectPath(), path);
+					editor.addObject(o, path.replace(".dmo", ""),worldPos[0],worldPos[1]);
+				} else {
+			
+					RenderObject o = new JoglSprite(path, 1, 1);
+					editor.addObject(o, "SingleSprite",worldPos[0],worldPos[1]);
+				}
 				event.dropComplete(true);
 				return;
+				
 			}
 			event.rejectDrop();
 		} catch (Exception e) {
 			e.printStackTrace();
 			event.rejectDrop();
 		}
+	}
+	
+	private boolean isDMO(String transferable){
+		return transferable.endsWith(".dmo");
 	}
 	
 }

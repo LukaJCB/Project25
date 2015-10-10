@@ -14,8 +14,6 @@ public class ImageEntry  {
 	private String title, path;
 	private ImageIcon icon;
 	
-	//protected DataFlavor[] imageFlavor = {new DataFlavor(ImageEntry.class, "ImageEntry")};
-	
 	public ImageEntry(String title, String path){
 		this.title = title;
 		this.path = path;

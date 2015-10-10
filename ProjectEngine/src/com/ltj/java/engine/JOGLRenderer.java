@@ -113,6 +113,8 @@ public class JoglRenderer implements GLEventListener, KeyListener {
 		
 		Camera.setDistance(2);
 		Camera.setLookAt(0, 0);
+		JoglRenderer.setSelectionSprite(new JoglSprite("selection.png", 1, 1));
+		JoglRenderer.getSelectionSprite().setInactive(true);
 		
 	}
 

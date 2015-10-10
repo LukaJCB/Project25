@@ -469,7 +469,7 @@ public class EditorView {
 			tabbedPane.setSelectedIndex(1);
 
 		});
-
+		
 		Engine.setCollisionZone(new Rectangle(0, 0, 30, 25));
 
 	}
@@ -493,6 +493,8 @@ public class EditorView {
 			for (OrthoRenderObject o : Engine.getAllOrthoRenderObjects()){
 				orthoListModel.addElement(o);
 			}
+			selection = JoglRenderer.getSelectionSprite();
+			selection.setInactive(false);
 			options.setAreaMode(Engine.getAreaMode());
 			canvas.reshape(canvas.getX(), canvas.getY(), canvas.getWidth(), canvas.getHeight());
 			canvas.display();
@@ -525,8 +527,8 @@ public class EditorView {
 			RenderObject o = list.getSelectedValue();
 			inspector.openInspector(o.getId());
 			if (selection == null){
-				selection = new JoglSprite("selection.png", 1, 1);
-				JoglRenderer.setSelectionSprite(selection);
+				selection = JoglRenderer.getSelectionSprite();
+				selection.setInactive(false);
 			}
 			selection.setPosition(o.getX(),o.getY());
 			selection.setScale(o.getWidth(), o.getHeight());
@@ -559,6 +561,10 @@ public class EditorView {
 
 	public JFrame getMainFrame() {
 		return mainFrame;
+	}
+
+	public String getProjectPath() {
+		return projectPath;
 	}
 
 
