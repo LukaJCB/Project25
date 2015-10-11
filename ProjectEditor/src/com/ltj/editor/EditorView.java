@@ -8,6 +8,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -34,6 +35,7 @@ import com.jogamp.opengl.awt.GLCanvas;
 import com.jogamp.opengl.util.Animator;
 import com.ltj.java.engine.JoglRenderer;
 import com.ltj.java.engine.JoglSprite;
+import com.ltj.java.utils.BehaviourLoader;
 import com.ltj.shared.engine.AreaMode;
 import com.ltj.shared.engine.Camera;
 import com.ltj.shared.engine.EmptyObject;
@@ -129,7 +131,7 @@ public class EditorView {
 		menuBar.add(play);
 		play.addActionListener(ae -> {
 			if (Engine.isStarted()){
-				//animator.stop();
+				animator.stop();
 				loadScene();
 				play.setText("Play");
 				
@@ -266,6 +268,8 @@ public class EditorView {
 
 				File scriptFolder = new File(projectPath + File.separatorChar + "scripts");
 				scriptFolder.mkdir();
+				
+				new File(scriptFolder.getAbsolutePath() + File.separatorChar + "bin").mkdir();
 
 				mainFrame.setTitle(mainFrame.getTitle() +  " - "  + name);
 
@@ -478,6 +482,7 @@ public class EditorView {
 		try {
 			Engine.flush();
 			listModel.clear();
+			loadBehaviours();
 			BasicIO.loadFromDME(projectPath,currentScene + ".dme");
 			for (RenderObject o : Engine.getAllObjects().values()){
 				o.setInactive(false);
@@ -500,10 +505,23 @@ public class EditorView {
 			canvas.display();
 			imagePanel.setPath(projectPath);
 			assetPanel.setPath(projectPath);
+			inspector.setPath(projectPath);
 			imagePanel.updateList();
 			assetPanel.updateList();
 		} catch (Exception ex){
 			ex.printStackTrace();
+		}
+	}
+	
+	private void loadBehaviours(){
+		File[] scriptFolder = new File(projectPath + File.separatorChar + "scripts"+ File.separatorChar + "bin").listFiles();
+
+		for (File f : scriptFolder){
+			try {
+				BehaviourLoader.loadFromBinary(projectPath, f.getName().replace(".class", ""));
+			} catch (MalformedURLException | ClassNotFoundException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 

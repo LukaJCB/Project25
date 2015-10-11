@@ -3,6 +3,7 @@ package com.ltj.editor;
 import java.awt.Dimension;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.File;
 import java.lang.reflect.Field;
 import java.util.Map.Entry;
 
@@ -11,14 +12,18 @@ import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
 import com.jogamp.opengl.awt.GLCanvas;
 import com.ltj.java.engine.JoglRenderer;
+import com.ltj.java.utils.BehaviourLoader;
 import com.ltj.shared.engine.Animation;
 import com.ltj.shared.engine.Behaviour;
 import com.ltj.shared.engine.BehaviourManipulator;
@@ -26,7 +31,9 @@ import com.ltj.shared.engine.Collider;
 import com.ltj.shared.engine.EmptyObject;
 import com.ltj.shared.engine.Engine;
 import com.ltj.shared.engine.RenderObject;
+import com.ltj.shared.engine.Sprite;
 import com.ltj.shared.engine.primitives.BoxCollider;
+import com.ltj.shared.utils.BasicIO;
 
 @SuppressWarnings("serial")
 public class InspectorPanel extends JTabbedPane {
@@ -44,6 +51,8 @@ public class InspectorPanel extends JTabbedPane {
 	private DefaultListModel<Collider> colliders;
 
 	private DefaultListModel<Entry<String, Animation>> animations;
+
+	private String projectPath;
 	
 
 	public InspectorPanel(final GLCanvas canvas, final JoglRenderer renderer){
@@ -135,6 +144,7 @@ public class InspectorPanel extends JTabbedPane {
 		addTab("Collider", collisionPanel);
 	}
 	
+	@SuppressWarnings("unchecked")
 	private void setupBehaviourTab(){
 		JPanel mainBehaviourTab = new JPanel();
 		mainBehaviourTab.setLayout(new BoxLayout(mainBehaviourTab, BoxLayout.Y_AXIS));
@@ -145,6 +155,28 @@ public class InspectorPanel extends JTabbedPane {
 
 		addBehaviourButton = new JButton("Add Behaviour");
 		mainBehaviourTab.add(addBehaviourButton);
+		
+		addBehaviourButton.addActionListener(ae ->{
+			RenderObject o = Engine.getAllObjects().get(currentId);
+			
+			final JFileChooser chooser = new JFileChooser();
+			chooser.setFileFilter(new FileNameExtensionFilter("Java", "java"));
+
+			int result = chooser.showOpenDialog(this);
+			if (result == JFileChooser.APPROVE_OPTION){
+				try {
+					BasicIO.copy(chooser.getSelectedFile(), new File(projectPath + File.separatorChar + "scripts" + File.separatorChar + chooser.getSelectedFile().getName()));
+					Behaviour<Sprite> b = (Behaviour<Sprite>)BehaviourLoader.loadBehaviour(projectPath, chooser.getSelectedFile().getName().replace(".java", ""));
+					o.addBehaviour(b);
+					b.allocateObject(o);
+					openBehaviourTab(o);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+			
+		});
+		
 		mainBehaviourTab.add(scrollPane);
 		addTab("Behaviour", mainBehaviourTab);
 		
@@ -223,6 +255,10 @@ public class InspectorPanel extends JTabbedPane {
 		}
 	}
 	
+	public void setPath(String projectPath) {
+		this.projectPath = projectPath;
+	}
+
 	class BehaviourKeyListener implements KeyListener {
 
 		private Class<?> type;

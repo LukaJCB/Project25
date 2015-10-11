@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map.Entry;
 
+import com.ltj.java.utils.BehaviourLoader;
 import com.ltj.java.utils.JoglTextResourceReader;
 import com.ltj.shared.engine.Area;
 import com.ltj.shared.engine.AreaMode;
@@ -397,7 +398,8 @@ public class BasicIO {
 		if (obj.getJSONObject("behaviour").length() != 0){
 			JSONObject jsonBehaviour = obj.getJSONObject("behaviour");
 
-			Class<?> behaviourClass = Class.forName(jsonBehaviour.getString("name"));
+			
+			Class<?> behaviourClass = BehaviourLoader.getLoader().loadClass(jsonBehaviour.getString("name"));
 			Behaviour<Sprite> behaviour = (Behaviour<Sprite>) behaviourClass.newInstance();
 			r.addBehaviour(behaviour);
 			behaviour.allocateObject(r);
